@@ -1,0 +1,58 @@
+/* Global design tokens and iOS-safe base styles for the Clutch app shell.
+   Depends on: tailwindcss (imported below).
+   Depended on by: src/main.tsx (imported once at app startup). */
+@import 'tailwindcss';
+
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f2f2f7;
+  --color-text: #1c1c1e;
+  --color-muted: #6b6b70;
+  --color-accent: #0a5db0;
+  --color-accent-contrast: #ffffff;
+  --tab-bar-height: 56px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #000000;
+    --color-surface: #1c1c1e;
+    --color-text: #f2f2f7;
+    --color-muted: #9a9a9e;
+    --color-accent: #3d9bee;
+    --color-accent-contrast: #000000;
+  }
+}
+
+/* Fill the visual viewport using dynamic viewport-height units, not the
+   older static viewport-height unit, so the app shell does not get clipped
+   or leave a gap behind Safari's collapsing toolbars on iOS. */
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* 16px is the minimum font size that stops Safari auto-zooming into a
+   focused form field on iOS. */
+input,
+select,
+textarea,
+button {
+  font-size: 16px;
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
