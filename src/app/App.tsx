@@ -1,11 +1,25 @@
-// Root layout: renders the app header, the active tab screen (via Outlet),
-// and the bottom TabBar.
-// Depends on: react-router-dom, ./TabBar, ./theme.css (design tokens).
+// Root layout: shows the full-screen Add to Home Screen panel in place of
+// the shell (iOS Safari, not yet installed, not dismissed), otherwise
+// renders the app header, the active tab screen (via Outlet), and the
+// bottom TabBar.
+// Depends on: react, react-router-dom, ./TabBar, ./AddToHomeScreen,
+// ./platform, ./theme.css (design tokens).
 // Depended on by: src/app/routes.tsx.
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import TabBar from './TabBar';
+import AddToHomeScreen from './AddToHomeScreen';
+import { readPlatform, shouldShowAddToHomeScreen } from './platform';
 
 function App() {
+  const [showAddToHomeScreen, setShowAddToHomeScreen] = useState(() =>
+    shouldShowAddToHomeScreen(readPlatform()),
+  );
+
+  if (showAddToHomeScreen) {
+    return <AddToHomeScreen onDismiss={() => setShowAddToHomeScreen(false)} />;
+  }
+
   return (
     <div
       style={{
