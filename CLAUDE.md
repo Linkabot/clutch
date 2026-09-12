@@ -13,9 +13,9 @@ clutch/
 ├─ docs/
 │  ├─ ROADMAP.md                (exists) phases + status lines = the resume point
 │  ├─ ARCHITECTURE.md           (exists)
-│  ├─ CONTENT-GUIDE.md          (later phase)
-│  ├─ DECISIONS.md              (later phase)
-│  └─ IPHONE-SETUP.md           (later phase)
+│  ├─ CONTENT-GUIDE.md          (exists)
+│  ├─ DECISIONS.md              (exists)
+│  └─ IPHONE-SETUP.md           (exists)
 ├─ content/uk/                  (later phase)
 ├─ public/
 │  ├─ icons/                    (exists) PWA + apple-touch icons
@@ -39,7 +39,7 @@ clutch/
 │  ├─ e2e/                      (exists)
 │  └─ content/                  (later phase)
 ├─ handoffs/                    (exists) audit trail per task — git-ignored
-└─ .github/workflows/ci.yml     (later phase)
+└─ .github/workflows/ci.yml     (exists)
 ```
 
 ## Dev Commands
