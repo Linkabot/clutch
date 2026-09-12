@@ -4,8 +4,8 @@ How to install Clutch on an iPhone as a home-screen app.
 
 ## Install
 
-Open `<PAGES_URL>` in Safari, tap Share, tap "Add to Home Screen", then tap
-Add.
+Open `https://linkabot.github.io/clutch/` in Safari, tap Share, tap "Add to
+Home Screen", then tap Add.
 
 ## What to expect
 

@@ -44,6 +44,8 @@ clutch/
 
 ## Dev Commands
 
+Live: https://linkabot.github.io/clutch/
+
 | Command                | Does                                            |
 | ---------------------- | ----------------------------------------------- |
 | `npm run dev`          | dev server at `http://localhost:5173/clutch/`   |

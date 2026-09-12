@@ -13,7 +13,8 @@ npm test          # unit tests (Vitest)
 npm run e2e       # build + e2e tests (Playwright, WebKit, iPhone profile)
 ```
 
-See `docs/IPHONE-SETUP.md` for installing the app on an iPhone.
+Live at https://linkabot.github.io/clutch/. See `docs/IPHONE-SETUP.md` for
+installing the app on an iPhone.
 
 ## Licence and attribution
 
