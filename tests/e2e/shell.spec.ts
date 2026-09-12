@@ -88,7 +88,16 @@ function killOfflineServer(): void {
   offlineServer = undefined;
   if (!pid) return;
   try {
-    execSync(`taskkill /PID ${pid} /T /F`);
+    // `taskkill /T` also kills any children; on POSIX platforms `vite
+    // preview` has no children of its own, so a plain SIGKILL suffices.
+    // CI runs on ubuntu-latest, so this branch is what actually executes
+    // there — the taskkill branch only ever runs on the developer's Windows
+    // machine.
+    if (process.platform === 'win32') {
+      execSync(`taskkill /PID ${pid} /T /F`);
+    } else {
+      process.kill(pid, 'SIGKILL');
+    }
   } catch {
     // Already exited; nothing to clean up.
   }
