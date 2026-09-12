@@ -5,7 +5,7 @@ Status lines below are the resume point for a fresh session.
 ## Phase 0 — Foundation & iPhone pipeline
 
 Goal: an installable, offline-capable empty app on the user's iPhone, with CI, deploy and all documentation skeletons in place.
-Status: in progress
+Status: done
 
 ## Phase 1 — Content engine & The Highway Code offline
 
