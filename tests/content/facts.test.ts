@@ -164,4 +164,78 @@ describe('content/uk/facts.json', () => {
       );
     }
   });
+
+  // Step 12: the six stopping-distance-<mph> facts are copied verbatim from
+  // the plan (Primary's reading of the official DVSA chart), not sourced
+  // from a `quote` -- so instead of quote-verification they get a
+  // mechanical arithmetic cross-check. This proves internal consistency
+  // only; confirmation against the official chart image is the Step 13
+  // human gate (plan amendment P7: floating-point tolerance for km/h).
+  describe('stopping distances', () => {
+    const stoppingFacts = facts.facts.filter((f) => /^stopping-distance-\d+$/.test(f.id));
+
+    function numData(fact: Fact): Record<string, number> {
+      if (!fact.data) throw new Error(`${fact.id} has no data`);
+      return fact.data as Record<string, number>;
+    }
+
+    it('has exactly six stopping-distance-<mph> facts', () => {
+      expect(stoppingFacts.length).toBe(6);
+    });
+
+    it('covers mph 20, 30, 40, 50, 60, 70 in that order', () => {
+      expect(stoppingFacts.map((f) => numData(f).mph)).toEqual([20, 30, 40, 50, 60, 70]);
+    });
+
+    it('thinking + braking = overall for every row', () => {
+      for (const fact of stoppingFacts) {
+        const d = numData(fact);
+        expect(d.thinkingM + d.brakingM, fact.id).toBe(d.overallM);
+      }
+    });
+
+    it('thinking distance = mph * 0.3 for every row', () => {
+      for (const fact of stoppingFacts) {
+        const d = numData(fact);
+        expect(Math.abs(d.thinkingM - d.mph * 0.3) < 1e-9, fact.id).toBe(true);
+      }
+    });
+
+    it('car lengths = round(overall / 4) for every row', () => {
+      for (const fact of stoppingFacts) {
+        const d = numData(fact);
+        expect(d.carLengths, fact.id).toBe(Math.round(d.overallM / 4));
+      }
+    });
+
+    it('km/h = mph * 1.6 within floating-point tolerance for every row', () => {
+      for (const fact of stoppingFacts) {
+        const d = numData(fact);
+        expect(Math.abs(d.kmh - d.mph * 1.6) < 1e-9, fact.id).toBe(true);
+      }
+    });
+
+    it('overall feet is within 2 of overall metres * 3.2808 for every row', () => {
+      for (const fact of stoppingFacts) {
+        const d = numData(fact);
+        expect(Math.abs(d.overallFt - d.overallM * 3.2808) <= 2, fact.id).toBe(true);
+      }
+    });
+
+    it('value equals overallM for every row', () => {
+      for (const fact of stoppingFacts) {
+        expect(fact.value, fact.id).toBe(numData(fact).overallM);
+      }
+    });
+
+    it('every stopping-distance fact is pending-human or human-vs-official-chart', () => {
+      for (const fact of stoppingFacts) {
+        expect(
+          fact.verification.method === 'pending-human' ||
+            fact.verification.method === 'human-vs-official-chart',
+          fact.id,
+        ).toBe(true);
+      }
+    });
+  });
 });

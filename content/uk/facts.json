@@ -207,6 +207,187 @@
       "quote": "Cars, light vans and light trailers MUST have a tread depth of at least 1.6 mm across the central three-quarters of the breadth of the tread and around the entire circumference.",
       "data": null,
       "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "stopping-distance-20",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 20 mph: 12 metres (40 feet), about three car lengths — 6 m thinking + 6 m braking.",
+      "value": 12,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 20,
+        "kmh": 32,
+        "thinkingM": 6,
+        "brakingM": 6,
+        "overallM": 12,
+        "overallFt": 40,
+        "carLengths": 3
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "stopping-distance-30",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 30 mph: 23 metres (75 feet), about six car lengths — 9 m thinking + 14 m braking.",
+      "value": 23,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 30,
+        "kmh": 48,
+        "thinkingM": 9,
+        "brakingM": 14,
+        "overallM": 23,
+        "overallFt": 75,
+        "carLengths": 6
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "stopping-distance-40",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 40 mph: 36 metres (118 feet), about nine car lengths — 12 m thinking + 24 m braking.",
+      "value": 36,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 40,
+        "kmh": 64,
+        "thinkingM": 12,
+        "brakingM": 24,
+        "overallM": 36,
+        "overallFt": 118,
+        "carLengths": 9
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "stopping-distance-50",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 50 mph: 53 metres (175 feet), about thirteen car lengths — 15 m thinking + 38 m braking.",
+      "value": 53,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 50,
+        "kmh": 80,
+        "thinkingM": 15,
+        "brakingM": 38,
+        "overallM": 53,
+        "overallFt": 175,
+        "carLengths": 13
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "stopping-distance-60",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 60 mph: 73 metres (240 feet), about eighteen car lengths — 18 m thinking + 55 m braking.",
+      "value": 73,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 60,
+        "kmh": 96,
+        "thinkingM": 18,
+        "brakingM": 55,
+        "overallM": 73,
+        "overallFt": 240,
+        "carLengths": 18
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "stopping-distance-70",
+      "topic": "stopping-distance",
+      "statement": "Typical overall stopping distance at 70 mph: 96 metres (315 feet), about twenty-four car lengths — 21 m thinking + 75 m braking.",
+      "value": 96,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": {
+        "mph": 70,
+        "kmh": 112,
+        "thinkingM": 21,
+        "brakingM": 75,
+        "overallM": 96,
+        "overallFt": 315,
+        "carLengths": 24
+      },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
+    },
+    {
+      "id": "car-length-average-metres",
+      "topic": "stopping-distance",
+      "statement": "Average car length = 4 metres (13 feet). The distances shown are a general guide. The distance will depend on your attention (thinking distance), the road surface, the weather conditions and the condition of your vehicle at the time.",
+      "value": 4,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg",
+        "title": "Typical stopping distances (official chart)"
+      },
+      "quote": null,
+      "data": { "metres": 4, "feet": 13 },
+      "verification": {
+        "method": "pending-human",
+        "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+      }
     }
   ]
 }
