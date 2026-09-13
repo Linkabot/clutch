@@ -89,3 +89,21 @@ test('offline: rule page and search render with the server stopped', async ({ pa
     page.locator('[data-testid="search-results"] a[href$="/code/rule/126"]'),
   ).toBeVisible({ timeout: 20_000 });
 });
+
+test('Introduction section shows its preamble and H1–H3 rule rows', async ({ page }) => {
+  // Regression guard for review-c.md finding C1: the Introduction section
+  // holds rules H1–H3 (kind: 'introduction'), and both screens used to key
+  // rendering on `kind === 'rules'`, which hid the preamble and every rule
+  // row on this one section (plan.md Step 15b).
+  await openAppAt(page, '/clutch/learn/code/introduction');
+
+  await expect(page.locator('a[href$="/code/rule/H1"]')).toBeVisible();
+  await expect(page.locator('a[href$="/code/rule/H2"]')).toBeVisible();
+  await expect(page.locator('a[href$="/code/rule/H3"]')).toBeVisible();
+  await expect(
+    page.getByText('This Highway Code applies to England, Scotland and Wales'),
+  ).toBeVisible();
+
+  await openAppAt(page, '/clutch/learn/code');
+  await expect(page.getByText('H1–H3')).toBeVisible();
+});

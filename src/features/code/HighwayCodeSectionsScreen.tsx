@@ -1,9 +1,12 @@
 // Highway Code sections list: /learn/code. Shows the OGL licence statement
 // and every ingested section, grouped by kind (Rules, Introduction,
 // Signals, Annexes, Other) via groupSections, with a rule-range badge on
-// each rules section computed by ruleRange from its ruleIds — never from
-// its slug or title (amendment P3, handoffs/phase-1-highway-code/plan.md).
-// The heading row also carries a Link to the search screen (Step 17).
+// every section that holds rules (ruleIds.length > 0, e.g. the
+// Introduction's H1–H3, which are not classified under the "rules" kind
+// label; review finding C1, plan.md Step 15b) computed by ruleRange from
+// its ruleIds — never from its slug or title (amendment P3,
+// handoffs/phase-1-highway-code/plan.md). The heading row also carries a
+// Link to the search screen (Step 17).
 // Depends on: react-router-dom, lucide-react (Search icon), ../../ui
 // (SignPanel), ../../content/loaders (getHighwayCodeIndex), ./sections
 // (groupSections, ruleRange).
@@ -62,7 +65,7 @@ function HighwayCodeSectionsScreen() {
                   }}
                 >
                   <span>{section.title}</span>
-                  {section.kind === 'rules' && (
+                  {section.ruleIds.length > 0 && (
                     <SignPanel colour="blue" size="small">
                       <span className="sign-label">{ruleRange(section.ruleIds)}</span>
                     </SignPanel>

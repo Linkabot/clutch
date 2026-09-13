@@ -1,8 +1,11 @@
 // Highway Code section screen: /learn/code/:slug. Loads one section via
-// loadSection and renders it — for a rule section, the preamble followed
-// by one row per rule (Step 16's RuleScreen holds a single rule's full
-// text); for every other kind (introduction, signals, annex, other), the
-// section's whole body. Sets document.title while a section is loaded.
+// loadSection and renders it — a "rule section" is one that holds at
+// least one rule (section.rules.length > 0, e.g. the Introduction's
+// H1–H3, which are not classified under the "rules" kind label; review
+// finding C1, plan.md Step 15b): its preamble followed by one row per
+// rule (Step 16's RuleScreen holds a single rule's full text). Every
+// other section (no rules) gets its whole body. Sets document.title
+// while a section is loaded.
 // Depends on: react, react-router-dom, ../../content/loaders (loadSection),
 // ../../content/schemas (Section, Rule types), ../../content/text
 // (htmlToText), ../../ui (SignPanel, Chip), ./HcHtml.
@@ -79,7 +82,7 @@ function SectionScreen() {
   }
 
   const { section } = current;
-  const isRuleSection = section.kind === 'rules';
+  const isRuleSection = section.rules.length > 0;
 
   return (
     <div>
