@@ -1,11 +1,19 @@
 /* Global design tokens and iOS-safe base styles for the Clutch app shell.
-   Depends on: tailwindcss (imported below).
+   Depends on: tailwindcss (imported below); the self-hosted Overpass and
+   Atkinson Hyperlegible woff2 files shipped by @fontsource/overpass and
+   @fontsource/atkinson-hyperlegible (latin subset only, imported below —
+   never Google Fonts at runtime, per Decision 13).
    Depended on by: src/main.tsx (imported once at app startup); every
    component that reads a --color-* / --radius-* / --tab-bar-height custom
    property (src/app/App.tsx, src/app/TabBar.tsx,
    src/app/AddToHomeScreen.tsx); scripts/check-contrast.mjs, which parses
    this file's literal hex values to check WCAG contrast. */
 @import 'tailwindcss';
+@import '@fontsource/overpass/latin-700.css';
+@import '@fontsource/overpass/latin-800.css';
+@import '@fontsource/overpass/latin-900.css';
+@import '@fontsource/atkinson-hyperlegible/latin-400.css';
+@import '@fontsource/atkinson-hyperlegible/latin-700.css';
 
 :root {
   /* Decision 13 signage-base tokens (docs/DECISIONS.md). Literal 6-digit
@@ -74,11 +82,43 @@ body,
   min-height: 100dvh;
 }
 
+/* P2 (pre-approval amendment): the reading-font rule lives on body, not
+   html, so Tailwind's rem-based spacing keeps a 16px root and does not
+   grow 6% app-wide. */
 body {
   background: var(--color-page);
   color: var(--color-ink);
+  font-family:
+    'Atkinson Hyperlegible',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.lead {
+  font-size: 19px;
+}
+
+.sign-label {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 /* Users who have asked their OS for reduced motion get animations and
