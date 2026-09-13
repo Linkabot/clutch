@@ -1,0 +1,24 @@
+{
+  "region": "GB",
+  "version": "0.1.0",
+  "attribution": [
+    {
+      "id": "overpass",
+      "name": "Overpass",
+      "licence": "SIL Open Font License, Version 1.1",
+      "url": "https://www.npmjs.com/package/@fontsource/overpass"
+    },
+    {
+      "id": "atkinson-hyperlegible",
+      "name": "Atkinson Hyperlegible",
+      "licence": "SIL Open Font License, Version 1.1",
+      "url": "https://www.npmjs.com/package/@fontsource/atkinson-hyperlegible"
+    },
+    {
+      "id": "lucide",
+      "name": "Lucide",
+      "licence": "ISC License",
+      "url": "https://www.npmjs.com/package/lucide-react"
+    }
+  ]
+}
