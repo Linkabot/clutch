@@ -20,7 +20,7 @@ export function initPwa(): void {
     onOfflineReady: () => {
       setSwStatus('ready');
     },
-    onRegistered: (registration) => {
+    onRegisteredSW: (_swUrl, registration) => {
       if (registration?.active && navigator.serviceWorker.controller) {
         setSwStatus('ready');
       }

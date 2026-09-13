@@ -15,29 +15,34 @@ clutch/
 │  ├─ ARCHITECTURE.md           (exists)
 │  ├─ CONTENT-GUIDE.md          (exists)
 │  ├─ DECISIONS.md              (exists)
-│  └─ IPHONE-SETUP.md           (exists)
-├─ content/uk/                  (later phase)
+│  ├─ IPHONE-SETUP.md           (exists)
+│  └─ DESIGN.md                 (exists) docs/DESIGN.md: tokens, primitives, motion policy
+├─ content/uk/                  (exists) pack.json, facts.json, syllabus.json, highway-code/
 ├─ public/
 │  ├─ icons/                    (exists) PWA + apple-touch icons
 │  ├─ signs/*.svg                (later phase)
-│  └─ ATTRIBUTION.md            (later phase)
+│  └─ ATTRIBUTION.md            (exists)
 ├─ scripts/
+│  ├─ lib/                      (exists) scripts/lib/: govuk.ts, highway-code-parse.ts, national-standard-parse.ts
 │  └─ make-icons.mjs            (exists)
 ├─ src/
 │  ├─ app/                      (exists) App.tsx, routes.tsx, tabs.ts, TabBar.tsx,
 │  │                            theme.css, store.ts, platform.ts, pwa.ts, AddToHomeScreen.tsx
+│  ├─ ui/                       (exists) src/ui/: SignPanel, SignPlate, Roundel, Button, Chip, primitives.css
 │  ├─ features/
 │  │  ├─ journey  learn  practice  my-car  me   (exists) placeholder screens
 │  │  ├─ me/OfflineReady.tsx    (exists)
+│  │  ├─ code/                  (exists) src/features/code/: Highway Code sections, rule page, search
 │  │  └─ interactives/          (later phase)
 │  ├─ engine/                   (later phase)
-│  ├─ content/                  (later phase)
+│  ├─ content/                  (exists) src/content/: schemas/, loaders.ts, text.ts
 │  └─ storage/
 │     └─ db.ts                  (exists) Dexie, settings table only
 ├─ tests/
 │  ├─ unit/                     (exists)
 │  ├─ e2e/                      (exists)
-│  └─ content/                  (later phase)
+│  ├─ content/                  (exists) tests/content/: schema, facts and Highway Code content tests
+│  └─ fixtures/                 (exists) tests/fixtures/: highway-code-section.html, national-standard-role.html
 ├─ handoffs/                    (exists) audit trail per task — git-ignored
 └─ .github/workflows/ci.yml     (exists)
 ```
