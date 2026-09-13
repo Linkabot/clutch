@@ -1,14 +1,16 @@
-// Placeholder screen for the Me tab; also hosts the offline-ready indicator.
-// Depends on: ./OfflineReady.
+// Me tab: heading, the offline-ready indicator, and the attribution card
+// (attribution text plus the "not an official app" and OGL licence lines).
+// Depends on: ./OfflineReady, ./Attribution.
 // Depended on by: src/app/routes.tsx.
 import OfflineReady from './OfflineReady';
+import Attribution from './Attribution';
 
 function MeScreen() {
   return (
     <div>
       <h1>Me</h1>
-      <p>Coming in a later phase.</p>
       <OfflineReady />
+      <Attribution />
     </div>
   );
 }

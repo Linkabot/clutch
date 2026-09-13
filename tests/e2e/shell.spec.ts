@@ -66,6 +66,10 @@ test('service worker registers and Me shows Offline ready', async ({ page }) => 
 
   await page.getByRole('link', { name: 'Me' }).click();
   await expect(page.getByTestId('offline-status')).toHaveText('Offline ready');
+  await expect(page.getByTestId('not-official')).toHaveText(
+    'Not an official DVSA or government app.',
+  );
+  await expect(page.getByText('Overpass')).toBeVisible();
 });
 
 test('tabs navigate', async ({ page }) => {
