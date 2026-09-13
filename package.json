@@ -16,6 +16,7 @@
     "format:check": "prettier --check .",
     "icons": "node scripts/make-icons.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
+    "check:precache": "node scripts/check-precache.mjs",
     "ingest:highway-code": "tsx scripts/ingest-highway-code.ts",
     "ingest:national-standard": "tsx scripts/ingest-national-standard.ts",
     "e2e": "npm run build && playwright test"
