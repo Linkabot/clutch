@@ -2,10 +2,11 @@
 // MiniSearch index from every rule and non-rule section, memoised behind
 // one promise so the phone builds it once, on first search, from the lazy
 // per-section chunks src/content/loaders.ts already precaches. There is no
-// prebuilt search index file shipped with the app.
+// prebuilt search index file shipped with the app, and nothing in this
+// module reaches the network.
 // Depends on: minisearch, src/content/loaders.ts, src/content/text.ts,
 // src/content/schemas.
-// Depended on by: the search screen (Step 17).
+// Depended on by: src/features/code/SearchScreen.tsx.
 
 import MiniSearch, { type SearchResult } from 'minisearch';
 import { loadAllSections } from '../../content/loaders';
@@ -102,4 +103,15 @@ export async function search(query: string, limit = 50): Promise<SearchResult[]>
   if (!trimmed) return [];
   const index = await getSearchIndex();
   return index.search(trimmed).slice(0, limit);
+}
+
+/**
+ * Maps a search result to the app route it should open: a rule's own
+ * /code/rule/:id page for a 'rule' document, or the owning section's
+ * /learn/code/:slug page for a 'section' document.
+ */
+export function resultHref(result: SearchResult): string {
+  return result.kind === 'rule'
+    ? `/code/rule/${result.ruleId}`
+    : `/learn/code/${result.sectionSlug}`;
 }

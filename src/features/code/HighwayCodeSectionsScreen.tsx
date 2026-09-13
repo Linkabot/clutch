@@ -3,10 +3,13 @@
 // Signals, Annexes, Other) via groupSections, with a rule-range badge on
 // each rules section computed by ruleRange from its ruleIds — never from
 // its slug or title (amendment P3, handoffs/phase-1-highway-code/plan.md).
-// Depends on: react-router-dom, ../../ui (SignPanel), ../../content/loaders
-// (getHighwayCodeIndex), ./sections (groupSections, ruleRange).
+// The heading row also carries a Link to the search screen (Step 17).
+// Depends on: react-router-dom, lucide-react (Search icon), ../../ui
+// (SignPanel), ../../content/loaders (getHighwayCodeIndex), ./sections
+// (groupSections, ruleRange).
 // Depended on by: src/app/routes.tsx.
 import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { SignPanel } from '../../ui';
 import { getHighwayCodeIndex } from '../../content/loaders';
 import { groupSections, ruleRange } from './sections';
@@ -17,7 +20,23 @@ function HighwayCodeSectionsScreen() {
 
   return (
     <div>
-      <h1>The Highway Code</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h1>The Highway Code</h1>
+        <Link
+          to="/learn/code/search"
+          aria-label="Search"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '44px',
+            minWidth: '44px',
+            color: 'var(--color-ink)',
+          }}
+        >
+          <Search size={24} strokeWidth={2} aria-hidden="true" />
+        </Link>
+      </div>
       <p style={{ color: 'var(--color-muted)' }}>
         Contains public sector information licensed under the Open Government Licence v3.0.
       </p>
