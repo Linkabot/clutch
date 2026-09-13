@@ -8,6 +8,8 @@
 // never stand in for the number itself.
 // Depends on: vitest, node:fs, node:path, src/content/schemas,
 // src/content/text.ts, tests/content/helpers.ts.
+// Step 13 adds: no fact may remain `pending-human` (Lincoln confirmed the
+// stopping distances against the official chart on 2026-09-13).
 // Depended on by: `npm run validate:content` / `npm test`.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -237,5 +239,12 @@ describe('content/uk/facts.json', () => {
         ).toBe(true);
       }
     });
+  });
+
+  it("has no fact with verification.method === 'pending-human' (Step 13: every safety number is human-confirmed)", () => {
+    const pending = facts.facts
+      .filter((fact) => fact.verification.method === 'pending-human')
+      .map((fact) => fact.id);
+    expect(pending).toEqual([]);
   });
 });

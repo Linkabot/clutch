@@ -231,7 +231,9 @@
         "carLengths": 3
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -258,7 +260,9 @@
         "carLengths": 6
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -285,7 +289,9 @@
         "carLengths": 9
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -312,7 +318,9 @@
         "carLengths": 13
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -339,7 +347,9 @@
         "carLengths": 18
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -366,7 +376,9 @@
         "carLengths": 24
       },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     },
@@ -385,7 +397,9 @@
       "quote": null,
       "data": { "metres": 4, "feet": 13 },
       "verification": {
-        "method": "pending-human",
+        "method": "human-vs-official-chart",
+        "by": "Lincoln",
+        "on": "2026-09-13",
         "against": "https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
       }
     }
