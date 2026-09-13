@@ -36,7 +36,7 @@ describe('groupSections', () => {
     source: {
       title: 'The Highway Code',
       url: 'https://www.gov.uk/guidance/the-highway-code',
-      apiUrl: 'https://www.gov.uk/api/content/guidance/the-highway-code',
+      apiUrl: 'https://example.invalid/api/content/guidance/the-highway-code',
       publicUpdatedAt: '2025-01-01T00:00:00+00:00',
       fetchedAt: '2026-01-01T00:00:00.000Z',
     },
