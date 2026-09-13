@@ -1,0 +1,197 @@
+{
+  "slug": "rules-for-drivers-and-motorcyclists-89-to-102",
+  "title": "Rules for drivers and motorcyclists (89 to 102)",
+  "basePath": "/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102",
+  "sourceUrl": "https://www.gov.uk/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102",
+  "order": 6,
+  "kind": "rules",
+  "preambleHtml": "Vehicle condition (rule 89)\n\n",
+  "bodyHtml": "",
+  "rules": [
+    {
+      "id": "89",
+      "number": 89,
+      "title": "Rule 89",
+      "lead": "Vehicle condition.",
+      "html": "\n<p><strong>Vehicle condition.</strong> You <strong>MUST</strong> ensure your vehicle and trailer comply with the full requirements of the Road Vehicles (Construction and Use) Regulations and Road Vehicles Lighting Regulations (see ‘<a href=\"/learn/code/annex-4-the-road-user-and-the-law\">The road user and the law</a>’).</p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "90",
+      "number": 90,
+      "title": "Rule 90",
+      "lead": null,
+      "html": "\n<p>Make sure that you are fit to drive. You <strong>MUST</strong> report to the Driver and Vehicle Licensing Agency (DVLA) any health condition likely to affect your driving.</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/94\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sect 94</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "91",
+      "number": 91,
+      "title": "Rule 91",
+      "lead": null,
+      "html": "\n<p>Driving when you are tired greatly increases your risk of collision. To minimise this risk</p>\n\n<ul>\n  <li>make sure you are fit to drive. Do not begin a journey if you are tired. Get sufficient sleep before embarking on a long journey</li>\n  <li>avoid undertaking long journeys between midnight and 6 am, when natural alertness is at a minimum</li>\n  <li>plan your journey to take sufficient breaks. A minimum break of at least 15 minutes after every two hours of driving is recommended</li>\n  <li>if you feel sleepy, stop in a safe place. Do not stop in an emergency area or on a hard shoulder of a motorway (see <a href=\"/code/rule/262\">Rule 262</a> for guidance on places to take a break when travelling on motorways).</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "262"
+      ],
+      "images": []
+    },
+    {
+      "id": "92",
+      "number": 92,
+      "title": "Rule 92",
+      "lead": "Vision.",
+      "html": "\n<p><strong>Vision.</strong> You <strong>MUST</strong> be able to read a vehicle number plate, in good daylight, from a distance of 20 metres (or 20.5 metres where the old style number plate is used). If you need to wear glasses (or contact lenses) to do this, you <strong>MUST</strong> wear them at all times while driving. The police have the power to require a driver to undertake an eyesight test.</p>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/96\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sect 96</a>, &amp; <a href=\"http://www.legislation.gov.uk/uksi/1999/2864/regulation/40/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Driving Licences) Regulations\">MV(DL)R</abbr> reg 40</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/1999/2864/schedule/8/made\" rel=\"external noopener\" target=\"_blank\">sched 8</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 2,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "93",
+      "number": 93,
+      "title": "Rule 93",
+      "lead": null,
+      "html": "\n<p>Slow down, and if necessary stop, if you are dazzled by bright sunlight.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "94",
+      "number": 94,
+      "title": "Rule 94",
+      "lead": null,
+      "html": "\n<p>At night or in poor visibility, do not use tinted glasses, lenses or visors if they restrict your vision.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "95",
+      "number": 95,
+      "title": "Rule 95",
+      "lead": "Do not drink and drive",
+      "html": "\n<p><strong>Do not drink and drive</strong> as it will seriously affect your judgement and abilities.</p>\n\n<p>In England and Wales you <strong>MUST NOT</strong> drive with a breath alcohol level higher than 35 microgrammes/100 millilitres of breath or a blood alcohol level of more than 80 milligrammes/100 millilitres of blood.</p>\n\n<p>In Scotland the legal limits are lower. You <strong>MUST NOT</strong> drive with a breath alcohol level higher than 22 microgrammes/100 millilitres of breath or a blood alcohol level of more than 50 milligrammes/100 millilitres of blood.</p>\n\n<p>Alcohol will</p>\n\n<ul>\n  <li>give a false sense of confidence</li>\n  <li>reduce co-ordination and slow down reactions</li>\n  <li>affect judgement of speed, distance and risk</li>\n  <li>reduce your driving ability, even if you’re below the legal limit</li>\n  <li>take time to leave your body; you may be unfit to drive in the evening after drinking at lunchtime, or in the morning after drinking the previous evening.</li>\n</ul>\n\n<p>The best solution is not to drink at all when planning to drive because any amount of alcohol affects your ability to drive safely. If you are going to drink, arrange another means of transport.</p>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/4\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 4</a>, <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/5\" rel=\"external noopener\" target=\"_blank\">5</a> &amp; <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/11\" rel=\"external noopener\" target=\"_blank\">11(2)</a>, &amp; <a href=\"http://www.legislation.gov.uk/sdsi/2014/9780111024478\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act 1988 (Prescribed Limit)(Scotland) Regulations\">PLSR</abbr></a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 2,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "96",
+      "number": 96,
+      "title": "Rule 96",
+      "lead": null,
+      "html": "\n<p>You <strong>MUST NOT</strong> drive under the influence of drugs or medicine. For medicines, check with your doctor or pharmacist and do not drive if you are advised that you may be impaired.</p>\n\n<p>You <strong>MUST NOT</strong> drive if you have illegal drugs or certain medicines in your blood above specified limits. It is highly dangerous so never take illegal drugs if you intend to drive; the effects are unpredictable, but can be even more severe than alcohol and result in fatal or serious road crashes. Illegal drugs have been specified at very low levels so even small amounts of use could be above the specified limits. The limits for certain medicines have been specified at higher levels, above the levels generally found in the blood of patients who have taken normal therapeutic doses. If you are found to have a concentration of a drug above its specified limit in your blood because you have been prescribed or legitimately supplied a particularly high dose of medicine, then you can raise a statutory medical defence, provided your driving was not impaired by the medicine you are taking.</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/4\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 4</a> &amp; <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/5\" rel=\"external noopener\" target=\"_blank\">5</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 2,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "97",
+      "number": 97,
+      "title": "Rule 97",
+      "lead": "Before setting off.",
+      "html": "\n<p><strong>Before setting off.</strong> You <strong>MUST</strong> ensure that</p>\n\n<ul>\n  <li>you have a valid licence and insurance to drive the vehicle you intend to use (see <a href=\"/learn/code/annex-3-motor-vehicle-documentation-and-learner-driver-requirements\">Motor vehicle documentation and learner driver requirements</a>)</li>\n  <li>your vehicle is legal and roadworthy (see <a href=\"https://www.gov.uk/guidance/the-highway-code/annex-3-motor-vehicle-documentation-and-learner-driver-requirements\" rel=\"external noopener\" target=\"_blank\">Motor vehicle documentation and learner driver requirements</a> and <a href=\"https://www.gov.uk/guidance/the-highway-code/annex-6-vehicle-maintenance-safety-and-security\" rel=\"external noopener\" target=\"_blank\">Vehicle maintenance, safety and security</a> for important vehicle maintenance and safety checks).</li>\n</ul>\n\n<p>You <strong>SHOULD</strong> ensure that</p>\n\n<ul>\n  <li>you have planned your route and allowed sufficient time for breaks and possible delays</li>\n  <li>you have sufficient fuel or charge for your journey, especially if it includes motorway driving</li>\n  <li>you know where all the controls are and how to use them</li>\n  <li>clothing and footwear do not prevent you using the controls in the correct manner</li>\n  <li>your mirrors and seat are adjusted correctly to ensure comfort, full control and maximum vision</li>\n  <li>head restraints are properly adjusted to reduce the risk of neck and spine injuries in the event of a collision.</li>\n</ul>\n\n<p>It is recommended for emergency use that</p>\n\n<ul>\n  <li>you have a mobile telephone containing emergency contacts (e.g. breakdown assistance)</li>\n  <li>you have high-visibility clothing.</li>\n</ul>\n\n<p><strong>Laws <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/42\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 42</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/45\" rel=\"external noopener\" target=\"_blank\">45</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/47\" rel=\"external noopener\" target=\"_blank\">47</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/49\" rel=\"external noopener\" target=\"_blank\">49</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/53\" rel=\"external noopener\" target=\"_blank\">53</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/87\" rel=\"external noopener\" target=\"_blank\">87</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/99\" rel=\"external noopener\" target=\"_blank\">99(4)</a> &amp; <a href=\"https://www.legislation.gov.uk/ukpga/1988/52/section/143\" rel=\"external noopener\" target=\"_blank\">143</a>, <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/regulation/16/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Driving Licences) Regulations\">MV(DL)R</abbr> reg 16</a>, <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/regulation/40/made\" rel=\"external noopener\" target=\"_blank\">40</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/schedule/4/made\" rel=\"external noopener\" target=\"_blank\">sched 4</a>, <a href=\"https://www.legislation.gov.uk/ukpga/1994/22/section/29\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Vehicle Excise and Registration Act\">VERA</abbr> sect 29</a>, <a href=\"https://www.legislation.gov.uk/uksi/1989/1796/regulation/23/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> 1989 regs 23</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1989/1796/regulation/27/made\" rel=\"external noopener\" target=\"_blank\">27</a>, &amp; <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/27/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Construction &amp; Use) Regulations\">CUR</abbr> regs 27</a>, <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/30/made\" rel=\"external noopener\" target=\"_blank\">30</a>, <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/32/made\" rel=\"external noopener\" target=\"_blank\">32</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/61/made\" rel=\"external noopener\" target=\"_blank\">61</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d01f940f0b61564000028/the-highway-code-rule-97.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 97: Make sure head restraints are properly adjusted</a></p>\nRule 97: Make sure head restraints are properly adjusted\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d01f940f0b61564000028/the-highway-code-rule-97.jpg",
+          "alt": "Rule 97: Make sure head restraints are properly adjusted"
+        }
+      ]
+    },
+    {
+      "id": "98",
+      "number": 98,
+      "title": "Rule 98",
+      "lead": "Before towing.",
+      "html": "\n\n<p><strong>Before towing.</strong> As a driver</p>\n\n<ul>\n  <li>you <strong>MUST NOT</strong> tow more than your licence permits. If you passed your car driving test on or after 1 January 1997, you are restricted on the weight of trailer you can tow</li>\n  <li>you <strong>MUST</strong> ensure that both your vehicle and your trailer are in a roadworthy condition. This includes checking that all tyres are legal, the trailer braking system is in full working order and all trailer lights are working correctly</li>\n  <li>you <strong>MUST NOT</strong> overload your vehicle or trailer. You should not tow a weight greater than that recommended by the manufacturer of your vehicle</li>\n  <li>you should distribute the weight in your caravan or trailer evenly with heavy items over the axle(s) and ensure a downward load on the tow ball. The manufacturer’s recommended weight and tow ball load should not be exceeded. This should minimise the possibility of swerving or snaking and loss of control</li>\n  <li>you <strong>MUST</strong> secure your load and it <strong>MUST NOT</strong> stick out dangerously. Make sure any heavy or sharp objects and any animals are secured safely. If there is a collision, they might hit someone inside the vehicle and cause serious injury</li>\n  <li>if your vehicle is narrower than your trailer or load, or your trailer or load obstructs your rearward view, then towing mirrors <strong>MUST</strong> be used</li>\n  <li>your trailer <strong>MUST</strong> be fitted with a secondary coupling device, such as a safety chain</li>\n  <li>carrying a load or pulling a trailer may require you to adjust your headlights.</li>\n</ul>\n\n<p><strong>During towing.</strong> As a driver</p>\n\n<ul>\n  <li>you should be aware that reduced speed limits apply (see <a href=\"/code/rule/124\">Rule 124</a>)</li>\n  <li>you should be aware that your stopping distance may increase significantly when towing (see <a href=\"/code/rule/126\">Rule 126</a>)</li>\n  <li>you <strong>MUST NOT</strong> drive in the right-hand lane on motorways with three or more lanes (see <a href=\"/code/rule/265\">Rule 265</a>)</li>\n  <li>if the trailer starts to swerve or snake, or you lose control, ease off the accelerator and reduce speed gently to regain control. Do not brake harshly.</li>\n</ul>\n\n<p><strong>Breakdowns.</strong> In the event of a breakdown, be aware</p>\n\n<ul>\n  <li>that towing a vehicle on a tow rope is potentially dangerous. You should consider using a solid tow bar or professional recovery</li>\n  <li>it may take longer to build up speed when rejoining a carriageway (see also <a href=\"/code/rule/278\">Rule 278</a>).</li>\n</ul>\n\n<p>For additional advice about towing safely, see <a href=\"https://www.gov.uk/guidance/the-highway-code/other-information#best-practice\" rel=\"external noopener\" target=\"_blank\">Further reading</a>.</p>\n\n<p><strong>Laws <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/27/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Construction &amp; Use) Regulations\">CUR</abbr> regs 27</a>, <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/33/made\" rel=\"external noopener\" target=\"_blank\">33</a>, <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/86/made\" rel=\"external noopener\" target=\"_blank\">86a</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1986/1078/regulation/100/made\" rel=\"external noopener\" target=\"_blank\">100</a>, <a href=\"https://www.legislation.gov.uk/uksi/1989/1796/regulation/18/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> reg 18</a>, <a href=\"https://www.legislation.gov.uk/uksi/1982/1163/regulation/12/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motorways Traffic (England &amp; Wales) Regulations\">MT(E&amp;W)R</abbr> reg 12</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/regulation/6/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Driving Licences) Regulations\">MV(DL)R</abbr> reg 6</a>, <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/regulation/7/made\" rel=\"external noopener\" target=\"_blank\">7</a>, <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/regulation/76/made\" rel=\"external noopener\" target=\"_blank\">76</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1999/2864/schedule/2/made\" rel=\"external noopener\" target=\"_blank\">sched 2</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 4,
+      "mustNotCount": 4,
+      "crossRefs": [
+        "124",
+        "126",
+        "265",
+        "278"
+      ],
+      "images": []
+    },
+    {
+      "id": "99",
+      "number": 99,
+      "title": "Rule 99",
+      "lead": null,
+      "html": "\n<p>You <strong>MUST</strong> wear a seat belt in cars, vans and other goods vehicles if one is fitted (see table below). Adults, and children aged 14 years and over, <strong>MUST</strong> use a seat belt or child restraint, where fitted, when seated in minibuses, buses and coaches. Exemptions are allowed for the holders of medical exemption certificates and those making deliveries or collections in goods vehicles when travelling less than 50 metres (approx 162 feet).</p>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/14\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 14</a> &amp; <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/15\" rel=\"external noopener\" target=\"_blank\">15</a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/176/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) Regulations\">MV(WSB)R</abbr></a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/31/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts by Children in Front Seats) Regulations\">MV(WSBCFS)R</abbr></a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2005/27/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) (Amendment) Regulations\">MV(WSB)(A)R</abbr> 2005</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2006/1892/contents/made\" rel=\"external noopener\" target=\"_blank\">2006</a></strong></p>\n\n<p><strong>Seat belt requirements.</strong> This table summarises the main legal requirements for wearing seat belts in cars, vans and other goods vehicles.</p>\n\n<table>\n  <thead>\n    <tr>\n      <td></td>\n      <th>Front seat</th>\n      <th>Rear seat</th>\n      <th>Who is responsible?</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>Driver</th>\n      <td>Seat belt <strong>MUST</strong> be worn if fitted</td>\n      <td>-</td>\n      <td><strong>Driver</strong></td>\n    </tr>\n    <tr>\n      <th>Child under 3 years of age</th>\n      <td>Correct child restraint <strong>MUST</strong> be used</td>\n      <td>Correct child restraint <strong>MUST</strong> be used. If one is not available in a taxi, may travel unrestrained.</td>\n      <td><strong>Driver</strong></td>\n    </tr>\n    <tr>\n      <th>Child from 3rd birthday up to 1.35 metres in height (or 12th birthday, whichever they reach first)</th>\n      <td>Correct child restraint <strong>MUST</strong> be used</td>\n      <td>Correct child restraint <strong>MUST</strong> be used where seat belts fitted. <strong>MUST</strong> use adult belt if correct child restraint is not available in a licensed taxi or private hire vehicle, or for reasons of unexpected necessity over a short distance, or if two occupied restraints prevent fitment of a third.</td>\n      <td><strong>Driver</strong></td>\n    </tr>\n    <tr>\n      <th>Child over 1.35 metres (approx 4ft 5ins) in height or 12 or 13 years</th>\n      <td>Seat belt <strong>MUST</strong> be worn if available</td>\n      <td>Seat belt <strong>MUST</strong> be worn if available</td>\n      <td><strong>Driver</strong></td>\n    </tr>\n    <tr>\n      <th>Adult passengers aged 14 and over</th>\n      <td>Seat belt <strong>MUST</strong> be worn if available</td>\n      <td>Seat belt <strong>MUST</strong> be worn if available</td>\n      <td><strong>Passenger</strong></td>\n    </tr>\n  </tbody>\n</table>\n\n",
+      "law": true,
+      "mustCount": 12,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "100",
+      "number": 100,
+      "title": "Rule 100",
+      "lead": null,
+      "html": "\n<p>The driver <strong>MUST</strong> ensure that all children under 14 years of age in cars, vans and other goods vehicles wear seat belts or sit in an approved child restraint where required (see table above). If a child is under 1.35 metres (approx 4 feet 5 inches) tall, a baby seat, child seat, booster seat or booster cushion <strong>MUST</strong> be used suitable for the child’s weight and fitted to the manufacturer’s instructions.</p>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/14\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 14</a> &amp; <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/15\" rel=\"external noopener\" target=\"_blank\">15</a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/176/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) Regulations\">MV(WSB)R</abbr></a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/31/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts by Children in Front Seats) Regulations\">MV(WSBCFS)R</abbr></a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2006/1892/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) (Amendment) Regulations\">MV(WSB)(A)R</abbr> 2006</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d345ded915d1595000023/the-highway-code-rule-100.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 100: Make sure that a child uses a suitable restraint which is correctly adjusted</a></p>\nRule 100: Make sure that a child uses a suitable restraint which is correctly adjusted\n\n",
+      "law": true,
+      "mustCount": 2,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d345ded915d1595000023/the-highway-code-rule-100.jpg",
+          "alt": "Rule 100: Make sure that a child uses a suitable restraint which is correctly adjusted"
+        }
+      ]
+    },
+    {
+      "id": "101",
+      "number": 101,
+      "title": "Rule 101",
+      "lead": null,
+      "html": "\n<p>A rear-facing baby seat <strong>MUST NOT</strong> be fitted into a seat protected by an active frontal airbag, as in a crash it can cause serious injury or death to the child.</p>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/14\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sects 14</a> &amp; <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/15\" rel=\"external noopener\" target=\"_blank\">15</a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/176/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) Regulations\">MV(WSB)R</abbr></a>, <a href=\"http://www.legislation.gov.uk/uksi/1993/31/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts by Children in Front Seats) Regulations\">MV(WSBCFS)R</abbr></a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2006/1892/contents/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motor Vehicles (Wearing of Seat Belts) (Amendment) Regulations\">MV(WSB)(A)R</abbr>  2006</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 1,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "102",
+      "number": 102,
+      "title": "Rule 102",
+      "lead": "Children in cars, vans and other goods vehicles.",
+      "html": "\n<p><strong>Children in cars, vans and other goods vehicles.</strong> Drivers who are carrying children in cars, vans and other goods vehicles should also ensure that</p>\n\n<ul>\n  <li>children should get into the vehicle through the door nearest the kerb</li>\n  <li>child restraints are properly fitted to manufacturer’s instructions</li>\n  <li>children do not sit behind the rear seats in an estate car or hatchback, unless a special child seat has been fitted</li>\n  <li>the child safety door locks, where fitted, are used when children are in the vehicle</li>\n  <li>children are kept under control.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    }
+  ]
+}

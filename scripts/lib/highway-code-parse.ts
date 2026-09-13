@@ -115,15 +115,20 @@ interface RuleBucket {
   nodes: HtmlNode[];
 }
 
-/** Walks the body's top-level children in order. Everything before the
- * first rule heading is the preamble; every following sibling belongs to
- * the current rule until the next rule heading or any <h2>, whichever
- * comes first (content after a stray <h2> and before the next rule heading
- * belongs to neither bucket, matching the plan's boundary rule). */
+/** Walks the body's top-level children in order. Before the first rule
+ * heading, every top-level node — the <h2> included — goes to the
+ * preamble: a page's introductory prose is routinely <h2>-headed before
+ * its first rule (e.g. the Introduction section's "Introduction",
+ * "Wording of The Highway Code", etc.), and none of it must be dropped.
+ * Once a rule has started, every following sibling belongs to it until the
+ * next rule heading or any <h2>, whichever comes first (content after a
+ * stray <h2> and before the next rule heading belongs to neither bucket,
+ * matching the plan's boundary rule). */
 function splitIntoBuckets(topLevel: HtmlNode[]): { preamble: HtmlNode[]; rules: RuleBucket[] } {
   const preamble: HtmlNode[] = [];
   const rules: RuleBucket[] = [];
   let current: HtmlNode[] | null = preamble;
+  let ruleStarted = false;
 
   for (const node of topLevel) {
     if (node.nodeType === NodeType.ELEMENT_NODE) {
@@ -134,10 +139,11 @@ function splitIntoBuckets(topLevel: HtmlNode[]): { preamble: HtmlNode[]; rules: 
           const bucket: RuleBucket = { heading, nodes: [] };
           rules.push(bucket);
           current = bucket.nodes;
+          ruleStarted = true;
           continue;
         }
       }
-      if (el.localName === 'h2') {
+      if (el.localName === 'h2' && ruleStarted) {
         current = null;
         continue;
       }
@@ -152,17 +158,35 @@ function isWhitespaceNode(node: HtmlNode): boolean {
   return node.nodeType === NodeType.TEXT_NODE && (node as TextNode).isWhitespace;
 }
 
-/** The rule's lead is the text of a <strong> that opens the rule's first
- * <p> (e.g. "Stopping distances."), ignoring any purely-whitespace text
- * node ahead of it. Anything else (no first <p>, or its first real child
- * is not a <strong>) means no lead. */
-function findLead(nodes: HtmlNode[]): string | null {
-  const firstParagraph = nodes.find(
-    (node) => node.nodeType === NodeType.ELEMENT_NODE && (node as HTMLElement).localName === 'p',
-  ) as HTMLElement | undefined;
-  if (!firstParagraph) return null;
+/** True when every non-whitespace child of a <p> is an <img>: a diagram
+ * paragraph (e.g. the stopping-distance chart image) that carries no lead
+ * text of its own and must not be mistaken for the rule's opening
+ * paragraph. */
+function isImageOnlyParagraph(paragraph: HTMLElement): boolean {
+  const meaningfulChildren = paragraph.childNodes.filter((child) => !isWhitespaceNode(child));
+  if (meaningfulChildren.length === 0) return false;
+  return meaningfulChildren.every(
+    (child) =>
+      child.nodeType === NodeType.ELEMENT_NODE && (child as HTMLElement).localName === 'img',
+  );
+}
 
-  const firstMeaningfulChild = firstParagraph.childNodes.find((child) => !isWhitespaceNode(child));
+/** The rule's lead is the text of a <strong> that opens the first <p> that
+ * is not image-only (e.g. "Stopping distances."), skipping any earlier <p>
+ * whose only non-whitespace children are <img> elements (a diagram
+ * paragraph placed before the rule's real text) and ignoring any
+ * purely-whitespace text node ahead of the <strong>. Anything else (no
+ * such <p>, or its first real child is not a <strong>) means no lead. */
+function findLead(nodes: HtmlNode[]): string | null {
+  const leadParagraph = nodes.find(
+    (node) =>
+      node.nodeType === NodeType.ELEMENT_NODE &&
+      (node as HTMLElement).localName === 'p' &&
+      !isImageOnlyParagraph(node as HTMLElement),
+  ) as HTMLElement | undefined;
+  if (!leadParagraph) return null;
+
+  const firstMeaningfulChild = leadParagraph.childNodes.find((child) => !isWhitespaceNode(child));
   if (!firstMeaningfulChild || firstMeaningfulChild.nodeType !== NodeType.ELEMENT_NODE) return null;
 
   const el = firstMeaningfulChild as HTMLElement;

@@ -19,6 +19,13 @@
       "name": "Lucide",
       "licence": "ISC License",
       "url": "https://www.npmjs.com/package/lucide-react"
+    },
+    {
+      "id": "highway-code",
+      "name": "The Highway Code",
+      "licence": "Open Government Licence v3.0",
+      "url": "https://www.gov.uk/guidance/the-highway-code",
+      "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
     }
   ]
 }

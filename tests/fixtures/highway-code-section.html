@@ -1,14 +1,20 @@
 <!-- Fixture: a Highway Code section body in the verified markup shape
-(plan.md Step 8) that scripts/lib/highway-code-parse.ts must handle — two
-preamble paragraphs, then rules 124 (a MUST NOT law rule with a table), 125
-(a list plus a cross-reference link to another section's rule) and 126 (a
-leading-strong lead, a diagram image, a call-to-action box, a "Law" citation
-and a stray script tag), then the hierarchy rule H1 whose heading carries no
-id attribute. The prose is fixture filler, not real Highway Code text,
-except where the plan itself supplies exact wording: the MUST NOT sentence
-shape, the "Stopping distances." lead and "two-second gap" phrase, the
-stopping-distance image URL, and the RTA 1988 citation markup.
+(plan.md Step 8, amended in Step 9 attempt 2 for the real Rule 126 ordering
+and a leading <h2>) that scripts/lib/highway-code-parse.ts must handle — a
+real <h2> heading (copied from the cached introduction page) followed by
+two preamble paragraphs, proving a stray <h2> before the first rule stays
+in the preamble, then rules 124 (a MUST NOT law rule with a table), 125 (a
+list plus a cross-reference link to another section's rule) and 126 (a
+diagram-only paragraph and a call-to-action box copied verbatim from the
+cached page, BEFORE its leading-strong lead paragraph, then a "Law"
+citation and a stray script tag), then the hierarchy rule H1 whose heading
+carries no id attribute. The prose is fixture filler, not real Highway
+Code text, except where the plan itself supplies exact wording: the MUST
+NOT sentence shape, the "Introduction" <h2> text, the "Stopping distances."
+lead and "two-second gap" phrase, the stopping-distance image and PDF
+URLs, and the RTA 1988 citation markup.
 Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<h2 id="introduction">Introduction</h2>
 <p>
   This fixture section covers example speed-limit and following-distance rules for testing the
   parser.
@@ -54,13 +60,11 @@ Depended on by: tests/unit/highway-code-parse.test.ts. -->
 </p>
 <h3 id="rule126">Rule 126</h3>
 <p>
-  <strong>Stopping distances.</strong> Drive at a speed that will allow you to stop well within the
-  distance you can see to be clear. Allow at least a two-second gap.
+  <img
+    src="https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+    alt=""
+  />
 </p>
-<img
-  src="https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
-  alt=""
-/>
 <div class="call-to-action">
   <p>
     <a
@@ -69,6 +73,10 @@ Depended on by: tests/unit/highway-code-parse.test.ts. -->
     >
   </p>
 </div>
+<p>
+  <strong>Stopping distances.</strong> Drive at a speed that will allow you to stop well within the
+  distance you can see to be clear. Allow at least a two-second gap.
+</p>
 <p>
   <strong
     >Law

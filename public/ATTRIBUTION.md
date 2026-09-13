@@ -25,4 +25,11 @@
 
 ## Content
 
-Highway Code attribution is added by the ingestion step.
+### The Highway Code
+
+- Source: https://www.gov.uk/guidance/the-highway-code
+- Last updated (gov.uk): 2025-10-22T14:29:14+01:00
+- © Crown copyright
+- Contains public sector information licensed under the Open Government Licence v3.0.
+- Licence: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- All content is available under the Open Government Licence v3.0, except where otherwise stated

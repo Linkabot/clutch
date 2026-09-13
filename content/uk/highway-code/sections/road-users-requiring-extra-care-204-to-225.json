@@ -1,0 +1,307 @@
+{
+  "slug": "road-users-requiring-extra-care-204-to-225",
+  "title": "Road users requiring extra care (204 to 225)",
+  "basePath": "/guidance/the-highway-code/road-users-requiring-extra-care-204-to-225",
+  "sourceUrl": "https://www.gov.uk/guidance/the-highway-code/road-users-requiring-extra-care-204-to-225",
+  "order": 9,
+  "kind": "rules",
+  "preambleHtml": "Overview (rule 204)\n\n",
+  "bodyHtml": "",
+  "rules": [
+    {
+      "id": "204",
+      "number": 204,
+      "title": "Rule 204",
+      "lead": null,
+      "html": "\n<p>The road users most at risk from road traffic are pedestrians, in particular children, older adults and disabled people, cyclists, horse riders and motorcyclists. It is particularly important to be aware of children, older adults and disabled people, and learner and inexperienced drivers and riders. In any interaction between road users, those who can cause the greatest harm have the greatest responsibility to reduce the danger or threat they pose to others.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "205",
+      "number": 205,
+      "title": "Rule 205",
+      "lead": null,
+      "html": "\n<p>There is a risk of pedestrians, especially children, stepping unexpectedly into the road. You should drive with the safety of children in mind at a speed suitable for the conditions.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "206",
+      "number": 206,
+      "title": "Rule 206",
+      "lead": "Drive carefully and slowly",
+      "html": "\n<p><strong>Drive carefully and slowly</strong> when</p>\n\n<ul>\n  <li>in crowded shopping streets, Home Zones and Quiet Lanes (see <a href=\"/code/rule/218\">Rule 218</a>) or residential areas</li>\n  <li>driving past bus and tram stops; pedestrians may emerge suddenly into the road</li>\n  <li>passing parked vehicles, especially ice cream vans; children are more interested in ice cream than traffic and may run into the road unexpectedly</li>\n  <li>needing to cross a pavement, cycle lane or cycle track; for example, to reach or leave a driveway or private access. Give way to pedestrians on the pavement and cyclists using a cycle lane or cycle track</li>\n  <li>reversing into a side road; look all around the vehicle and give way to any pedestrians who may be crossing the road</li>\n  <li>turning at road junctions; you should give way to pedestrians who are crossing or waiting to cross the road into which or from which you are turning</li>\n  <li>going through road works or when passing roadside rescue and recovery vehicles, as there may be people working in or at the side of the road</li>\n  <li>the pavement is closed due to street repairs and pedestrians are directed to use the road</li>\n  <li>approaching pedestrians on narrow rural roads without a footway or footpath. Always slow down and be prepared to stop if necessary, giving them plenty of room as you drive past</li>\n  <li>approaching zebra and parallel crossings as you <strong>MUST</strong> give way to pedestrians and cyclists on the crossing (see <a href=\"/code/rule/195\">Rule 195</a>)</li>\n  <li>approaching pedestrians who have started to cross the road ahead of you. They have priority when crossing at a junction or side road so you should give way (see <a href=\"/code/rule/H2\">Rule H2</a>).</li>\n</ul>\n\n<p><strong><a href=\"http://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\">Law <abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> schedule 14 Part 5</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d1cb3ed915d159200002e/the-highway-code-rule-206.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): view image</a></p>\nRule 206: Watch out for children in busy areas\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "218",
+        "195",
+        "H2"
+      ],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d1cb3ed915d159200002e/the-highway-code-rule-206.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "id": "207",
+      "number": 207,
+      "title": "Rule 207",
+      "lead": "Particularly vulnerable pedestrians.",
+      "html": "\n<p><strong>Particularly vulnerable pedestrians.</strong> These include:</p>\n\n<ul>\n  <li>children and older pedestrians who may not be able to judge your speed and could step into the road in front of you. At 40 mph (64 km/h) your vehicle will probably kill any pedestrians it hits. At 20 mph (32 km/h) there is only a 1 in 20 chance of the pedestrian being killed. So kill your speed</li>\n  <li>older pedestrians who may need more time to cross the road. Be patient and allow them to cross in their own time. Do not hurry them by revving your engine or edging forward</li>\n  <li>people with disabilities. People with hearing impairments may not be aware of your vehicle approaching. Those with walking difficulties require more time</li>\n  <li>blind or partially sighted people, who may be carrying a white cane using a guide dog. They may not be able to see you approaching</li>\n  <li>deafblind people who may be carrying a white cane with a red band or using a dog with a red and white harness. They may not see or hear instructions or signals.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "208",
+      "number": 208,
+      "title": "Rule 208",
+      "lead": "Near schools.",
+      "html": "\n<p><strong>Near schools.</strong> Drive slowly and be particularly aware of young cyclists and pedestrians. In some places, there may be a flashing amber signal below the ‘School’ warning sign which tells you that there may be children crossing the road ahead. Drive very slowly until you are clear of the area.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "209",
+      "number": 209,
+      "title": "Rule 209",
+      "lead": null,
+      "html": "\n<p>Drive carefully and slowly when passing a stationary bus showing a ‘School Bus’ sign as children may be getting on or off.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/569cfd2ce5274a112c00002c/other-school-bus.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): view image</a></p>\nSchool bus (displayed in front and rear window of bus or coach)\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/569cfd2ce5274a112c00002c/other-school-bus.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "id": "210",
+      "number": 210,
+      "title": "Rule 210",
+      "lead": null,
+      "html": "\n<p>You <strong>MUST</strong> stop when a school crossing patrol shows a ‘Stop for children’ sign (see ‘<a href=\"/learn/code/signals-by-authorised-persons\">Signals by authorised persons</a>’ and ‘<a href=\"/learn/code/traffic-signs\">Traffic signs</a>’).</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/ukpga/1984/27/section/28\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Regulation Act\">RTRA</abbr> sect 28</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "211",
+      "number": 211,
+      "title": "Rule 211",
+      "lead": null,
+      "html": "\n<p>It is often difficult to see motorcyclists and cyclists, especially when they are waiting alongside you, coming up from behind, coming out of or moving off from junctions, at roundabouts, overtaking you or filtering through traffic. Always look out for them before you emerge from a junction; they could be approaching faster than you think.</p>\n\n<p>Do not turn at a junction if to do so would cause the cyclist going straight ahead to stop or swerve, just as you would do with a motor vehicle.</p>\n\n<p>When turning right across a line of slow-moving or stationary traffic, look out for and give way to cyclists or motorcyclists on the inside of the traffic you are crossing. Be especially careful when moving off, turning, and when changing direction or lane. Be sure to check mirrors and blind spots carefully.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d1ccce5274a155900001f/the-highway-code-rule-211.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): view image</a></p>\nRule 211: Look out for motorcyclists and cyclists at junctions\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d1ccce5274a155900001f/the-highway-code-rule-211.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "id": "212",
+      "number": 212,
+      "title": "Rule 212",
+      "lead": null,
+      "html": "\n<p>Give motorcyclists, cyclists, horse riders, horse drawn vehicles and pedestrians walking in the road (for example, where there is no pavement), at least as much room as you would when overtaking a car  (see <a href=\"/code/rule/162\">Rules 162 to 167</a>). Drivers should take extra care and give more space when overtaking motorcyclists, cyclists, horse riders, horse drawn vehicles and pedestrians in bad weather (including high winds) and at night. If the rider looks over their shoulder it could mean that they intend to pull out, turn right or change direction. Give them time and space to do so.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "162"
+      ],
+      "images": []
+    },
+    {
+      "id": "213",
+      "number": 213,
+      "title": "Rule 213",
+      "lead": null,
+      "html": "\n<p>On narrow sections of road, on quiet roads or streets, at road junctions and in slower-moving traffic, cyclists may sometimes ride in the centre of the lane, rather than towards the side of the road. It can be safer for groups of cyclists to ride two abreast in these situations. Allow them to do so for their own safety, to ensure they can see and be seen. Cyclists are also advised to ride at least a door’s width or 1 metre from parked cars for their own safety.</p>\n\n<p>On narrow sections of road, horse riders may ride in the centre of the lane. Allow them to do so for their own safety to ensure they can see and be seen.</p>\n\n<p>Motorcyclists, cyclists, horse riders and horse drawn vehicles may suddenly need to avoid uneven road surfaces and obstacles such as drain covers or oily, wet or icy patches on the road. Give them plenty of room and pay particular attention to any sudden change of direction they may have to make.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "214",
+      "number": 214,
+      "title": "Rule 214",
+      "lead": "Animals.",
+      "html": "\n<p><strong>Animals.</strong> When passing animals, drive slowly. Give them plenty of room and be ready to stop. Do not scare animals by sounding your horn, revving your engine or accelerating rapidly once you have passed them. Look out for animals being led, driven or ridden on the road and take extra care. Keep your speed down at bends and on narrow country roads. If a road is blocked by a herd of animals, stop and switch off your engine until they have left the road. Watch out for animals on unfenced roads.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "215",
+      "number": 215,
+      "title": "Rule 215",
+      "lead": "Horse riders and horse-drawn vehicles.",
+      "html": "\n<p><strong>Horse riders and horse-drawn vehicles.</strong> Be particularly careful of horse riders and horse-drawn vehicles especially when approaching,  overtaking, passing or moving away. Always pass wide and slowly. When you see a horse on a road, you should slow down to a maximum of 10 mph. Be patient, do not sound your horn or rev your engine. When safe to do so, pass wide and slow, allowing at least 2 metres of space.</p>\n\n<p>Feral or semi feral ponies found in areas such as the New Forest, Exmoor and Dartmoor require the same consideration as ridden horses when approaching or passing.</p>\n\n<p>Horse riders are often children, so take extra care and remember riders may ride in double file when escorting a young or inexperienced horse or rider. Look out for horse riders’ and horse drivers’ signals and heed a request to slow down or stop. Take great care and treat all horses as a potential hazard; they can be unpredictable, despite the efforts of their rider/driver. Remember there are three brains at work when you pass a horse; the rider’s, the driver’s and the horse’s. Do not forget horses are flight animals and can move incredibly quickly if startled.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "216",
+      "number": 216,
+      "title": "Rule 216",
+      "lead": "Older drivers.",
+      "html": "\n<p><strong>Older drivers.</strong> Their reactions may be slower than other drivers. Make allowance for this.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "217",
+      "number": 217,
+      "title": "Rule 217",
+      "lead": "Learners and inexperienced drivers.",
+      "html": "\n<p><strong>Learners and inexperienced drivers.</strong> They may not be so skilful at anticipating and responding to events. Be particularly patient with learner drivers and young drivers. Drivers who have recently passed their test may display a ‘new driver’ plate or sticker (see ‘<a href=\"/learn/code/annex-8-safety-code-for-new-drivers\">Safety code for new drivers</a>’).</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "218",
+      "number": 218,
+      "title": "Rule 218",
+      "lead": "Home Zones and Quiet Lanes.",
+      "html": "\n<p><strong>Home Zones and Quiet Lanes.</strong> These are places where people could be using the whole of the road for a range of activities such as children playing or for a community event. You should drive slowly and carefully and be prepared to stop to allow people extra time to make space for you to pass them in safety.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d20f9e5274a155c00002f/the-highway-code-rule-218.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): view image</a></p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d20f9e5274a155c00002f/the-highway-code-rule-218.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "id": "219",
+      "number": 219,
+      "title": "Rule 219",
+      "lead": "Emergency and Incident Support vehicles.",
+      "html": "\n<p><strong>Emergency and Incident Support vehicles.</strong> You should look and listen for ambulances, fire engines, police, doctors or other emergency vehicles using flashing blue, red or green lights and sirens or flashing headlights, or traffic officer and incident support vehicles using flashing amber lights. When one approaches do not panic. Consider the route of such a vehicle and take appropriate action to let it pass, while complying with all traffic signs. If necessary, pull to the side of the road and stop, but try to avoid stopping before the brow of a hill, a bend or narrow section of road. Do not endanger yourself, other road users or pedestrians and avoid mounting the kerb. Do not brake harshly on approach to a junction or roundabout, as a following vehicle may not have the same view as you.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "220",
+      "number": 220,
+      "title": "Rule 220",
+      "lead": "Powered vehicles used by disabled people.",
+      "html": "\n<p><strong>Powered vehicles used by disabled people.</strong> These small vehicles travel at a maximum speed of 8 mph (12 km/h). On a dual carriageway where the speed limit exceeds 50 mph (80 km/h) they <strong>MUST</strong> have a flashing amber beacon, but on other roads you may not have that advance warning (see <a href=\"/learn/code/rules-for-users-of-powered-wheelchairs-and-mobility-scooters-36-to-46\">Rules 36 to 46</a> inclusive).</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/17/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> regs 17(1)</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/26/made\" rel=\"external noopener\" target=\"_blank\">26</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "221",
+      "number": 221,
+      "title": "Rule 221",
+      "lead": "Large vehicles.",
+      "html": "\n<p><strong>Large vehicles.</strong> These may need extra road space to turn or to deal with a hazard that you are not able to see. If you are following a large vehicle, such as a bus or articulated lorry, be aware that the driver may not be able to see you in the mirrors. Be prepared to stop and wait if it needs room or time to turn.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d210fed915d1595000021/the-highway-code-rule-221.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): view image</a></p>\nRule 221: Large vehicles need extra room\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d210fed915d1595000021/the-highway-code-rule-221.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "id": "222",
+      "number": 222,
+      "title": "Rule 222",
+      "lead": null,
+      "html": "\n<p>Large vehicles can block your view. Your ability to see and to plan ahead will be improved if you pull back to increase your separation distance. Be patient, as larger vehicles are subject to lower speed limits than cars and motorcycles. Many large vehicles may be fitted with speed limiting devices which will restrict speed to 56 mph (90 km/h) even on a motorway.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "223",
+      "number": 223,
+      "title": "Rule 223",
+      "lead": "Buses, coaches and trams.",
+      "html": "\n<p><strong>Buses, coaches and trams.</strong> Give priority to these vehicles when you can do so safely, especially when they signal to pull away from stops. Look out for people getting off a bus or tram and crossing the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "224",
+      "number": 224,
+      "title": "Rule 224",
+      "lead": "Electric vehicles.",
+      "html": "\n<p><strong>Electric vehicles.</strong> Be careful of electric vehicles such as milk floats and trams. Trams move quickly but silently and cannot steer to avoid you.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "225",
+      "number": 225,
+      "title": "Rule 225",
+      "lead": "Vehicles with flashing amber beacons.",
+      "html": "\n<p><strong>Vehicles with flashing amber beacons.</strong> These warn of a slow-moving or stationary vehicle (such as a traffic officer vehicle, salt spreader, snow plough or recovery vehicle) or abnormal loads, so approach with caution. On unrestricted dual carriageways, motor vehicles first used on or after 1 January 1947 with a maximum speed of 25 mph (40 km/h) or less (such as tractors) <strong>MUST</strong> use a flashing amber beacon (also see <a href=\"#rule220\">Rule 220</a>).</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/17/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> reg 17</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    }
+  ]
+}

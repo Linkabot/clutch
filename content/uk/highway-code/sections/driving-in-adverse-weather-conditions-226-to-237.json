@@ -1,0 +1,163 @@
+{
+  "slug": "driving-in-adverse-weather-conditions-226-to-237",
+  "title": "Driving in adverse weather conditions (226 to 237)",
+  "basePath": "/guidance/the-highway-code/driving-in-adverse-weather-conditions-226-to-237",
+  "sourceUrl": "https://www.gov.uk/guidance/the-highway-code/driving-in-adverse-weather-conditions-226-to-237",
+  "order": 10,
+  "kind": "rules",
+  "preambleHtml": "Overview (rule 226)\n\n",
+  "bodyHtml": "",
+  "rules": [
+    {
+      "id": "226",
+      "number": 226,
+      "title": "Rule 226",
+      "lead": null,
+      "html": "\n<p>You <strong>MUST</strong> use headlights when visibility is seriously reduced, generally when you cannot see for more than 100 metres (328 feet). You may also use front or rear fog lights but you <strong>MUST</strong> switch them off when visibility improves (see <a href=\"#rule236\">Rule 236</a>).</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/25/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> regs 25</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/27/made\" rel=\"external noopener\" target=\"_blank\">27</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 2,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "227",
+      "number": 227,
+      "title": "Rule 227",
+      "lead": "Wet weather.",
+      "html": "\n<p><strong>Wet weather.</strong> In wet weather, stopping distances will be at least double those required for stopping on dry roads (see <a href=\"/code/rule/126\">‘Typical stopping distances’</a>). This is because your tyres have less grip on the road. In wet weather</p>\n\n<ul>\n  <li>you should keep well back from the vehicle in front. This will increase your ability to see and plan ahead</li>\n  <li>if the steering becomes unresponsive, it probably means that water is preventing the tyres from gripping the road. Ease off the accelerator and slow down gradually</li>\n  <li>the rain and spray from vehicles may make it difficult to see and be seen</li>\n  <li>be aware of the dangers of spilt diesel that will make the surface very slippery (see <a href=\"/learn/code/annex-6-vehicle-maintenance-safety-and-security\">Vehicle maintenance, safety and security</a>)</li>\n  <li>take extra care around pedestrians, cyclists, motorcyclists and horse riders.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "126"
+      ],
+      "images": []
+    },
+    {
+      "id": "228",
+      "number": 228,
+      "title": "Rule 228",
+      "lead": null,
+      "html": "\n<p>In winter check the local weather forecast for warnings of icy or snowy weather. <strong>DO NOT</strong> drive in these conditions unless your journey is essential. If it is, take great care and allow more time for your journey. Take an emergency kit of de-icer and ice scraper, torch, warm clothing and boots, first aid kit, jump leads and a shovel, together with a warm drink and emergency food in case you get stuck or your vehicle breaks down.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "229",
+      "number": 229,
+      "title": "Rule 229",
+      "lead": null,
+      "html": "\n<p>Before you set off</p>\n\n<ul>\n  <li>you <strong>MUST</strong> be able to see, so clear all snow and ice from all your windows</li>\n  <li>you <strong>MUST</strong> ensure that lights are clean and number plates are clearly visible and legible</li>\n  <li>make sure the mirrors are clear and the windows are demisted thoroughly</li>\n  <li>remove all snow that might fall off into the path of other road users</li>\n  <li>check your planned route is clear of delays and that no further snowfalls or severe weather are predicted.</li>\n</ul>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/uksi/1986/1078/regulation/30/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Construction &amp; Use) Regulations\">CUR</abbr> reg 30</a>, <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/23/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> reg 23</a>, <a href=\"http://www.legislation.gov.uk/ukpga/1994/22/section/43\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Vehicle Excise and Registration Act\">VERA</abbr> sect 43</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2001/561/regulation/11/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Display of Registration Marks) Regulations\">RV(DRM)R</abbr> reg 11</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d35eced915d1592000030/the-highway-code-rule-229.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 229: Make sure your windscreen is completely clear</a></p>\nRule 229: Make sure your windscreen is completely clear\n\n",
+      "law": true,
+      "mustCount": 2,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/559d35eced915d1592000030/the-highway-code-rule-229.jpg",
+          "alt": "Rule 229: Make sure your windscreen is completely clear"
+        }
+      ]
+    },
+    {
+      "id": "230",
+      "number": 230,
+      "title": "Rule 230",
+      "lead": "When driving",
+      "html": "\n<p><strong>When driving</strong> in icy or snowy weather</p>\n\n<ul>\n  <li>drive with care, even if the roads have been treated</li>\n  <li>keep well back from the road user in front as stopping distances can be ten times greater than on dry roads</li>\n  <li>take care when overtaking vehicles spreading salt or other de-icer, particularly if you are riding a motorcycle or cycle</li>\n  <li>watch out for snowploughs which may throw out snow on either side. Do not overtake them unless the lane you intend to use has been cleared</li>\n  <li>be prepared for the road conditions to change over relatively short distances</li>\n  <li>listen to travel bulletins and take note of variable message signs that may provide information about weather, road and traffic conditions ahead.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "231",
+      "number": 231,
+      "title": "Rule 231",
+      "lead": "Drive extremely carefully",
+      "html": "\n<p><strong>Drive extremely carefully</strong> when the roads are icy. Avoid sudden actions as these could cause loss of control. You should</p>\n\n<ul>\n  <li>drive at a slow speed in as high a gear as possible; accelerate and brake very gently</li>\n  <li>drive particularly slowly on bends where loss of control is more likely. Brake progressively on the straight before you reach a bend. Having slowed down, steer smoothly round the bend, avoiding sudden actions</li>\n  <li>check your grip on the road surface when there is snow or ice by choosing a safe place to brake gently. If the steering feels unresponsive this may indicate ice and your vehicle losing its grip on the road. When travelling on ice, tyres make virtually no noise.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "232",
+      "number": 232,
+      "title": "Rule 232",
+      "lead": null,
+      "html": "\n<p>High-sided vehicles are most affected by windy weather, but strong gusts can also blow a car, cyclist, motorcyclist or horse rider off course. This can happen on open stretches of road exposed to strong crosswinds, or when passing bridges or gaps in hedges.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "233",
+      "number": 233,
+      "title": "Rule 233",
+      "lead": null,
+      "html": "\n<p>In very windy weather your vehicle may be affected by turbulence created by large vehicles. Motorcyclists are particularly affected, so keep well back from them when they are overtaking a high-sided vehicle.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "234",
+      "number": 234,
+      "title": "Rule 234",
+      "lead": "Before entering fog",
+      "html": "\n<p><strong>Before entering fog</strong> check your mirrors then slow down.</p>\n\n<p>If ‘Fog’ is shown on a sign but the road is clear, be prepared for a bank of fog or drifting patchy fog ahead. Even if it seems to be clearing, you can suddenly find yourself in thick fog.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "235",
+      "number": 235,
+      "title": "Rule 235",
+      "lead": "When driving in fog",
+      "html": "\n<p><strong>When driving in fog</strong> you should</p>\n\n<ul>\n  <li>use your lights as required (see <a href=\"#rule226\">Rule 226</a>)</li>\n  <li>keep a safe distance behind the vehicle in front. Rear lights can give a false sense of security</li>\n  <li>be able to pull up well within the distance you can see clearly. This is particularly important on motorways and dual carriageways, as vehicles are travelling faster</li>\n  <li>use your windscreen wipers and demisters</li>\n  <li>beware of other drivers not using headlights</li>\n  <li>not accelerate to get away from a vehicle which is too close behind you</li>\n  <li>check your mirrors before you slow down. Then use your brakes so that your brake lights warn drivers behind you that you are slowing down</li>\n  <li>stop in the correct position at a junction with limited visibility and listen for traffic. When you are sure it is safe to emerge, do so positively and do not hesitate in a position that puts you directly in the path of approaching vehicles.</li>\n</ul>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "236",
+      "number": 236,
+      "title": "Rule 236",
+      "lead": null,
+      "html": "\n<p>You <strong>MUST NOT</strong> use front or rear fog lights unless visibility is seriously reduced (see <a href=\"#rule226\">Rule 226</a>) as they dazzle other road users and can obscure your brake lights. You <strong>MUST</strong> switch them off when visibility improves.</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/25/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> regs 25</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/27/made\" rel=\"external noopener\" target=\"_blank\">27</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 1,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "237",
+      "number": 237,
+      "title": "Rule 237",
+      "lead": null,
+      "html": "\n<p>Keep your vehicle well ventilated to avoid drowsiness. Be aware that the road surface may become soft or if it rains after a dry spell it may become slippery. These conditions could affect your steering and braking. If you are dazzled by bright sunlight, slow down and if necessary, stop.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    }
+  ]
+}

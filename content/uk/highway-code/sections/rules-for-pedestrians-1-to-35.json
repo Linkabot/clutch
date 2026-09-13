@@ -1,0 +1,484 @@
+{
+  "slug": "rules-for-pedestrians-1-to-35",
+  "title": "Rules for pedestrians (1 to 35)",
+  "basePath": "/guidance/the-highway-code/rules-for-pedestrians-1-to-35",
+  "sourceUrl": "https://www.gov.uk/guidance/the-highway-code/rules-for-pedestrians-1-to-35",
+  "order": 1,
+  "kind": "rules",
+  "preambleHtml": "General guidance (rules 1 to 6)\n\n",
+  "bodyHtml": "",
+  "rules": [
+    {
+      "id": "1",
+      "number": 1,
+      "title": "Rule 1",
+      "lead": "Pavements and footways",
+      "html": "\n<p><strong>Pavements and footways</strong> (including any path along the side of a road) should be used if provided. Where possible, avoid being next to the kerb with your back to the traffic. If you have to step into the road, look both ways first. Always remain aware of your environment and avoid unnecessary distractions. Always show due care and consideration for others.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "2",
+      "number": 2,
+      "title": "Rule 2",
+      "lead": "If there is no pavement,",
+      "html": "\n<p><strong>If there is no pavement,</strong> keep to the right-hand side of the road so that you can see oncoming traffic. You should take extra care and</p>\n\n<ul>\n  <li>be prepared to walk in single file, especially on narrow roads or in poor light</li>\n  <li>keep close to the side of the road.</li>\n</ul>\n\n<p>It may be safer to cross the road well before a sharp right-hand bend so that oncoming traffic has a better chance of seeing you. Cross back after the bend.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "3",
+      "number": 3,
+      "title": "Rule 3",
+      "lead": "Help other road users to see you.",
+      "html": "\n\n<p><strong>Help other road users to see you.</strong> Wear or carry something light-coloured, bright or fluorescent in poor daylight conditions. When it is dark, use reflective materials (eg armbands, sashes, waistcoats, jackets, footwear), which can be seen by drivers using headlights up to three times as far away as non-reflective materials.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/558864b0ed915d1591000011/the-highway-code-rule-3.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 3: Help yourself to be seen</a></p>\nRule 3: Help yourself to be seen\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/558864b0ed915d1591000011/the-highway-code-rule-3.jpg",
+          "alt": "Rule 3: Help yourself to be seen"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "number": 4,
+      "title": "Rule 4",
+      "lead": "Young children",
+      "html": "\n<p><strong>Young children</strong> should not be out alone on the pavement or road (see <a href=\"#rule7\">Rule 7</a>). When taking children out, keep between them and the traffic and hold their hands firmly. Strap very young children into pushchairs or use reins. When pushing a young child in a buggy, do not push the buggy into the road when checking to see if it is clear to cross, particularly from between parked vehicles.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "5",
+      "number": 5,
+      "title": "Rule 5",
+      "lead": "Organised walks or parades",
+      "html": "\n<p><strong>Organised walks or parades</strong> involving large groups of people walking along a road should use a pavement if available; if one is not available, they should keep to the left. Look-outs should be positioned at the front and back of the group, and they should wear fluorescent clothes in daylight and reflective clothes in the dark. At night, the look-out in front should show a white light and the one at the back a red light. People on the outside of large groups should also carry lights and wear reflective clothing.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "6",
+      "number": 6,
+      "title": "Rule 6",
+      "lead": "Motorways.",
+      "html": "\n<p><strong>Motorways.</strong> Pedestrians <strong>MUST NOT</strong> be on motorways or slip roads except in an emergency (see <a href=\"/code/rule/272\">Rules 272</a> and <a href=\"/code/rule/277\">277</a>).</p>\n\n<p><strong>Laws <a href=\"https://www.legislation.gov.uk/ukpga/1984/27/section/17\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Regulation Act\">RTRA</abbr> sect 17</a>, <a href=\"https://www.legislation.gov.uk/uksi/1982/1163/regulation/15/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motorways Traffic (England &amp; Wales) Regulations\">MT(E&amp;W)R</abbr> reg 15(1)(b)</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/1995/2507/regulation/13/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Motorways Traffic (Scotland) Regulations\">MT(S)R</abbr> reg 13</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 1,
+      "crossRefs": [
+        "272",
+        "277"
+      ],
+      "images": []
+    },
+    {
+      "id": "7",
+      "number": 7,
+      "title": "Rule 7",
+      "lead": "The Green Cross Code.",
+      "html": "\n\n<p><strong>The Green Cross Code.</strong> The advice given below on crossing the road is for all pedestrians. Children should be taught the Code and should not be allowed out alone until they can understand and use it properly. The age when they can do this is different for each child. Many children cannot judge how fast vehicles are going or how far away they are. Children learn by example, so parents and carers should always use the Code in full when out with their children. They are responsible for deciding at what age children can use it safely by themselves.</p>\n\n<p><strong>A First find a safe place to cross</strong> and where there is space to reach the pavement on the other side. Where there is a crossing nearby, use it. It is safer to cross using a subway, a footbridge, an island, a zebra, pelican, toucan or puffin crossing, or where there is a crossing point controlled by a police officer, a school crossing patrol or a traffic warden. Otherwise choose a place where you can see clearly in all directions. Try to avoid crossing between parked cars (see <a href=\"#rule14\">Rule 14</a>), on a blind bend, or close to the brow of a hill. Move to a space where drivers and riders can see you clearly. Do not cross the road diagonally.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/558865a0ed915d158e000009/the-highway-code-rule-7.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 7: Look all around and listen for traffic before crossing</a></p>\nRule 7: Look all around and listen for traffic before crossing\n\n<p><strong>B Stop just before you get to the kerb,</strong> where you can see if anything is coming. Do not get too close to the traffic. If there’s no pavement, keep back from the edge of the road but make sure you can still see approaching traffic.</p>\n\n<p><strong>C Look all around for traffic and listen.</strong> Traffic could come from any direction. Listen as well, because you can sometimes hear traffic before you see it.</p>\n\n<p><strong>D If traffic is coming, let it pass</strong>. Look all around again and listen. Do not cross until there is a safe gap in the traffic and you are certain that there is plenty of time. Remember, even if traffic is a long way off, it may be approaching very quickly.</p>\n\n<p><strong>E When it is safe, go straight across the road – do not run.</strong> Keep looking and listening for traffic while you cross, in case there is any traffic you did not see, or in case other traffic appears suddenly. Look out for cyclists and motorcyclists travelling between lanes of traffic. Do not walk diagonally across the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/558865a0ed915d158e000009/the-highway-code-rule-7.jpg",
+          "alt": "Rule 7: Look all around and listen for traffic before crossing"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "number": 8,
+      "title": "Rule 8",
+      "lead": "At a junction.",
+      "html": "\n<p><strong>At a junction.</strong> When you are crossing or waiting to cross the road, other traffic should give way. Look out for traffic turning into the road, especially from behind you, and cross at a place where drivers can see you. If you have started crossing and traffic wants to turn into the road, you have priority and they should give way (see <a href=\"/code/rule/H2\">Rules H2</a> and <a href=\"/code/rule/170\">170</a>).</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "H2",
+        "170"
+      ],
+      "images": []
+    },
+    {
+      "id": "9",
+      "number": 9,
+      "title": "Rule 9",
+      "lead": "Pedestrian Safety Barriers.",
+      "html": "\n<p><strong>Pedestrian Safety Barriers.</strong> Where there are barriers, cross the road only at the gaps provided for pedestrians. Do not climb over the barriers or walk between them and the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "10",
+      "number": 10,
+      "title": "Rule 10",
+      "lead": "Tactile paving.",
+      "html": "\n<p><strong>Tactile paving.</strong> Raised surfaces that can be felt underfoot provide warning and guidance to blind or partially sighted people. The most common surfaces are a series of raised studs, which are used at crossing points with a dropped kerb, or a series of rounded raised bars which are used at level crossings, at the top and bottom of steps and at some other hazards.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "11",
+      "number": 11,
+      "title": "Rule 11",
+      "lead": "One-way streets.",
+      "html": "\n<p><strong>One-way streets.</strong> Check which way the traffic is moving. Do not cross until it is safe to do so without stopping. Bus and cycle lanes may operate in the opposite direction to the rest of the traffic.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "12",
+      "number": 12,
+      "title": "Rule 12",
+      "lead": "Bus and cycle lanes.",
+      "html": "\n<p><strong>Bus and cycle lanes.</strong> Take care when crossing these lanes as traffic may be moving faster than in the other lanes, or against the flow of traffic.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "13",
+      "number": 13,
+      "title": "Rule 13",
+      "lead": "Routes shared with cyclists.",
+      "html": "\n<p><strong>Routes shared with cyclists.</strong> Cycle tracks may run alongside footpaths or pavements and be separated from them by a feature such as a change of material, a verge, a kerb or a white line. Such routes may also incorporate short lengths of tactile paving to help visually impaired people stay on the correct side. On the pedestrian side this may comprise a series of flat-topped bars running across the direction of travel (ladder pattern). On the cyclist side the same bars are orientated in the direction of travel (tramline pattern).</p>\n\n<p>Some routes shared with cyclists will not be separated by such a feature allowing cyclists and pedestrians to share the same space. Cyclists should respect your safety (see <a href=\"/code/rule/62\">Rule 62</a>) but you should also take care not to obstruct or endanger them. Always remain aware of your environment and avoid unnecessary distractions.</p>\n\n<p>Where signs indicate, some routes are shared between pedestrians, cyclists, horse riders and horse drawn vehicles. Cyclists, horse riders and drivers of horse drawn vehicles should respect your safety, but you should take care not to obstruct or endanger them. Always remain aware of your environment and avoid unnecessary distractions.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "62"
+      ],
+      "images": []
+    },
+    {
+      "id": "14",
+      "number": 14,
+      "title": "Rule 14",
+      "lead": "Parked vehicles.",
+      "html": "\n<p><strong>Parked vehicles.</strong> If you have to cross between parked vehicles, use the outside edges of the vehicles as if they were the kerb. Stop there and make sure you can see all around and that the traffic can see you. Make sure there is a gap between any parked vehicles on the other side, so you can reach the pavement. Never cross the road in front of, or behind, any vehicle with its engine running, especially a large vehicle, as the driver may not be able to see you.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "15",
+      "number": 15,
+      "title": "Rule 15",
+      "lead": "Reversing vehicles.",
+      "html": "\n<p><strong>Reversing vehicles.</strong> Never cross behind a vehicle which is reversing, showing white reversing lights or sounding a warning.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "16",
+      "number": 16,
+      "title": "Rule 16",
+      "lead": "Moving vehicles.",
+      "html": "\n<p><strong>Moving vehicles.</strong> You <strong>MUST NOT</strong> get onto or hold onto a moving vehicle.</p>\n\n<p><strong>Law <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/26\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sect 26</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 1,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "17",
+      "number": 17,
+      "title": "Rule 17",
+      "lead": "At night.",
+      "html": "\n<p><strong>At night.</strong> Wear something reflective to make it easier for others to see you (see <a href=\"#rule3\">Rule 3</a>). If there is no pedestrian crossing nearby, cross the road near a street light so that traffic can see you more easily.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "18",
+      "number": 18,
+      "title": "Rule 18",
+      "lead": "At all crossings.",
+      "html": "\n<p><strong>At all crossings.</strong> When using any type of crossing you should</p>\n\n<ul>\n  <li>always check that the traffic has stopped before you start to cross or push a pram onto a crossing</li>\n  <li>always cross between the studs or over the zebra markings. Do not cross at the side of the crossing or on the zig-zag lines, as it can be dangerous.</li>\n</ul>\n\n<p>You <strong>MUST NOT</strong> loiter on any type of crossing.</p>\n\n<p><strong>Laws <a href=\"https://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> Schedule 14 part 5</a> and <a href=\"http://www.legislation.gov.uk/ukpga/1984/27/section/25\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Regulation Act\">RTRA</abbr> sect 25(5)</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 1,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "19",
+      "number": 19,
+      "title": "Rule 19",
+      "lead": "Zebra crossings.",
+      "html": "\n<p><strong>Zebra crossings.</strong> Give traffic plenty of time to see you and to stop before you start to cross. Vehicles will need more time when the road is slippery. Wait until traffic has stopped from both directions or the road is clear before crossing. Remember that traffic does not have to stop until someone has moved onto the crossing. Drivers and riders should give way to pedestrians waiting to cross and <strong>MUST</strong> give way to pedestrians on a zebra crossing (see <a href=\"/code/rule/H2\">Rule H2</a>). Keep looking both ways, and listening, in case a driver or rider has not seen you and attempts to overtake a vehicle that has stopped.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/55886772e5274a1573000016/the-highway-code-rule-19.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 19: Zebra crossings have flashing beacons</a></p>\nRule 19: Zebra crossings have flashing beacons\n\n<p>A zebra crossing with a central island is two separate crossings (see <a href=\"#rule20\">Rule 20</a>).</p>\n\n<p><strong>Law <a href=\"https://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> Schedule 14 part 5</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 1,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "H2"
+      ],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/55886772e5274a1573000016/the-highway-code-rule-19.jpg",
+          "alt": "Rule 19: Zebra crossings have flashing beacons"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "number": 20,
+      "title": "Rule 20",
+      "lead": null,
+      "html": "\n<p>Where there is an island in the middle of a zebra crossing, wait on the island and follow <a href=\"#rule19\">Rule 19</a> before you cross the second half of the road - it is a separate crossing.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/55886784ed915d158e00000b/the-highway-code-rule-20.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 20: Zebra crossings with a central island are two separate cross ings</a></p>\nRule 20: Zebra crossings with a central island are two separate crossings\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/55886784ed915d158e00000b/the-highway-code-rule-20.jpg",
+          "alt": "Rule 20: Zebra crossings with a central island are two separate cross ings"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "number": 21,
+      "title": "Rule 21",
+      "lead": "At traffic lights.",
+      "html": "\n<p><strong>At traffic lights.</strong> There may be special signals for pedestrians. You should only start to cross the road when the green figure shows. If you have started to cross the road and the green figure goes out, you should still have time to reach the other side, but do not delay. If no pedestrian signals have been provided, watch carefully and do not cross until the traffic lights are red and the traffic has stopped. Keep looking and check for traffic that may be turning the corner. Remember that traffic lights may let traffic move in some lanes while traffic in other lanes has stopped.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/55886794ed915d1591000013/the-highway-code-rule-21.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 21: At traffic lights, puffin and pelican crossings. *At pelican crossings only.</a></p>\nRule 21: At traffic lights, puffin and pelican crossings. *At pelican crossings only.\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/55886794ed915d1591000013/the-highway-code-rule-21.jpg",
+          "alt": "Rule 21: At traffic lights, puffin and pelican crossings. *At pelican crossings only."
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "number": 22,
+      "title": "Rule 22",
+      "lead": "Pelican crossings.",
+      "html": "\n<p><strong>Pelican crossings.</strong> These are signal-controlled crossings operated by pedestrians. Push the control button to activate the traffic signals. When the red figure shows, do not cross. When a steady green figure shows, check the traffic has stopped then cross with care. When the green figure begins to flash you should not start to cross. If you have already started you should have time to finish crossing safely.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "23",
+      "number": 23,
+      "title": "Rule 23",
+      "lead": "Puffin crossings",
+      "html": "\n<p><strong>Puffin crossings</strong> differ from pelican crossings as the red and green figures are above the control box on your side of the road and there is no flashing green figure phase. Press the button and wait for the green figure to show.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "24",
+      "number": 24,
+      "title": "Rule 24",
+      "lead": null,
+      "html": "\n<p>When the road is congested, traffic on your side of the road may be forced to stop even though their lights are green. Traffic may still be moving on the other side of the road, so press the button and wait for the signal to cross.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "25",
+      "number": 25,
+      "title": "Rule 25",
+      "lead": "Toucan crossings",
+      "html": "\n<p><strong>Toucan crossings</strong> are light-controlled crossings which allow cyclists and pedestrians to share crossing space and cross at the same time. They are push-button operated. Pedestrians and cyclists will see the green signal together. Cyclists are permitted to ride across.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/558867a7ed915d158e00000d/the-highway-code-rule-25.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 25: Toucan crossings can be used by both cyclists and pedestrians</a></p>\nRule 25: Toucan crossings can be used by both cyclists and pedestrians\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/558867a7ed915d158e00000d/the-highway-code-rule-25.jpg",
+          "alt": "Rule 25: Toucan crossings can be used by both cyclists and pedestrians"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "number": 26,
+      "title": "Rule 26",
+      "lead": null,
+      "html": "\n<p>At some crossings there is a bleeping sound or voice signal to indicate to blind or partially sighted people when the steady green figure is showing, and there may be a tactile signal to help deafblind people.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "27",
+      "number": 27,
+      "title": "Rule 27",
+      "lead": "Equestrian crossings",
+      "html": "\n<p><strong>Equestrian crossings</strong> are for horse riders. They have pavement barriers, wider crossing spaces, horse and rider figures in the light panels and either two sets of controls (one higher), or just one higher control panel.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/558867b8e5274a1576000012/the-highway-code-rule-27.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 27: Equestrian crossings are used by horse riders. There is often a parallel crossing</a></p>\nRule 27: Equestrian crossings are used by horse riders. There is often a parallel crossing\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/558867b8e5274a1576000012/the-highway-code-rule-27.jpg",
+          "alt": "Rule 27: Equestrian crossings are used by horse riders. There is often a parallel crossing"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "number": 28,
+      "title": "Rule 28",
+      "lead": "Staggered’ pelican or puffin crossings.",
+      "html": "\n<p><strong>Staggered’ pelican or puffin crossings.</strong> When the crossings on each side of the central refuge are not in line they are two separate crossings. On reaching the central island, press the button again and wait for a steady green figure.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/558867c840f0b615b3000014/the-highway-code-rule-28.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 28: Staggered crossings (with an island in the middle) are two separate crossings</a></p>\nRule 28: Staggered crossings (with an island in the middle) are two separate crossings\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": [
+        {
+          "src": "https://assets.digital.cabinet-office.gov.uk/media/558867c840f0b615b3000014/the-highway-code-rule-28.jpg",
+          "alt": "Rule 28: Staggered crossings (with an island in the middle) are two separate crossings"
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "number": 29,
+      "title": "Rule 29",
+      "lead": "Crossings controlled by an authorised person.",
+      "html": "\n<p><strong>Crossings controlled by an authorised person.</strong> Do not cross the road unless you are signalled to do so by a police officer, traffic warden or school crossing patrol. Always cross in front of them.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "30",
+      "number": 30,
+      "title": "Rule 30",
+      "lead": null,
+      "html": "\n<p>Where there are no controlled crossing points available it is advisable to cross where there is an island in the middle of the road. Use the Green Cross Code (see <a href=\"/code/rule/7\">Rule 7</a>) to cross to the island and then stop and use it again to cross the second half of the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [
+        "7"
+      ],
+      "images": []
+    },
+    {
+      "id": "31",
+      "number": 31,
+      "title": "Rule 31",
+      "lead": "Emergency vehicles.",
+      "html": "\n<p><strong>Emergency vehicles.</strong> If an ambulance, fire engine, police or other emergency vehicle approaches using flashing blue lights, headlights and/or sirens, keep off the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "32",
+      "number": 32,
+      "title": "Rule 32",
+      "lead": "Buses.",
+      "html": "\n<p><strong>Buses.</strong> Get on or off a bus only when it has stopped to allow you to do so. Watch out for cyclists when you are getting off. Never cross the road directly behind or in front of a bus. Wait until it has moved off and you can see clearly in both directions.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "33",
+      "number": 33,
+      "title": "Rule 33",
+      "lead": "Tramways.",
+      "html": "\n<p><strong>Tramways.</strong> These may run through pedestrian areas. Their path will be marked out by shallow kerbs, changes in the paving or other road surface, white lines or yellow dots. Cross at designated crossings where provided. Elsewhere treat trams as you would other road vehicles and look both ways along the track before crossing. Do not walk along the track as trams may come up behind you. Trams move quietly and cannot steer to avoid you.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "34",
+      "number": 34,
+      "title": "Rule 34",
+      "lead": "Railway level crossings.",
+      "html": "\n<p><strong>Railway level crossings.</strong> You <strong>MUST NOT</strong> cross or pass a stop line when the red lights show, (including a red pedestrian figure). Also do not cross if an alarm is sounding or the barriers are being lowered. The tone of the alarm may change if another train is approaching. If there are no lights, alarms or barriers, stop, look both ways and listen before crossing. A tactile surface comprising rounded bars running across the direction of pedestrian travel may be installed on the footpath approaching a level crossing to warn visually impaired people of its presence. The tactile surface should extend across the full width of the footway and should be located at an appropriate distance from the barrier or projected line of the barrier.</p>\n\n<p><strong>Law <a href=\"https://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> schedule 14 part 1</a></strong></p>\n\n",
+      "law": true,
+      "mustCount": 0,
+      "mustNotCount": 1,
+      "crossRefs": [],
+      "images": []
+    },
+    {
+      "id": "35",
+      "number": 35,
+      "title": "Rule 35",
+      "lead": "Street and pavement repairs.",
+      "html": "\n<p><strong>Street and pavement repairs.</strong> A pavement may be closed temporarily because it is not safe to use. Take extra care if you are directed to walk in or to cross the road.</p>\n\n",
+      "law": false,
+      "mustCount": 0,
+      "mustNotCount": 0,
+      "crossRefs": [],
+      "images": []
+    }
+  ]
+}

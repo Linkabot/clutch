@@ -46,7 +46,8 @@ describe('parseSection', () => {
     expect(section.bodyHtml).toBe('');
   });
 
-  it('keeps both preamble paragraphs in preambleHtml', () => {
+  it('keeps the h2 heading text and both preamble paragraphs in preambleHtml (a stray <h2> before the first rule stays in the preamble)', () => {
+    expect(section.preambleHtml).toContain('Introduction');
     expect(section.preambleHtml).toContain('This fixture section covers example speed-limit');
     expect(section.preambleHtml).toContain('It exists only to exercise rule boundaries');
   });
