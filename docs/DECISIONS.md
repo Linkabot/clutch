@@ -62,3 +62,12 @@ Why: Keep the build focused; don't add structure speculatively.
 
 Choice: Original animated scenes with defined hazard windows, scored like DVSA (5→0, anti-pattern rule = 0). App tells the user to also do official clips in the final week.
 Why: Honest substitute.
+
+## Decision 13 — Look and feel (13 September 2026)
+
+Choice: Signage base with Playmat pictures and animations layered in; Playmat alone kept as a future alternative; Dashboard not chosen.
+Why: UK road-sign vocabulary doubles as revision and reads as trustworthy; Playmat adds fun.
+Constraint: Fonts must be self-hosted, bundled and precached — no Google Fonts at runtime.
+Brand safety: No GDS Transport typeface, no crown/Royal Arms, no gov.uk page styling; a visible "Not an official DVSA or government app" line is shown in-app.
+Scope: The Journey map, quiz sheet, confetti, XP and the animated stopping-distance road are references for Phases 2–4 only; none of them are built in Phase 1.
+Reference: See `docs/DESIGN.md` (Step 4) for the token and component reference.

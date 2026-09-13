@@ -10,7 +10,7 @@ Status: done
 ## Phase 1 — Content engine & The Highway Code offline
 
 Goal: the source of truth on the phone before any question is written.
-Status: not started
+Status: in progress
 
 ## Phase 2 — Road signs & first games
 

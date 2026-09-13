@@ -6,3 +6,5 @@ playwright-report
 test-results
 package-lock.json
 public/icons
+content/uk/highway-code/
+content/uk/syllabus.json
