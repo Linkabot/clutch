@@ -49,6 +49,14 @@ Zustand (`src/app/store.ts`) holds transient UI state that does not need to surv
 
 `vite-plugin-pwa` is configured with `registerType: 'autoUpdate'`: the service worker checks for a new version on every load and activates it without prompting the user, so the next launch (not the current session) picks up the update. `src/app/pwa.ts` calls `registerSW` from `virtual:pwa-register` with `immediate: true` and drives `swStatus` in the store (`unsupported` / `registering` / `ready` / `error`), which `src/features/me/OfflineReady.tsx` renders as a single-line indicator.
 
+## Content loading and offline
+
+Highway Code and facts content lives under `content/uk/` at the repo root, ingested by the scripts in `scripts/` and never hand-edited (see `docs/CONTENT-GUIDE.md`). Inside the app, `src/content/loaders.ts` is the only module that reads it, and every result is parsed with the Step 7 Zod schemas before use — no static `import x from '*.json'` appears anywhere else in `src/`. `getHighwayCodeIndex()` and `getFacts()` load the small index and facts files eagerly, bundled into the main chunk; `loadSection(slug)`, `loadAllSections()` and `loadRule(id)` load each Highway Code section lazily, one `import.meta.glob` chunk per section file. Vite code-splits each of those chunks out of the main bundle, and Workbox's existing `**/*.js` precache glob (see PWA update model, above) picks them up automatically, so every section is available offline without being fetched until a screen actually needs it.
+
+`src/features/code/search.ts` builds an in-memory MiniSearch index over every rule and non-rule section, memoised behind one promise that calls `loadAllSections()` the first time anything searches. There is no prebuilt search index file shipped with the app — it is built once, at runtime, from the same precached chunks.
+
+The precache budget is **3072 KiB total**, checked from the build output in Steps 18 and 20.
+
 ## Test strategy
 
 - **Unit (Vitest, node environment):** pure functions and store logic — `tabs.ts`, `platform.ts`, `store.ts` — no DOM, no browser APIs.
