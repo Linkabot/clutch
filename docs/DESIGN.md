@@ -152,3 +152,33 @@ stops the build the moment any Decision 13 colour pairing becomes
 illegible in light or dark mode, without ever changing Lincoln's chosen
 palette itself — a failing pair is reported and the colours stay his
 decision.
+
+## Built in Phase 1 vs. Deferred
+
+**Built in Phase 1:**
+
+- The tokens above (light and dark), the type scale, and the
+  reduced-motion rule.
+- Self-hosted, precached fonts — Overpass and Atkinson Hyperlegible — with
+  no Google Fonts reference anywhere.
+- The shell restyle: the sign-panel header (with back button) and the icon
+  tab bar, including the Learn tab's `alsoActiveFor: ['/code']`
+  highlighting for the Rule deep link.
+- The five primitives above: `SignPanel`, `SignPlate`, `Roundel`, `Button`,
+  `Chip`.
+- The Highway Code section list and section screen, the rule page
+  (`/code/rule/:id`) with its law/advice `Chip`, and the static,
+  colour-coded Rule 126 stopping-distance table.
+- Offline search over the whole Highway Code.
+
+**Deferred** to Phases 2–4 (Decision 13 mockup references, not built here):
+
+- The Journey map.
+- The quiz sheet and its correct-answer animation.
+- Confetti, XP and streaks.
+- The animated stopping-distance road — Rule 126 gets the static table
+  above instead, because the official chart is an image with empty alt
+  text and Phase 1 ships no images (see `docs/CONTENT-GUIDE.md`, Known
+  limitations).
+- The `Roundel` primitive exists (built above) but nothing uses it yet;
+  its first consumer is one of the Deferred features.

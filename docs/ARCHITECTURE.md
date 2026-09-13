@@ -49,6 +49,33 @@ Zustand (`src/app/store.ts`) holds transient UI state that does not need to surv
 
 `vite-plugin-pwa` is configured with `registerType: 'autoUpdate'`: the service worker checks for a new version on every load and activates it without prompting the user, so the next launch (not the current session) picks up the update. `src/app/pwa.ts` calls `registerSW` from `virtual:pwa-register` with `immediate: true` and drives `swStatus` in the store (`unsupported` / `registering` / `ready` / `error`), which `src/features/me/OfflineReady.tsx` renders as a single-line indicator.
 
+## Routes
+
+All routes are registered in `src/app/routes.tsx`, as children of the single
+layout route (`App`), under `createBrowserRouter` with
+`basename: import.meta.env.BASE_URL`:
+
+| Path                 | Screen                      | Notes                                                                                 |
+| -------------------- | --------------------------- | ------------------------------------------------------------------------------------- |
+| `/` (index)          | `JourneyScreen`             | Journey tab                                                                           |
+| `/learn`             | `LearnScreen`               | Learn tab hub; links into the Highway Code and its search                             |
+| `/learn/code`        | `HighwayCodeSectionsScreen` | Highway Code sections grouped by kind, each row showing its rule range                |
+| `/learn/code/search` | `SearchScreen`              | offline MiniSearch over every rule and non-rule section                               |
+| `/learn/code/:slug`  | `SectionScreen`             | one Highway Code section — preamble + rule rows, or the full body for other sections  |
+| `/code/rule/:id`     | `RuleScreen`                | single-rule deep link, e.g. `/code/rule/126` — deliberately NOT nested under `/learn` |
+| `/practice`          | `PracticeScreen`            | Practice tab                                                                          |
+| `/my-car`            | `MyCarScreen`               | My Car tab                                                                            |
+| `/me`                | `MeScreen`                  | Me tab                                                                                |
+
+`/code/rule/:id` lives outside `/learn` so a bare rule link (e.g.
+`https://linkabot.github.io/clutch/code/rule/126`) works as a deep link, but
+it must still read as part of Learn in the tab bar. `src/app/tabs.ts` gives
+the Learn tab `alsoActiveFor: ['/code']`, and `TabBar.tsx`'s `isTabActive`
+treats a pathname as active for a tab when it equals the tab's own `path`,
+starts with `path + '/'`, **or** matches one of `alsoActiveFor`'s prefixes
+the same way — so visiting `/code/rule/126` highlights Learn
+(`aria-current="page"`) even though the route itself is not under `/learn`.
+
 ## Content loading and offline
 
 Highway Code and facts content lives under `content/uk/` at the repo root, ingested by the scripts in `scripts/` and never hand-edited (see `docs/CONTENT-GUIDE.md`). Inside the app, `src/content/loaders.ts` is the only module that reads it, and every result is parsed with the Step 7 Zod schemas before use — no static `import x from '*.json'` appears anywhere else in `src/`. `getHighwayCodeIndex()` and `getFacts()` load the small index and facts files eagerly, bundled into the main chunk; `loadSection(slug)`, `loadAllSections()` and `loadRule(id)` load each Highway Code section lazily, one `import.meta.glob` chunk per section file. Vite code-splits each of those chunks out of the main bundle, and Workbox's existing `**/*.js` precache glob (see PWA update model, above) picks them up automatically, so every section is available offline without being fetched until a screen actually needs it.

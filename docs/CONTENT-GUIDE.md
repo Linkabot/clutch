@@ -24,6 +24,46 @@ re-exported from `index.ts`:
 the ingestion scripts (`scripts/ingest-highway-code.ts`,
 `scripts/ingest-national-standard.ts`) and are never hand-edited.
 
+## Ingestion
+
+Two scripts are the ONLY code in the repo allowed to fetch gov.uk, and each
+is run manually, once, inside its own dedicated plan step — never from a
+test, from `npm test`/`npm run build`, or from CI:
+
+- `scripts/ingest-highway-code.ts` — `npm run ingest:highway-code` — fetches
+  the Highway Code landing page and all 31 section pages, writing
+  `content/uk/highway-code/index.json` and
+  `content/uk/highway-code/sections/*.json`.
+- `scripts/ingest-national-standard.ts` — `npm run ingest:national-standard`
+  — fetches the National Standard for Driving Cars and Light Vans landing
+  page and its role pages, writing `content/uk/syllabus.json`.
+
+Both reach gov.uk only through `scripts/lib/govuk.ts`'s `fetchContentApi` —
+the sole module allowed to call `fetch` outside `src/features/me/Attribution.tsx`
+(same-origin `ATTRIBUTION.md` only) and the e2e helpers (which only probe a
+local port to prove it is down). Politeness, as actually coded there:
+
+- **Delay** — 600 ms (`delayMs`) waited before every real request; skipped
+  entirely on a cache hit.
+- **User-Agent** — `clutch-ingest/0.1 (+https://linkabot.github.io/clutch/)`,
+  sent on every request.
+- **Retries/backoff** — up to 3 retries (`retries`) on a 429 or 5xx
+  response, backing off `2000 ms / 4000 ms / 8000 ms` between attempts.
+- **Sequential only** — one request at a time, never in parallel, so the
+  delay is an honest gap between real requests to gov.uk.
+
+**Cache directories:** each script passes its own `cacheDir` —
+`content/.cache/highway-code/` and `content/.cache/national-standard/` —
+where `fetchContentApi` writes every raw response (keyed by the
+URL-encoded base path) and reads from there on a later run instead of
+re-fetching. Both directories are listed in `.gitignore` and must never be
+committed.
+
+**Rule:** ingestion runs only in a dedicated plan step and its JSON output
+is committed as content; it is never invoked from tests or CI. The
+all-green gate proves this by grepping for `fetch(` outside the allowed
+modules and for any `gov.uk/api` reference outside `scripts/`.
+
 ## Pack
 
 `pack.json` = `{ region: "GB", version, attribution[] }`.
@@ -87,3 +127,18 @@ clearly online-only extras.
 
 State regional differences explicitly rather than averaging them — for
 example the Scotland drink-drive limit and the Wales 20 mph default.
+
+## Known limitations (Phase 1)
+
+- **No images shipped.** Every `<img>` in the ingested Highway Code HTML is
+  stripped and replaced with a clearly marked online-only link (`Diagram
+(online): …`); the original `{ src, alt }` is recorded in the rule's
+  `images[]` array (`RuleSchema`) for a later phase to fetch and precache.
+  Nothing in Phase 1 downloads or bundles Highway Code or sign artwork.
+- **Non-Highway-Code gov.uk facts are deferred.** Numbers that live on other
+  gov.uk pages — drink-drive limits (England/Wales vs Scotland), the
+  new-driver 6-points/2-years rule, the phone-use penalty, supervising-driver
+  ages, and the theory-test format — are not in `facts.json` yet. They wait
+  until their source pages are ingested through the same polite
+  `scripts/lib/govuk.ts` path, above, so their quotes can be verified
+  mechanically like every other fact, rather than typed from memory.
