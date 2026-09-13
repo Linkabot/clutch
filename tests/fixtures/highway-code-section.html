@@ -1,0 +1,87 @@
+<!-- Fixture: a Highway Code section body in the verified markup shape
+(plan.md Step 8) that scripts/lib/highway-code-parse.ts must handle — two
+preamble paragraphs, then rules 124 (a MUST NOT law rule with a table), 125
+(a list plus a cross-reference link to another section's rule) and 126 (a
+leading-strong lead, a diagram image, a call-to-action box, a "Law" citation
+and a stray script tag), then the hierarchy rule H1 whose heading carries no
+id attribute. The prose is fixture filler, not real Highway Code text,
+except where the plan itself supplies exact wording: the MUST NOT sentence
+shape, the "Stopping distances." lead and "two-second gap" phrase, the
+stopping-distance image URL, and the RTA 1988 citation markup.
+Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<p>
+  This fixture section covers example speed-limit and following-distance rules for testing the
+  parser.
+</p>
+<p>
+  It exists only to exercise rule boundaries, links and sanitisation — the wording is not from the
+  real Highway Code.
+</p>
+<h3 id="rule124">Rule 124</h3>
+<p>
+  You <strong>MUST NOT</strong> exceed the speed limit shown in the table below for the type of road
+  and vehicle.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Road type</th>
+      <th>Example limit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Example road</td>
+      <td>Example limit</td>
+    </tr>
+  </tbody>
+</table>
+<h3 id="rule125">Rule 125</h3>
+<p>
+  This example rule lists a few things to check before overtaking, and links to another rule for
+  further reading.
+</p>
+<ul>
+  <li>checking your mirrors regularly</li>
+  <li>signalling in good time</li>
+</ul>
+<p>
+  See also
+  <a href="/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102#rule98"
+    >Rule 98</a
+  >
+  for a related rule in this fixture.
+</p>
+<h3 id="rule126">Rule 126</h3>
+<p>
+  <strong>Stopping distances.</strong> Drive at a speed that will allow you to stop well within the
+  distance you can see to be clear. Allow at least a two-second gap.
+</p>
+<img
+  src="https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.jpg"
+  alt=""
+/>
+<div class="call-to-action">
+  <p>
+    <a
+      href="https://assets.publishing.service.gov.uk/media/65f828c3fc7fcf0011c647f9/the-highway-code-stopping-distance.pdf"
+      >Download the stopping distances chart (PDF)</a
+    >
+  </p>
+</div>
+<p>
+  <strong
+    >Law
+    <a rel="external" href="https://www.legislation.gov.uk/ukpga/1988/52/section/163"
+      ><abbr title="Road Traffic Act">RTA</abbr> 1988 sect 163</a
+    ></strong
+  >
+</p>
+<script>
+  alert(1);
+</script>
+<h3>Rule H1</h3>
+<p>
+  This is placeholder text for the H1 hierarchy rule, used only to prove the parser detects a
+  heading with no id attribute.
+</p>
