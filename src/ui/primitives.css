@@ -1,0 +1,157 @@
+/* Shared styles for the Decision 13 sign/plate/roundel/button/chip
+   primitives in src/ui/*.tsx. Imported exactly once, from src/main.tsx,
+   after theme.css, so every rule below can rely on the colour and radius
+   custom properties theme.css defines. Tokens only — no hex colours here.
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/main.tsx; every component in src/ui/*.tsx via the
+   class names below. */
+
+/* SignPanel: coloured outer frame holding a white inner border. */
+.sign-panel {
+  display: inline-block;
+  border-radius: var(--radius-panel);
+  padding: 5px;
+}
+
+.sign-panel--blue {
+  background-color: var(--color-sign-blue);
+}
+
+.sign-panel--green {
+  background-color: var(--color-sign-green);
+}
+
+.sign-panel--small {
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.sign-panel__inner {
+  display: block;
+  border: 2.5px solid var(--color-on-sign);
+  border-radius: var(--radius-panel-inner);
+  padding: 0.4rem 0.6rem;
+  color: var(--color-on-sign);
+}
+
+/* SignPlate: white plate label; "current" tone fills with sign-blue. */
+.sign-plate {
+  display: inline-block;
+  background-color: var(--color-on-sign);
+  color: var(--color-sign-ink);
+  border: 1.5px solid var(--color-sign-ink);
+  border-radius: var(--radius-plate);
+  padding: 2px 8px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.sign-plate--current {
+  background-color: var(--color-sign-blue);
+  color: var(--color-on-sign);
+}
+
+/* Roundel: 44px circular badge, white with a red ring. */
+.roundel {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--color-on-sign);
+  border: 4px solid var(--color-sign-red);
+  color: var(--color-sign-ink);
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: default;
+}
+
+button.roundel {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.roundel--selected {
+  border-width: 6px;
+  box-shadow: 0 0 0 4px var(--color-marking-yellow);
+}
+
+/* Button: primary is the yellow marking-style call to action; secondary
+   is a plain outlined surface button. */
+.button {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  height: 50px;
+  padding: 0 1.25rem;
+  border-radius: var(--radius-button);
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 80ms;
+}
+
+.button--primary {
+  background-color: var(--color-marking-yellow);
+  color: var(--color-sign-ink);
+  border: none;
+  box-shadow: 0 4px 0 var(--color-marking-yellow-shadow);
+}
+
+.button--primary:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.button--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 2px solid var(--color-hairline);
+}
+
+.button:focus-visible,
+.roundel:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
+/* Chip: small pill label; background/text stay neutral (amendment P1),
+   only the ring colour encodes law (red) / advice (blue) / neutral
+   (hairline). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.chip--law {
+  border: 1.5px solid var(--color-sign-red);
+}
+
+.chip--advice {
+  border: 1.5px solid var(--color-sign-blue);
+}
+
+.chip--neutral {
+  border: 1.5px solid var(--color-hairline);
+}
