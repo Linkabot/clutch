@@ -1,0 +1,212 @@
+{
+  "facts": [
+    {
+      "id": "speed-limit-built-up-default",
+      "topic": "speed-limit",
+      "statement": "Default speed limit in built-up areas with street lights (England and Scotland): 30 mph.",
+      "value": 30,
+      "unit": "mph",
+      "source": {
+        "rule": "124",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "A speed limit of 30 mph (48 km/h), or 20mph (32km/h) in Wales, generally applies to all roads with street lights (excluding motorways) unless signs show otherwise.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "speed-limit-built-up-wales",
+      "topic": "regional",
+      "statement": "Default speed limit in built-up areas with street lights in Wales: 20 mph.",
+      "value": 20,
+      "unit": "mph",
+      "source": {
+        "rule": "124",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "A speed limit of 30 mph (48 km/h), or 20mph (32km/h) in Wales, generally applies to all roads with street lights (excluding motorways) unless signs show otherwise.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "speed-limit-cars-single-carriageway",
+      "topic": "speed-limit",
+      "statement": "Speed limit for cars and motorcycles on single carriageways: 60 mph.",
+      "value": 60,
+      "unit": "mph",
+      "source": {
+        "rule": "124",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "Cars & motorcycles (including car derived vans up to 2 tonnes maximum laden weight) 30 (48) 20 (32) 60 (96) 70 (112) 70 (112)",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "speed-limit-cars-dual-carriageway",
+      "topic": "speed-limit",
+      "statement": "Speed limit for cars and motorcycles on dual carriageways: 70 mph.",
+      "value": 70,
+      "unit": "mph",
+      "source": {
+        "rule": "124",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "Cars & motorcycles (including car derived vans up to 2 tonnes maximum laden weight) 30 (48) 20 (32) 60 (96) 70 (112) 70 (112)",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "speed-limit-cars-motorway",
+      "topic": "speed-limit",
+      "statement": "Speed limit for cars and motorcycles on motorways: 70 mph.",
+      "value": 70,
+      "unit": "mph",
+      "source": {
+        "rule": "124",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "Cars & motorcycles (including car derived vans up to 2 tonnes maximum laden weight) 30 (48) 20 (32) 60 (96) 70 (112) 70 (112)",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "following-gap-seconds",
+      "topic": "following-distance",
+      "statement": "Minimum gap to keep from the vehicle in front on high-speed roads and in tunnels: at least two seconds.",
+      "value": 2,
+      "unit": "seconds",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "allow at least a two-second gap between you and the vehicle in front on high-speed roads and in tunnels where visibility is reduced.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "following-gap-wet-multiplier",
+      "topic": "following-distance",
+      "statement": "The following gap should be at least doubled on wet roads.",
+      "value": 2,
+      "unit": null,
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "The gap should be at least doubled on wet roads and up to ten times greater on icy roads",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "following-gap-icy-multiplier",
+      "topic": "following-distance",
+      "statement": "The following gap should be up to ten times greater on icy roads.",
+      "value": 10,
+      "unit": null,
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "The gap should be at least doubled on wet roads and up to ten times greater on icy roads",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "tunnel-stop-gap-metres",
+      "topic": "following-distance",
+      "statement": "Minimum gap to leave if you have to stop in a tunnel: 5 metres.",
+      "value": 5,
+      "unit": "m",
+      "source": {
+        "rule": "126",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "title": "General rules, techniques and advice for all drivers and riders (103 to 158)"
+      },
+      "quote": "If you have to stop in a tunnel, leave at least a 5-metre gap between you and the vehicle in front.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "fog-visibility-headlights-metres",
+      "topic": "adverse-weather",
+      "statement": "Use headlights when you cannot see more than 100 metres (328 feet) ahead.",
+      "value": 100,
+      "unit": "m",
+      "source": {
+        "rule": "226",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/driving-in-adverse-weather-conditions-226-to-237",
+        "title": "Driving in adverse weather conditions (226 to 237)"
+      },
+      "quote": "You MUST use headlights when visibility is seriously reduced, generally when you cannot see for more than 100 metres (328 feet).",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "child-restraint-height-metres",
+      "topic": "child-safety",
+      "statement": "Children under 1.35 metres tall must use an appropriate child restraint.",
+      "value": 1.35,
+      "unit": "m",
+      "source": {
+        "rule": "100",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102",
+        "title": "Rules for drivers and motorcyclists (89 to 102)"
+      },
+      "quote": "If a child is under 1.35 metres (approx 4 feet 5 inches) tall, a baby seat, child seat, booster seat or booster cushion MUST be used suitable for the child’s weight and fitted to the manufacturer’s instructions.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "seat-belt-child-age",
+      "topic": "child-safety",
+      "statement": "Children under 14 years old must wear a seat belt or sit in an approved child restraint.",
+      "value": 14,
+      "unit": "years",
+      "source": {
+        "rule": "100",
+        "section": null,
+        "url": "https://www.gov.uk/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102",
+        "title": "Rules for drivers and motorcyclists (89 to 102)"
+      },
+      "quote": "The driver MUST ensure that all children under 14 years of age in cars, vans and other goods vehicles wear seat belts or sit in an approved child restraint where required (see table above).",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    },
+    {
+      "id": "tyre-tread-minimum-mm",
+      "topic": "vehicle-maintenance",
+      "statement": "Minimum legal tyre tread depth for cars, light vans and light trailers: 1.6 mm.",
+      "value": 1.6,
+      "unit": "mm",
+      "source": {
+        "rule": null,
+        "section": "annex-6-vehicle-maintenance-safety-and-security",
+        "url": "https://www.gov.uk/guidance/the-highway-code/annex-6-vehicle-maintenance-safety-and-security",
+        "title": "Annex 6. Vehicle maintenance, safety and security"
+      },
+      "quote": "Cars, light vans and light trailers MUST have a tread depth of at least 1.6 mm across the central three-quarters of the breadth of the tread and around the entire circumference.",
+      "data": null,
+      "verification": { "method": "quote-in-rule" }
+    }
+  ]
+}

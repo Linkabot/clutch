@@ -45,7 +45,23 @@ Every fact carries a `verification.method`, one of:
   (`on`).
 
 `quote` must be a verbatim substring of the cited rule's ingested text —
-never paraphrased and never typed from memory.
+never paraphrased and never typed from memory. It is copied from the
+committed section JSON: `htmlToText` of the cited rule's `html`, or of the
+cited annex's `bodyHtml`. When a fact's `value` is a number, the quote
+must also name that value itself (the digit, or an accepted word form
+such as "two" or "doubled") — a table row's label alone is not enough. A
+number that cannot meet this is dropped, never adjusted to fit.
+
+Seeded fact ids (Step 11 — Rules 124, 126, 226, 100 and Annex 6):
+`speed-limit-built-up-default`, `speed-limit-built-up-wales`,
+`speed-limit-cars-single-carriageway`, `speed-limit-cars-dual-carriageway`,
+`speed-limit-cars-motorway`, `following-gap-seconds`,
+`following-gap-wet-multiplier`, `following-gap-icy-multiplier`,
+`tunnel-stop-gap-metres`, `fog-visibility-headlights-metres`,
+`child-restraint-height-metres`, `seat-belt-child-age`,
+`tyre-tread-minimum-mm`. Stopping-distance facts (Step 12) are seeded
+separately and stay `pending-human` until a human confirms them against
+the official chart (Step 13).
 
 ## Questions
 
