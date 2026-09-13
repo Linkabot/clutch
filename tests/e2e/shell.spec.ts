@@ -1,14 +1,16 @@
 // End-to-end shell tests: run against the production build (`vite preview`)
 // with Playwright's WebKit engine and an iPhone 14 device profile, matching
 // real iOS Safari behaviour (manifest, Add to Home Screen panel, service
-// worker registration/offline readiness, tab navigation, offline reload).
+// worker registration/offline readiness, tab navigation with icons and
+// aria-current, offline reload).
 // The offline-reload test (amendment A2) spawns a second `vite preview`
 // server on port 4174 and kills it with a real OS signal, because
 // `context.setOffline(true)` is a hard network kill WebKit's service worker
 // cannot answer through (verified during Step 10, attempt 1).
-// Depends on: @playwright/test, ../../src/app/tabs (tab id/path/label list),
-// node:child_process, the production build served by playwright.config.ts's
-// webServer (port 4173) and by the ad-hoc server this file spawns (4174).
+// Depends on: @playwright/test, ../../src/app/tabs (tab id/path/label/icon
+// list), node:child_process, the production build served by
+// playwright.config.ts's webServer (port 4173) and by the ad-hoc server
+// this file spawns (4174).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml (Step 13).
 import { test, expect, type Page } from '@playwright/test';
 import { spawn, execSync, type ChildProcess } from 'node:child_process';
@@ -69,12 +71,17 @@ test('service worker registers and Me shows Offline ready', async ({ page }) => 
 test('tabs navigate', async ({ page }) => {
   await openApp(page);
 
+  await expect(page.locator('nav[aria-label="Main"] svg')).toHaveCount(5);
+
   for (const tab of TABS) {
     await page.getByRole('link', { name: tab.label }).click();
     const expectedSuffix = tab.path === '/' ? '/clutch/' : `/clutch${tab.path}`;
     await expect(page).toHaveURL((url) => url.pathname.endsWith(expectedSuffix));
     await expect(page.locator('h1')).toHaveText(tab.label);
   }
+
+  await page.getByRole('link', { name: 'Learn' }).click();
+  await expect(page.getByRole('link', { name: 'Learn' })).toHaveAttribute('aria-current', 'page');
 });
 
 // Second preview server for the offline-reload test below. Spawned directly
