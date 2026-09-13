@@ -16,8 +16,8 @@ function TabBar() {
         left: 0,
         right: 0,
         display: 'flex',
-        backgroundColor: 'var(--color-surface)',
-        borderTop: '1px solid var(--color-muted)',
+        backgroundColor: 'var(--color-tab-bar)',
+        borderTop: '1px solid var(--color-hairline)',
       }}
     >
       {TABS.map((tab) => (
@@ -32,7 +32,7 @@ function TabBar() {
             justifyContent: 'center',
             minHeight: '44px',
             minWidth: '44px',
-            color: isActive ? 'var(--color-accent)' : 'var(--color-text)',
+            color: isActive ? 'var(--color-tab-active)' : 'var(--color-tab-inactive)',
             textDecoration: 'none',
           })}
         >

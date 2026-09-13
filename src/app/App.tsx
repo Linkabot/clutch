@@ -23,13 +23,13 @@ function App() {
   return (
     <div
       style={{
-        backgroundColor: 'var(--color-bg)',
-        color: 'var(--color-text)',
+        backgroundColor: 'var(--color-page)',
+        color: 'var(--color-ink)',
         minHeight: '100dvh',
       }}
     >
       <header className="safe-top">
-        <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>Clutch</span>
+        <span style={{ color: 'var(--color-sign-blue)', fontWeight: 'bold' }}>Clutch</span>
       </header>
       <main style={{ paddingBottom: 'calc(var(--tab-bar-height) + 44px)' }}>
         <Outlet />

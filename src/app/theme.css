@@ -1,26 +1,67 @@
 /* Global design tokens and iOS-safe base styles for the Clutch app shell.
    Depends on: tailwindcss (imported below).
-   Depended on by: src/main.tsx (imported once at app startup). */
+   Depended on by: src/main.tsx (imported once at app startup); every
+   component that reads a --color-* / --radius-* / --tab-bar-height custom
+   property (src/app/App.tsx, src/app/TabBar.tsx,
+   src/app/AddToHomeScreen.tsx); scripts/check-contrast.mjs, which parses
+   this file's literal hex values to check WCAG contrast. */
 @import 'tailwindcss';
 
 :root {
-  --color-bg: #ffffff;
-  --color-surface: #f2f2f7;
-  --color-text: #1c1c1e;
-  --color-muted: #6b6b70;
-  --color-accent: #0a5db0;
-  --color-accent-contrast: #ffffff;
+  /* Decision 13 signage-base tokens (docs/DECISIONS.md). Literal 6-digit
+     hex only, no var() indirection: scripts/check-contrast.mjs parses
+     these values directly. */
+  --color-page: #f4f3ee;
+  --color-surface: #ffffff;
+  --color-hairline: #dddbd3;
+  --color-ink: #15171c;
+  --color-muted: #5e6168;
+  --color-tab-bar: #ffffff;
+  --color-tab-active: #0a5db0;
+  --color-tab-inactive: #6b6e75;
+  --color-sign-blue: #0a5db0;
+  --color-sign-blue-shadow: #073f78;
+  --color-sign-green: #00703c;
+  --color-sign-green-shadow: #004f2a;
+  --color-sign-red: #d4202c;
+  --color-marking-yellow: #ffcc00;
+  --color-marking-yellow-shadow: #c49b00;
+  --color-map-grass: #8acb6a;
+  --color-map-trees-1: #5fa544;
+  --color-map-trees-2: #79bf5a;
+  --color-road: #3a3f4b;
+  --color-road-strip: #2b2e35;
+  --color-on-sign: #ffffff;
+
+  /* P1: real signs are reflective, not backlit, so their ink stays dark
+     even in dark mode. --color-sign-ink is set here only and must never
+     be redefined in the dark media block below. */
+  --color-sign-ink: #15171c;
+
   --tab-bar-height: 56px;
+  --radius-panel: 14px;
+  --radius-panel-inner: 10px;
+  --radius-button: 10px;
+  --radius-card: 12px;
+  --radius-plate: 4px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #000000;
-    --color-surface: #1c1c1e;
-    --color-text: #f2f2f7;
-    --color-muted: #9a9a9e;
-    --color-accent: #3d9bee;
-    --color-accent-contrast: #000000;
+    --color-page: #101216;
+    --color-surface: #1b1e24;
+    --color-hairline: #2c3038;
+    --color-ink: #f1f0ea;
+    --color-muted: #a3a6ad;
+    --color-tab-bar: #16181d;
+    --color-tab-active: #5aa8f2;
+    --color-tab-inactive: #8d9098;
+    --color-map-grass: #1c352e;
+    --color-road: #2a2f3e;
+    /* Sign, plate, roundel and marking colours (sign-blue, sign-green,
+       sign-red, marking-yellow, on-sign, sign-ink and their shadows) are
+       intentionally NOT redefined here — see the note above (Decision 13,
+       amendment P1). */
   }
 }
 
@@ -34,10 +75,23 @@ body,
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-page);
+  color: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+}
+
+/* Users who have asked their OS for reduced motion get animations and
+   transitions collapsed to (near) nothing, instead of just shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* 16px is the minimum font size that stops Safari auto-zooming into a

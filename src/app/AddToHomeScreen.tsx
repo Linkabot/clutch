@@ -27,8 +27,8 @@ function AddToHomeScreen({ onDismiss }: AddToHomeScreenProps) {
         alignItems: 'center',
         gap: '1.5rem',
         padding: '1.5rem',
-        backgroundColor: 'var(--color-bg)',
-        color: 'var(--color-text)',
+        backgroundColor: 'var(--color-page)',
+        color: 'var(--color-ink)',
       }}
     >
       <h1>Add to Home Screen</h1>
