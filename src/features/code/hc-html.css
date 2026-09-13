@@ -1,0 +1,59 @@
+/* Styles for sanitised Highway Code HTML rendered via
+   dangerouslySetInnerHTML inside div.hc-html (src/features/code/HcHtml.tsx).
+   Tokens only — no hard-coded colours.
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/code/HcHtml.tsx. */
+
+.hc-html {
+  color: var(--color-ink);
+}
+
+.hc-html p,
+.hc-html ul,
+.hc-html ol {
+  margin: 0 0 12px;
+}
+
+.hc-html strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+/* Ingestion wraps call-out links (e.g. a PDF download) in this class. */
+.hc-html .call-to-action {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-card);
+  padding: 12px;
+  margin: 0 0 12px;
+}
+
+/* Horizontally scrollable rather than wrapped in an extra DOM element,
+   since the table markup itself is untouched sanitised HTML. */
+.hc-html table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 0 12px;
+}
+
+.hc-html th,
+.hc-html td {
+  border: 1px solid var(--color-hairline);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+/* Ingestion replaces every <img> with a link carrying this class. */
+.hc-html a.hc-image {
+  display: inline-block;
+  color: var(--color-sign-blue);
+}
+
+/* Every off-app link ingestion produces carries rel="external ...", so
+   this marks all of them as clearly online-only extras. */
+.hc-html a[rel~='external']::after {
+  content: ' (online)';
+  color: var(--color-muted);
+}
