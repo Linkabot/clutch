@@ -26,6 +26,13 @@
       "licence": "Open Government Licence v3.0",
       "url": "https://www.gov.uk/guidance/the-highway-code",
       "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
+    },
+    {
+      "id": "national-standard-driving",
+      "name": "National standard for driving cars and light vans (category B)",
+      "licence": "Open Government Licence v3.0",
+      "url": "https://www.gov.uk/guidance/national-standard-for-driving-cars-and-light-vans-category-b",
+      "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
     }
   ]
 }

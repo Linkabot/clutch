@@ -1,0 +1,802 @@
+{
+  "source": {
+    "title": "National standard for driving cars and light vans",
+    "url": "https://www.gov.uk/guidance/national-standard-for-driving-cars-and-light-vans-category-b",
+    "apiUrl": "https://www.gov.uk/api/content/guidance/national-standard-for-driving-cars-and-light-vans-category-b",
+    "fetchedAt": "2026-09-13T13:32:47.677Z",
+    "lastUpdated": null
+  },
+  "licence": {
+    "name": "Open Government Licence v3.0",
+    "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "statement": "Contains public sector information licensed under the Open Government Licence v3.0.",
+    "footer": "All content is available under the Open Government Licence v3.0, except where otherwise stated"
+  },
+  "roles": [
+    {
+      "id": "1",
+      "title": "Prepare yourself, the vehicle, and its passengers for a journey",
+      "units": [
+        {
+          "id": "1.1",
+          "title": "Prepare yourself and passengers for a journey",
+          "elements": [
+            {
+              "id": "1.1.1",
+              "title": "Choose a suitable mode of transport",
+              "mustBeAbleTo": [
+                "assess your own and your passengers’ physical, emotional and other needs",
+                "assess the environmental impact and cost of other modes of transport",
+                "decide whether it’s suitable to use a vehicle for the journey"
+              ],
+              "mustKnow": [
+                "the pros and cons of different modes of transport, and how each affects the environment",
+                "how using a car for very short journeys affects the environment",
+                "how vehicle exhaust gases (for example, carbon dioxide, carbon monoxide, sulphur dioxide and lead) affect the environment",
+                "the environmental implications of different: types of power unit fuel types tyres",
+                "how much it costs to own and run different types of vehicles over their life",
+                "how vehicle noise can affect the environment"
+              ]
+            },
+            {
+              "id": "1.1.2",
+              "title": "Make sure you’re fit to drive",
+              "mustBeAbleTo": [
+                "assess whether your ability to drive safely and legally is affected or likely to be affected by the use of: over-the-counter medicines prescription medicines illegal or controlled substances alcohol",
+                "assess whether your ability to drive safely and legally is affected by: your emotional state a short or long-term physical condition tiredness",
+                "make other travel arrangements when your ability to drive safely or legally is affected",
+                "get help to make any changes needed for you to drive safely and responsibly if you have a long-term physical condition"
+              ],
+              "mustKnow": [
+                "what the law says about driving while you have illegal or controlled substances or alcohol in your system",
+                "how illegal or controlled substances or alcohol affect your ability to drive safely, and: that regardless of any legal limits, it’s best to have no alcohol in your system how the strength of alcohol varies in different types of drink what a ‘unit’ of alcohol is equivalent to in different types of drink how the body processes drugs and alcohol and the rate at which they’re removed from your system that any alcohol can make you more likely to fall asleep, even if the levels in your blood are below the legal limit",
+                "how over-the-counter or prescription medicines can affect your ability to drive safely",
+                "the risks linked to any combination of: over-the-counter medicines prescription medicines illegal or controlled substances alcohol",
+                "that any remedy or medicine with instructions that say ‘may cause drowsiness’ is highly likely to cause drowsiness",
+                "the range of possible solutions to help people with long-term physical conditions drive safely and responsibly",
+                "how being tired before or during your journey affects your ability to drive, and: how a poor seating position and bad posture can make you tired that a poor diet or eating food at the wrong time can make you more likely to fall asleep that there are times of the day when people are likely to feel more sleepy",
+                "how emotional states (like anger, grief, sadness and joy) can affect your ability to drive safely",
+                "that being careless, thoughtless and/or reckless are frequent causes of crashes",
+                "how a short-term injury (like a sprained ankle) can affect your ability to drive safely",
+                "that eyesight gets worse over time, and that not realising or doing anything about it can affect your ability to drive safely and legally",
+                "the need to have an eyesight test at least every 2 years",
+                "that you must wear glasses or contact lenses all the time when driving if you need them to meet the driving eyesight rules",
+                "how different sorts of tinted and light-sensitive lenses or visors react in different driving conditions",
+                "that changes to your physical and mental abilities, particularly as you get older, can affect your ability to drive safely (such as slower reaction times or reduced muscle strength)",
+                "how to make other travel plans when your ability to drive safely or legally is affected"
+              ]
+            },
+            {
+              "id": "1.1.3",
+              "title": "Control the risks linked with carrying passengers, loads and animals",
+              "mustBeAbleTo": [
+                "manage how passengers affect your ability to drive safely",
+                "make sure passengers are seated legally, correctly and securely",
+                "make sure loads are secure and distributed according to the manufacturer’s guidelines",
+                "allow for the effect that extra loads may have on how the vehicle handles",
+                "make sure animals are secure and correctly restrained within the vehicle"
+              ],
+              "mustKnow": [
+                "the law for fitting and using seatbelts",
+                "the law for fitting and using baby seats, child seats, booster seats and booster cushions",
+                "the importance of using head-restraints, where fitted, and of adjusting them correctly",
+                "the correct use of airbags (such as when using a baby seat)",
+                "the law on the carriage of loads on the outside of the vehicle",
+                "how to use the vehicle handbook to identify how best to safely load the vehicle",
+                "what types of load-carrying and securing equipment you can use with the vehicle and how to fit and use them",
+                "how to restrain animals safely",
+                "how to make sure that you can still see clearly if windows or mirrors are blocked by passengers or by a load",
+                "how to adjust the vehicle to allow for extra weight and changed weight distribution",
+                "how to adjust your driving behaviour to allow for extra weight or changed weight distribution",
+                "how to deal with social pressure and distractions that passengers cause"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1.2",
+          "title": "Make sure the vehicle is safe to drive",
+          "elements": [
+            {
+              "id": "1.2.1",
+              "title": "Make routine checks that your vehicle’s safe to drive",
+              "mustBeAbleTo": [
+                "check all fluid levels, including windscreen washer reservoir(s)",
+                "check that the horn is working correctly",
+                "check that all lights and reflectors are: legal clean in good working order",
+                "check electrical equipment is in good working order",
+                "check there is no damage that would: affect your ability to drive the vehicle safely make the vehicle illegal have an adverse environmental impact",
+                "check all tyres, including any spare, are: legal correctly inflated",
+                "check any equipment, such as the car jack, is in good working order",
+                "check all controls are in good working order",
+                "check windscreen, mirrors and other viewing devices are clear and adjusted to give the best view",
+                "check registration plates are: fitted visible legal",
+                "check that any ancillary equipment (like aftermarket sat nav systems or ‘head-up’ displays) is legal to use in the vehicle and securely fitted in a position that minimises distraction to you",
+                "make sure checks are carried out by a competent person where you are unable or unwilling to carry them out yourself"
+              ],
+              "mustKnow": [
+                "that different vehicles may permit different levels of access to check and maintain fluid levels, check electric systems etc, and some checks or maintenance on some vehicles should only be carried out by qualified mechanics",
+                "that the vehicle handbook identifies which checks can be carried out by the owner or user and explains how and when to carry them out, either directly or using the vehicle’s instrumentation",
+                "that overfilling with engine oil can: damage your engine increase the amount of environmental pollution the vehicle creates",
+                "that using oil that isn’t to the manufacturer’s specification: can increase fuel consumption may cause damage could affect the vehicle warranty",
+                "what fluids to add to the vehicle coolant system and the need to maintain the level of coolant additive",
+                "how to check that tyres: are correctly fitted and inflated meet legal requirements for tread depth are free from defects that would make them unsafe or illegal to use",
+                "the rules that apply to the fitting of different types of tyres",
+                "that tyres specially adapted for different weather conditions are available (such as winter tyres or all-season tyres)",
+                "that the operation of any equipment could results in the driver taking their eyes off the road",
+                "how to spot signs of abnormal tyre wear and the need to have the vehicle checked if abnormal wear is found",
+                "that the windscreen and other windows should be clean and free from obstructions and that there are legal limits to the amount and location of damage to windscreens, beyond which they must be replaced",
+                "that lights, indicators, reflectors and number plates must be clean at all times",
+                "any rules that apply to the fitting and use of ancillary equipment and how to make sure it can be used safely and with the minimum of distraction",
+                "what electrical equipment to check",
+                "what controls to check",
+                "the legal need to dispose of or recycle oil, batteries and tyres correctly"
+              ]
+            },
+            {
+              "id": "1.2.2",
+              "title": "Check the vehicle is fit for the journey",
+              "mustBeAbleTo": [
+                "familiarise yourself with the vehicle if it is the first time you have driven it",
+                "conduct pre-journey checks and configure the vehicle correctly",
+                "make changes to your driving position so that you: are safely and comfortably seated have good all-round visibility have control of the vehicle minimise tiredness",
+                "check there is enough fuel of the right type"
+              ],
+              "mustKnow": [
+                "what pre-journey checks are needed and what adjustments to make",
+                "the effect of filling a vehicle with the wrong sort of fuel",
+                "how to check what sort of fuel your vehicle uses",
+                "the operation of low-fuel, mpg or range indicators and how much fuel is left in the tank when low-fuel indicators operate"
+              ]
+            },
+            {
+              "id": "1.2.3",
+              "title": "Make sure the vehicle’s documents meet the legal requirements",
+              "mustBeAbleTo": [
+                "make sure your driving licence is valid for the category of vehicle being driven",
+                "make sure the vehicle is registered and taxed",
+                "make sure you have valid insurance for the use you intend to make of the vehicle",
+                "make sure that the vehicle has a current MOT certificate (where applicable)",
+                "display red L plates (or if you wish, red D plates in Wales) if you are a provisional licence holder",
+                "make sure that the correct documents are in place even if you don’t own the vehicle",
+                "where your journey will take you into an area where different rules apply, make sure that you follow those rules"
+              ],
+              "mustKnow": [
+                "that you must: have a valid driving licence for the vehicle you drive meet any restrictions on your licence",
+                "that learner drivers, holding a provisional licence, must be supervised by somebody who: is at least 21 years old, and has held a licence to drive the category of vehicle for at least 3 years",
+                "that any vehicle driven by a learner must clearly display legal, red L plates (or in Wales either red L or red D plates, or both)",
+                "that L (D) plates should be removed when a vehicle is not being driven by a learner",
+                "that the vehicle must be registered with the Driver and Vehicle Licensing Agency ( DVLA )",
+                "the law on the taxation of vehicles and the need to make a statutory declaration (SORN) if you take the vehicle off the road and stop taxing it for any period of time",
+                "that you must notify the DVLA if you: change your name or address have or develop a medical condition that will affect your ability to drive buy or sell a vehicle make any substantive changes to your vehicle",
+                "that you must have a minimum of third party insurance covering you for the intended use of the vehicle, and what insurance companies require you to do to meet your obligations under that insurance",
+                "that you must hold a valid MOT test certificate for the vehicle if it is more than 3 years old",
+                "that, if required by an authorised person, you must be able to produce: your driving licence a valid insurance certificate a current MOT certificate either immediately or within seven days to a police station",
+                "that if you borrow or rent a vehicle you still must make sure that you have the correct documents",
+                "that if you lend somebody your vehicle you still must make sure that they have the correct documents",
+                "that if you drive outside Great Britain there may be different document rules, like a need to have your documents with you at all times"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1.3",
+          "title": "Plan a journey",
+          "elements": [
+            {
+              "id": "1.3.1",
+              "title": "Plan a journey",
+              "mustBeAbleTo": [
+                "plan a suitable route taking into account: road conditions weather conditions traffic driving experience the vehicle you are using",
+                "work out the time needed to complete your journey safely and legally, including rest breaks and refuelling stops",
+                "decide whether it is safe to make a journey in poor weather conditions",
+                "consider other routes if your planned route is blocked, or if weather conditions make it unsafe to continue",
+                "program any sat nav systems before you start your journey so that you’re not distracted while driving",
+                "be prepared for the possibility that your journey may be delayed or affected by poor weather conditions, by taking: suitable clothing equipment food and drink",
+                "plan where you intend to park at the end of your journey"
+              ],
+              "mustKnow": [
+                "the principles of mapping, the technologies available for route planning and for monitoring road traffic conditions, and the limitations of these technologies",
+                "the need to build in extra time to allow for unforeseen delays",
+                "how congestion charges and road and bridge tolls may affect your choice of route",
+                "how the risks involved in travelling on some routes can change at different times, such as: heavier traffic at rush hour or in the holiday season lower stability on exposed routes in windy conditions",
+                "the link between your level of skill and experience and whether you should choose a particular route",
+                "how to get information on likely weather conditions and how they might affect your journey",
+                "when using sat nav systems: how to program them the information they can provide that they can sometimes fail, and how to prepare for that happening",
+                "the importance of minimising distractions while driving",
+                "how to find safe, secure, legal and convenient places to park"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Guide and control the vehicle",
+      "units": [
+        {
+          "id": "2.1",
+          "title": "Start, move off, stop and leave the vehicle safely and responsibly",
+          "elements": [
+            {
+              "id": "2.1.1",
+              "title": "Start the vehicle",
+              "mustBeAbleTo": [
+                "carry out pre-start checks on: doors parking brake seat steering seatbelt mirrors",
+                "disengage anti-theft devices",
+                "make sure the gear lever is in neutral (or ‘P’ or ‘N’ if driving an automatic vehicle)",
+                "consider the effect of starting the engine on other road users, particularly vulnerable road users such as passing cyclists, pedestrians or horse riders",
+                "monitor vehicle instruments and gauges during engine start up",
+                "respond correctly to information given by instruments and gauges during engine start up",
+                "start the engine correctly"
+              ],
+              "mustKnow": [
+                "how to read and respond correctly to instruments, like: gauges indicators warning lights on-board diagnostic systems and other aids fitted to the vehicle to allow you to monitor its operation and performance",
+                "that different vehicles may have different starting mechanisms, types of instrument, parking brakes and other aids, and that it is vital to use the vehicle handbook to find out how they work",
+                "how to start the engine when it is cold",
+                "the benefits of using anti-theft devices, and how turn them on and off"
+              ]
+            },
+            {
+              "id": "2.1.2",
+              "title": "Move off safely and smoothly",
+              "mustBeAbleTo": [
+                "carry out all-round visual checks, including blind spots, to make sure that it is safe to move-off",
+                "signal your intention to move off to other road users, where needed",
+                "move off straight-ahead, on the level and on slopes, safely and smoothly, keeping control of the vehicle at all times",
+                "move off at an angle from behind a parked vehicle or obstruction, safely and smoothly, keeping control of the vehicle at all times",
+                "check that controls are operating correctly",
+                "restart quickly and safely if the vehicle stalls"
+              ],
+              "mustKnow": [
+                "the importance of carrying out all-round, effective observation of the road and other road users before moving off",
+                "the importance and location of blind spots and how to carry out blind spot checks before moving away",
+                "the importance of using a safe, systematic routine to help you to move off safely and smoothly",
+                "the importance of applying the footbrake before selecting drive on an automatic vehicle",
+                "where applicable, the relevance of the ‘biting point’, that is the point at which the clutch plate and the flywheel come into firm contact and start to transmit drive",
+                "the operation of the parking brake release mechanism",
+                "the limitations of hill assist systems, where fitted",
+                "the effects of ‘dry steering’, that is turning the wheels when the vehicle is not moving",
+                "how to check controls, such as steering and brakes, are operating correctly"
+              ]
+            },
+            {
+              "id": "2.1.3",
+              "title": "Decelerate and bring the vehicle to a stop safely",
+              "mustBeAbleTo": [
+                "use the accelerator and brakes correctly to regulate speed and bring the vehicle to a stop safely",
+                "stop the vehicle safely and under control in an emergency",
+                "use the parking brake when stationary, where needed"
+              ],
+              "mustKnow": [
+                "how to apply a safe, systematic approach when stopping",
+                "the distance a vehicle requires to stop from different speeds and in different road and weather conditions",
+                "that a vehicle’s overall stopping distance consists of 2 parts: thinking distance - which is the distance travelled from the point where you decide to brake to the point where you start braking braking distance - which is the distance travelled from the point where you start to brake to the point where you stop",
+                "the importance of anticipation and judgement to allow for progressive use of the brakes",
+                "how aids such as an Anti-lock Braking System ( ABS ) can help in safe and effective braking"
+              ]
+            },
+            {
+              "id": "2.1.4",
+              "title": "Park the vehicle safely and responsibly",
+              "mustBeAbleTo": [
+                "select a safe, legal and convenient place to stop and park and, once stationary, secure the vehicle on slopes, facing both up and down, as well as on the level",
+                "make sure the parking brake is applied effectively",
+                "select a gear to hold the vehicle safely when parked",
+                "switch the engine off",
+                "make sure that vehicles fitted with automatic transmission are left with the lever in the P ark position",
+                "make sure lights are left on where required",
+                "check for oncoming cyclists, pedestrians and other traffic before opening your door"
+              ],
+              "mustKnow": [
+                "what factors to take into consideration when looking for a safe, legal and convenient place to stop or park",
+                "the pros and cons of reversing or ‘pulling through’ into a parking space rather than reversing out",
+                "that you must switch off the headlights, fog lights if fitted and engine when parked",
+                "the rules in The Highway Code that apply when leaving your vehicle on different roads and in different lighting and weather conditions",
+                "how and when to set the position of the steering wheels of the vehicle to prevent it rolling away",
+                "how to make sure that the parking brake is applied effectively",
+                "that, when parking a vehicle with manual gears, selecting a gear will help to hold the vehicle if the parking brake should fail",
+                "the possible outcomes of opening a door, particularly on the offside of the vehicle, when not safe to do so"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2.2",
+          "title": "Drive the vehicle safely and responsibly",
+          "elements": [
+            {
+              "id": "2.2.1",
+              "title": "Monitor and respond to information from instrumentation, driving aids and the environment",
+              "mustBeAbleTo": [
+                "monitor and respond correctly to gauges, warning lights and other aids when driving",
+                "monitor and respond appropriately to instructions provided by sat nav systems without being distracted from the driving task",
+                "respond to the actual situation on the road ahead",
+                "make effective use of driving aids such as adaptive cruise control, daytime running lights, automatic headlights and lane warning systems and override or disable them if it is safer to do so",
+                "make effective use of mirrors and other aids to vision to identify and monitor other road users and hazards",
+                "judge speed and distance correctly and effectively",
+                "signal your intentions correctly to other road users in a safe and systematic way",
+                "use the vehicle’s lights, indicators and horn correctly",
+                "use the windows, wipers, demisters and climate and ventilation controls so that you can see clearly"
+              ],
+              "mustKnow": [
+                "the purpose and meaning of dashboard warning lights",
+                "the location of switches and controls and how to use them without being distracted or losing control of the vehicle while on the move",
+                "that you must always act on the basis of what is in front of you and not just rely on the information provided by sat nav systems or other aids",
+                "when it is safer to override or disable driving aids",
+                "when and how to use dipped headlights",
+                "the rules that apply to the use of fog lights",
+                "how different types of mirror can make other road users appear to be nearer or further away than they actually are",
+                "how to identify and respond to changes in road surfaces and weather conditions"
+              ]
+            },
+            {
+              "id": "2.2.2",
+              "title": "Control the acceleration of the vehicle effectively",
+              "mustBeAbleTo": [
+                "use the accelerator smoothly to achieve and maintain a suitable speed"
+              ],
+              "mustKnow": [
+                "that correct use of the accelerator will help: vehicle performance safety the environment",
+                "the disadvantages of over-revving when moving away and while stationary",
+                "how to operate cruise control systems safely, if fitted",
+                "the importance of using a driving position that allows you to use the accelerator smoothly"
+              ]
+            },
+            {
+              "id": "2.2.3",
+              "title": "Use gears correctly",
+              "mustBeAbleTo": [
+                "change gear smoothly and in good time",
+                "select the most suitable gear for the speed of the vehicle, given road and traffic conditions",
+                "combine the use of gears with braking and acceleration",
+                "use an automatic or automated gear box effectively, when fitted"
+              ],
+              "mustKnow": [
+                "that different vehicles may have different numbers of gears and those gears may be set up differently",
+                "the effect that unsuitable gear selection can have on: the performance of the vehicle the driver’s ability to drive safely and responsibly the environment",
+                "the use of selective gear changing (sometimes known as block changing)",
+                "the benefits of timely gear selection when going up and down slopes, particularly when loaded",
+                "the use of ‘kick down’ and ‘lock up’ when using an automatic vehicle",
+                "how to use gears to assist safe parking",
+                "the difference between automatic and automated gearboxes"
+              ]
+            },
+            {
+              "id": "2.2.4",
+              "title": "Steer the vehicle safely",
+              "mustBeAbleTo": [
+                "steer the vehicle safely and responsibly in all road and traffic conditions",
+                "hold and control the steering wheel to steer the vehicle accurately and safely",
+                "continue to steer the vehicle safely and responsibly while operating other controls"
+              ],
+              "mustKnow": [
+                "how to keep safe control of the steering wheel",
+                "the effect that the vehicle’s turning circle has on steering the vehicle"
+              ]
+            },
+            {
+              "id": "2.2.5",
+              "title": "Manoeuvre the vehicle",
+              "mustBeAbleTo": [
+                "make proper use of all controls to manoeuvre the vehicle safely and responsibly in: all road and weather conditions forward and reverse gear",
+                "continue to make effective observations, including checks of blind spots, while manoeuvring",
+                "position the vehicle correctly to carry out manoeuvres safely",
+                "use a safe and systematic way to keep yourself and other road users safe, such as ‘mirrors, signal, manoeuvre, position, speed, look’",
+                "use reversing camera systems or proximity sensors effectively, where fitted"
+              ],
+              "mustKnow": [
+                "how the use of safe, systematic routines will contribute to safe and responsible manoeuvring",
+                "the blind spots for the vehicle and how to check them",
+                "the correct procedure: for reversing into a side road on the left for reversing into a side road on the right to carry out a turn-in-the-road or U-turn manoeuvre for carrying out any reverse parking exercise on and off road",
+                "the rules about when and where you cannot make U-turns",
+                "the effects of sudden or harsh use of the accelerator, brakes or steering whilst manoeuvring",
+                "that different vehicles will react differently in a possible skid situation depending on their configuration (such as front-wheel or rear-wheel drive) and on the technologies fitted (such as ABS or electronic stability program (ESP))",
+                "why a skid may occur, how to avoid skids and how to correct them if they do occur",
+                "how to allow for vulnerable road users when carrying out a manoeuvre",
+                "the benefits of engine braking and when it should be used",
+                "the risks linked to reversing a vehicle further than necessary",
+                "the risks linked to ‘coasting’ (allowing the vehicle to move without having a gear selected, either with the clutch depressed or when in neutral)",
+                "how to identify a suitable place for manoeuvring",
+                "that use of reversing aids, such as camera systems and proximity sensors, does not replace the need to practise good, all-round, effective observation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2.3",
+          "title": "Drive the vehicle while towing a trailer or caravan",
+          "elements": [
+            {
+              "id": "2.3.1",
+              "title": "Drive the vehicle while towing a trailer or caravan",
+              "mustBeAbleTo": [
+                "make sure you have the correct licence to drive the combination of vehicle and trailer or caravan",
+                "make sure that the trailer or caravan is suitable and legal for use on the road",
+                "make sure that you are insured to drive the combination of vehicle and trailer or caravan",
+                "make sure that your vehicle is capable of towing the trailer or caravan",
+                "make sure that the trailer or caravan is safely and correctly coupled to the vehicle",
+                "carry out correct safety checks",
+                "make sure that any load is evenly distributed and secure",
+                "allow more time and brake earlier when slowing down or stopping",
+                "allow more distance and time to overtake safely",
+                "make allowances for the extra length of the vehicle with the trailer or caravan, particularly when turning or emerging at junctions",
+                "safely and correctly uncouple the trailer or caravan from the vehicle when it is no longer needed",
+                "reverse the vehicle with the trailer or caravan attached"
+              ],
+              "mustKnow": [
+                "the driving licence regulations on towing trailers or caravans",
+                "that not all insurance policies cover towing a trailer or caravan",
+                "that most manufacturers make recommendation for the maximum size of trailer or caravan that can be safely towed by each type of vehicle, and for how they should be attached, and that these recommendations must be followed",
+                "how to find the trailer or caravan’s ‘nose weight’ and how to check that this does not exceed the limits of the vehicle’s tow bar",
+                "how to couple and uncouple a trailer or caravan safely",
+                "that towing a trailer or caravan may increase the number of blind spots",
+                "how and when to use aids to observation, such as extra mirrors",
+                "what safety checks should be made on a trailer or caravan",
+                "the speed limits when towing a trailer or caravan",
+                "that vehicles towing trailers on motorways are not allowed in the outside lane where there are 3 or more lanes",
+                "that towing a trailer or caravan will change the way a vehicle handles, and how to deal with those changes",
+                "that it may be necessary to take up a different position on the road when dealing with junctions or roundabouts",
+                "what ‘snaking’ is and how to correct it",
+                "that strong winds pose a particular hazard for caravans or high-sided trailers",
+                "how to steer correctly when reversing a vehicle with a trailer or caravan attached",
+                "the effect that towing a trailer or caravan may have on braking, the concept of brake fade and what to do when descending slopes to make sure you keep in control",
+                "that you may have to check height or width restrictions on your route when you tow a trailer or caravan",
+                "that rescue services may not include recovery of a trailer or caravan",
+                "the benefits of carrying a spare wheel and any other equipment for the trailer or caravan"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Use the road in accordance with The Highway Code",
+      "units": [
+        {
+          "id": "3.1",
+          "title": "Negotiate the road correctly",
+          "elements": [
+            {
+              "id": "3.1.1",
+              "title": "Maintain a suitable position on the road",
+              "mustBeAbleTo": [
+                "select and maintain a suitable position on the road",
+                "change lanes safely and responsibly",
+                "overtake other road users legally, safely and responsibly"
+              ],
+              "mustKnow": [
+                "how to select a suitable position on the road",
+                "where you may not drive, for example on the pavement, hard shoulder or in cycle lanes",
+                "what lane discipline is and why it is important",
+                "that your position on the road may be affected by a range of factors including weather, road and traffic conditions",
+                "the importance of: scanning the road ahead for reasons to change your position, such as roadworks taking timely action to reposition yourself",
+                "how to use a safe and systematic way to change position safely and responsibly in time",
+                "how the performance and handling of your vehicle will affect your ability to overtake safely and responsibly",
+                "where you may and may not overtake"
+              ]
+            },
+            {
+              "id": "3.1.2",
+              "title": "Negotiate bends",
+              "mustBeAbleTo": [
+                "assess bends correctly on approach",
+                "select a safe position and speed to enter a bend",
+                "maintain safe speed and control throughout a bend",
+                "exit bends safely"
+              ],
+              "mustKnow": [
+                "how to use various methods such as ‘limit point analysis’ to judge the severity of a bend",
+                "that when deciding on the line to take and the speed at which it is possible to negotiate a bend safely you should take into account factors such as: adverse camber banking uneven or slippery surfaces weather conditions visibility road junctions other road users that different vehicles will perform and handle differently through bends",
+                "the importance of coordinating the use of gears, accelerator, brakes and steering to negotiate a bend safely and responsibly",
+                "how the use of a safe and systematic way to negotiate bends safely",
+                "the effect that loads and passengers may have on the handling of the vehicle through bends"
+              ]
+            },
+            {
+              "id": "3.1.3",
+              "title": "Negotiate all types of junctions, including roundabouts, and all types of crossings",
+              "mustBeAbleTo": [
+                "apply a safe and systematic way to negotiate all types of junctions, roundabouts and crossings safely and responsibly",
+                "actively scan for more vulnerable road users at junctions, roundabouts and crossings ‘ for example cyclists and motorcyclists",
+                "turn left and right and go ahead safely and responsibly",
+                "emerge safely and responsibly into streams of traffic",
+                "cross the path of traffic safely when turning right"
+              ],
+              "mustKnow": [
+                "the rules that apply to particular junctions and roundabouts, such as priority rules",
+                "how to turn left and right safely and responsibly",
+                "the issues that apply to turning right at crossroads",
+                "the rules that apply to: merging into a stream of traffic crossing the path of an approaching stream of traffic all types of pedestrian crossing train and tram crossings",
+                "the meaning of warning lights used at pedestrian and train and tram crossings and how to respond correctly",
+                "how the use of a safe, systematic routine, including effective observations, will support the safe negotiation of junctions, roundabouts and crossings",
+                "the rules that apply to other road users, particularly drivers of large vehicles or vulnerable road users such as cyclists and motorcyclists, and the position that they may select on the road as a result"
+              ]
+            },
+            {
+              "id": "3.1.4",
+              "title": "Drive on motorways and dual carriageways",
+              "mustBeAbleTo": [
+                "join a motorway or dual carriageway safely and responsibly from the left or the right",
+                "leave a motorway or dual carriageway safely and responsibly to the left or the right",
+                "drive in the most suitable lane",
+                "allow for other road users joining or leaving the motorway or dual carriageway",
+                "change lanes safely and responsibly"
+              ],
+              "mustKnow": [
+                "how to join a motorway or dual carriageway, safely and responsibly, from traffic light controlled or uncontrolled slip roads",
+                "how to leave a motorway or dual carriageway safely and responsibly, including the need to position yourself well in advance to allow other road users enough time to react",
+                "how to join or leave a motorway or dual carriageway safely in a safe way systematic way",
+                "that you may not stop on a motorway except in an emergency",
+                "when and for what purposes you are allowed to use the hard-shoulder",
+                "that you mustn’t pick up or set down anybody, or walk on a motorway, except in an emergency",
+                "that you mustn’t cross the central reservation, or drive against the traffic flow on a motorway or dual carriageway, unless directed to do so by an authorised person or traffic signs",
+                "the rules that apply when using a motorway or dual carriageway",
+                "that some stretches of motorway may have local, active traffic management (also known as smart motorways or managed motorways) control systems installed, which will change speed limits or the direction of flow in particular lanes, and that it is vital to obey the instructions given by such systems",
+                "the need to scan well ahead on the approach to junctions to make sure you are aware of: other road users joining or leaving queuing traffic",
+                "the correct use of hazard warning lights",
+                "the risks posed by drivers of left-hand-drive vehicles, in particular large goods vehicles"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "3.2",
+          "title": "Comply with signals, signs and road markings",
+          "elements": [
+            {
+              "id": "3.2.1",
+              "title": "Comply with signals, signs and road markings",
+              "mustBeAbleTo": [
+                "respond correctly to all permanent and temporary traffic signals, signs and road markings",
+                "respond correctly to signals given by authorised persons",
+                "respond safely and responsibly to signals given by other road users"
+              ],
+              "mustKnow": [
+                "the meaning of, and how to respond to: mandatory traffic signs warning signs road markings",
+                "how to work out the speed limit when you can’t see speed limit signs",
+                "the meaning of, and how to respond correctly to, signals given by: police officers crossing patrols others authorised to control traffic",
+                "who is authorised to control traffic",
+                "signals that other road users are likely to use and how to respond safely and responsibly to them"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Drive safely and responsibly in the traffic system",
+      "units": [
+        {
+          "id": "4.1",
+          "title": "Interact correctly with other road users",
+          "elements": [
+            {
+              "id": "4.1.1",
+              "title": "Communicate intentions to other road users",
+              "mustBeAbleTo": [
+                "use indicators and arm signals to signal intentions correctly",
+                "support the use of any signals given by positioning the vehicle correctly and safely",
+                "use horn and lights to communicate with other road users where necessary"
+              ],
+              "mustKnow": [
+                "the arm signals shown in The Highway Code and when they may need to be given",
+                "when and how to use indicators",
+                "why you should make sure signals are given in good time and cancelled as soon as possible",
+                "how to employ a safe and systematic way to make the best use of signals",
+                "when signals must be given and when it is acceptable not to use them",
+                "the law on the use of the horn",
+                "when the flashing of headlights may be used as a warning of approach or instead of the horn",
+                "the risks linked to incorrect use of headlights or the horn as a signal",
+                "how and when to use hazard warning lights",
+                "how and when to use road positioning to confirm your intentions"
+              ]
+            },
+            {
+              "id": "4.1.2",
+              "title": "Co-operate with other road users",
+              "mustBeAbleTo": [
+                "be aware of and predict the likely actions of other road users",
+                "give other road users enough time and space to perform manoeuvres",
+                "monitor and manage your own reaction to other road users",
+                "respond to emergency vehicles correctly",
+                "make progress in the traffic stream and overtake with consideration for other road users"
+              ],
+              "mustKnow": [
+                "how to scan the road ahead to gather useful information",
+                "the rules that apply to other road users, particularly drivers of large vehicles or vulnerable road users such as cyclists and motorcyclists, and the position that they may select on the road as a result",
+                "the importance of predicting the likely actions of other road users, especially vulnerable road users such as cyclists, motorcyclists, children and the elderly",
+                "the importance of always keeping a safe stopping distance between the vehicle and other road users",
+                "how traffic and weather conditions may affect other road users, such as by reducing visibility, and how to allow for this",
+                "how to act safely and responsibly when emergency vehicles are responding to incidents",
+                "how to make safe progress in the traffic stream",
+                "the rules that apply to overtaking on the left",
+                "that driving without due care and attention and reasonable consideration for other road users is an offence"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "4.2",
+          "title": "Minimise risk when driving",
+          "elements": [
+            {
+              "id": "4.2.1",
+              "title": "Identify and respond to hazards",
+              "mustBeAbleTo": [
+                "continually scan the driving space close to the vehicle and into the distance",
+                "use visual clues to predict possible hazards and prepare for situations that may arise",
+                "judge the significance of possible hazards and prioritise your responses",
+                "respond to hazards safely",
+                "keep focused when faced with distractions"
+              ],
+              "mustKnow": [
+                "methods you can use to scan your driving space effectively, both close to and into the distance",
+                "what can affect your field of vision, such as parked vehicles, and how to allow for this",
+                "how the construction of your vehicle may affect your field of vision, and how to overcome this",
+                "what aquaplaning is and when it might happen",
+                "factors that might cause you to skid, such as oil or gravel on the road",
+                "how to read the road ahead and prepare for the unexpected",
+                "which kinds of hazard to particularly look for in different environments, such as tractors on rural roads, deer on forest roads or flooding in heavy rain",
+                "that many tunnels are equipped with radio transmitters so that drivers can tune in to be warned of any incidents, congestion or roadworks",
+                "that if you come across congestion in a tunnel that causes you to stop you should leave at least a 5 metre gap between you and the vehicle in front",
+                "when other road users are vulnerable and how to allow for them",
+                "factors that can distract the driver (such as talking to passengers or using a sat nav system) and how to manage them so that you are aware of the driving space and possible hazards",
+                "the law on the use of mobile phones whilst driving"
+              ]
+            },
+            {
+              "id": "4.2.2",
+              "title": "Drive defensively",
+              "mustBeAbleTo": [
+                "create and maintain a safe driving space",
+                "scan and check your surroundings, especially blind spots",
+                "position your vehicle to maximise visibility to other road users",
+                "use dipped headlights when necessary during daylight hours",
+                "manage your own physical and emotional state to make sure you can manage risks to your safety",
+                "drive at such a speed that you can always stop safely in the distance you can see to be clear",
+                "assess your own driving behaviour and identify areas needing work"
+              ],
+              "mustKnow": [
+                "the importance of using a safe and systematic way to make sure you are always in control of your vehicle and travelling at the right speed, in the right gear and in the correct position on the road for the conditions",
+                "the importance of keeping a safe separation distance in all weather and traffic conditions",
+                "how to assess your own ability to drive safely and responsibly against best practice"
+              ]
+            },
+            {
+              "id": "4.2.3",
+              "title": "Drive in an ecologically responsible (eco-safe) way",
+              "mustBeAbleTo": [
+                "accelerate and decelerate smoothly and progressively",
+                "foresee the need to stop, and use timely and smooth deceleration to reduce fuel consumption and general vehicle wear and tear",
+                "drive in the highest responsive gear to keep full control and avoid labouring the engine",
+                "remove extra load from the vehicle when not needed",
+                "turn off the engine when you are likely to be stationary for some time"
+              ],
+              "mustKnow": [
+                "what affects a vehicle’s fuel consumption",
+                "how effective scanning and planning can help you to use smooth acceleration or deceleration to keep momentum",
+                "how fuel consumption is increased by: extra load incorrectly inflated tyres wind resistance, for example from carrying luggage on roof racks",
+                "that selecting the most suitable gear will avoid engine labour and maximise the effects of engine braking",
+                "the use of technologies to reduce exhaust pollution",
+                "under which circumstances it is appropriate to turn off the engine when stationary, rather than leave it idling",
+                "that you should never reduce safety to improve economy"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "4.3",
+          "title": "Manage incidents effectively",
+          "elements": [
+            {
+              "id": "4.3.1",
+              "title": "Take suitable action if your vehicle breaks down",
+              "mustBeAbleTo": [
+                "stop, in a safe place if possible, and switch off the engine",
+                "make sure passengers, animals and loads are managed safely",
+                "where suitable, give warning to other road users",
+                "seek appropriate help"
+              ],
+              "mustKnow": [
+                "where possible, how to keep control of the vehicle if it breaks down",
+                "the law on using the hard-shoulder on motorways and the guidance on waiting for breakdown services",
+                "how to identify your precise location on motorways, to allow breakdown services to reach you quickly",
+                "that it is better to use an emergency roadside telephone than a mobile phone because it allows the operator to find your exact position",
+                "how and when to use a warning triangle",
+                "how and when to use hazard warning lights"
+              ]
+            },
+            {
+              "id": "4.3.2",
+              "title": "Take suitable action if you’re involved in or witness a collision",
+              "mustBeAbleTo": [
+                "where suitable, stop and park your vehicle in a safe place",
+                "make sure passengers, animals and loads are managed safely",
+                "make sure warning is given to other road users",
+                "assess the incident scene and your safety",
+                "note the condition of any casualties",
+                "give clear and accurate information to emergency services",
+                "give suitable help to others at the scene",
+                "where possible, record information about what you saw or the scene as you found it, including taking photographs and drawing sketch plans",
+                "comply with legal requirements accurately and in good time, if required"
+              ],
+              "mustKnow": [
+                "the importance of making sure further injury and damage is not caused by: managing uninjured passengers, animals and passers-by giving warning to other road users as quickly as possible",
+                "how to contact the emergency services and the vital importance of giving them accurate information",
+                "the importance of being able to give information about the condition of casualties to the ambulance service",
+                "the benefits of gathering and recording information as soon as possible after the event",
+                "if you’re involved in an incident that causes damage or injury to another person, vehicle, animal or property, you must know the laws that apply to: stopping providing your details giving statements producing documents",
+                "the principles of first aid and the limits of your own first aid skills"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Review and adjust driving behaviour over lifetime",
+      "units": [
+        {
+          "id": "5.1",
+          "title": "Learn from experience",
+          "elements": [
+            {
+              "id": "5.1.1",
+              "title": "Learn from experience",
+              "mustBeAbleTo": [
+                "demonstrate that you have continued to develop and update your driving skills since you took your driving test",
+                "recognise when your ability to drive safely and responsibly is affected by factors such as: changes in your personal circumstances, such as changes in working patterns changes in your state of health and your physical abilities, through illness or age-related deterioration a break from driving changing to an unfamiliar vehicle",
+                "assess the seriousness of the factors identified and: change your driving behaviour to reduce the risks make plans for recovering or improving your driving ability",
+                "seek professional help where needed",
+                "tell DVLA if you have a health or medical condition"
+              ],
+              "mustKnow": [
+                "that you can learn from experience and continue to improve your ability to drive safely and responsibly all through your driving career",
+                "how to assess your own ability to drive safely and responsibly against best practice",
+                "how to assess and learn from others’ driving behaviour",
+                "how to use feedback from others to help you be clear about your own ability to drive safely and responsibly",
+                "when to seek professional help",
+                "the advantages of having regular driver development sessions with a competent instructor to keep up to date and remove bad habits",
+                "the advantages of having an initial input from a competent instructor if you return to driving after a break or you change to an unfamiliar vehicle"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5.2",
+          "title": "Keep up to date with changes",
+          "elements": [
+            {
+              "id": "5.2.1",
+              "title": "Keep up to date with changes",
+              "mustBeAbleTo": [
+                "demonstrate that your understanding of the meaning of road signs and markings is current",
+                "demonstrate that your understanding of the law on the use of a vehicle on public roads is current",
+                "keep up to date with changes to vehicle technology especially if you change the vehicle you are using",
+                "safely operate any technology that is fitted to any vehicle you drive including disabling it where appropriate",
+                "respond correctly to any changes in the documents required to use a vehicle on the road",
+                "take all steps needed to maintain your entitlement to a licence for the type of vehicle you are driving"
+              ],
+              "mustKnow": [
+                "where to find information about changes to signs, markings and legislation, such as: The Highway Code updates GOV.UK government publications motoring organisation websites",
+                "where to find information about changes to vehicle technologies, for example: manufacturers’ websites trade magazines and websites",
+                "where to find instructions on the safe operation of technology fitted to a vehicle",
+                "where to find information about changes to registration, MOT, or tax rules, such as: GOV.UK government publications motoring organisation websites"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "roles": 5,
+    "units": 13,
+    "elements": 31
+  }
+}

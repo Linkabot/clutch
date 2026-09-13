@@ -33,3 +33,12 @@
 - Contains public sector information licensed under the Open Government Licence v3.0.
 - Licence: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 - All content is available under the Open Government Licence v3.0, except where otherwise stated
+
+### National standard for driving cars and light vans (category B)
+
+- Source: https://www.gov.uk/guidance/national-standard-for-driving-cars-and-light-vans-category-b
+- Last updated (gov.uk): 2010-03-30T01:00:00+01:00
+- © Crown copyright
+- Contains public sector information licensed under the Open Government Licence v3.0.
+- Licence: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- All content is available under the Open Government Licence v3.0, except where otherwise stated
