@@ -1,7 +1,11 @@
 // Pure Highway Code HTML parser: splits a section's body HTML into rules
 // (or, for a section with no rules at all, keeps the whole sanitised body),
-// sanitises every kept element against a fixed tag/attribute allowlist, and
-// classifies a section's kind from its slug, trimmed title and rule ids.
+// sanitises every kept element against a fixed tag/attribute allowlist —
+// dropping raw-text elements (script/style/noscript/template/iframe/
+// object/embed) whole, escaping any '<' that could re-open a tag once this
+// output is later parsed again, and allowing only http/https/mailto/tel
+// (or scheme-less) hrefs and image srcs — and classifies a section's kind
+// from its slug, trimmed title and rule ids.
 // No network access — scripts/ingest-highway-code.ts (Step 9) supplies the
 // HTML it fetched via scripts/lib/govuk.ts and writes this module's output
 // to content/uk/highway-code/.
@@ -65,6 +69,76 @@ const ALLOWED_TAGS = new Set([
   'sup',
   'sub',
 ]);
+
+/** Tags whose entire subtree — the wrapping tag AND its content — is
+ * dropped, never unwrapped into "keep sanitised children" like an
+ * ordinary unknown tag. `script`/`style`/`noscript` are raw-text elements
+ * (see `parse(bodyHtml, { blockTextElements: … })` below): a browser never
+ * treats a literal '<'/'>' inside them as a tag boundary while parsing the
+ * original page, so their text can legally contain markup that would
+ * become live once spliced into ordinary body HTML and re-parsed by
+ * `dangerouslySetInnerHTML`. `template`/`iframe`/`object`/`embed` are
+ * dropped for the same reason the plan's suggestions list them alongside
+ * script/style/noscript (review-b.md B2 + suggestion 5): each can carry
+ * content or attributes a plain "unwrap and keep the text" rule is not
+ * safe for. */
+const DROPPED_ENTIRELY_TAGS = new Set([
+  'script',
+  'style',
+  'noscript',
+  'template',
+  'iframe',
+  'object',
+  'embed',
+]);
+
+/** Any '<' immediately followed by an ASCII letter, '/', '!' or '?' could
+ * begin a tag, end tag, markup declaration or bogus comment if this text
+ * were parsed as HTML again — exactly what `dangerouslySetInnerHTML` does
+ * to this module's output. Escaping just that '<' neutralises it while
+ * leaving every other byte — a bare '<' followed by a space or digit, an
+ * existing entity, everything else — exactly as this module has always
+ * emitted it (plan.md M4 refinement item 3: a scan of committed html text
+ * found zero such sequences outside real tags, so this changes no
+ * committed byte). */
+const TAG_LIKE_LT = /<(?=[A-Za-z/!?])/g;
+
+function escapeTagLikeLessThan(rawText: string): string {
+  return rawText.replace(TAG_LIKE_LT, '&lt;');
+}
+
+const HREF_SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+const ALLOWED_HREF_SCHEMES = new Set(['http:', 'https:', 'mailto:', 'tel:']);
+
+/** Removes every ASCII control character and space (code point 32 or
+ * below, plus 127, DEL) from `value`. Written as a code-point filter
+ * rather than a regex escape range, so no unprintable byte sits in this
+ * source file. */
+function stripAsciiControlAndSpace(value: string): string {
+  let result = '';
+  for (const ch of value) {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code > 0x20 && code !== 0x7f) result += ch;
+  }
+  return result;
+}
+
+/** True when `value` is safe to emit as an href/src (plan.md M4
+ * refinement item 4). Scheme-less values — relative paths, `#fragments`,
+ * gov.uk authoring errors already present in committed content — always
+ * pass unchanged, since only a URL *scheme* can execute script. Otherwise,
+ * with ASCII control characters and spaces stripped from a COPY of the
+ * value, the scheme must be one this app ever links to.
+ * node-html-parser's `getAttribute` already entity-decodes the value
+ * (`&#x6A;avascript:` arrives here as `javascript:`), so this needs no
+ * decoding of its own to catch that trick, only the control/whitespace
+ * strip for cases like a tab inside `java` + TAB + `script:`. */
+function safeHref(value: string): boolean {
+  const stripped = stripAsciiControlAndSpace(value);
+  const scheme = HREF_SCHEME.exec(stripped);
+  if (!scheme) return true;
+  return ALLOWED_HREF_SCHEMES.has(scheme[0].toLowerCase());
+}
 
 /**
  * Classifies a section's kind. Precedence (checked in this fixed order):
@@ -231,12 +305,17 @@ function rewriteHref(href: string, crossRefs: Set<string>): string {
   return href.startsWith('/') ? `https://www.gov.uk${href}` : href;
 }
 
-function sanitiseAnchorAttrs(el: HTMLElement, ctx: SanitiseContext): string {
+/** Builds the sanitised attribute string for a kept `<a>`, or returns
+ * `null` when the href's scheme is not one `safeHref` allows — the
+ * caller then unwraps the anchor to its sanitised children instead of
+ * emitting it (plan.md M4 refinement item 4). */
+function sanitiseAnchorAttrs(el: HTMLElement, ctx: SanitiseContext): string | null {
   const href = el.getAttribute('href');
   const title = el.getAttribute('title');
   if (!href) return title ? ` title="${escapeAttribute(title)}"` : '';
 
   const rewritten = rewriteHref(href, ctx.crossRefs);
+  if (!safeHref(rewritten)) return null;
   const isAbsolute = /^https?:\/\//i.test(rewritten);
   let attrs = ` href="${escapeAttribute(rewritten)}"`;
   if (isAbsolute) attrs += ` rel="external noopener" target="_blank"`;
@@ -258,10 +337,8 @@ function sanitiseCellAttrs(el: HTMLElement): string {
   return attrs;
 }
 
-function sanitiseAttrsFor(tag: string, el: HTMLElement, ctx: SanitiseContext): string {
+function sanitiseAttrsFor(tag: string, el: HTMLElement): string {
   switch (tag) {
-    case 'a':
-      return sanitiseAnchorAttrs(el, ctx);
     case 'abbr': {
       const title = el.getAttribute('title');
       return title ? ` title="${escapeAttribute(title)}"` : '';
@@ -277,36 +354,52 @@ function sanitiseAttrsFor(tag: string, el: HTMLElement, ctx: SanitiseContext): s
 }
 
 /** An <img> is never kept: it is recorded in `images[]` and replaced with a
- * clearly-labelled link out, since Phase 1 ships no images offline. */
+ * clearly-labelled link out, since Phase 1 ships no images offline. When
+ * the source isn't `safeHref`-safe (plan.md M4 refinement item 4), the
+ * image is still recorded — offline metadata is unaffected — but rendered
+ * as plain, unlinked text instead of a clickable link. */
 function imageReplacement(el: HTMLElement, ctx: SanitiseContext): string {
   const src = el.getAttribute('src') ?? '';
   const alt = (el.getAttribute('alt') ?? '').trim();
   ctx.images.push({ src, alt });
   const label = alt.length > 0 ? alt : 'view image';
+  if (!safeHref(src)) return `Diagram (online): ${escapeText(label)}`;
   const href = escapeAttribute(src);
   return `<a class="hc-image" href="${href}" rel="external noopener" target="_blank">Diagram (online): ${escapeText(label)}</a>`;
 }
 
 function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
-  if (node.nodeType === NodeType.TEXT_NODE) return (node as TextNode).rawText;
+  if (node.nodeType === NodeType.TEXT_NODE) {
+    return escapeTagLikeLessThan((node as TextNode).rawText);
+  }
   if (node.nodeType !== NodeType.ELEMENT_NODE) return '';
 
   const el = node as HTMLElement;
   const tag = el.localName;
 
+  if (DROPPED_ENTIRELY_TAGS.has(tag)) return '';
   if (tag === 'img') return imageReplacement(el, ctx);
   if (tag === 'br') return '<br />';
 
   const innerHtml = el.childNodes.map((child) => sanitiseNode(child, ctx)).join('');
 
+  if (tag === 'a') {
+    const attrs = sanitiseAnchorAttrs(el, ctx);
+    // An unsafe href (plan.md M4 refinement item 4) unwraps the anchor to
+    // its already-sanitised children, same shape as any other disallowed
+    // wrapper below.
+    return attrs === null ? innerHtml : `<a${attrs}>${innerHtml}</a>`;
+  }
+
   if (!ALLOWED_TAGS.has(tag)) {
-    // Disallowed wrapper (script, style, iframe, or any other unknown
-    // tag): drop the tag and every attribute, keep the already-sanitised
-    // inner content.
+    // Any other unknown wrapper tag gov.uk might introduce later: drop the
+    // tag and every attribute, keep the already-sanitised inner content.
+    // script/style/noscript/template/iframe/object/embed never reach this
+    // branch — they are dropped whole, above.
     return innerHtml;
   }
 
-  return `<${tag}${sanitiseAttrsFor(tag, el, ctx)}>${innerHtml}</${tag}>`;
+  return `<${tag}${sanitiseAttrsFor(tag, el)}>${innerHtml}</${tag}>`;
 }
 
 function sanitiseNodes(nodes: HtmlNode[], ctx: SanitiseContext): string {
@@ -352,7 +445,14 @@ function buildRule(bucket: RuleBucket): Rule {
  * `preambleHtml` is empty and `rules` is empty).
  */
 export function parseSection(bodyHtml: string, meta: SectionMeta): Section {
-  const root = parse(bodyHtml);
+  // `pre` is deliberately left out of blockTextElements (unlike
+  // node-html-parser's default, which raw-texts it alongside
+  // script/style/noscript): its content is then parsed as ordinary nodes
+  // and sanitised like everything else, instead of surviving as
+  // unescaped raw text (plan.md M4 item 1).
+  const root = parse(bodyHtml, {
+    blockTextElements: { script: true, noscript: true, style: true },
+  });
   const topLevel = root.childNodes;
   const { preamble, rules: ruleBuckets } = splitIntoBuckets(topLevel);
 

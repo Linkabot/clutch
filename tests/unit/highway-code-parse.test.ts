@@ -115,6 +115,126 @@ describe('parseSection', () => {
   });
 });
 
+// plan.md M4 (review-b.md finding B2 + suggestion B-S1) and its
+// pre-dispatch refinement. Every payload below is copied verbatim from
+// Primary's throwaway probes (b2-probe.ts raw-text elements, b2-probe2.ts
+// malformed tags, b2-probe3.ts link schemes) so this block covers every
+// case they check; each builds its own section HTML, no fixture change.
+describe('sanitiser hardening (M4)', () => {
+  const HARDENING_META = {
+    slug: 'sanitiser-hardening-probe',
+    title: 'Sanitiser hardening probe (1 to 1)',
+    basePath: '/guidance/the-highway-code/sanitiser-hardening-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/sanitiser-hardening-probe',
+    order: 0,
+  };
+
+  function ruleHtmlFor(payload: string): string {
+    const body = `<h3 id="rule1">Rule 1</h3><p>You <strong>MUST</strong> test.</p>${payload}`;
+    return parseSection(body, HARDENING_META).rules[0]?.html ?? '';
+  }
+
+  const ON_ATTR = /<[^>]*\son[a-z]+\s*=/i;
+  const DANGEROUS_TAGS = /<(img|svg|script|style|iframe|noscript|object|embed|template)\b/i;
+  const HREF_SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+  const ALLOWED_HREF_SCHEMES = new Set(['http:', 'https:', 'mailto:', 'tel:']);
+
+  /** No tag carrying an on…= attribute, none of the tags this step drops
+   * or intercepts, and every emitted href is scheme-less (a relative
+   * path, a fragment, or a bare token like this fixture's `src="x"`) or
+   * uses one of the four schemes this app ever links to (plan.md M4
+   * refinement item 4 — only a URL *scheme* can execute script, so a
+   * scheme-less value is never rejected here). */
+  function expectNeutralised(html: string): void {
+    expect(html).not.toMatch(ON_ATTR);
+    expect(html).not.toMatch(DANGEROUS_TAGS);
+    for (const match of html.matchAll(/href="([^"]*)"/g)) {
+      const scheme = HREF_SCHEME.exec(match[1]);
+      if (scheme) {
+        expect(ALLOWED_HREF_SCHEMES.has(scheme[0].toLowerCase()), match[1]).toBe(true);
+      }
+    }
+  }
+
+  describe('raw-text elements (probe b2-probe.ts)', () => {
+    const payloads: Record<string, string> = {
+      script: '<script>var t = "<img src=x onerror=alert(1)>";</script>',
+      style: '<style>a{} </style><img src=x onerror=alert(2)><style></style>',
+      styleInner: '<style>x{}<img src=x onerror=alert(22)></style>',
+      pre: '<pre><img src=x onerror=alert(3)></pre>',
+      noscript: '<noscript><img src=x onerror=alert(4)></noscript>',
+      iframe: '<iframe><img src=x onerror=alert(5)></iframe>',
+      jsHref: '<p><a href="javascript:alert(6)">j</a></p>',
+      dataHref: '<p><a href="data:text/html,<script>alert(7)</script>">d</a></p>',
+      entityText: '<p>&lt;img src=x onerror=alert(8)&gt;</p>',
+    };
+
+    for (const [name, payload] of Object.entries(payloads)) {
+      it(`neutralises ${name}`, () => {
+        expectNeutralised(ruleHtmlFor(payload));
+      });
+    }
+  });
+
+  describe('malformed tags — parser differential (probe b2-probe2.ts)', () => {
+    const payloads: Record<string, string> = {
+      slashAttr: '<p>x<img/src=x onerror=alert(9)>y</p>',
+      svgSlash: '<p><svg/onload=alert(10)></p>',
+      doubleLt: '<p><<img src=x onerror=alert(12)>></p>',
+      unclosed: '<p><img src="x" onerror="alert(14)"</p>',
+      divSlash: '<p><div/onmouseover=alert(15)>x</div></p>',
+      splitScript: '<p><scr<script>x</script>ipt>alert(16)</p>',
+      commentish: '<p><!--<img src=x onerror=alert(17)>--></p>',
+      cdata: '<p><![CDATA[<img src=x onerror=alert(18)>]]></p>',
+    };
+
+    for (const [name, payload] of Object.entries(payloads)) {
+      it(`neutralises ${name}`, () => {
+        expectNeutralised(ruleHtmlFor(payload));
+      });
+    }
+
+    it('keeps a benign lone "<" unescaped when not followed by a letter, "/", "!" or "?": "a < b and 3<4"', () => {
+      expect(ruleHtmlFor('<p>a < b and 3<4</p>')).toContain('a < b and 3<4');
+    });
+  });
+
+  describe('link schemes (probe b2-probe3.ts)', () => {
+    const payloads: Record<string, string> = {
+      mixedCase: '<p><a href="JaVaScRiPt:alert(1)">a</a></p>',
+      leadSpace: '<p><a href=" javascript:alert(2)">b</a></p>',
+      leadTab: '<p><a href="\tjavascript:alert(3)">c</a></p>',
+      innerTab: '<p><a href="java\tscript:alert(4)">d</a></p>',
+      entityJ: '<p><a href="&#x6A;avascript:alert(5)">e</a></p>',
+      entityTab: '<p><a href="jav&#x09;ascript:alert(6)">f</a></p>',
+      vbscript: '<p><a href="vbscript:msgbox(7)">g</a></p>',
+      dataHtml: '<p><a href="data:text/html;base64,PHNjcmlwdD5hbGVydCg4KTwvc2NyaXB0Pg==">h</a></p>',
+      imgJs: '<p><img src="javascript:alert(9)" alt="x"></p>',
+    };
+
+    for (const [name, payload] of Object.entries(payloads)) {
+      it(`unwraps or drops the link for ${name}`, () => {
+        expectNeutralised(ruleHtmlFor(payload));
+      });
+    }
+
+    it('keeps safe https, mailto and fragment links untouched (no false positives)', () => {
+      const html = ruleHtmlFor(
+        '<p><a href="https://www.gov.uk/x">ok1</a> <a href="mailto:a@b.c">ok2</a> <a href="#frag">ok3</a></p>',
+      );
+      expect(html).toContain('href="https://www.gov.uk/x"');
+      expect(html).toContain('href="mailto:a@b.c"');
+      expect(html).toContain('href="#frag"');
+    });
+  });
+
+  it('keeps benign markup and text untouched inside a former raw-text element: <pre><b>bold</b> x &amp; y</pre>', () => {
+    const html = ruleHtmlFor('<pre><b>bold</b> x &amp; y</pre>');
+    expect(html).toContain('bold');
+    expect(html).toContain('x &amp; y');
+  });
+});
+
 describe('kindOf', () => {
   it('is introduction when the slug is introduction', () => {
     expect(kindOf({ slug: 'introduction', title: 'Introduction', rules: [] })).toBe('introduction');

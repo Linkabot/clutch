@@ -3,8 +3,11 @@
 // schemas and matches the shape Learn > The Highway Code (Steps 15-17)
 // depends on — rules 1-307 unique, H1-H3 present in the introduction,
 // cross-references resolve, kind counts match plan.md amendment P3, the
-// flagged law rules carry their MUST/MUST NOT count, and the licence text
-// is exactly what was ingested from gov.uk under OGL v3.0.
+// flagged law rules carry their MUST/MUST NOT count, the licence text is
+// exactly what was ingested from gov.uk under OGL v3.0, and — plan.md M4
+// hardening, review-b.md finding B2 + suggestion B-S1 — every committed
+// href is scheme-less or uses http/https/mailto/tel and no tag carries an
+// on…= attribute.
 // Depends on: vitest, node:fs, node:path, src/content/schemas,
 // tests/content/helpers.ts.
 // Depended on by: `npm run validate:content` / `npm test`.
@@ -36,6 +39,38 @@ function findRule(sections: LoadedSection[], id: string): Rule {
     if (rule) return rule;
   }
   throw new Error(`rule ${id} not found in any committed section`);
+}
+
+/** Every sanitised HTML block in the committed corpus: each section's
+ * preamble and (for a section with no rules) whole body, plus every
+ * rule's own html. Used by the M4 hardening checks below. */
+function allSanitisedHtml(sections: LoadedSection[]): string[] {
+  const blocks: string[] = [];
+  for (const { section } of sections) {
+    blocks.push(section.preambleHtml, section.bodyHtml);
+    for (const rule of section.rules) blocks.push(rule.html);
+  }
+  return blocks;
+}
+
+const ALLOWED_HREF_SCHEMES = new Set(['http:', 'https:', 'mailto:', 'tel:']);
+const HREF_SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+
+/** Mirrors scripts/lib/highway-code-parse.ts's `safeHref` independently
+ * (plan.md M4 refinement item 5): a scheme-less href (relative path,
+ * fragment, or one of the 5 known scheme-less gov.uk authoring errors)
+ * always passes — only a URL *scheme* can execute script — so this flags
+ * a committed href only when, after stripping ASCII control characters
+ * and spaces, it has a scheme other than http, https, mailto or tel. */
+function hasUnsafeHrefScheme(href: string): boolean {
+  let stripped = '';
+  for (const ch of href) {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code > 0x20 && code !== 0x7f) stripped += ch;
+  }
+  const scheme = HREF_SCHEME.exec(stripped);
+  if (!scheme) return false;
+  return !ALLOWED_HREF_SCHEMES.has(scheme[0].toLowerCase());
 }
 
 describe('content/uk/highway-code', () => {
@@ -157,5 +192,20 @@ describe('content/uk/highway-code', () => {
     expect(index.licence.statement).toBe(
       'Contains public sector information licensed under the Open Government Licence v3.0.',
     );
+  });
+
+  it('no tag in any committed html/preambleHtml/bodyHtml carries an on…= attribute', () => {
+    const onAttr = /<[^>]*\son[a-z]+\s*=/i;
+    for (const html of allSanitisedHtml(sections)) {
+      expect(html).not.toMatch(onAttr);
+    }
+  });
+
+  it('every committed href is scheme-less or uses http, https, mailto or tel', () => {
+    for (const html of allSanitisedHtml(sections)) {
+      for (const match of html.matchAll(/href="([^"]*)"/g)) {
+        expect(hasUnsafeHrefScheme(match[1]), match[1]).toBe(false);
+      }
+    }
   });
 });
