@@ -98,16 +98,32 @@ export async function stopPreview(proc: ChildProcess | undefined, port: number):
 
 /**
  * Waits until the page's active service worker reaches the 'activated'
- * state. Workbox finishes precaching every globPatterns entry during
- * install (before activation), so 'activated' proves every precache entry
- * — including all Highway Code section chunks and the self-hosted fonts —
- * is already in Cache Storage, i.e. it is safe to stop the server.
+ * state AND has taken control of the page
+ * (`navigator.serviceWorker.controller !== null`). Workbox finishes
+ * precaching every globPatterns entry during install (before activation),
+ * so 'activated' proves every precache entry — including all Highway Code
+ * section chunks and the self-hosted fonts — is already in Cache Storage.
+ * 'activated' alone was not enough on CI's Linux WebKit, though: the
+ * offline Highway Code test's first navigation after stopping the server
+ * reached the network instead of being intercepted by the worker
+ * (`page.goto: Could not connect to localhost: Connection refused`, CI run
+ * 34786910791 — see handoffs/phase-1-highway-code/step-21.md). A worker
+ * can report 'activated' slightly before clientsClaim() actually puts it
+ * in control of an already-open page, so waiting for the controller too —
+ * as Phase 0's still-passing `offline reload still renders` test already
+ * did — proves the page is truly ready to have its server pulled out from
+ * under it.
  */
 export async function waitForServiceWorkerActivated(page: Page): Promise<void> {
   await page.waitForFunction(
     async () => {
       const registration = await navigator.serviceWorker.getRegistration();
-      return !!registration && !!registration.active && registration.active.state === 'activated';
+      return (
+        !!registration &&
+        !!registration.active &&
+        registration.active.state === 'activated' &&
+        navigator.serviceWorker.controller !== null
+      );
     },
     null,
     { timeout: 90_000 },

@@ -60,6 +60,21 @@ test('offline: rule page and search render with the server stopped', async ({ pa
 
   await openAppAt(page, `${origin}/clutch/`);
   await waitForServiceWorkerActivated(page);
+
+  // Diagnostic for handoffs/phase-1-highway-code/step-21.md: if a further
+  // CI run still fails at the offline page.goto below, this line shows
+  // whether the worker really was controlling the page (and which
+  // scope/URL) right before the server was stopped.
+  const swReady = await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.getRegistration();
+    return {
+      controllerScriptURL: navigator.serviceWorker.controller?.scriptURL ?? null,
+      scope: registration?.scope ?? null,
+      activeState: registration?.active?.state ?? null,
+    };
+  });
+  console.log('SW ready:', JSON.stringify(swReady));
+
   await stopPreview(proc, port);
 
   await page.goto(`${origin}/clutch/code/rule/126`);
