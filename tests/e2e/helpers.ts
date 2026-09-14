@@ -97,34 +97,39 @@ export async function stopPreview(proc: ChildProcess | undefined, port: number):
 }
 
 /**
- * Waits until the page's active service worker reaches the 'activated'
- * state AND has taken control of the page
- * (`navigator.serviceWorker.controller !== null`). Workbox finishes
- * precaching every globPatterns entry during install (before activation),
- * so 'activated' proves every precache entry — including all Highway Code
- * section chunks and the self-hosted fonts — is already in Cache Storage.
- * 'activated' alone was not enough on CI's Linux WebKit, though: the
- * offline Highway Code test's first navigation after stopping the server
- * reached the network instead of being intercepted by the worker
- * (`page.goto: Could not connect to localhost: Connection refused`, CI run
- * 34786910791 — see handoffs/phase-1-highway-code/step-21.md). A worker
- * can report 'activated' slightly before clientsClaim() actually puts it
- * in control of an already-open page, so waiting for the controller too —
- * as Phase 0's still-passing `offline reload still renders` test already
- * did — proves the page is truly ready to have its server pulled out from
- * under it.
+ * Waits until the page is controlled by an 'activated' service worker
+ * (`navigator.serviceWorker.controller !== null &&
+ * navigator.serviceWorker.controller.state === 'activated'`). Workbox
+ * finishes precaching every globPatterns entry during install (before
+ * activation), so a controlling worker in state 'activated' proves every
+ * precache entry — including all Highway Code section chunks and the
+ * self-hosted fonts — is already in Cache Storage AND that this page is the
+ * one it controls, i.e. safe to have its server pulled out from under it.
+ *
+ * The predicate MUST be synchronous. Attempt 2 of this helper
+ * (handoffs/phase-1-highway-code/step-18.md) used an `async` predicate that
+ * awaited `navigator.serviceWorker.getRegistration()`, and it never actually
+ * waited: per `node_modules/playwright-core/lib/coreBundle.js`,
+ * `page.waitForFunction` polls with `const success = predicate(); if
+ * (success) { fulfill(success); … }` — it does not `await` the predicate's
+ * return value, so an `async` function's Promise (always truthy) satisfies
+ * `success` on the very first poll, before the awaited work inside it has
+ * resolved. That is why the diagnostic in
+ * tests/e2e/highway-code.spec.ts logged `SW ready:
+ * {"controllerScriptURL":null,"scope":"...","activeState":null}`
+ * immediately after this "wait" returned (handoffs/phase-1-highway-code/
+ * plan.md, "Step 18, attempt 3"), and why the offline test's first
+ * navigation could still race a service worker that was not yet in control.
+ * A synchronous predicate has no such gap: Playwright's polling loop only
+ * calls it, checks its return value directly, and keeps polling until it is
+ * truthy — exactly like Phase 0's `offline reload still renders` test,
+ * which uses a synchronous predicate and has never been flaky.
  */
 export async function waitForServiceWorkerActivated(page: Page): Promise<void> {
   await page.waitForFunction(
-    async () => {
-      const registration = await navigator.serviceWorker.getRegistration();
-      return (
-        !!registration &&
-        !!registration.active &&
-        registration.active.state === 'activated' &&
-        navigator.serviceWorker.controller !== null
-      );
-    },
+    () =>
+      navigator.serviceWorker.controller !== null &&
+      navigator.serviceWorker.controller.state === 'activated',
     null,
     { timeout: 90_000 },
   );
