@@ -45,8 +45,8 @@ Why: User's stated intent for everything they build.
 
 ## 9. Models
 
-Choice: Primary (orchestrator) = Opus 5. Planner = Fable 5.1 (model override when spawned). Executor = Sonnet; Opus 5 for interactive/animation/game components (override). Scout = Haiku. Reviewer = Sonnet.
-Why: User's instruction. Note: PRIMARY.md says tiers are recorded in one place — ask before editing it; until then this table is the record.
+Choice: Primary (orchestrator) = Opus 5. Planner = Opus 5 (model override when spawned). Executor = Sonnet; Opus 5 for interactive/animation/game components (override). Scout = Haiku. Reviewer = Sonnet. Opus 5 is the highest model used; nothing runs on Fable 5.1 (the planner did until 14 Sep 2026).
+Why: User's instruction (14 Sep 2026: no Fable credits, so Opus 5 is the highest model to use). Note: PRIMARY.md says tiers are recorded in one place — ask before editing it; until then this table is the record.
 
 ## 10. Hosting
 
