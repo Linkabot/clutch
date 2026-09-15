@@ -81,7 +81,7 @@ See `docs/DECISIONS.md` for the locked decisions and their reasoning (Phase 0 St
 
 ## Current phase
 
-Phase 1 done; Phase 2 (Road signs & first games) not started. The resume point is `docs/ROADMAP.md`.
+Phase 1 done; Phase 2 (Road signs & first games) in progress. The resume point is `docs/ROADMAP.md`.
 
 ## Handoffs
 

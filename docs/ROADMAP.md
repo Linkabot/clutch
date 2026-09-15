@@ -15,7 +15,7 @@ Status: done
 ## Phase 2 — Road signs & first games
 
 Goal: the first playable slice.
-Status: not started
+Status: in progress
 
 ## Phase 3 — Theory core
 
