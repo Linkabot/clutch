@@ -4,10 +4,14 @@
 // ingestion script never re-fetches a page it already has. This is the only
 // module in the repo that calls the fetch API ("Rules that apply to every
 // step" in plan.md restricts network access to the two ingestion scripts,
-// and they only reach gov.uk through here).
+// and they only reach gov.uk through here). When `process.env.CLUTCH_OFFLINE
+// === '1'`, a cache miss throws `offline: cache miss for <basePath>` instead
+// of ever reaching the network, so the offline comparator (Step 2) and CI
+// can prove no request escapes to gov.uk.
 // Depends on: Node's built-in `fs` and `path` modules, the global fetch API.
 // Depended on by: scripts/ingest-highway-code.ts (Step 9),
-// scripts/ingest-national-standard.ts (Step 10).
+// scripts/ingest-national-standard.ts (Step 10), scripts/lib/highway-code-build.ts
+// and scripts/compare-highway-code.ts (Step 2), tests/unit/govuk-offline.test.ts.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -57,6 +61,10 @@ export async function fetchContentApi(
 
   if (cachePath && existsSync(cachePath)) {
     return JSON.parse(readFileSync(cachePath, 'utf8')) as unknown;
+  }
+
+  if (process.env.CLUTCH_OFFLINE === '1') {
+    throw new Error(`offline: cache miss for ${basePath}`);
   }
 
   await wait(delayMs);
