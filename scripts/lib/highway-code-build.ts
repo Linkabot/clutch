@@ -16,19 +16,20 @@
 // timestamp on every run (plan.md amendment E1). Online behaviour (no
 // `CLUTCH_OFFLINE`) is unchanged: always the current time, unless the
 // caller passes its own `fetchedAt`, which always wins.
-// `ParseOptions`/`PARSE_FLAGS` start empty: `BuildHighwayCodeOptions`
+// `ParseOptions`/`PARSE_FLAGS` started empty in Step 2: `BuildHighwayCodeOptions`
 // already extends `ParseOptions` so a later step can add a named boolean
-// flag to both without changing this module's option shape again. Today
-// neither interface has a field, so there is nothing yet to forward into
-// `parseSection` — its own signature is unchanged (out of this step's
-// scope); a later step that gives `ParseOptions` its first field edits
-// `scripts/lib/highway-code-parse.ts` and this module together to thread it
-// all the way through.
+// flag to both without changing this module's option shape again. Step 3
+// (S12, amended P2) adds the first field, `repairHrefs`: this module
+// resolves the "no options passed" default to `true` and forwards the
+// resolved value as `parseSection`'s third argument for every section it
+// parses; scripts/compare-highway-code.ts sets it explicitly instead
+// (`--flags off|on|repairHrefs`).
 // Depends on: ./govuk.ts (fetchContentApi), ./highway-code-parse.ts
 // (parseSection), ../../src/content/schemas/highwayCode.ts (HighwayCodeIndex,
 // Section shapes), Node's built-in `fs` and `path` modules (to read the
 // committed index.json's fetchedAt back under CLUTCH_OFFLINE=1).
-// Depended on by: scripts/ingest-highway-code.ts, scripts/compare-highway-code.ts.
+// Depended on by: scripts/ingest-highway-code.ts, scripts/compare-highway-code.ts,
+// scripts/lib/highway-code-parse.ts (ParseOptions, type-only).
 
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -40,18 +41,24 @@ const LANDING_BASE_PATH = '/guidance/the-highway-code';
 const COMMITTED_INDEX_PATH = join('content', 'uk', 'highway-code', 'index.json');
 
 /**
- * Named boolean flags the parser can be run with. Empty for now — Step 2
- * only wires the plumbing; a later step adds a field here (and the
- * matching name to `PARSE_FLAGS` below) for each new parser behaviour that
- * needs to be toggled on or off.
+ * Named boolean flags the parser can be run with. Step 2 wired the empty
+ * plumbing; Step 3 (S12, amended P2) adds the first flag, `repairHrefs` —
+ * each later step that adds another does the same: a field here, and the
+ * matching name added to `PARSE_FLAGS` below.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- deliberately empty until a later step adds its first named flag (see module header).
-export interface ParseOptions {}
+export interface ParseOptions {
+  /** When true (the default a caller gets by omitting it, both here and in
+   * `parseSection` itself), `rewriteHref` repairs the five malformed-href
+   * patterns found in the committed Highway Code corpus before applying
+   * today's rewrite rules; false reproduces exactly what the parser emitted
+   * before this flag existed (plan.md D13 S12, amended P2). */
+  repairHrefs?: boolean;
+}
 
 /** Every flag name `ParseOptions` currently declares, read by
  * scripts/compare-highway-code.ts so its `--flags on|off|<name>` never
  * hard-codes a flag list of its own. */
-export const PARSE_FLAGS: readonly string[] = [];
+export const PARSE_FLAGS: readonly string[] = ['repairHrefs'];
 
 export interface BuildHighwayCodeOptions extends ParseOptions {
   /** Forwarded to every `fetchContentApi` call (landing page and every
@@ -122,6 +129,11 @@ export async function buildHighwayCode(
   options: BuildHighwayCodeOptions = {},
 ): Promise<BuildHighwayCodeResult> {
   const { cacheDir, fetchedAt } = options;
+  // A caller that omits `repairHrefs` gets `true` (plan.md amendment P2's
+  // fact-check: the ingest script sets no flags, so it must build with
+  // every flag on); scripts/compare-highway-code.ts's `--flags off|on|<name>`
+  // always sets it explicitly instead of relying on this default.
+  const repairHrefs = options.repairHrefs ?? true;
 
   const landing = (await fetchContentApi(LANDING_BASE_PATH, { cacheDir })) as ContentApiResponse;
 
@@ -144,13 +156,17 @@ export async function buildHighwayCode(
     // `kind` below comes from parseSection's own call to kindOf, so the
     // slug/title/rules precedence in plan.md amendment P3 is applied
     // uniformly for every section this builds.
-    const section = parseSection(response.details?.body ?? '', {
-      slug,
-      title: response.title,
-      basePath: child.base_path,
-      sourceUrl: `https://www.gov.uk${child.base_path}`,
-      order,
-    });
+    const section = parseSection(
+      response.details?.body ?? '',
+      {
+        slug,
+        title: response.title,
+        basePath: child.base_path,
+        sourceUrl: `https://www.gov.uk${child.base_path}`,
+        order,
+      },
+      { repairHrefs },
+    );
 
     sections.push(section);
     indexSections.push({

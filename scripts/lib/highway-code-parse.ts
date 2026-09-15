@@ -6,13 +6,24 @@
 // output is later parsed again, and allowing only http/https/mailto/tel
 // (or scheme-less) hrefs and image srcs — and classifies a section's kind
 // from its slug, trimmed title and rule ids.
+// `parseSection`'s optional third argument is a `ParseOptions` (imported
+// type-only from ./highway-code-build.ts, so this creates no runtime
+// circular dependency): when its `repairHrefs` flag is on (the default when
+// the caller omits it), `rewriteHref` first repairs five malformed-href
+// patterns found in the committed Highway Code corpus — a stray zero-width
+// space (literal U+200B or percent-encoded `%E2%80%8B`), a missing leading
+// slash on `guidance/the-highway-code/…`, a bare `www.gov.uk/…`, and
+// `#rule%20`/`#rule ` before a rule number (plan.md D13 S12, amended P2) —
+// before applying today's rewrite rules; off reproduces exactly what this
+// module emitted before the flag existed.
 // No network access — scripts/ingest-highway-code.ts (Step 9) supplies the
 // HTML it fetched via scripts/lib/govuk.ts and writes this module's output
 // to content/uk/highway-code/.
 // Depends on: node-html-parser, ../../src/content/text.ts
 // (normaliseWhitespace), ../../src/content/schemas/highwayCode.ts (the
-// Section/Rule/RuleImage shapes this module must produce).
-// Depended on by: scripts/ingest-highway-code.ts,
+// Section/Rule/RuleImage shapes this module must produce), ./highway-code-build.ts
+// (ParseOptions, type-only).
+// Depended on by: scripts/ingest-highway-code.ts, scripts/lib/highway-code-build.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
 // tests/fixtures/highway-code-section.html).
 
@@ -20,6 +31,7 @@ import { parse, NodeType } from 'node-html-parser';
 import type { HTMLElement, Node as HtmlNode, TextNode } from 'node-html-parser';
 import { normaliseWhitespace } from '../../src/content/text';
 import type { Rule, RuleImage, Section } from '../../src/content/schemas/highwayCode';
+import type { ParseOptions } from './highway-code-build';
 
 export interface SectionMeta {
   slug: string;
@@ -43,6 +55,14 @@ const SIGNALS_TITLE = /signals|signs|markings/i;
 const HC_RULE_ANCHOR = /^\/guidance\/the-highway-code\/[a-z0-9-]+#rule(\d{1,3}|H[1-3])$/i;
 const HC_SECTION_LINK = /^\/guidance\/the-highway-code\/([a-z0-9-]+)$/i;
 const STRONG_CONTENT = /<strong>([\s\S]*?)<\/strong>/g;
+
+// Malformed-href repair (plan.md D13 S12, amended P2): a stray zero-width
+// space — literal U+200B or its percent-encoded form — found ahead of an
+// otherwise-valid path, and "#rule%20"/"#rule " (a space) standing in for
+// "#rule" ahead of a rule number.
+const ZERO_WIDTH_SPACE = '\u200B';
+const ZERO_WIDTH_SPACE_ENCODED = '%E2%80%8B';
+const RULE_ANCHOR_SPACE = /#rule(?:%20| )/gi;
 
 const ALLOWED_TAGS = new Set([
   'p',
@@ -270,6 +290,8 @@ function findLead(nodes: HtmlNode[]): string | null {
 interface SanitiseContext {
   crossRefs: Set<string>;
   images: RuleImage[];
+  /** Forwarded to `rewriteHref` (plan.md D13 S12, amended P2). */
+  repairHrefs: boolean;
 }
 
 function escapeAttribute(value: string): string {
@@ -284,25 +306,46 @@ function escapeText(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/** Normalises the five malformed-href patterns found in the committed
+ * corpus (plan.md D13 S12, amended P2) so each one falls through to the
+ * same rule below that already handles its well-formed equivalent: strip
+ * every zero-width space (literal or percent-encoded), turn "#rule%20" or
+ * "#rule " into "#rule", then prefix "/" to a "guidance/the-highway-code/…"
+ * left with no leading slash and "https://" to a bare "www.gov.uk/…". Only
+ * called when `repairHrefs` is on; off leaves `rewriteHref` byte-for-byte
+ * the same as before this flag existed. */
+function repairMalformedHref(href: string): string {
+  let repaired = href.split(ZERO_WIDTH_SPACE_ENCODED).join('');
+  repaired = repaired.split(ZERO_WIDTH_SPACE).join('');
+  repaired = repaired.replace(RULE_ANCHOR_SPACE, '#rule');
+  if (repaired.startsWith('guidance/the-highway-code/')) repaired = `/${repaired}`;
+  if (repaired.startsWith('www.gov.uk/')) repaired = `https://${repaired}`;
+  return repaired;
+}
+
 /** Rewrites a Highway Code href per the plan's three rules, in order: a
  * link straight to another rule becomes an in-app rule link (and the rule
  * id is recorded as a cross-reference); a link to a Highway Code section
  * with no rule anchor becomes an in-app section link; any other relative
  * gov.uk path is made absolute. Anything already absolute (e.g. a
  * legislation.gov.uk citation) passes through unchanged here — it gets its
- * rel/target from the caller once it is known to be absolute. */
-function rewriteHref(href: string, crossRefs: Set<string>): string {
-  const ruleAnchor = HC_RULE_ANCHOR.exec(href);
+ * rel/target from the caller once it is known to be absolute. When
+ * `repairHrefs` is on, `repairMalformedHref` runs first so a malformed href
+ * can match the same rules (plan.md D13 S12, amended P2). Exported for
+ * direct unit testing, same as `kindOf`. */
+export function rewriteHref(href: string, crossRefs: Set<string>, repairHrefs: boolean): string {
+  const candidate = repairHrefs ? repairMalformedHref(href) : href;
+  const ruleAnchor = HC_RULE_ANCHOR.exec(candidate);
   if (ruleAnchor) {
     const ruleId = normaliseRuleId(ruleAnchor[1]);
     crossRefs.add(ruleId);
     return `/code/rule/${ruleId}`;
   }
-  const sectionLink = HC_SECTION_LINK.exec(href);
+  const sectionLink = HC_SECTION_LINK.exec(candidate);
   if (sectionLink) {
     return `/learn/code/${sectionLink[1]}`;
   }
-  return href.startsWith('/') ? `https://www.gov.uk${href}` : href;
+  return candidate.startsWith('/') ? `https://www.gov.uk${candidate}` : candidate;
 }
 
 /** Builds the sanitised attribute string for a kept `<a>`, or returns
@@ -314,7 +357,7 @@ function sanitiseAnchorAttrs(el: HTMLElement, ctx: SanitiseContext): string | nu
   const title = el.getAttribute('title');
   if (!href) return title ? ` title="${escapeAttribute(title)}"` : '';
 
-  const rewritten = rewriteHref(href, ctx.crossRefs);
+  const rewritten = rewriteHref(href, ctx.crossRefs, ctx.repairHrefs);
   if (!safeHref(rewritten)) return null;
   const isAbsolute = /^https?:\/\//i.test(rewritten);
   let attrs = ` href="${escapeAttribute(rewritten)}"`;
@@ -417,8 +460,8 @@ function countStrongPhrase(html: string, phrase: string): number {
   return count;
 }
 
-function buildRule(bucket: RuleBucket): Rule {
-  const ctx: SanitiseContext = { crossRefs: new Set<string>(), images: [] };
+function buildRule(bucket: RuleBucket, repairHrefs: boolean): Rule {
+  const ctx: SanitiseContext = { crossRefs: new Set<string>(), images: [], repairHrefs };
   const html = sanitiseNodes(bucket.nodes, ctx);
   const mustNotCount = countStrongPhrase(html, 'MUST NOT');
   const mustCount = countStrongPhrase(html, 'MUST');
@@ -442,9 +485,17 @@ function buildRule(bucket: RuleBucket): Rule {
  * expects: rule boundaries at matching <h3> headings, everything before the
  * first rule as `preambleHtml`, and — for a section with no rules at all —
  * the whole sanitised body as `bodyHtml` instead (in which case
- * `preambleHtml` is empty and `rules` is empty).
+ * `preambleHtml` is empty and `rules` is empty). `options.repairHrefs`
+ * defaults to `true` when omitted (plan.md D13 S12, amended P2), same as
+ * `buildHighwayCode`'s own default for a caller that passes no options.
  */
-export function parseSection(bodyHtml: string, meta: SectionMeta): Section {
+export function parseSection(
+  bodyHtml: string,
+  meta: SectionMeta,
+  options: ParseOptions = {},
+): Section {
+  const repairHrefs = options.repairHrefs ?? true;
+
   // `pre` is deliberately left out of blockTextElements (unlike
   // node-html-parser's default, which raw-texts it alongside
   // script/style/noscript): its content is then parsed as ordinary nodes
@@ -456,15 +507,15 @@ export function parseSection(bodyHtml: string, meta: SectionMeta): Section {
   const topLevel = root.childNodes;
   const { preamble, rules: ruleBuckets } = splitIntoBuckets(topLevel);
 
-  const rules = ruleBuckets.map((bucket) => buildRule(bucket));
+  const rules = ruleBuckets.map((bucket) => buildRule(bucket, repairHrefs));
   const hasRules = rules.length > 0;
 
   const preambleHtml = hasRules
-    ? sanitiseNodes(preamble, { crossRefs: new Set<string>(), images: [] })
+    ? sanitiseNodes(preamble, { crossRefs: new Set<string>(), images: [], repairHrefs })
     : '';
   const bodyHtmlOut = hasRules
     ? ''
-    : sanitiseNodes(topLevel, { crossRefs: new Set<string>(), images: [] });
+    : sanitiseNodes(topLevel, { crossRefs: new Set<string>(), images: [], repairHrefs });
 
   const title = normaliseWhitespace(meta.title);
 

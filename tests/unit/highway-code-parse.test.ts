@@ -1,7 +1,9 @@
 // Unit tests for the pure Highway Code parser: rule boundaries, HTML
 // sanitisation, link rewriting and MUST/MUST NOT law detection against the
-// fixture (tests/fixtures/highway-code-section.html), plus every kindOf
-// precedence case named in plan.md amendment P3.
+// fixture (tests/fixtures/highway-code-section.html), every kindOf
+// precedence case named in plan.md amendment P3, and `rewriteHref`'s
+// `repairHrefs` flag against the five malformed hrefs found in the
+// committed corpus (plan.md D13 S12, amended P2).
 // Depends on: vitest, node:fs, node:url, node:path,
 // scripts/lib/highway-code-parse.ts, src/content/schemas/highwayCode.ts.
 // Depended on by: `npm test` (Vitest run).
@@ -10,7 +12,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
-import { parseSection, kindOf } from '../../scripts/lib/highway-code-parse';
+import { parseSection, kindOf, rewriteHref } from '../../scripts/lib/highway-code-parse';
 import { SectionSchema } from '../../src/content/schemas/highwayCode';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -300,5 +302,113 @@ describe('kindOf', () => {
 
   it('is other when nothing else matches', () => {
     expect(kindOf({ slug: 'index', title: 'Index', rules: [] })).toBe('other');
+  });
+});
+
+// plan.md D13 S12, amended P2 (fact-check against the committed corpus).
+// The five malformed hrefs found in content/uk/highway-code/: a bare
+// "www.gov.uk/…", a doubled zero-width space (percent-encoded, and the same
+// again as two literal U+200B characters) ahead of an absolute rule link, a
+// "guidance/the-highway-code/…" rule link missing its leading slash, and
+// "#rule%20" standing in for "#rule" ahead of a rule number.
+describe('rewriteHref (repairHrefs)', () => {
+  const ZWSP = '\u200B';
+  const CLEAN_269 = '/guidance/the-highway-code/motorways-253-to-273#rule269';
+  const CLEAN_264 = '/guidance/the-highway-code/motorways-253-to-273#rule264';
+  const CLEAN_97 =
+    '/guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102#rule97';
+
+  it('flag on: "www.gov.uk/…" gains an "https://" scheme', () => {
+    expect(rewriteHref('www.gov.uk/health-and-social-care/smoking', new Set(), true)).toBe(
+      'https://www.gov.uk/health-and-social-care/smoking',
+    );
+  });
+
+  it("flag on: a doubled percent-encoded zero-width space ahead of an absolute rule link gives exactly what today's rule gives for the clean link", () => {
+    const malformed = `%E2%80%8B%E2%80%8B${CLEAN_269}`;
+    const today = rewriteHref(CLEAN_269, new Set(), true);
+    expect(rewriteHref(malformed, new Set(), true)).toBe(today);
+    expect(rewriteHref(malformed, new Set(), true)).toBe('/code/rule/269');
+  });
+
+  it('flag on: the same with two literal U+200B characters instead gives the same result', () => {
+    const malformed = `${ZWSP}${ZWSP}${CLEAN_269}`;
+    const today = rewriteHref(CLEAN_269, new Set(), true);
+    expect(rewriteHref(malformed, new Set(), true)).toBe(today);
+    expect(rewriteHref(malformed, new Set(), true)).toBe('/code/rule/269');
+  });
+
+  it('flag on: a missing leading slash on "guidance/the-highway-code/…" gives exactly what today\'s rule gives for the slash-prefixed form', () => {
+    const malformed = 'guidance/the-highway-code/motorways-253-to-273#rule264';
+    const today = rewriteHref(CLEAN_264, new Set(), true);
+    expect(rewriteHref(malformed, new Set(), true)).toBe(today);
+    expect(rewriteHref(malformed, new Set(), true)).toBe('/code/rule/264');
+  });
+
+  it('flag on: "#rule%20" ahead of the rule number is treated as "#rule" (plan.md amendment P2)', () => {
+    const malformed =
+      'guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102#rule%2097';
+    const today = rewriteHref(CLEAN_97, new Set(), true);
+    expect(rewriteHref(malformed, new Set(), true)).toBe(today);
+    expect(rewriteHref(malformed, new Set(), true)).toBe('/code/rule/97');
+  });
+
+  it('flag on: records the repaired rule id as a cross-reference', () => {
+    const crossRefs = new Set<string>();
+    rewriteHref('guidance/the-highway-code/motorways-253-to-273#rule264', crossRefs, true);
+    expect(crossRefs).toEqual(new Set(['264']));
+  });
+
+  it('flag off: all five malformed inputs behave as before (pass through unchanged)', () => {
+    const inputs = [
+      'www.gov.uk/health-and-social-care/smoking',
+      `%E2%80%8B%E2%80%8B${CLEAN_269}`,
+      `${ZWSP}${ZWSP}${CLEAN_269}`,
+      'guidance/the-highway-code/motorways-253-to-273#rule264',
+      'guidance/the-highway-code/rules-for-drivers-and-motorcyclists-89-to-102#rule%2097',
+    ];
+    for (const input of inputs) {
+      expect(rewriteHref(input, new Set(), false)).toBe(input);
+    }
+  });
+
+  it('flag on leaves an already well-formed href unchanged (no false positives)', () => {
+    expect(rewriteHref(CLEAN_264, new Set(), true)).toBe('/code/rule/264');
+    expect(
+      rewriteHref('https://www.legislation.gov.uk/ukpga/1988/52/section/163', new Set(), true),
+    ).toBe('https://www.legislation.gov.uk/ukpga/1988/52/section/163');
+  });
+});
+
+describe('parseSection repairHrefs default', () => {
+  const META = {
+    slug: 'repair-hrefs-default-probe',
+    title: 'Repair hrefs default probe',
+    basePath: '/guidance/the-highway-code/repair-hrefs-default-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/repair-hrefs-default-probe',
+    order: 0,
+  };
+
+  function bodyWithMalformedHref(): string {
+    return `<h3 id="rule1">Rule 1</h3><p><a href="www.gov.uk/health-and-social-care/smoking">smoking</a></p>`;
+  }
+
+  it('defaults to on (repaired) when the caller passes no third argument at all', () => {
+    const section = parseSection(bodyWithMalformedHref(), META);
+    expect(section.rules[0]?.html).toContain(
+      'href="https://www.gov.uk/health-and-social-care/smoking"',
+    );
+  });
+
+  it('defaults to on (repaired) when the caller passes an options object with no repairHrefs key', () => {
+    const section = parseSection(bodyWithMalformedHref(), META, {});
+    expect(section.rules[0]?.html).toContain(
+      'href="https://www.gov.uk/health-and-social-care/smoking"',
+    );
+  });
+
+  it('turns off with an explicit repairHrefs: false', () => {
+    const section = parseSection(bodyWithMalformedHref(), META, { repairHrefs: false });
+    expect(section.rules[0]?.html).toContain('href="www.gov.uk/health-and-social-care/smoking"');
   });
 });

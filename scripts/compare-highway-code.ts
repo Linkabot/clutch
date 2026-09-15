@@ -1,11 +1,21 @@
 // Offline comparator for the Highway Code build: runs `buildHighwayCode`
-// entirely in memory (this script never writes a file) and diffs the
-// result against the committed `content/uk/highway-code/index.json` and
-// every `content/uk/highway-code/sections/*.json`, using `diffJson`.
+// entirely in memory and diffs the result against the committed
+// `content/uk/highway-code/index.json` and every
+// `content/uk/highway-code/sections/*.json`, using `diffJson`.
 //
 // `--flags off|on|<name>` toggles every name in `PARSE_FLAGS` off, on, or
 // just the one named flag, builds with that, and prints one summary line:
-//   compare: files=<n> identical=<n> differing=<n> paths=<n>
+//   compare: files=<n> identical=<n> differing=<n> paths=<n> malformed=<n>
+// `malformed` (scripts/lib/href-audit.ts's `countMalformedHrefs`) counts
+// malformed hrefs left in the BUILD's own output, summed across every
+// committed file's corresponding build value — 0 once `repairHrefs` is on
+// and every known malformed href is fixed (plan.md D13 S12, amended P2).
+// `--list` additionally prints one `diff <file> <json-path>` line per
+// differing path (`<file>` relative to content/uk/highway-code/, e.g.
+// `sections/index.json`). `--dump <dir>` additionally writes the in-memory
+// build to `<dir>` with the committed layout (`index.json`,
+// `sections/*.json`) — this script's only file writes, and only when
+// `--dump` is passed.
 //
 // `--attribute` instead builds once with every flag off, diffs that build
 // against the committed files (exactly as `--flags off` does) to get the
@@ -15,8 +25,7 @@
 //   attribute: paths=<n> unattributed=<n>
 //   flag <name>: paths=<n>          (one line per PARSE_FLAGS entry)
 // A path with `unattributed` > 0 means no single flag explains it (an
-// unintended difference); PARSE_FLAGS is empty for now, so today this
-// always prints `paths=0 unattributed=0` and no `flag` lines.
+// unintended difference).
 //
 // Under `CLUTCH_OFFLINE=1` this reuses the committed index's own
 // `fetchedAt` for the build (instead of the current time), so an
@@ -26,12 +35,13 @@
 //
 // Depends on: node:fs, node:path, scripts/lib/highway-code-build.ts
 // (buildHighwayCode, BuildHighwayCodeResult, ParseOptions, PARSE_FLAGS),
-// scripts/lib/json-diff.ts (diffJson), ../src/content/schemas/highwayCode.ts
+// scripts/lib/json-diff.ts (diffJson), scripts/lib/href-audit.ts
+// (countMalformedHrefs), ../src/content/schemas/highwayCode.ts
 // (HighwayCodeIndex, for the committed index's fetchedAt field).
 // Depended on by: `npm run compare:highway-code` (package.json; this
 // step's own check, and later steps' checks).
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   buildHighwayCode,
@@ -40,6 +50,7 @@ import {
   type ParseOptions,
 } from './lib/highway-code-build';
 import { diffJson } from './lib/json-diff';
+import { countMalformedHrefs } from './lib/href-audit';
 import type { HighwayCodeIndex } from '../src/content/schemas/highwayCode';
 
 const CACHE_DIR = 'content/.cache/highway-code';
@@ -79,9 +90,27 @@ function buildValueFor(file: CommittedFile, build: BuildHighwayCodeResult): unkn
   return build.sections.find((section) => section.slug === file.slug);
 }
 
+/** `--dump <dir>` support: writes `build` to `dir` with the same layout
+ * scripts/ingest-highway-code.ts writes to `content/uk/highway-code/`
+ * (`index.json` plus one `sections/<slug>.json` per section), so a
+ * malformed-href fix (or any other flag) can be inspected file-by-file
+ * without touching the committed corpus. This script's only file writes,
+ * and only when `--dump` is passed. */
+function dumpBuild(build: BuildHighwayCodeResult, dir: string): void {
+  const sectionsDir = join(dir, 'sections');
+  mkdirSync(sectionsDir, { recursive: true });
+  for (const section of build.sections) {
+    writeFileSync(
+      join(sectionsDir, `${section.slug}.json`),
+      `${JSON.stringify(section, null, 2)}\n`,
+      'utf8',
+    );
+  }
+  writeFileSync(join(dir, 'index.json'), `${JSON.stringify(build.index, null, 2)}\n`, 'utf8');
+}
+
 /** `--flags off` clears every name in `PARSE_FLAGS`; `--flags on` sets all
- * of them; `--flags <name>` sets only that one. `PARSE_FLAGS` is empty
- * until a later step, so every case below currently returns `{}`. */
+ * of them; `--flags <name>` sets only that one. */
 function parseFlags(raw: string): ParseOptions {
   const flags: Record<string, boolean> = {};
   if (raw === 'off') {
@@ -107,7 +136,14 @@ function buildWithFlags(
   return buildHighwayCode({ cacheDir: CACHE_DIR, fetchedAt, ...parseFlags(raw) });
 }
 
-async function runCompare(flagsArg: string): Promise<void> {
+interface RunCompareOptions {
+  /** Prints one `diff <file> <json-path>` line per differing path. */
+  list?: boolean;
+  /** Writes the in-memory build to this directory (see `dumpBuild`). */
+  dumpDir?: string;
+}
+
+async function runCompare(flagsArg: string, options: RunCompareOptions = {}): Promise<void> {
   const committed = readCommittedFiles();
   const fetchedAt = process.env.CLUTCH_OFFLINE === '1' ? committedFetchedAt(committed) : undefined;
   const build = await buildWithFlags(flagsArg, fetchedAt);
@@ -115,19 +151,31 @@ async function runCompare(flagsArg: string): Promise<void> {
   let identical = 0;
   let differing = 0;
   let totalPaths = 0;
+  let malformed = 0;
 
   for (const file of committed) {
-    const paths = diffJson(file.value, buildValueFor(file, build));
+    const buildValue = buildValueFor(file, build);
+    const paths = diffJson(file.value, buildValue);
     if (paths.length === 0) {
       identical += 1;
     } else {
       differing += 1;
+      if (options.list) {
+        for (const path of paths) {
+          console.log(`diff ${file.relPath} ${path}`);
+        }
+      }
     }
     totalPaths += paths.length;
+    malformed += countMalformedHrefs(buildValue);
+  }
+
+  if (options.dumpDir) {
+    dumpBuild(build, options.dumpDir);
   }
 
   console.log(
-    `compare: files=${committed.length} identical=${identical} differing=${differing} paths=${totalPaths}`,
+    `compare: files=${committed.length} identical=${identical} differing=${differing} paths=${totalPaths} malformed=${malformed}`,
   );
 }
 
@@ -187,9 +235,14 @@ async function main(): Promise<void> {
   const flagsIndex = args.indexOf('--flags');
   const flagsArg = flagsIndex === -1 ? undefined : args[flagsIndex + 1];
   if (flagsArg === undefined) {
-    throw new Error('usage: compare-highway-code --flags off|on|<name>, or --attribute');
+    throw new Error(
+      'usage: compare-highway-code --flags off|on|<name> [--list] [--dump <dir>], or --attribute',
+    );
   }
-  await runCompare(flagsArg);
+  const list = args.includes('--list');
+  const dumpIndex = args.indexOf('--dump');
+  const dumpDir = dumpIndex === -1 ? undefined : args[dumpIndex + 1];
+  await runCompare(flagsArg, { list, dumpDir });
 }
 
 main().catch((error: unknown) => {
