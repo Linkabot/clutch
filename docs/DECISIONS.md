@@ -45,8 +45,8 @@ Why: User's stated intent for everything they build.
 
 ## 9. Models
 
-Choice: Primary (orchestrator) = Opus 5. Planner = Opus 5 (model override when spawned). Executor = Sonnet; Opus 5 for interactive/animation/game components (override). Scout = Haiku. Reviewer = Sonnet. Opus 5 is the highest model used; nothing runs on Fable 5.1 (the planner did until 14 Sep 2026).
-Why: User's instruction (14 Sep 2026: no Fable credits, so Opus 5 is the highest model to use). Note: PRIMARY.md says tiers are recorded in one place — ask before editing it; until then this table is the record.
+Choice: Primary (orchestrator) = Opus 5. Planner = Opus 5 (set globally in PRIMARY.md § Model tiering, 15 Sep 2026). Executor = Sonnet; Opus 5 for interactive/animation/game components (override). Scout = Haiku. Reviewer = Sonnet. From 15 Sep 2026, Fable 5.1 is a specialist tier chosen by Primary and used sparingly: for sub-tasks where a miss is expensive and no mechanical check can prove the work right (security or licensing reviews, work only a human can judge later, a step that already failed its retries on Opus 5), within Fable's own weekly allowance; never for plans. The planner ran on Fable 5.1 until 14 Sep 2026.
+Why: User's instructions. 14 Sep 2026: no Fable credits, so Opus 5 was the highest model. 15 Sep 2026: Fable 5.1 is on the subscription again; Opus 5 stays Primary, and Primary picks Fable with judgement rather than behind a hard guard. The general tiers live in PRIMARY.md § Model tiering; this entry records Clutch's overrides.
 
 ## 10. Hosting
 
