@@ -3,15 +3,16 @@
 // sections list, section screen, search screen and single-rule deep link
 // nested under Learn (the rule route lives at /code/rule/:id, not
 // /learn/code/rule/:id, so it also matches Step 5's
-// alsoActiveFor: ['/code'] Learn-tab highlighting), and (Step 19) the
-// Signs browser at /learn/signs. The static learn/code/search and
+// alsoActiveFor: ['/code'] Learn-tab highlighting), the Signs browser at
+// /learn/signs (Step 19) and (Step 20) the sign page at /learn/signs/:id,
+// listed right after learn/signs. The static learn/code/search and
 // learn/signs routes are listed before the learn/code/:slug param route so
 // the intent is obvious to a reader, though React Router ranks static
 // segments higher regardless of source order.
 // Depends on: react-router-dom, ./App, ./tabs, src/features/*/*.tsx,
 // src/features/code/HighwayCodeSectionsScreen, src/features/code/SectionScreen,
 // src/features/code/SearchScreen, src/features/code/RuleScreen,
-// src/features/signs/SignsScreen.
+// src/features/signs/SignsScreen, src/features/signs/SignScreen.
 // Depended on by: src/main.tsx.
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
@@ -25,6 +26,7 @@ import SectionScreen from '../features/code/SectionScreen';
 import SearchScreen from '../features/code/SearchScreen';
 import RuleScreen from '../features/code/RuleScreen';
 import SignsScreen from '../features/signs/SignsScreen';
+import SignScreen from '../features/signs/SignScreen';
 
 export const router = createBrowserRouter(
   [
@@ -37,6 +39,7 @@ export const router = createBrowserRouter(
         { path: 'learn/code', element: <HighwayCodeSectionsScreen /> },
         { path: 'learn/code/search', element: <SearchScreen /> },
         { path: 'learn/signs', element: <SignsScreen /> },
+        { path: 'learn/signs/:id', element: <SignScreen /> },
         { path: 'learn/code/:slug', element: <SectionScreen /> },
         { path: 'code/rule/:id', element: <RuleScreen /> },
         { path: 'practice', element: <PracticeScreen /> },

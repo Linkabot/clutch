@@ -1,11 +1,15 @@
 /* Signs browser styles (src/features/signs/SignsScreen.tsx): the family
    chip row, the collected/all toggle and the tile grid; plus the Learn
    card's full-width SignPanel and thumbnail row (src/features/learn/
-   LearnScreen.tsx). Every colour and radius comes from a src/app/theme.css
-   custom property -- no hex literals here (plan.md § Rules "Tokens").
+   LearnScreen.tsx); plus (Step 20) the sign page's picture card, family
+   pill and its shape/colour glyph, heading sizes, info card and full-width
+   action buttons (src/features/signs/SignScreen.tsx). Every colour and
+   radius comes from a src/app/theme.css custom property -- no hex literals
+   here (plan.md § Rules "Tokens").
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/signs/SignsScreen.tsx,
-   src/features/learn/LearnScreen.tsx (each imports this file once). */
+   src/features/learn/LearnScreen.tsx, src/features/signs/SignScreen.tsx
+   (each imports this file once). */
 
 .signs-collected-line {
   color: var(--color-muted);
@@ -210,5 +214,170 @@
 
 .signs-empty {
   margin-top: 24px;
+  color: var(--color-muted);
+}
+
+/* --- Sign page (src/features/signs/SignScreen.tsx) ----------------------- */
+
+.sign-page__picture-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: 16px;
+  padding: 16px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sign-page__picture {
+  width: 100%;
+  height: 124px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.sign-page__picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.sign-page__progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sign-page__progress-text {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-muted);
+}
+
+.sign-page__pill-row {
+  margin-top: 12px;
+  display: flex;
+}
+
+.sign-page__pill {
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 10px 0 8px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-hairline);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sign-page__glyph--triangle {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+  stroke-width: 3.5px;
+}
+
+.sign-page__glyph--circle-red {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+  stroke-width: 3.5px;
+}
+
+.sign-page__glyph--circle-blue {
+  fill: var(--color-sign-blue);
+}
+
+.sign-page__glyph--rectangle-blue {
+  fill: var(--color-sign-blue);
+}
+
+.sign-page__glyph--rectangle-green {
+  fill: var(--color-sign-green);
+}
+
+.sign-page__glyph--rectangle-white {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-ink);
+  stroke-width: 1.5px;
+}
+
+.sign-page__title {
+  margin-top: 6px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.sign-page__title--long {
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+.sign-page__info {
+  margin-top: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-panel);
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-page__info-row {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sign-page__info-divider {
+  height: 1px;
+  background: var(--color-hairline);
+}
+
+.sign-page__info-label {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.sign-page__info-value {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.sign-page__info-value--hook {
+  font-weight: 700;
+}
+
+.sign-page__full-width {
+  width: 100%;
+}
+
+.sign-page__play {
+  margin-top: 14px;
+}
+
+.sign-page__code-link {
+  margin-top: 10px;
+  gap: 8px;
+}
+
+.sign-page__attribution {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.4;
   color: var(--color-muted);
 }
