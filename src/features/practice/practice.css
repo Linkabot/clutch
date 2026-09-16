@@ -1,0 +1,209 @@
+/* Practice tab styles (src/features/practice/PracticeScreen.tsx,
+   ProgressHeader.tsx): the XP/streak header card, the four 88px game cards,
+   and the app-drawn Match Pairs and Decoder tile art -- neither tile rotates
+   or reuses a real sign picture (plan.md D7 and amendment E18). Every colour
+   and radius comes from a src/app/theme.css custom property -- no hex
+   literals here (plan.md § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/practice/PracticeScreen.tsx (imports this
+   file once). */
+
+/* --- Progress header (ProgressHeader.tsx) --------------------------------- */
+
+.practice-header {
+  margin-top: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-panel);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.practice-header__stat {
+  box-sizing: border-box;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.practice-header__stat--xp {
+  border-left: 1px solid var(--color-hairline);
+}
+
+.practice-header__flame {
+  color: var(--color-sign-red);
+  flex-shrink: 0;
+}
+
+.practice-header__xp-tile {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--color-sign-ink);
+}
+
+.practice-header__stat-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.practice-header__number {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.practice-header__label {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* --- Game cards (PracticeScreen.tsx) -------------------------------------- */
+
+.practice-cards {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.practice-card {
+  box-sizing: border-box;
+  height: 88px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-panel);
+  padding: 0 10px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.practice-card__tile {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--radius-card);
+  background: var(--color-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.practice-card__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.practice-card__title {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.practice-card__subtitle {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.practice-card__chevron {
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+/* Tap the sign tile: a 2x2 grid of small real sign pictures, each sized from
+   this wrapper (SignImage's own <img> takes no width/height, plan.md
+   amendment E18's pre-verified fact). */
+.practice-card__tap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 22px);
+  gap: 3px;
+}
+
+.practice-card__tap-grid img {
+  width: 21px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Match Pairs tile: two tilted app-drawn cards, never a real sign picture
+   (D7, amendment E18) -- one holds a small triangle glyph standing in for a
+   sign picture, the other two short bars standing in for its name. */
+.practice-card__pairs-card {
+  position: absolute;
+  box-sizing: border-box;
+  width: 28px;
+  height: 34px;
+  border-radius: 5px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.practice-card__pairs-card--picture {
+  left: 7px;
+  top: 12px;
+  transform: rotate(-8deg);
+}
+
+.practice-card__pairs-card--name {
+  left: 25px;
+  top: 14px;
+  transform: rotate(7deg);
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 5px;
+}
+
+.practice-card__pairs-glyph {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+  stroke-width: 2.8px;
+}
+
+.practice-card__pairs-bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-ink);
+}
+
+.practice-card__pairs-bar--short {
+  width: 70%;
+}
+
+/* Shape & Colour Decoder tile: an app-drawn triangle, circle and rectangle,
+   never a real sign picture (D7). */
+.practice-card__decoder-triangle,
+.practice-card__decoder-circle {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+  stroke-width: 2.8px;
+}
+
+.practice-card__decoder-rect {
+  fill: var(--color-sign-blue);
+}

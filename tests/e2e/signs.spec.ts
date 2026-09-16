@@ -12,9 +12,16 @@
 // without a rule row (orders-national-speed-limit, C9), both C7 route
 // colours, and seeded IndexedDB progress on the sign page itself (partial
 // dots and a full COLLECTED badge) — kept in one spec file since Step 21
-// adds one more test here). Runs against the production build (`vite
-// preview`) with Playwright's WebKit engine and an iPhone 14 device
-// profile, matching real iOS Safari behaviour.
+// adds one more test here). Step 21's "Practice header and game cards" test
+// proves the Practice tab's fresh-profile 0/0 streak and XP, the four game
+// cards' DOM order, hrefs, exact titles/subtitles and the Sign Sprint
+// card's Roundel value (amendment E22), the Tap card's four real sign
+// pictures with alt="" (never the Match Pairs or Decoder tiles, which are
+// app-drawn art, D7/E18), and seeded IndexedDB progress (a fresh streak/XP
+// pair, then a stale streak that must read back as 0 while a fresh XP value
+// still loads). Runs against the production build (`vite preview`) with
+// Playwright's WebKit engine and an iPhone 14 device profile, matching real
+// iOS Safari behaviour.
 // Depends on: @playwright/test, ./helpers (openAppAt).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
 import { test, expect, type Page } from '@playwright/test';
@@ -45,6 +52,47 @@ async function seedSignProgress(
         }
         const tx = db.transaction('signProgress', 'readwrite');
         const store = tx.objectStore('signProgress');
+        for (const row of seedRows) {
+          store.put(row);
+        }
+        tx.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        tx.onerror = () => {
+          db.close();
+          reject(tx.error);
+        };
+      };
+    });
+  }, rows);
+}
+
+/**
+ * Puts rows straight into the app's `progress` object store (keyPath
+ * `key`), bypassing the progress-store's own Dexie writes -- same style and
+ * caveats as seedSignProgress above (opens with no version argument, so the
+ * app must already have created the database). Rows are already shaped for
+ * the store, e.g. { key: 'xp', value: 340 } or
+ * { key: 'streak', value: { count: 5, lastDay: '2026-09-16' } }.
+ */
+async function seedProgressRows(
+  page: Page,
+  rows: { key: string; value: unknown }[],
+): Promise<void> {
+  await page.evaluate((seedRows) => {
+    return new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open('ClutchDB');
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('progress')) {
+          db.close();
+          reject(new Error('progress object store missing'));
+          return;
+        }
+        const tx = db.transaction('progress', 'readwrite');
+        const store = tx.objectStore('progress');
         for (const row of seedRows) {
           store.put(row);
         }
@@ -392,4 +440,107 @@ test('Sign page', async ({ page }) => {
   await expect(heading).toHaveText('Crossroads.');
   await expect(page.getByText('COLLECTED')).toBeVisible();
   await expect(page.getByText('of 3 correct to collect')).toHaveCount(0);
+});
+
+test('Practice header and game cards', async ({ page }) => {
+  await openAppAt(page, '/clutch/practice');
+
+  // "Beside" a label means inside the same .practice-header__stat wrapper
+  // (amendment E20) -- each stat's own number element, not the app-wide
+  // "5" or "340" text, which a swapped streak/xp prop would still satisfy.
+  const streakStat = page.locator('.practice-header__stat', { hasText: 'day streak' });
+  const xpStat = page.locator('.practice-header__stat', { hasText: 'XP earned' });
+  await expect(streakStat.locator('.practice-header__number')).toHaveText('0');
+  await expect(xpStat.locator('.practice-header__number')).toHaveText('0');
+
+  // Amendment E22: the four cards, in DOM order, their hrefs, exact titles
+  // and subtitles, and the Sign Sprint card's Roundel value -- a changed
+  // title or a swapped card position must fail these.
+  const cards = page.locator('.practice-card');
+  await expect(cards).toHaveCount(4);
+  await expect(cards.nth(0)).toHaveAttribute('href', '/clutch/practice/sprint');
+  await expect(cards.nth(1)).toHaveAttribute('href', '/clutch/practice/tap');
+  await expect(cards.nth(2)).toHaveAttribute('href', '/clutch/practice/pairs');
+  await expect(cards.nth(3)).toHaveAttribute('href', '/clutch/learn/signs/decoder');
+
+  const cardCopy = [
+    { title: 'Sign Sprint', subtitle: 'Name signs against the clock' },
+    { title: 'Tap the sign', subtitle: 'Read the name, tap the sign' },
+    { title: 'Match Pairs', subtitle: 'Match signs to their names' },
+    { title: 'Shape & Colour Decoder', subtitle: 'What shapes and colours mean' },
+  ];
+  for (let i = 0; i < cardCopy.length; i++) {
+    await expect(cards.nth(i).locator('.practice-card__title')).toHaveText(cardCopy[i].title);
+    await expect(cards.nth(i).locator('.practice-card__subtitle')).toHaveText(cardCopy[i].subtitle);
+  }
+
+  await expect(cards.nth(0).locator('.roundel')).toHaveText('60');
+
+  const tapCard = cards.nth(1);
+  const pairsCard = cards.nth(2);
+  const decoderCard = cards.nth(3);
+
+  // The Tap card's four real sign pictures, in order, each with an empty
+  // alt (the caption is never shown alongside these thumbnails, so alt=""
+  // per plan.md § Rules "Real sign pictures" -- amendment E22).
+  const tapImages = tapCard.locator('img');
+  await expect(tapImages).toHaveCount(4);
+  await expect(tapImages.nth(0)).toHaveAttribute('src', /signs\/warning\/slippery-road\.svg$/);
+  await expect(tapImages.nth(0)).toHaveAttribute('alt', '');
+  await expect(tapImages.nth(1)).toHaveAttribute('src', /signs\/warning\/roundabout\.svg$/);
+  await expect(tapImages.nth(1)).toHaveAttribute('alt', '');
+  await expect(tapImages.nth(2)).toHaveAttribute('src', /signs\/warning\/crossroads\.svg$/);
+  await expect(tapImages.nth(2)).toHaveAttribute('alt', '');
+  await expect(tapImages.nth(3)).toHaveAttribute('src', /signs\/warning\/uneven-road\.svg$/);
+  await expect(tapImages.nth(3)).toHaveAttribute('alt', '');
+  await page.waitForFunction(() => {
+    const imgs = Array.from(
+      document.querySelectorAll<HTMLImageElement>('a[href="/clutch/practice/tap"] img'),
+    );
+    return imgs.length === 4 && imgs.every((i) => i.complete && i.naturalWidth > 0);
+  });
+
+  // The Match Pairs and Decoder tiles are app-drawn art, never a real sign
+  // picture (plan.md D7, amendment E18) -- so neither card has any <img>.
+  await expect(pairsCard.locator('img')).toHaveCount(0);
+  await expect(decoderCard.locator('img')).toHaveCount(0);
+
+  // WebKit reports the app's database once it has actually opened it
+  // (amendment E19's pre-verified fact).
+  await expect
+    .poll(() =>
+      page.evaluate(async () =>
+        (await indexedDB.databases()).some((d) => d.name === 'ClutchDB' && d.version === 20),
+      ),
+    )
+    .toBe(true);
+
+  const lastDay = await page.evaluate(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
+
+  await seedProgressRows(page, [
+    { key: 'xp', value: 340 },
+    { key: 'streak', value: { count: 5, lastDay } },
+  ]);
+  await page.reload();
+
+  await expect(streakStat.locator('.practice-header__number')).toHaveText('5');
+  await expect(xpStat.locator('.practice-header__number')).toHaveText('340');
+
+  // A stale streak (last played 2020-01-01) must read back as 0 -- the XP
+  // assertion runs first, proving the seeded data has actually loaded
+  // before the 0 is read (amendment E20).
+  await seedProgressRows(page, [
+    { key: 'streak', value: { count: 9, lastDay: '2020-01-01' } },
+    { key: 'xp', value: 50 },
+  ]);
+  await page.reload();
+
+  await expect(xpStat.locator('.practice-header__number')).toHaveText('50');
+  await expect(streakStat.locator('.practice-header__number')).toHaveText('0');
 });
