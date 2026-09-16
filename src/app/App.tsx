@@ -4,8 +4,9 @@
 // whenever the current route is not one of the five tab roots), the active
 // tab screen (via Outlet), and the bottom TabBar.
 // Depends on: react, react-router-dom, ./TabBar, ./AddToHomeScreen,
-// ./platform, ./tabs (to detect tab-root routes), lucide-react (back-button
-// icon), ../ui (SignPanel), ./theme.css (design tokens).
+// ./platform, ./tabs (to detect tab-root routes), ./back (A-S3: Back never
+// leaves the app), lucide-react (back-button icon), ../ui (SignPanel),
+// ./theme.css (design tokens).
 // Depended on by: src/app/routes.tsx.
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +15,7 @@ import TabBar from './TabBar';
 import AddToHomeScreen from './AddToHomeScreen';
 import { readPlatform, shouldShowAddToHomeScreen } from './platform';
 import { TABS } from './tabs';
+import { backTarget } from './back';
 import { SignPanel } from '../ui';
 
 function App() {
@@ -54,7 +56,23 @@ function App() {
           <button
             type="button"
             aria-label="Back"
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              // A-S3: read the history index at click time (not during
+              // render) so a page reload or a cold deep link — both of
+              // which start a fresh history stack — is detected correctly.
+              const target = backTarget(
+                location.pathname,
+                (window.history.state as { idx?: number } | null)?.idx,
+              );
+              // NavigateFunction has separate (-1-style) and (string-style)
+              // overloads, so a `-1 | string` union value can't be passed
+              // directly — branch on typeof instead.
+              if (typeof target === 'number') {
+                navigate(target);
+              } else {
+                navigate(target);
+              }
+            }}
             style={{
               display: 'flex',
               alignItems: 'center',

@@ -2,7 +2,9 @@
 // with Playwright's WebKit engine and an iPhone 14 device profile, matching
 // real iOS Safari behaviour (manifest, Add to Home Screen panel, service
 // worker registration/offline readiness, tab navigation with icons and
-// aria-current, offline reload).
+// aria-current, offline reload, and (Step 12, A-S3) that the header's Back
+// button falls back to the owning tab on a cold deep link instead of
+// leaving the app).
 // The offline-reload test (amendment A2) spawns a second `vite preview`
 // server on port 4174 and kills it with a real OS signal, because
 // `context.setOffline(true)` is a hard network kill WebKit's service worker
@@ -71,6 +73,16 @@ test('tabs navigate', async ({ page }) => {
 
   await page.getByRole('link', { name: 'Learn' }).click();
   await expect(page.getByRole('link', { name: 'Learn' })).toHaveAttribute('aria-current', 'page');
+});
+
+test('Back on a cold deep link stays in the app', async ({ page }) => {
+  // A-S3: a fresh page landing directly on a nested route (no prior in-app
+  // history) must fall back to the owning tab rather than navigating the
+  // browser out of the app.
+  await openAppAt(page, '/clutch/code/rule/126');
+
+  await page.getByRole('button', { name: 'Back' }).click();
+  await expect(page).toHaveURL((url) => url.pathname.endsWith('/clutch/learn'));
 });
 
 // Port for the second preview server this file's offline test spawns.

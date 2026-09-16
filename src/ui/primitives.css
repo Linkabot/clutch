@@ -34,6 +34,34 @@
   color: var(--color-on-sign);
 }
 
+/* S8: rule badges in Highway Code list rows (SectionScreen, SearchScreen)
+   share one fixed width, wide enough for the widest label ("RULE 307"),
+   instead of each sizing itself to its own rule id's length. SignPanel
+   takes no className, so the wrapper's fixed width has to be filled by the
+   visible .sign-panel (and its .sign-panel__inner) through descendant
+   selectors — the wrapper alone being a fixed width is not enough, since
+   the panel inside would otherwise stay content-sized. flex-shrink: 0
+   keeps the badge from being squeezed by a long rule summary sharing the
+   same flex row (SectionScreen/SearchScreen's row style is display: flex). */
+.rule-badge--list {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 120px;
+  min-width: 120px;
+}
+
+.rule-badge--list .sign-panel {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.rule-badge--list .sign-panel__inner {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+}
+
 /* SignPlate: white plate label; "current" tone fills with sign-blue. */
 .sign-plate {
   display: inline-block;

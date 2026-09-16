@@ -18,12 +18,16 @@
 // table has three columns with a full-width "Overall …" row after each
 // speed row — including amendment E7's proof that the table renders at
 // TableB's full width with 6px cell padding and a hairline bottom border
-// under each Overall row. Runs against the production build (`vite
-// preview`) with Playwright's WebKit engine and an iPhone 14 device
-// profile, matching real iOS Safari behaviour.
+// under each Overall row — and (Step 12, S8/amendment E8) that every
+// `.rule-badge--list` rule badge in a section's list rows shares one width,
+// and that the visible `.sign-panel` inside each wrapper fills it, rather
+// than only the invisible wrapper matching. Runs against the production
+// build (`vite preview`) with Playwright's WebKit engine and an iPhone 14
+// device profile, matching real iOS Safari behaviour.
 // Depends on: @playwright/test, node:fs, node:path, node:url, ./helpers
 // (openAppAt, startPreview, stopPreview, waitForServiceWorkerActivated),
-// content/uk/highway-code/sections/*.json (read directly, not imported).
+// content/uk/highway-code/index.json and sections/*.json (read directly,
+// not imported).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
@@ -52,6 +56,26 @@ function readSection(slug: string): {
   return JSON.parse(readFileSync(path, 'utf8')) as {
     interludes: { beforeRuleId: string | null; html: string }[];
   };
+}
+
+/** Reads the committed Highway Code index and returns the slug of the
+ * first section (in document order) whose ruleIds include both a 2-digit
+ * and a 3-digit id — mechanically derived from the JSON rather than
+ * hard-coded, per plan.md Step 12. */
+function firstSectionWithTwoAndThreeDigitRuleIds(): string {
+  const indexPath = join(__dirname, '..', '..', 'content', 'uk', 'highway-code', 'index.json');
+  const index = JSON.parse(readFileSync(indexPath, 'utf8')) as {
+    sections: { slug: string; ruleIds: string[] }[];
+  };
+  const match = index.sections.find(
+    (section) =>
+      section.ruleIds.some((id) => /^\d{2}$/.test(id)) &&
+      section.ruleIds.some((id) => /^\d{3}$/.test(id)),
+  );
+  if (!match) {
+    throw new Error('no section has both a 2-digit and a 3-digit rule id');
+  }
+  return match.slug;
 }
 
 /** Strips tags, collapses whitespace and trims — the same normalisation
@@ -163,6 +187,42 @@ test('Rule 126 heading and three-column table', async ({ page }) => {
   );
   expect(overallBorderWidths.length).toBe(6);
   expect(overallBorderWidths.every((value) => value === '1px')).toBe(true);
+});
+
+test('list rule badges share one width', async ({ page }) => {
+  // S8: every rule badge in a section's list rows shares one fixed width
+  // (wide enough for "RULE 307") instead of sizing itself to its own rule
+  // id's length. Amendment E8: the visible .sign-panel inside each
+  // .rule-badge--list wrapper must fill it — a wrapper-only fixed width
+  // would pass a naive "wrappers match" assertion while the blue panels
+  // learners actually see still differed.
+  const slug = firstSectionWithTwoAndThreeDigitRuleIds();
+  await openAppAt(page, `/clutch/learn/code/${slug}`);
+
+  const wrappers = page.locator('.rule-badge--list');
+  const panels = page.locator('.rule-badge--list .sign-panel');
+  // loadSection resolves asynchronously, so the list rows are not there
+  // immediately after navigation; wait for the first badge before counting.
+  await wrappers.first().waitFor({ state: 'visible' });
+  const wrapperCount = await wrappers.count();
+  expect(wrapperCount).toBeGreaterThanOrEqual(2);
+  expect(await panels.count()).toBe(wrapperCount);
+
+  const wrapperWidths: number[] = [];
+  const panelWidths: number[] = [];
+  for (let i = 0; i < wrapperCount; i++) {
+    const wrapperBox = await wrappers.nth(i).boundingBox();
+    const panelBox = await panels.nth(i).boundingBox();
+    if (!wrapperBox || !panelBox) {
+      throw new Error(`missing bounding box for rule badge ${i}`);
+    }
+    expect(Math.abs(panelBox.width - wrapperBox.width)).toBeLessThanOrEqual(1);
+    wrapperWidths.push(wrapperBox.width);
+    panelWidths.push(panelBox.width);
+  }
+
+  expect(Math.max(...wrapperWidths) - Math.min(...wrapperWidths)).toBeLessThanOrEqual(1);
+  expect(Math.max(...panelWidths) - Math.min(...panelWidths)).toBeLessThanOrEqual(1);
 });
 
 test('offline: rule page and search render with the server stopped', async ({ page }) => {

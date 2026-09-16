@@ -96,9 +96,11 @@ function SearchScreen() {
               <Link to={resultHref(result)} style={rowStyle}>
                 {result.kind === 'rule' ? (
                   <>
-                    <SignPanel colour="blue" size="small">
-                      <span className="sign-label">Rule {result.ruleId}</span>
-                    </SignPanel>
+                    <span className="rule-badge--list">
+                      <SignPanel colour="blue" size="small">
+                        <span className="sign-label">Rule {result.ruleId}</span>
+                      </SignPanel>
+                    </span>
                     <span style={{ flex: 1 }}>
                       <span>{result.lead || result.title}</span>
                       <span style={{ display: 'block', color: 'var(--color-muted)' }}>

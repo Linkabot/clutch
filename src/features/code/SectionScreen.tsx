@@ -130,9 +130,11 @@ function SectionScreen() {
                 </div>
               ))}
               <Link to={`/code/rule/${rule.id}`} style={ruleRowStyle}>
-                <SignPanel colour="blue" size="small">
-                  <span className="sign-label">Rule {rule.id}</span>
-                </SignPanel>
+                <span className="rule-badge--list">
+                  <SignPanel colour="blue" size="small">
+                    <span className="sign-label">Rule {rule.id}</span>
+                  </SignPanel>
+                </span>
                 <span style={{ flex: 1 }}>{ruleSummary(rule)}</span>
                 {rule.law && <Chip tone="law">Law</Chip>}
               </Link>
