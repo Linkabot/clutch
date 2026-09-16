@@ -1,0 +1,609 @@
+/* Sign Sprint styles for src/features/interactives/sign-sprint/SignSprint.tsx
+   (scout-e.md's SprintPlay and SprintEnd artboards; plan.md Step 24 and
+   amendment E27): a full-screen game layer over the app shell. The play
+   screen has the SIGN SPRINT badge and score, a roadside scene (grass,
+   four round trees and a post, all drawn by the app) whose real sign
+   picture drives in, "Name this sign" and four lettered options that frame
+   the right answer green and a wrong tap red during a reveal. The end
+   screen has a green result panel with white chips, the missed-signs list
+   card and two equal action buttons at the bottom. Every rule that moves
+   is scoped under the root's animated modifier class, so the static
+   modifier (reduced motion) turns all motion off at once; the two keyframe
+   sets below are copied from the artboards, and pop matches quiz-sheet.css
+   exactly. Colours are theme.css tokens and colour mixes of them only (no
+   literals); the green result panel uses only tokens that stay fixed in
+   dark mode.
+   Depends on: the custom properties defined in src/app/theme.css; .button,
+   .button--primary and .button--secondary in src/ui/primitives.css (Done,
+   Play again); .game-top-bar in src/features/interactives/shared/games.css.
+   Depended on by: src/features/interactives/sign-sprint/SignSprint.tsx
+   (imports this file once). */
+
+/* --- Root: a full-screen layer over the header and tab bar --------------- */
+
+.sprint {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  overflow-y: auto;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* --- Play screen ------------------------------------------------------------ */
+
+.sprint__play {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+}
+
+.sprint__status {
+  padding: 14px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sprint__badge {
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background-color: var(--color-sign-blue);
+  color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+}
+
+.sprint__score-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sprint__xp {
+  box-sizing: border-box;
+  height: 28px;
+  margin-right: 4px;
+  padding: 0 9px;
+  border-radius: 7px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.sprint__tick {
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: var(--color-sign-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sprint__tick svg {
+  stroke: var(--color-on-sign);
+}
+
+.sprint__score {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+/* The scene: grass, trees and a post drawn by the app; the sign drives in. */
+.sprint__panel {
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 300px;
+  margin: 14px 20px 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+}
+
+.sprint__ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background-color: var(--color-map-grass);
+}
+
+.sprint__tree {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.sprint__tree--1 {
+  left: 18px;
+  bottom: 26px;
+  width: 34px;
+  height: 34px;
+  background-color: var(--color-map-trees-1);
+}
+
+.sprint__tree--2 {
+  left: 40px;
+  bottom: 30px;
+  width: 22px;
+  height: 22px;
+  background-color: var(--color-map-trees-2);
+}
+
+.sprint__tree--3 {
+  right: 22px;
+  bottom: 28px;
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-map-trees-1);
+}
+
+.sprint__tree--4 {
+  right: 46px;
+  bottom: 32px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-map-trees-2);
+}
+
+/* The post runs up behind the picture box's centre, so every sign stands on
+   it whatever padding its picture carries; the sign paints above it. */
+.sprint__post {
+  position: absolute;
+  left: 50%;
+  margin-left: -5px;
+  top: 120px;
+  bottom: 16px;
+  width: 10px;
+  border-radius: 3px;
+  background-color: color-mix(in srgb, var(--color-muted) 60%, var(--color-surface));
+}
+
+.sprint__sign {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.sprint__picture {
+  flex-shrink: 0;
+  width: 212px;
+  height: 200px;
+}
+
+.sprint__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sprint__prompt {
+  margin: 0;
+  padding: 18px 20px 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.sprint__options {
+  padding: 10px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* A 60-character caption wraps, so the height is a minimum; the vertical
+   padding keeps a wrapped caption off the border. */
+.sprint__option {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 58px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-hairline);
+  box-shadow: 0 3px 0 var(--color-hairline);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: inherit;
+  text-align: left;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+/* WebKit greys a disabled button's text unless its colour is set here. */
+.sprint__option:disabled {
+  color: var(--color-ink);
+  opacity: 1;
+  cursor: default;
+}
+
+.sprint__option:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
+/* The 4px reveal frames; 2px less padding keeps the content still. */
+.sprint__option[data-feedback='answer'] {
+  border-width: 4px;
+  padding: 4px 12px;
+  border-color: var(--color-sign-green);
+  box-shadow: 0 3px 0 var(--color-sign-green-shadow);
+}
+
+.sprint__option[data-feedback='wrong'] {
+  border-width: 4px;
+  padding: 4px 12px;
+  border-color: var(--color-sign-red);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--color-sign-red) 75%, var(--color-sign-ink));
+}
+
+.sprint__letter {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 2px solid color-mix(in srgb, var(--color-hairline) 85%, var(--color-muted));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--color-ink);
+}
+
+.sprint__caption {
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+/* --- End screen ---------------------------------------------------------------- */
+
+.sprint-end {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sprint-end__header {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 20px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sprint-end__close {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.sprint-end__close:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
+.sprint-end__title {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--color-ink);
+}
+
+.sprint-end__panel {
+  margin: 8px 20px 0;
+  padding: 5px;
+  border-radius: 14px;
+  background-color: var(--color-sign-green);
+}
+
+.sprint-end__frame {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border: 2.5px solid var(--color-on-sign);
+  border-radius: 10px;
+  color: var(--color-on-sign);
+}
+
+.sprint-end__label {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 19.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-on-sign);
+}
+
+.sprint-end__result {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.sprint-end__score {
+  display: block;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 80px;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: var(--color-on-sign);
+}
+
+.sprint-end__named {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4px;
+}
+
+.sprint-end__named-text {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.sprint-end__seconds {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.sprint-end__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.sprint-end__xp {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.sprint-end__best {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background-color: var(--color-on-sign);
+  border: 1.5px solid var(--color-sign-ink);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.sprint-end__streak {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 11px 0 8px;
+  border-radius: 16px;
+  background-color: var(--color-on-sign);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.sprint-end__flame {
+  flex-shrink: 0;
+  fill: var(--color-sign-red);
+}
+
+.sprint-end__missed-heading {
+  margin: 22px 20px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sprint-end__missed-title {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+.sprint-end__missed-count {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--color-muted);
+}
+
+.sprint-end__missed-list {
+  margin: 10px 20px 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+}
+
+.sprint-end__missed-item + .sprint-end__missed-item {
+  border-top: 1px solid var(--color-hairline);
+}
+
+.sprint-end__missed-row {
+  box-sizing: border-box;
+  min-height: 72px;
+  padding: 8px 10px 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.sprint-end__missed-row:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: -2px;
+}
+
+.sprint-end__missed-picture {
+  flex-shrink: 0;
+  width: 58px;
+  display: flex;
+  justify-content: center;
+}
+
+.sprint-end__missed-picture img {
+  display: block;
+  width: 53px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.sprint-end__missed-caption {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.sprint-end__missed-chevron {
+  flex-shrink: 0;
+  color: var(--color-muted);
+}
+
+/* Pinned to the bottom of the column, and pushed down by a long list. */
+.sprint-end__actions {
+  margin-top: auto;
+  padding: 22px 20px max(50px, calc(env(safe-area-inset-bottom) + 16px));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.sprint-end__actions .button {
+  font-weight: 800;
+}
+
+.sprint-end__actions .button--primary {
+  font-size: 18px;
+}
+
+/* --- Motion: only under the root's animated modifier -------------------------- */
+
+.sprint--animated .sprint__sign {
+  animation: driveIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+}
+
+.sprint--animated .sprint__xp {
+  animation: pop 0.5s 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.sprint--animated .sprint-end__score {
+  animation: pop 0.55s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.sprint--animated .sprint-end__xp {
+  animation: pop 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+/* --- Keyframes, as drawn on the artboards ----------------------------------- */
+
+@keyframes driveIn {
+  from {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -9,16 +9,24 @@
 // /practice/tap, listed right after the practice child -- its screen draws
 // a full-screen layer over App's own header and tab bar rather than
 // replacing this layout route, so it stays nested here like every other
-// screen. The static learn/code/search and learn/signs routes are listed
+// screen -- then (Step 24) one child route per INTERACTIVES registry entry
+// (Sign Sprint at /practice/sprint first), right after practice/tap: the
+// path is the entry's route without its leading slash, and the screen is a
+// React.lazy component created once at module scope from the entry's load()
+// and rendered inside <Suspense fallback={null}>, so later games need no
+// edit here. The static learn/code/search and learn/signs routes are listed
 // before the learn/code/:slug param route so the intent is obvious to a
 // reader, though React Router ranks static segments higher regardless of
 // source order.
-// Depends on: react-router-dom, ./App, ./tabs, src/features/*/*.tsx,
+// Depends on: react (lazy, Suspense), react-router-dom, ./App, ./tabs, src/features/*/*.tsx,
 // src/features/code/HighwayCodeSectionsScreen, src/features/code/SectionScreen,
 // src/features/code/SearchScreen, src/features/code/RuleScreen,
 // src/features/signs/SignsScreen, src/features/signs/SignScreen,
-// src/features/practice/tap/TapTheSignScreen.
+// src/features/practice/tap/TapTheSignScreen,
+// src/features/interactives/registry (INTERACTIVES; each entry's screen
+// loads lazily through its load()).
 // Depended on by: src/main.tsx.
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import JourneyScreen from '../features/journey/JourneyScreen';
@@ -33,6 +41,13 @@ import RuleScreen from '../features/code/RuleScreen';
 import SignsScreen from '../features/signs/SignsScreen';
 import SignScreen from '../features/signs/SignScreen';
 import TapTheSignScreen from '../features/practice/tap/TapTheSignScreen';
+import { INTERACTIVES } from '../features/interactives/registry';
+
+/** One lazily loaded screen per registry entry, created once at module scope. */
+const INTERACTIVE_ROUTES = INTERACTIVES.map((entry) => ({
+  path: entry.route.replace(/^\//, ''),
+  Screen: lazy(entry.load),
+}));
 
 export const router = createBrowserRouter(
   [
@@ -50,6 +65,14 @@ export const router = createBrowserRouter(
         { path: 'code/rule/:id', element: <RuleScreen /> },
         { path: 'practice', element: <PracticeScreen /> },
         { path: 'practice/tap', element: <TapTheSignScreen /> },
+        ...INTERACTIVE_ROUTES.map(({ path, Screen }) => ({
+          path,
+          element: (
+            <Suspense fallback={null}>
+              <Screen />
+            </Suspense>
+          ),
+        })),
         { path: 'my-car', element: <MyCarScreen /> },
         { path: 'me', element: <MeScreen /> },
       ],

@@ -14,12 +14,14 @@
 // isDynamicEntry -- so a chunk shared with the index.html shell, with
 // another game, or with any other lazily loaded module (for example a
 // Highway Code section chunk) is never charged to this game -- plus those
-// chunks' css. Fails a game over its budget. Run after `npm run build`.
+// chunks' css. Each root's own file and css also count as reachable from
+// that root, so the shell entry's own chunk, which a lazy game imports for
+// everything it shares with the shell, is never charged to the game. Fails
+// a game over its budget. Run after `npm run build`.
 // Depends on: node:fs, node:path,
 // src/features/interactives/registry.ts (read as text only),
 // dist/.vite/manifest.json, dist/ (the production build).
-// Depended on by: `npm run check:interactives` (later: Steps 24-26, once
-// they add registry entries).
+// Depended on by: `npm run check:interactives`.
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -86,11 +88,15 @@ function collectImportedFiles(manifest, rootKey) {
   return files;
 }
 
-/** file -> the set of root keys that reach it through their own static imports. */
+/** file -> the set of root keys that reach it: each root's own file and css, plus the files reached through its static imports. */
 function buildFileReachability(manifest, rootKeys) {
   const reachability = new Map();
   for (const rootKey of rootKeys) {
-    for (const file of collectImportedFiles(manifest, rootKey)) {
+    const rootEntry = manifest[rootKey];
+    const reachableFiles = new Set(collectImportedFiles(manifest, rootKey));
+    if (rootEntry?.file) reachableFiles.add(rootEntry.file);
+    for (const cssFile of rootEntry?.css ?? []) reachableFiles.add(cssFile);
+    for (const file of reachableFiles) {
       if (!reachability.has(file)) reachability.set(file, new Set());
       reachability.get(file).add(rootKey);
     }

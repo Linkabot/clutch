@@ -1,5 +1,5 @@
-// End-to-end tests for Clutch's games (plan.md Step 23 and amendment E25;
-// later joined by Sign Sprint and Match Pairs, Steps 24-25). "tap the sign:
+// End-to-end tests for Clutch's games (plan.md Steps 23-24 and amendments
+// E25 and E27; later joined by Match Pairs, Step 25). "tap the sign:
 // right, wrong, reduced motion, finish" plays a full Tap the sign round
 // seeded via ?sign=: question 1's right answer (the sheet's XP, confetti,
 // streak-free body, disabled/dimmed tiles and sheetUp animation), question
@@ -10,7 +10,19 @@
 // and the sign page afterwards. A second test emulates reduced motion
 // before the app loads (P11): the sheet's static class, 0 confetti pieces,
 // every element inside the sheet and the tapped tile computed with
-// animationName 'none', then Sign page and Close's routes. Runs against the
+// animationName 'none', then Sign page and Close's routes. "Sign Sprint
+// run" installs Playwright's clock before the app loads (never pausing it)
+// and plays two rounds: round 1 answers 3 signs right (the score, the +10 XP
+// pop and the sign's driveIn animation) and 1 wrong, then fast-forwards
+// past the 60-second deadline to the end screen (score, +30 XP and their
+// pop animations, Best 3, the day streak and the one missed sign's link
+// and caption); round 2, under emulated reduced motion, proves Play again
+// resets the round, nothing animates, a score of 1 reads "sign named", and
+// a lower score never lowers the best. Afterwards the
+// Practice tab shows both rounds' XP and the streak, the first answer's
+// sign page shows its collection progress, and Close leaves a fresh
+// Sprint. Every read of the sign's data-answer-id after an answer first
+// waits for it to change. Runs against the
 // production build (`vite preview`) with Playwright's WebKit engine and an
 // iPhone 14 device profile.
 // Depends on: @playwright/test, ./helpers (openAppAt).
@@ -186,6 +198,147 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
 
     await page.goto('/clutch/practice/tap');
     await expect(page.locator('.game-top-bar__label')).toHaveText('1/10');
+    await page.getByRole('button', { name: 'Close' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+});
+
+/** The Sprint sign's data-answer-id, throwing if it is missing. */
+async function sprintAnswerId(page: Page): Promise<string> {
+  const id = await page.locator('.sprint__sign').getAttribute('data-answer-id');
+  if (!id) throw new Error('.sprint__sign has no data-answer-id');
+  return id;
+}
+
+/**
+ * Waits until the Sprint sign's data-answer-id differs from `previousId`
+ * (the sign just answered), then returns it -- guards against reading the
+ * outgoing sign's id before React has rendered the next one.
+ */
+async function waitForNextSprintSign(page: Page, previousId: string): Promise<string> {
+  await expect
+    .poll(() => page.locator('.sprint__sign').getAttribute('data-answer-id'))
+    .not.toBe(previousId);
+  return sprintAnswerId(page);
+}
+
+/** Every computed animationName inside the Sprint layer. */
+function sprintAnimationNames(page: Page): Promise<string[]> {
+  return page
+    .locator('.sprint *')
+    .evaluateAll((elements) => elements.map((el) => getComputedStyle(el).animationName));
+}
+
+test.describe('Sign Sprint run', () => {
+  test('two rounds: right and wrong answers, time up, best score, reduced motion, progress', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await page.clock.install();
+    await openAppAt(page, '/clutch/practice/sprint');
+
+    // Start.
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+    await expect(page.getByText('SIGN SPRINT')).toBeVisible();
+    await expect(page.getByText('Name this sign')).toBeVisible();
+    await expect(page.locator('.sprint__option')).toHaveCount(4);
+    await expect(page.getByRole('img', { name: 'Sign to name' })).toBeVisible();
+
+    // Round 1: three right answers.
+    const firstId = await sprintAnswerId(page);
+    await page.locator(`.sprint__option[data-sign-id="${firstId}"]`).click();
+    await expect(page.locator('.sprint__score')).toHaveText('1');
+    await expect(page.locator('.sprint__xp')).toHaveText('+10 XP');
+    await expect
+      .poll(() => page.locator('.sprint__xp').evaluate((el) => getComputedStyle(el).animationName))
+      .toBe('pop');
+    let currentId = await waitForNextSprintSign(page, firstId);
+    await expect
+      .poll(() =>
+        page.locator('.sprint__sign').evaluate((el) => getComputedStyle(el).animationName),
+      )
+      .toBe('driveIn');
+
+    for (let right = 2; right <= 3; right++) {
+      await page.locator(`.sprint__option[data-sign-id="${currentId}"]`).click();
+      await expect(page.locator('.sprint__score')).toHaveText(String(right));
+      currentId = await waitForNextSprintSign(page, currentId);
+    }
+
+    // Then one wrong answer.
+    const missedId = currentId;
+    const missedCaption = await page
+      .locator(`.sprint__option[data-sign-id="${missedId}"] .sprint__caption`)
+      .textContent();
+    if (!missedCaption) throw new Error('the answer option has no caption');
+    await page.locator(`.sprint__option:not([data-sign-id="${missedId}"])`).first().click();
+    await expect(page.locator('.sprint__score')).toHaveText('3');
+    // The reveal passes in real time, then the next sign drives in.
+    await waitForNextSprintSign(page, missedId);
+
+    // Time's up.
+    await page.clock.fastForward(61_000);
+    await expect(page.getByText('Time’s up')).toBeVisible();
+    await expect(page.locator('.sprint-end__score')).toHaveText('3');
+    await expect(page.getByText('signs named', { exact: true })).toBeVisible();
+    await expect(page.locator('.sprint-end__xp')).toHaveText('+30 XP');
+    for (const part of ['.sprint-end__score', '.sprint-end__xp']) {
+      await expect
+        .poll(() => page.locator(part).evaluate((el) => getComputedStyle(el).animationName))
+        .toBe('pop');
+    }
+    await expect(page.locator('.sprint-end__best')).toHaveText('Best 3');
+    await expect(page.getByText('1-day streak')).toBeVisible();
+    await expect(page.locator('.sprint-end__missed-count')).toHaveText('1');
+    const missedRows = page.locator('.sprint-end__missed-row');
+    await expect(missedRows).toHaveCount(1);
+    await expect(missedRows).toHaveAttribute('href', `/clutch/learn/signs/${missedId}`);
+    await expect(missedRows).toHaveText(missedCaption);
+    const playAgain = page.getByRole('button', { name: 'Play again' });
+    await expect(playAgain).toHaveClass(/button--primary/);
+
+    // Round 2, under reduced motion.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await playAgain.click();
+    await expect(page.locator('.sprint')).toHaveClass(/sprint--static/);
+    await expect(page.locator('.sprint__score')).toHaveText('0');
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+    const roundTwoId = await sprintAnswerId(page);
+    await page.locator(`.sprint__option[data-sign-id="${roundTwoId}"]`).click();
+    await expect(page.locator('.sprint__xp')).toHaveText('+10 XP');
+    for (const name of await sprintAnimationNames(page)) {
+      expect(name).toBe('none');
+    }
+
+    await page.clock.fastForward(61_000);
+    await expect(page.getByText('Time’s up')).toBeVisible();
+    await expect(page.locator('.sprint-end__score')).toHaveText('1');
+    await expect(page.getByText('sign named', { exact: true })).toBeVisible();
+    await expect(page.locator('.sprint-end__xp')).toHaveText('+10 XP');
+    await expect(page.locator('.sprint-end__best')).toHaveText('Best 3');
+    await expect(page.locator('.sprint-end__missed-count')).toHaveText('0');
+    await expect(page.locator('.sprint-end__missed-row')).toHaveCount(0);
+    for (const name of await sprintAnimationNames(page)) {
+      expect(name).toBe('none');
+    }
+
+    // Afterwards: both rounds' XP and the streak on Practice.
+    await page.getByRole('button', { name: 'Done' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice$/);
+    const xpStat = page.locator('.practice-header__stat', { hasText: 'XP earned' });
+    const streakStat = page.locator('.practice-header__stat', { hasText: 'day streak' });
+    await expect(xpStat.locator('.practice-header__number')).toHaveText('40');
+    await expect(streakStat.locator('.practice-header__number')).toHaveText('1');
+
+    // The first answer's collection progress (round 2's one right answer is
+    // a random sign, so in the rare run where it is the same sign it counts twice).
+    const firstCorrect = roundTwoId === firstId ? 2 : 1;
+    await page.goto(`/clutch/learn/signs/${firstId}`);
+    await expect(page.getByText(`${firstCorrect} of 3 correct to collect`)).toBeVisible();
+
+    // Close leaves a fresh Sprint.
+    await page.goto('/clutch/practice/sprint');
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
     await page.getByRole('button', { name: 'Close' }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
   });
