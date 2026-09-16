@@ -1,30 +1,36 @@
 // Rule page: /code/rule/:id — a single Highway Code rule, deep-linkable
 // on its own (from search results, a shared link, or the section list).
-// Loads the rule and its owning section via loadRule, then renders: a
-// rule-number badge, a muted link back to the owning section, a
-// law/advice Chip (a MUST/MUST NOT rule is "Law", everything else is
-// "Advice" — Decision 13's wording), the owning section's interludes
-// whose beforeRuleId equals this rule's id (Step 5, S3), each normalised
-// by interludeHtml (amendment E4) and rendered through its own HcHtml
-// inside a .hc-interlude wrapper above the rule body (Step 8, S3 on
-// screen), the rule's lead sentence (or its title, when it has no lead) as
-// the page heading, its sanitised HTML body, the Rule 126
-// stopping-distance table when this is Rule 126, previous/next navigation
-// within the owning section, and a footer with the OGL licence statement
-// and an external link to the same rule on GOV.UK.
+// Loads the rule and its owning section via loadRule, then renders: the
+// rule-number badge as the page's only top-level heading (Step 11, S10 —
+// the separate "not found" state below keeps its own heading), a muted
+// link back to the owning section, a law/advice Chip (a MUST/MUST NOT
+// rule is "Law", everything else is "Advice" — Decision 13's wording),
+// the owning section's interludes whose beforeRuleId equals this rule's
+// id (Step 5, S3), each normalised by interludeHtml (amendment E4) and
+// rendered through its own
+// HcHtml inside a .hc-interlude wrapper above the rule body (Step 8, S3 on
+// screen), the rule's lead sentence as its own bold paragraph when
+// shouldShowLead (amendment E5) says the body text doesn't already contain
+// it, its sanitised HTML body, the Rule 126 stopping-distance table when
+// this is Rule 126, previous/next navigation within the owning section,
+// and a footer with the OGL licence statement and an external link to the
+// same rule on GOV.UK.
 // Depends on: react, react-router-dom, ../../content/loaders (loadRule,
 // getHighwayCodeIndex), ../../content/schemas (Rule, Section types),
-// ../../ui (SignPanel, Chip, Button), ./HcHtml, ./ruleNav (neighbours),
-// ./StoppingDistanceTable, ./interlude (interludeHtml).
+// ../../content/text (htmlToText), ../../ui (SignPanel, Chip, Button),
+// ./HcHtml, ./ruleNav (neighbours), ./StoppingDistanceTable, ./interlude
+// (interludeHtml), ./rule-heading (shouldShowLead).
 // Depended on by: src/app/routes.tsx.
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { loadRule, getHighwayCodeIndex } from '../../content/loaders';
 import type { Rule, Section } from '../../content/schemas';
+import { htmlToText } from '../../content/text';
 import { SignPanel, Chip, Button } from '../../ui';
 import HcHtml from './HcHtml';
 import { interludeHtml } from './interlude';
 import { neighbours } from './ruleNav';
+import { shouldShowLead } from './rule-heading';
 import StoppingDistanceTable from './StoppingDistanceTable';
 
 type RuleState =
@@ -86,14 +92,15 @@ function RuleScreen() {
   const { prev, next } = neighbours(ruleIds, rule.id);
   const govUkHref = `${section.sourceUrl}#rule${rule.id.toLowerCase()}`;
   const interludes = section.interludes.filter((interlude) => interlude.beforeRuleId === rule.id);
+  const showLead = shouldShowLead(rule.lead ?? '', htmlToText(rule.html));
 
   return (
     <div>
-      <div data-testid="rule-badge">
+      <h1 data-testid="rule-badge">
         <SignPanel colour="blue" size="small">
           <span className="sign-label">Rule {rule.id}</span>
         </SignPanel>
-      </div>
+      </h1>
       <p>
         <Link to={`/learn/code/${section.slug}`} style={{ color: 'var(--color-muted)' }}>
           Back to {section.title}
@@ -104,12 +111,16 @@ function RuleScreen() {
       ) : (
         <Chip tone="advice">Advice · says 'should'</Chip>
       )}
-      <h1 className="lead">{rule.lead ?? rule.title}</h1>
       {interludes.map((interlude, index) => (
         <div key={`${rule.id}-${index}`} className="hc-interlude">
           <HcHtml html={interludeHtml(interlude.html)} />
         </div>
       ))}
+      {showLead && (
+        <p>
+          <strong>{rule.lead}</strong>
+        </p>
+      )}
       <div data-testid="rule-body">
         <HcHtml html={rule.html} />
       </div>

@@ -12,10 +12,15 @@
 // base and still navigate in-app when tapped, proved with a
 // __clutchNoReload window marker (amendment E6) that only survives a
 // client-side navigation, since vite preview's navigateFallback would
-// otherwise let a full page reload pass the same URL assertion. Runs
-// against the production build (`vite preview`) with Playwright's WebKit
-// engine and an iPhone 14 device profile, matching real iOS Safari
-// behaviour.
+// otherwise let a full page reload pass the same URL assertion — and
+// (Step 11, S9/S10) that Rule 126's page has exactly one <h1> (the rule
+// badge), shows "Stopping distances." once, and its stopping-distance
+// table has three columns with a full-width "Overall …" row after each
+// speed row — including amendment E7's proof that the table renders at
+// TableB's full width with 6px cell padding and a hairline bottom border
+// under each Overall row. Runs against the production build (`vite
+// preview`) with Playwright's WebKit engine and an iPhone 14 device
+// profile, matching real iOS Safari behaviour.
 // Depends on: @playwright/test, node:fs, node:path, node:url, ./helpers
 // (openAppAt, startPreview, stopPreview, waitForServiceWorkerActivated),
 // content/uk/highway-code/sections/*.json (read directly, not imported).
@@ -72,7 +77,10 @@ test('search finds Rule 126', async ({ page }) => {
   await resultLink.click();
 
   await expect(page.getByTestId('rule-badge')).toHaveText('Rule 126');
-  await expect(page.locator('[data-testid="stopping-distances"] tbody tr')).toHaveCount(6);
+  // Step 11, S9: each speed row is followed by its own full-width "Overall
+  // …" row, so the three-column table now has twelve <tr> in its <tbody>
+  // rather than six.
+  await expect(page.locator('[data-testid="stopping-distances"] tbody tr')).toHaveCount(12);
 });
 
 test('cold deep link renders Rule 126 under /clutch/', async ({ page }) => {
@@ -95,6 +103,66 @@ test('cold deep link renders Rule 126 under /clutch/', async ({ page }) => {
   // own "You should ..." list is the proof that fix stays in place.
   const firstList = page.locator('[data-testid="rule-body"] ul').first();
   await expect(firstList).toHaveCSS('list-style-type', 'disc');
+});
+
+test('Rule 126 heading and three-column table', async ({ page }) => {
+  // Step 11, S10: the rule badge is the page's only <h1>; S9: the
+  // stopping-distance table has three columns with a full-width "Overall
+  // …" row after each speed row.
+  await openAppAt(page, '/clutch/code/rule/126');
+
+  const headings = page.locator('h1');
+  await expect(headings).toHaveCount(1);
+  await expect(headings.first()).toHaveText(/^rule 126$/i);
+
+  // Amendment E5: Rule 126's lead ("Stopping distances.") sits after an
+  // uncaptioned diagram link and a PDF call-to-action rather than at the
+  // very start of the body, so shouldShowLead must not duplicate it.
+  const mainText = await page.locator('main').innerText();
+  expect(mainText.match(/Stopping distances\./g)?.length ?? 0).toBe(1);
+
+  const headerCells = page.locator('[data-testid="stopping-distances"] thead th');
+  await expect(headerCells).toHaveText(['Speed', 'Thinking', 'Braking']);
+
+  const overallRows = page.locator('[data-testid="stopping-distances"] tbody tr td[colspan]');
+  await expect(overallRows).toHaveText([
+    'Overall 12 m · 40 ft · 3 car lengths',
+    'Overall 23 m · 75 ft · 6 car lengths',
+    'Overall 36 m · 118 ft · 9 car lengths',
+    'Overall 53 m · 175 ft · 13 car lengths',
+    'Overall 73 m · 240 ft · 18 car lengths',
+    'Overall 96 m · 315 ft · 24 car lengths',
+  ]);
+
+  // amendment E7: the table matches the chosen TableB artboard — full
+  // width (not the ~three-quarters width the un-styled table rendered
+  // at), 6px cell padding (not 0, numbers flush against the coloured
+  // cell edges) and a hairline bottom border under each Overall row.
+  const widths = await page.evaluate(() => {
+    const table = document.querySelector('[data-testid="stopping-distances"]') as HTMLElement;
+    const parent = table.parentElement as HTMLElement;
+    return {
+      table: table.getBoundingClientRect().width,
+      parent: parent.getBoundingClientRect().width,
+    };
+  });
+  expect(Math.abs(widths.table - widths.parent)).toBeLessThanOrEqual(1);
+
+  const paddingLefts = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('[data-testid="stopping-distances"] tbody td')).map(
+      (td) => getComputedStyle(td).paddingLeft,
+    ),
+  );
+  expect(paddingLefts.length).toBeGreaterThan(0);
+  expect(paddingLefts.every((value) => value === '6px')).toBe(true);
+
+  const overallBorderWidths = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('[data-testid="stopping-distances"] td[colspan="3"]')).map(
+      (td) => getComputedStyle(td).borderBottomWidth,
+    ),
+  );
+  expect(overallBorderWidths.length).toBe(6);
+  expect(overallBorderWidths.every((value) => value === '1px')).toBe(true);
 });
 
 test('offline: rule page and search render with the server stopped', async ({ page }) => {
