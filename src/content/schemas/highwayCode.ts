@@ -1,4 +1,5 @@
-// Zod schemas for the ingested Highway Code: a single rule, a section
+// Zod schemas for the ingested Highway Code: a single rule, an interlude
+// (a kept run of content between or after rules, Step 5 S3), a section
 // (a page of the Code holding zero or more rules), and the top-level
 // index that lists every section in published order.
 // Depends on: zod.
@@ -14,6 +15,16 @@ export const SectionKind = z.enum(['introduction', 'rules', 'signals', 'annex', 
 export const RuleImageSchema = z.object({
   src: z.url(),
   alt: z.string(),
+});
+
+// A run of top-level siblings that `splitIntoBuckets` (Step 5, S3) keeps
+// instead of dropping: content that sits after a mid-section heading and
+// before the next rule heading, or after the last rule with no further
+// rule heading to follow it. `beforeRuleId` is that following rule's id,
+// or null when the run continues to the end of the section's body.
+export const InterludeSchema = z.object({
+  beforeRuleId: z.string().regex(RULE_ID).nullable(),
+  html: z.string(),
 });
 
 export const RuleSchema = z
@@ -44,6 +55,9 @@ export const SectionSchema = z.object({
   preambleHtml: z.string(),
   bodyHtml: z.string(),
   rules: z.array(RuleSchema),
+  // `.default([])` so every section committed before Step 5 (S3) — none of
+  // which has this key at all — still parses.
+  interludes: z.array(InterludeSchema).default([]),
 });
 
 export const HighwayCodeIndexSchema = z.object({
@@ -74,6 +88,7 @@ export const HighwayCodeIndexSchema = z.object({
 });
 
 export type RuleImage = z.infer<typeof RuleImageSchema>;
+export type Interlude = z.infer<typeof InterludeSchema>;
 export type Rule = z.infer<typeof RuleSchema>;
 export type Section = z.infer<typeof SectionSchema>;
 export type HighwayCodeIndex = z.infer<typeof HighwayCodeIndexSchema>;

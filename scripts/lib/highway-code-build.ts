@@ -20,10 +20,11 @@
 // already extends `ParseOptions` so a later step can add a named boolean
 // flag to both without changing this module's option shape again. Step 3
 // (S12, amended P2) added the first field, `repairHrefs`; Step 4 (S11,
-// amended P1) adds `figcaptionLinks` the same way. This module resolves
-// each flag's "no options passed" default to `true` and forwards the
-// resolved values as `parseSection`'s third argument for every section it
-// parses; scripts/compare-highway-code.ts sets flags explicitly instead
+// amended P1) added `figcaptionLinks` the same way; Step 5 (S3) adds
+// `interludes` the same way again. This module resolves each flag's "no
+// options passed" default to `true` and forwards the resolved values as
+// `parseSection`'s third argument for every section it parses;
+// scripts/compare-highway-code.ts sets flags explicitly instead
 // (`--flags off|on|<name>`).
 // Depends on: ./govuk.ts (fetchContentApi), ./highway-code-parse.ts
 // (parseSection), ../../src/content/schemas/highwayCode.ts (HighwayCodeIndex,
@@ -61,12 +62,20 @@ export interface ParseOptions {
    * false reproduces exactly what the parser emitted before this flag
    * existed (plan.md S11, amended P1). */
   figcaptionLinks?: boolean;
+  /** When true (the default a caller gets by omitting it, both here and in
+   * `parseSection` itself), every run of top-level siblings that falls
+   * into no rule bucket once a rule has started (a mid-section heading's
+   * content, or content after the last rule with no further rule heading)
+   * is sanitised and kept as `section.interludes[]` instead of being
+   * silently dropped; false reproduces exactly what the parser emitted
+   * before this flag existed — no `interludes` key at all (plan.md S3). */
+  interludes?: boolean;
 }
 
 /** Every flag name `ParseOptions` currently declares, read by
  * scripts/compare-highway-code.ts so its `--flags on|off|<name>` never
  * hard-codes a flag list of its own. */
-export const PARSE_FLAGS: readonly string[] = ['repairHrefs', 'figcaptionLinks'];
+export const PARSE_FLAGS: readonly string[] = ['repairHrefs', 'figcaptionLinks', 'interludes'];
 
 export interface BuildHighwayCodeOptions extends ParseOptions {
   /** Forwarded to every `fetchContentApi` call (landing page and every
@@ -144,6 +153,7 @@ export async function buildHighwayCode(
   // on these defaults.
   const repairHrefs = options.repairHrefs ?? true;
   const figcaptionLinks = options.figcaptionLinks ?? true;
+  const interludes = options.interludes ?? true;
 
   const landing = (await fetchContentApi(LANDING_BASE_PATH, { cacheDir })) as ContentApiResponse;
 
@@ -175,7 +185,7 @@ export async function buildHighwayCode(
         sourceUrl: `https://www.gov.uk${child.base_path}`,
         order,
       },
-      { repairHrefs, figcaptionLinks },
+      { repairHrefs, figcaptionLinks, interludes },
     );
 
     sections.push(section);

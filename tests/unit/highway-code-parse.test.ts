@@ -3,9 +3,11 @@
 // fixture (tests/fixtures/highway-code-section.html), every kindOf
 // precedence case named in plan.md amendment P3, `rewriteHref`'s
 // `repairHrefs` flag against the five malformed hrefs found in the
-// committed corpus (plan.md D13 S12, amended P2), and the `figcaptionLinks`
+// committed corpus (plan.md D13 S12, amended P2), the `figcaptionLinks`
 // flag against the real diagram/caption markup shape (plan.md S11, amended
-// P1; tests/fixtures/highway-code-figcaption.html).
+// P1; tests/fixtures/highway-code-figcaption.html), and the `interludes`
+// flag against a mid-section and a trailing dropped run (plan.md S3;
+// tests/fixtures/highway-code-interlude.html).
 // Depends on: vitest, node:fs, node:url, node:path,
 // scripts/lib/highway-code-parse.ts, src/content/schemas/highwayCode.ts.
 // Depended on by: `npm test` (Vitest run).
@@ -24,6 +26,10 @@ const fixtureHtml = readFileSync(
 );
 const figcaptionFixtureHtml = readFileSync(
   join(__dirname, '..', 'fixtures', 'highway-code-figcaption.html'),
+  'utf8',
+);
+const interludeFixtureHtml = readFileSync(
+  join(__dirname, '..', 'fixtures', 'highway-code-interlude.html'),
   'utf8',
 );
 
@@ -457,5 +463,41 @@ describe('figcaptionLinks', () => {
     expect(countOccurrences(html, 'Diagram (online): view image')).toBe(3);
     expect(html).toContain('Entry to 20 mph zone');
     expect(html).toContain('Hierarchy of road users');
+  });
+});
+
+// plan.md S3: once a rule has started, a mid-section <h2> begins a run of
+// siblings this parser has always dropped — until the next rule heading,
+// or the end of the body when no further rule heading follows.
+// tests/fixtures/highway-code-interlude.html reproduces both shapes: a
+// mid-section run between rules 201 and 202, and a trailing run after
+// rule 202 with nothing left to end it but the body itself.
+describe('interludes', () => {
+  const INTERLUDE_META = {
+    slug: 'interlude-probe',
+    title: 'Interlude probe',
+    basePath: '/guidance/the-highway-code/interlude-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/interlude-probe',
+    order: 0,
+  };
+
+  it('flag on (default): keeps both dropped runs, each tied to the rule that follows it or null after the last rule', () => {
+    const section = parseSection(interludeFixtureHtml, INTERLUDE_META);
+
+    expect(section.rules.map((rule) => rule.id)).toEqual(['201', '202']);
+    expect(section.interludes).toHaveLength(2);
+
+    const [first, second] = section.interludes;
+    expect(first.beforeRuleId).toBe('202');
+    expect(first.html).toContain('Mid-section heading');
+    expect(first.html).toContain('This paragraph sits between two rules');
+    expect(second.beforeRuleId).toBeNull();
+    expect(second.html).toContain('Trailing heading');
+    expect(second.html).toContain('This paragraph sits after the last rule');
+  });
+
+  it('flag off: the returned section carries no interludes key at all', () => {
+    const section = parseSection(interludeFixtureHtml, INTERLUDE_META, { interludes: false });
+    expect(section).not.toHaveProperty('interludes');
   });
 });

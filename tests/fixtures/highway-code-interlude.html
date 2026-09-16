@@ -1,0 +1,33 @@
+<!-- Fixture: a Highway Code section body in the shape of
+tests/fixtures/highway-code-section.html (plan.md Step 5, S3) — a leading
+<h2> preamble before the first rule, then rule headings — with two extra
+<h2> boundaries added once a rule has started: one mid-section <h2> and
+<p> sitting between two rules, and a second <h2> and <p> after the last
+rule with no further rule heading to follow it. Both are the runs
+`splitIntoBuckets` has always dropped once a rule has started; this
+fixture proves `interludes` keeps them instead, tied to the rule that
+follows (or null after the last rule). The prose is fixture filler, not
+real Highway Code text.
+Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<h2 id="introduction">Introduction</h2>
+<p>This fixture section covers example interlude rules for testing the parser.</p>
+<p>
+  It exists only to exercise interlude boundaries — the wording is not from the real Highway Code.
+</p>
+<h3 id="rule201">Rule 201</h3>
+<p>
+  This is the body text of the first fixture rule, kept only to give the interlude probe a rule to
+  sit between.
+</p>
+<h2 id="mid-section-heading">Mid-section heading</h2>
+<p>
+  This paragraph sits between two rules, under a mid-section heading, and is dropped by today's
+  parser once a rule has started.
+</p>
+<h3 id="rule202">Rule 202</h3>
+<p>This is the body text of the second fixture rule, which follows the mid-section interlude.</p>
+<h2 id="trailing-heading">Trailing heading</h2>
+<p>
+  This paragraph sits after the last rule, under its own heading, with no further rule heading to
+  follow it.
+</p>

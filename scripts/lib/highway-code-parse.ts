@@ -6,6 +6,13 @@
 // output is later parsed again, and allowing only http/https/mailto/tel
 // (or scheme-less) hrefs and image srcs — and classifies a section's kind
 // from its slug, trimmed title and rule ids.
+// Once a rule has started, a top-level `<h2>` begins a run of siblings
+// that belongs to no rule bucket — `splitIntoBuckets` has always dropped
+// that run; when the third argument's `interludes` flag is on (the
+// default), the run (heading included) is sanitised and kept as one entry
+// of `section.interludes[]`, tied to the rule that follows it or `null`
+// after the last rule (plan.md S3). Off reproduces exactly what this
+// module emitted before the flag existed: no `interludes` key at all.
 // `parseSection`'s optional third argument is a `ParseOptions` (imported
 // type-only from ./highway-code-build.ts, so this creates no runtime
 // circular dependency): when its `repairHrefs` flag is on (the default when
@@ -28,17 +35,18 @@
 // to content/uk/highway-code/.
 // Depends on: node-html-parser, ../../src/content/text.ts
 // (normaliseWhitespace, htmlToText), ../../src/content/schemas/highwayCode.ts
-// (the Section/Rule/RuleImage shapes this module must produce),
+// (the Section/Rule/RuleImage/Interlude shapes this module must produce),
 // ./highway-code-build.ts (ParseOptions, type-only).
 // Depended on by: scripts/ingest-highway-code.ts, scripts/lib/highway-code-build.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
-// tests/fixtures/highway-code-section.html and
-// tests/fixtures/highway-code-figcaption.html).
+// tests/fixtures/highway-code-section.html,
+// tests/fixtures/highway-code-figcaption.html and
+// tests/fixtures/highway-code-interlude.html).
 
 import { parse, NodeType } from 'node-html-parser';
 import type { HTMLElement, Node as HtmlNode, TextNode } from 'node-html-parser';
 import { htmlToText, normaliseWhitespace } from '../../src/content/text';
-import type { Rule, RuleImage, Section } from '../../src/content/schemas/highwayCode';
+import type { Interlude, Rule, RuleImage, Section } from '../../src/content/schemas/highwayCode';
 import type { ParseOptions } from './highway-code-build';
 
 export interface SectionMeta {
@@ -63,6 +71,7 @@ const SIGNALS_TITLE = /signals|signs|markings/i;
 const HC_RULE_ANCHOR = /^\/guidance\/the-highway-code\/[a-z0-9-]+#rule(\d{1,3}|H[1-3])$/i;
 const HC_SECTION_LINK = /^\/guidance\/the-highway-code\/([a-z0-9-]+)$/i;
 const STRONG_CONTENT = /<strong>([\s\S]*?)<\/strong>/g;
+const TAG_STRIP = /<[^>]*>/g;
 
 // Malformed-href repair (plan.md D13 S12, amended P2): a stray zero-width
 // space — literal U+200B or its percent-encoded form — found ahead of an
@@ -217,20 +226,48 @@ interface RuleBucket {
   nodes: HtmlNode[];
 }
 
+/** A run of top-level siblings that belongs to no rule bucket: everything
+ * from a mid-section `<h2>` (the heading itself included) up to — but not
+ * including — the next rule heading, or up to the end of the body when no
+ * further rule heading follows (plan.md S3). `beforeRuleId` is that
+ * following rule's id, or `null` in the latter case. */
+interface InterludeRun {
+  beforeRuleId: string | null;
+  nodes: HtmlNode[];
+}
+
 /** Walks the body's top-level children in order. Before the first rule
  * heading, every top-level node — the <h2> included — goes to the
  * preamble: a page's introductory prose is routinely <h2>-headed before
  * its first rule (e.g. the Introduction section's "Introduction",
  * "Wording of The Highway Code", etc.), and none of it must be dropped.
  * Once a rule has started, every following sibling belongs to it until the
- * next rule heading or any <h2>, whichever comes first (content after a
- * stray <h2> and before the next rule heading belongs to neither bucket,
- * matching the plan's boundary rule). */
-function splitIntoBuckets(topLevel: HtmlNode[]): { preamble: HtmlNode[]; rules: RuleBucket[] } {
+ * next rule heading or any <h2>, whichever comes first: a <h2> ends the
+ * current rule's bucket and starts an interlude run — the <h2> itself is
+ * that run's first node — which keeps collecting every following
+ * top-level node (any further <h2> in the same stretch included) until
+ * the next matching rule heading (`beforeRuleId` = that rule's id) or the
+ * end of the body (`beforeRuleId: null`). This is the same boundary the
+ * parser has always used; only `parseSection`'s `interludes` flag decides
+ * whether a run is kept or dropped (plan.md S3). */
+function splitIntoBuckets(topLevel: HtmlNode[]): {
+  preamble: HtmlNode[];
+  rules: RuleBucket[];
+  interludeRuns: InterludeRun[];
+} {
   const preamble: HtmlNode[] = [];
   const rules: RuleBucket[] = [];
-  let current: HtmlNode[] | null = preamble;
+  const interludeRuns: InterludeRun[] = [];
+  let current: HtmlNode[] = preamble;
   let ruleStarted = false;
+  let interlude: HtmlNode[] | null = null;
+
+  const flushInterlude = (beforeRuleId: string | null): void => {
+    if (interlude && interlude.length > 0) {
+      interludeRuns.push({ beforeRuleId, nodes: interlude });
+    }
+    interlude = null;
+  };
 
   for (const node of topLevel) {
     if (node.nodeType === NodeType.ELEMENT_NODE) {
@@ -238,6 +275,7 @@ function splitIntoBuckets(topLevel: HtmlNode[]): { preamble: HtmlNode[]; rules: 
       if (el.localName === 'h3') {
         const heading = readRuleHeading(el);
         if (heading) {
+          flushInterlude(heading.id);
           const bucket: RuleBucket = { heading, nodes: [] };
           rules.push(bucket);
           current = bucket.nodes;
@@ -246,14 +284,20 @@ function splitIntoBuckets(topLevel: HtmlNode[]): { preamble: HtmlNode[]; rules: 
         }
       }
       if (el.localName === 'h2' && ruleStarted) {
-        current = null;
+        if (!interlude) interlude = [];
+        interlude.push(el);
         continue;
       }
     }
-    current?.push(node);
+    if (interlude) {
+      interlude.push(node);
+    } else {
+      current.push(node);
+    }
   }
+  flushInterlude(null);
 
-  return { preamble, rules };
+  return { preamble, rules, interludeRuns };
 }
 
 function isWhitespaceNode(node: HtmlNode): boolean {
@@ -619,15 +663,48 @@ function buildRule(bucket: RuleBucket, repairHrefs: boolean, figcaptionLinks: bo
   };
 }
 
+/** Removes every HTML tag from already-sanitised markup, leaving just its
+ * visible text — used only to test whether an interlude run's sanitised
+ * output is whitespace once its tags are gone (see `buildInterlude`
+ * below), never emitted itself. */
+function stripTags(html: string): string {
+  return html.replace(TAG_STRIP, '');
+}
+
+/** Sanitises one `InterludeRun` (`splitIntoBuckets`, plan.md S3) into a
+ * `section.interludes[]` entry, or `null` when the run's visible text is
+ * empty once sanitised — a whitespace-only run this parser has always
+ * silently dropped stays dropped rather than surfacing as a hollow
+ * interlude entry. */
+function buildInterlude(
+  run: InterludeRun,
+  repairHrefs: boolean,
+  figcaptionLinks: boolean,
+): Interlude | null {
+  const ctx: SanitiseContext = {
+    crossRefs: new Set<string>(),
+    images: [],
+    repairHrefs,
+    figcaptionLinks,
+  };
+  const html = sanitiseNodes(run.nodes, ctx);
+  if (stripTags(html).trim() === '') return null;
+  return { beforeRuleId: run.beforeRuleId, html };
+}
+
 /**
  * Parses one Highway Code section page body into the shape SectionSchema
  * expects: rule boundaries at matching <h3> headings, everything before the
  * first rule as `preambleHtml`, and — for a section with no rules at all —
  * the whole sanitised body as `bodyHtml` instead (in which case
- * `preambleHtml` is empty and `rules` is empty). `options.repairHrefs` and
- * `options.figcaptionLinks` both default to `true` when omitted (plan.md
- * D13 S12 amended P2, and S11 amended P1), same as `buildHighwayCode`'s own
- * defaults for a caller that passes no options.
+ * `preambleHtml` is empty and `rules` is empty). `options.repairHrefs`,
+ * `options.figcaptionLinks` and `options.interludes` all default to `true`
+ * when omitted (plan.md D13 S12 amended P2, S11 amended P1, and S3), same
+ * as `buildHighwayCode`'s own defaults for a caller that passes no options.
+ * With `interludes` on, `section.interludes[]` holds one entry per non-empty
+ * `InterludeRun` `splitIntoBuckets` found; off, the returned object carries
+ * no `interludes` key at all, matching this parser's output before the flag
+ * existed.
  */
 export function parseSection(
   bodyHtml: string,
@@ -636,6 +713,7 @@ export function parseSection(
 ): Section {
   const repairHrefs = options.repairHrefs ?? true;
   const figcaptionLinks = options.figcaptionLinks ?? true;
+  const interludesEnabled = options.interludes ?? true;
 
   // `pre` is deliberately left out of blockTextElements (unlike
   // node-html-parser's default, which raw-texts it alongside
@@ -646,7 +724,7 @@ export function parseSection(
     blockTextElements: { script: true, noscript: true, style: true },
   });
   const topLevel = root.childNodes;
-  const { preamble, rules: ruleBuckets } = splitIntoBuckets(topLevel);
+  const { preamble, rules: ruleBuckets, interludeRuns } = splitIntoBuckets(topLevel);
 
   const rules = ruleBuckets.map((bucket) => buildRule(bucket, repairHrefs, figcaptionLinks));
   const hasRules = rules.length > 0;
@@ -668,7 +746,7 @@ export function parseSection(
 
   const title = normaliseWhitespace(meta.title);
 
-  return {
+  const sectionWithoutInterludes = {
     slug: meta.slug,
     title,
     basePath: meta.basePath,
@@ -679,4 +757,17 @@ export function parseSection(
     bodyHtml: bodyHtmlOut,
     rules,
   };
+
+  if (!interludesEnabled) {
+    // No `interludes` key at all — matches this parser's output before the
+    // flag existed, so `--flags off` reproduces the committed JSON exactly
+    // (plan.md S3).
+    return sectionWithoutInterludes as Section;
+  }
+
+  const interludes = interludeRuns
+    .map((run) => buildInterlude(run, repairHrefs, figcaptionLinks))
+    .filter((interlude): interlude is Interlude => interlude !== null);
+
+  return { ...sectionWithoutInterludes, interludes };
 }

@@ -1,7 +1,7 @@
 // Unit tests for src/content/loaders.ts: the Highway Code index, per-section
-// lazy loading, rule lookup and facts, all read from the real committed
-// content/uk/ files (Vitest supports import.meta.glob, so no fixtures are
-// needed here).
+// lazy loading, rule lookup, facts, and the SectionSchema `interludes`
+// default (plan.md S3), all read from the real committed content/uk/ files
+// (Vitest supports import.meta.glob, so no fixtures are needed here).
 // Depends on: vitest, src/content/loaders.ts.
 // Depended on by: `npm test` (Vitest run).
 
@@ -58,5 +58,12 @@ describe('loadRule', () => {
 
   it('resolves null for an id the index does not list', async () => {
     expect(await loadRule('999')).toBeNull();
+  });
+});
+
+describe('SectionSchema interludes default (plan.md S3)', () => {
+  it('a committed section with no interludes key parses to interludes: []', async () => {
+    const section = await loadSection('index');
+    expect(section.interludes).toEqual([]);
   });
 });
