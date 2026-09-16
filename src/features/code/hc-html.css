@@ -62,15 +62,54 @@
   text-align: left;
 }
 
-/* Ingestion replaces every <img> with a link carrying this class. */
+/* Ingestion replaces every <img> with a link carrying this class. Block-level
+   and at least 44px tall so the whole row is one easy tappable line (D11),
+   not just the text inside it. */
 .hc-html a.hc-image {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--color-sign-blue);
+}
+
+/* A kept section.interlude (Step 5, S3): a run of content between rules,
+   rendered in its own wrapper (SectionScreen.tsx, RuleScreen.tsx) so it
+   reads as a sub-heading band, not another rule row. The sanitiser
+   unwraps the source heading tags into plain text, so pre-line keeps its
+   blank-line-separated lines (a heading, sometimes a sub-heading) on their
+   own lines instead of collapsing into one run. */
+.hc-interlude {
+  white-space: pre-line;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+  padding: 10px 12px;
+  margin: 8px 0;
+  border-radius: var(--radius-panel-inner);
+}
+
+/* amendment E4: an interlude can hold prose (a <p>/<li>), not just its bare
+   heading line — that prose reads as body text, not display type, so it
+   uses the same reading font as the rest of .hc-html and wraps normally
+   rather than inheriting .hc-interlude's pre-line. The bare heading text
+   (not inside one of these tags) keeps Overpass 800 and pre-line. */
+.hc-interlude p,
+.hc-interlude li {
+  font-family:
+    'Atkinson Hyperlegible',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 400;
+  white-space: normal;
 }
 
 /* Every off-app link ingestion produces carries rel="external ...", so
    this marks all of them as clearly online-only extras. Diagram links are
-   skipped: their text already reads "Diagram (online): …". */
+   skipped: their text already reads "↗ <caption> (diagram, online)". */
 .hc-html a[rel~='external']:not(.hc-image)::after {
   content: ' (online)';
   color: var(--color-muted);

@@ -6,7 +6,8 @@
 // already gives external/asset links rel="external noopener"
 // target="_blank".
 // Depends on: react-router-dom (useNavigate); styled by ./hc-html.css.
-// Depended on by: src/features/code/SectionScreen.tsx.
+// Depended on by: src/features/code/SectionScreen.tsx,
+// src/features/code/RuleScreen.tsx.
 import type { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './hc-html.css';

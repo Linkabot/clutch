@@ -1,15 +1,58 @@
 // End-to-end tests for the offline Highway Code experience: finding Rule
-// 126 through search, opening it as a cold deep link under /clutch/, and
+// 126 through search, opening it as a cold deep link under /clutch/,
 // proving both the rule page and search still render once the ONLY server
-// able to answer fresh requests has been stopped (plan.md Step 18). Runs
-// against the production build (`vite preview`) with Playwright's WebKit
-// engine and an iPhone 14 device profile, matching real iOS Safari
-// behaviour.
-// Depends on: @playwright/test, ./helpers (openAppAt, startPreview,
-// stopPreview, waitForServiceWorkerActivated).
+// able to answer fresh requests has been stopped (plan.md Step 18), and
+// (Step 8, S3 on screen) that a section's kept interludes render on both
+// the section screen and the rule screen — including amendment E4's
+// whitespace/typography fixes: no visible blank lines inside a band, and
+// an interlude's prose paragraph reading in the same font/weight as the
+// rest of the rule body — and that traffic-signs' diagram links keep their
+// captioned "(diagram, online)" text. Runs against the production build
+// (`vite preview`) with Playwright's WebKit engine and an iPhone 14 device
+// profile, matching real iOS Safari behaviour.
+// Depends on: @playwright/test, node:fs, node:path, node:url, ./helpers
+// (openAppAt, startPreview, stopPreview, waitForServiceWorkerActivated),
+// content/uk/highway-code/sections/*.json (read directly, not imported).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { openAppAt, startPreview, stopPreview, waitForServiceWorkerActivated } from './helpers';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/** Reads a committed Highway Code section JSON file directly, the same way
+ * tests/content/helpers.ts's readJson does, so this test proves what is
+ * really on disk rather than trusting a hard-coded expectation. */
+function readSection(slug: string): {
+  interludes: { beforeRuleId: string | null; html: string }[];
+} {
+  const path = join(
+    __dirname,
+    '..',
+    '..',
+    'content',
+    'uk',
+    'highway-code',
+    'sections',
+    `${slug}.json`,
+  );
+  return JSON.parse(readFileSync(path, 'utf8')) as {
+    interludes: { beforeRuleId: string | null; html: string }[];
+  };
+}
+
+/** Strips tags, collapses whitespace and trims — the same normalisation
+ * htmlToText applies — so the derived snippet matches what the interlude's
+ * sanitised html actually renders as visible text. */
+function firstVisibleChars(html: string, count: number): string {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, count);
+}
 
 test('search finds Rule 126', async ({ page }) => {
   await openAppAt(page, '/clutch/learn/code/search');
@@ -121,4 +164,65 @@ test('Introduction section shows its preamble and H1–H3 rule rows', async ({ p
 
   await openAppAt(page, '/clutch/learn/code');
   await expect(page.getByText('H1–H3')).toBeVisible();
+});
+
+test('interludes and captioned diagram links render', async ({ page }) => {
+  const generalRulesSlug =
+    'general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158';
+  const section = readSection(generalRulesSlug);
+  const interlude = section.interludes.find((entry) => entry.beforeRuleId !== null);
+  if (!interlude || interlude.beforeRuleId === null) {
+    throw new Error(`expected an interlude with a non-null beforeRuleId in ${generalRulesSlug}`);
+  }
+  const snippet = firstVisibleChars(interlude.html, 30);
+
+  await openAppAt(page, `/clutch/learn/code/${generalRulesSlug}`);
+  await expect(page.locator('.hc-interlude').getByText(snippet)).toBeVisible();
+
+  await page.goto(`/clutch/code/rule/${interlude.beforeRuleId}`);
+  await expect(page.locator('.hc-interlude').getByText(snippet)).toBeVisible();
+
+  await page.goto('/clutch/learn/code/traffic-signs');
+  const diagramLinks = page.locator('a.hc-image');
+  await expect(diagramLinks).toHaveCount(169);
+  await expect(diagramLinks.first()).toHaveText(/^↗ .+ \(diagram, online\)$/);
+
+  // Amendment E4: interludeHtml collapses the blank line(s) a bare heading
+  // run leaves before its next line, so .hc-interlude's pre-line whitespace
+  // no longer renders as visible empty lines (Rule 117's heading/sub-heading
+  // band).
+  await page.goto('/clutch/code/rule/117');
+  const controlOfVehicleInterlude = await page.locator('.hc-interlude').first().innerText();
+  expect(controlOfVehicleInterlude).toBe('Control of the vehicle (rules 117 to 126)\nBraking');
+
+  // Amendment E4: an interlude's prose (its <p>) reads as body text — same
+  // reading font and weight as the rest of .hc-html, wrapping normally —
+  // rather than inheriting .hc-interlude's Overpass 800 display type and
+  // pre-line whitespace, which is kept only for the bare heading line.
+  await page.goto('/clutch/code/rule/127');
+  // page.evaluate does not auto-wait like locator methods do, so the
+  // interlude's <p> must be waited for explicitly before reading its
+  // computed style — otherwise this can run while the section chunk (an
+  // async import) is still loading and the page still reads "Loading…".
+  await expect(page.locator('.hc-interlude p').first()).toBeVisible();
+  const computedStyles = await page.evaluate(() => {
+    const interludeParagraph = document.querySelector<HTMLElement>('.hc-interlude p');
+    const bodyParagraph = Array.from(document.querySelectorAll<HTMLElement>('.hc-html p')).find(
+      (paragraph) => !paragraph.closest('.hc-interlude'),
+    );
+    if (!interludeParagraph || !bodyParagraph) return null;
+    const interludeStyle = getComputedStyle(interludeParagraph);
+    const bodyStyle = getComputedStyle(bodyParagraph);
+    return {
+      whiteSpace: interludeStyle.whiteSpace,
+      interludeFontFamily: interludeStyle.fontFamily,
+      interludeFontWeight: interludeStyle.fontWeight,
+      bodyFontFamily: bodyStyle.fontFamily,
+      bodyFontWeight: bodyStyle.fontWeight,
+    };
+  });
+  expect(computedStyles).not.toBeNull();
+  expect(computedStyles!.whiteSpace).toBe('normal');
+  expect(computedStyles!.interludeFontFamily).toBe(computedStyles!.bodyFontFamily);
+  expect(computedStyles!.interludeFontWeight).toBe(computedStyles!.bodyFontWeight);
 });
