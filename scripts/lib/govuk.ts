@@ -1,17 +1,23 @@
-// Polite helper for the gov.uk Content API: waits `delayMs` before every
-// request, retries a 429 or 5xx response with backoff, and — when a
-// `cacheDir` is given — caches each raw response to disk so re-running an
-// ingestion script never re-fetches a page it already has. This is the only
-// module in the repo that calls the fetch API ("Rules that apply to every
-// step" in plan.md restricts network access to the two ingestion scripts,
-// and they only reach gov.uk through here). When `process.env.CLUTCH_OFFLINE
-// === '1'`, a cache miss throws `offline: cache miss for <basePath>` instead
-// of ever reaching the network, so the offline comparator (Step 2) and CI
-// can prove no request escapes to gov.uk.
+// Polite helper for gov.uk: waits `delayMs` before every request, retries a
+// 429 or 5xx response with backoff, and caches each raw response to disk so
+// re-running an ingestion script never re-fetches a page it already has.
+// This is the only module in the repo that calls the fetch API ("Rules that
+// apply to every step" in plan.md restricts network access to the
+// ingestion scripts, and they only reach gov.uk through here). When
+// `process.env.CLUTCH_OFFLINE === '1'`, a cache miss throws `offline: cache
+// miss for <basePath>`/`<url>` instead of ever reaching the network, so the
+// offline comparator (Step 2), Step 14's own check and CI can all prove no
+// request escapes to gov.uk. `fetchContentApi` fetches one gov.uk Content
+// API page by its base path, caching under a whole `cacheDir`;
+// `fetchCachedText`/`fetchCachedBytes` (Step 14) fetch any other gov.uk URL
+// — a rendered chapter page, a picture's SVG bytes — each to one exact
+// `cachePath` the caller names, with the same politeness, retry and offline
+// rules.
 // Depends on: Node's built-in `fs` and `path` modules, the global fetch API.
 // Depended on by: scripts/ingest-highway-code.ts (Step 9),
 // scripts/ingest-national-standard.ts (Step 10), scripts/lib/highway-code-build.ts
-// and scripts/compare-highway-code.ts (Step 2), tests/unit/govuk-offline.test.ts.
+// and scripts/compare-highway-code.ts (Step 2), scripts/ingest-signs.ts
+// (Step 14), tests/unit/govuk-offline.test.ts.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -94,4 +100,87 @@ export async function fetchContentApi(
 
   // Unreachable: every loop iteration above either returns or throws.
   throw new Error(`gov.uk content API request failed: exhausted retries for ${url}`);
+}
+
+export interface FetchCachedOptions {
+  /** Milliseconds to wait before making the request. Skipped entirely on a cache hit. */
+  delayMs?: number;
+  userAgent?: string;
+  /** Retries on a 429 or 5xx response, in addition to the first attempt. */
+  retries?: number;
+}
+
+/** Requests `url` with the same delay/retry/backoff policy as
+ * `fetchContentApi`, returning the raw `Response`. Only called once a cache
+ * miss has already been confirmed not offline — never call this directly. */
+async function requestWithRetry(url: string, opts: FetchCachedOptions): Promise<Response> {
+  const delayMs = opts.delayMs ?? DEFAULT_DELAY_MS;
+  const userAgent = opts.userAgent ?? DEFAULT_USER_AGENT;
+  const retries = opts.retries ?? DEFAULT_RETRIES;
+
+  await wait(delayMs);
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await fetch(url, { headers: { 'User-Agent': userAgent } });
+    if (response.ok) return response;
+
+    const canRetry = isRetryableStatus(response.status) && attempt < retries;
+    if (!canRetry) {
+      throw new Error(`gov.uk request failed: ${response.status} ${url}`);
+    }
+    await wait(RETRY_BACKOFF_MS[Math.min(attempt, RETRY_BACKOFF_MS.length - 1)]);
+  }
+
+  // Unreachable: every loop iteration above either returns or throws.
+  throw new Error(`gov.uk request failed: exhausted retries for ${url}`);
+}
+
+/**
+ * Fetches `url` as text and caches the result at the exact `cachePath`
+ * given, reusing it on every later call instead of re-fetching. Under
+ * `CLUTCH_OFFLINE=1`, a cache miss throws `offline: cache miss for <url>`
+ * before ever reaching the network, same rule as `fetchContentApi`.
+ */
+export async function fetchCachedText(
+  url: string,
+  cachePath: string,
+  opts: FetchCachedOptions = {},
+): Promise<string> {
+  if (existsSync(cachePath)) {
+    return readFileSync(cachePath, 'utf8');
+  }
+  if (process.env.CLUTCH_OFFLINE === '1') {
+    throw new Error(`offline: cache miss for ${url}`);
+  }
+
+  const response = await requestWithRetry(url, opts);
+  const text = await response.text();
+  mkdirSync(dirname(cachePath), { recursive: true });
+  writeFileSync(cachePath, text, 'utf8');
+  return text;
+}
+
+/**
+ * Fetches `url` as raw bytes and caches the result at the exact `cachePath`
+ * given, reusing it on every later call instead of re-fetching. Under
+ * `CLUTCH_OFFLINE=1`, a cache miss throws `offline: cache miss for <url>`
+ * before ever reaching the network, same rule as `fetchContentApi`.
+ */
+export async function fetchCachedBytes(
+  url: string,
+  cachePath: string,
+  opts: FetchCachedOptions = {},
+): Promise<Buffer> {
+  if (existsSync(cachePath)) {
+    return readFileSync(cachePath);
+  }
+  if (process.env.CLUTCH_OFFLINE === '1') {
+    throw new Error(`offline: cache miss for ${url}`);
+  }
+
+  const response = await requestWithRetry(url, opts);
+  const buffer = Buffer.from(await response.arrayBuffer());
+  mkdirSync(dirname(cachePath), { recursive: true });
+  writeFileSync(cachePath, buffer);
+  return buffer;
 }

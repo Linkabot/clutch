@@ -19,6 +19,7 @@
     "check:precache": "node scripts/check-precache.mjs",
     "ingest:highway-code": "tsx scripts/ingest-highway-code.ts",
     "ingest:national-standard": "tsx scripts/ingest-national-standard.ts",
+    "ingest:signs": "tsx scripts/ingest-signs.ts",
     "compare:highway-code": "tsx scripts/compare-highway-code.ts",
     "e2e": "npm run build && playwright test"
   },

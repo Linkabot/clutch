@@ -1,0 +1,30 @@
+<!-- Fixture: a KYTS chapter's RENDERED page in the verified markup shape
+(plan.md amendment P5) — the two standard licence statements, each in its
+own <p> inside <main>, plus a "Licensed camping…" sentence that must NOT be
+mistaken for a licence exception (it never mentions copyright, ©, "open
+government licence" or "except where otherwise stated"), and a <footer>
+carrying a stray copyright mention that scripts/lib/kyts-licence.ts must
+strip before scanning, or the "0 problems" expectation in
+tests/unit/kyts-licence.test.ts would fail.
+Depended on by: tests/unit/kyts-licence.test.ts. -->
+<html>
+  <body>
+    <main id="content">
+      <p>Example KYTS chapter fixture page.</p>
+      <p>Licensed camping and caravan sites are signed.</p>
+      <p>© Crown copyright 2023</p>
+      <p>
+        This publication is licensed under the terms of the Open Government Licence v3.0 except
+        where otherwise stated. To view this licence, visit example.gov.uk/licence or write to the
+        Licensing Team.
+      </p>
+      <p>
+        Where we have identified any third party copyright information you will need to obtain
+        permission from the copyright holders concerned.
+      </p>
+    </main>
+    <footer>
+      <p>© Crown copyright — stray footer mention that must be stripped before scanning.</p>
+    </footer>
+  </body>
+</html>

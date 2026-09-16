@@ -1,0 +1,103 @@
+<!-- Fixture: a synthetic KYTS ("Know Your Traffic Signs") chapter body in
+the verified markup shape scripts/lib/kyts-parse.ts must handle — wrapped in
+a govspeak-class div (the real body's own wrapper element, plan.md amendment
+E11(b)), an <h2> heading, then pictures, then an <h3> sub-heading, then more
+pictures, each <figure> holding one <div class="img"><img></div> and (when
+captioned) one <figcaption>. Captions and paragraph text here are fixture
+filler, not real KYTS wording, except that the two R8 files (plan.md
+amended P7) keep their real names — stop-sign-and-road-marking.svg and
+give-way-road-marking.svg — so scripts/lib/kyts-select.ts's R8 test can
+recognise them by name, the way the real content/uk/signs/selection.json
+does. Covers: a plain captioned picture whose caption starts "No "
+(no-entry-example.svg), one starting "Turn " (turn-left-ahead-example.svg),
+the GIVE WAY picture (its own figcaption is an annotation, "(alternative in
+Wales)", meant to be overridden by R8's preceding paragraph, not dropped by
+R2), the STOP picture (no figcaption at all, also overridden by R8), a
+plain "(" -prefixed annotation caption unrelated to R8 (bracket-example.svg,
+dropped by R2), an annotation-caption picture starting "Plates " (dropped
+by R2), an uncaptioned picture unrelated to R8 (dropped by R1), and a
+picture whose caption duplicates an earlier one in the same chapter
+(dropped by R4).
+Depended on by: tests/unit/kyts-parse.test.ts, tests/unit/kyts-select.test.ts. -->
+<div class="govspeak">
+  <h2 id="prohibitory-examples">Prohibitory examples</h2>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc3333/no-entry-example.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>No entry for vehicles.</p></figcaption>
+  </figure>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc4444/turn-left-ahead-example.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>Turn left ahead only.</p></figcaption>
+  </figure>
+  <p>
+    The 'GIVE WAY' sign and road markings: an example paragraph used only to exercise R8 in the
+    fixture.
+  </p>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc5555/give-way-road-marking.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>(alternative in Wales)</p></figcaption>
+  </figure>
+  <p>
+    The 'STOP' sign and road markings: another example paragraph used only to exercise R8 in the
+    fixture.
+  </p>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc6666/stop-sign-and-road-marking.svg"
+        alt=""
+      />
+    </div>
+  </figure>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222ccccaaaa/bracket-example.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>(a bracketed annotation)</p></figcaption>
+  </figure>
+  <h3 id="plates-and-duplicates">Plates and duplicates</h3>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc7777/plate-example.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>Plates used with give way signs.</p></figcaption>
+  </figure>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc8888/uncaptioned-example.svg"
+        alt=""
+      />
+    </div>
+  </figure>
+  <figure class="image embedded">
+    <div class="img">
+      <img
+        src="https://assets.publishing.service.gov.uk/media/aaaa1111bbbb2222cccc9999/no-entry-duplicate-example.svg"
+        alt=""
+      />
+    </div>
+    <figcaption><p>No entry for vehicles.</p></figcaption>
+  </figure>
+</div>

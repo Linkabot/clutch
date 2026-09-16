@@ -1,0 +1,28 @@
+<!-- Fixture: the same rendered-page shape as kyts-page-standard.html, with
+one added sentence inside <main> that a real KYTS page never has — "The
+images in this chapter are © Example Ltd." — so
+tests/unit/kyts-licence.test.ts can prove scripts/lib/kyts-licence.ts flags
+an unexpected © sentence (plan.md amendment P5).
+Depended on by: tests/unit/kyts-licence.test.ts. -->
+<html>
+  <body>
+    <main id="content">
+      <p>Example KYTS chapter fixture page.</p>
+      <p>Licensed camping and caravan sites are signed.</p>
+      <p>© Crown copyright 2023</p>
+      <p>
+        This publication is licensed under the terms of the Open Government Licence v3.0 except
+        where otherwise stated. To view this licence, visit example.gov.uk/licence or write to the
+        Licensing Team.
+      </p>
+      <p>
+        Where we have identified any third party copyright information you will need to obtain
+        permission from the copyright holders concerned.
+      </p>
+      <p>The images in this chapter are © Example Ltd.</p>
+    </main>
+    <footer>
+      <p>© Crown copyright — stray footer mention that must be stripped before scanning.</p>
+    </footer>
+  </body>
+</html>
