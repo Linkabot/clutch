@@ -1,0 +1,305 @@
+/* Match Pairs styles for src/features/interactives/match-pairs/MatchPairs.tsx
+   (scout-e.md's CHOSEN 1A PairsA artboard; plan.md Step 25 and amendment
+   E31): a full-screen game layer over the app shell. The MATCH PAIRS badge
+   and prompt sit above a board of two independent columns of 104px tiles,
+   sign pictures on the left and their names on the right. A selected sign
+   wears a yellow halo; a locked tile has a green border, a green tick and
+   faded content, and a name matched on the first try carries a yellow
+   +10 XP badge above its top edge, never clipped; a wrongly tapped name
+   has a red border for the flash. The end card copies Tap the sign's
+   summary card. Every rule that moves is scoped under the root's animated
+   modifier class, so the static modifier (reduced motion) turns all motion
+   off at once while the red flash still shows; pop matches quiz-sheet.css
+   exactly, and shake is the small side-to-side wobble E31 gives. Colours
+   are theme.css tokens and colour mixes of them only (no literals).
+   Depends on: the custom properties defined in src/app/theme.css; .button,
+   .button--primary and .button--secondary in src/ui/primitives.css (Done,
+   Play again); .game-top-bar in src/features/interactives/shared/games.css.
+   Depended on by: src/features/interactives/match-pairs/MatchPairs.tsx
+   (imports this file once). */
+
+/* --- Root: a full-screen layer over the header and tab bar --------------- */
+
+.pairs {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  overflow-y: auto;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* --- Badge and prompt ------------------------------------------------------ */
+
+.pairs__intro {
+  padding: 18px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pairs__badge {
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background-color: var(--color-sign-blue);
+  color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+}
+
+.pairs__prompt {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* --- Board: two independent columns ---------------------------------------- */
+
+.pairs__board {
+  box-sizing: border-box;
+  padding: 14px 20px calc(20px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  overflow: visible;
+}
+
+.pairs__column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  overflow: visible;
+}
+
+/* --- Tiles ------------------------------------------------------------------ */
+
+.pairs__tile {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 104px;
+  margin: 0;
+  padding: 0;
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-hairline);
+  box-shadow: 0 3px 0 var(--color-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  font: inherit;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+/* WebKit greys a disabled button's text unless its colour is set here. */
+.pairs__tile:disabled {
+  color: var(--color-ink);
+  opacity: 1;
+  cursor: default;
+}
+
+.pairs__tile:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
+/* 32px above and below: a long caption starts below the tick and the XP badge (E32). */
+.pairs__tile--name {
+  padding: 32px 12px;
+}
+
+.pairs__tile--name .pairs__content {
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.pairs__picture {
+  display: block;
+  flex-shrink: 0;
+  width: 80.6px;
+  height: 76px;
+}
+
+.pairs__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pairs__tile[data-state='selected'] {
+  border-color: var(--color-ink);
+  box-shadow:
+    0 0 0 3px var(--color-marking-yellow),
+    0 4px 0 3px var(--color-marking-yellow-shadow);
+}
+
+.pairs__tile[data-state='locked'] {
+  border-color: var(--color-sign-green);
+  box-shadow: none;
+}
+
+.pairs__tile[data-state='locked'] .pairs__content {
+  opacity: 0.45;
+}
+
+.pairs__tile[data-state='wrong'] {
+  border-color: var(--color-sign-red);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--color-sign-red) 75%, var(--color-sign-ink));
+}
+
+.pairs__tick {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: var(--color-sign-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pairs__tick svg {
+  display: block;
+  stroke: var(--color-on-sign);
+}
+
+.pairs__xp {
+  position: absolute;
+  right: 36px;
+  top: -13px;
+  box-sizing: border-box;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 7px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* --- End card: Tap the sign's summary card ---------------------------------- */
+
+.pairs__end {
+  margin: auto 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 20px;
+  border-radius: var(--radius-panel);
+  border: 1px solid var(--color-hairline);
+  background-color: var(--color-surface);
+}
+
+.pairs__end-heading {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--color-ink);
+}
+
+.pairs__end-xp {
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.pairs__end-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 2px;
+}
+
+/* --- Motion: only under the root's animated modifier -------------------------- */
+
+.pairs--animated .pairs__xp {
+  animation: pop 0.5s 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.pairs--animated .pairs__tick {
+  animation: pop 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.pairs--animated .pairs__tile[data-state='wrong'] {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* --- Keyframes ---------------------------------------------------------------- */
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}

@@ -2,12 +2,12 @@
 // decoders exist. src/app/routes.tsx mounts one lazily loaded child route
 // per entry (its route without the leading slash), and
 // scripts/check-interactive-size.mjs (npm run check:interactives) checks
-// each entry's built size against its sizeBudgetKiB. Sign Sprint
-// (/practice/sprint, Step 24) is the first entry; Steps 25-26 add
-// match-pairs and shape-colour-decoder, each with a lessonRefs of
-// ['code:traffic-signs'] and a size budget of 40 KiB.
-// Depends on: react (ComponentType, as a type only), ./sign-sprint (loaded
-// only through its entry's dynamic import).
+// each entry's built size against its sizeBudgetKiB. The entries are Sign
+// Sprint (/practice/sprint, Step 24) and Match Pairs (/practice/pairs,
+// Step 25), each with a lessonRefs of ['code:traffic-signs'] and a size
+// budget of 40 KiB; Step 26 adds shape-colour-decoder the same way.
+// Depends on: react (ComponentType, as a type only), ./sign-sprint and
+// ./match-pairs (each loaded only through its entry's dynamic import).
 // Depended on by: tests/unit/registry.test.ts, src/app/routes.tsx,
 // scripts/check-interactive-size.mjs (reads this file as text).
 
@@ -31,6 +31,15 @@ export const INTERACTIVES: InteractiveEntry[] = [
     lessonRefs: ['code:traffic-signs'],
     route: '/practice/sprint',
     load: () => import('./sign-sprint'),
+    sizeBudgetKiB: 40,
+  },
+  {
+    id: 'match-pairs',
+    title: 'Match Pairs',
+    phase: 2,
+    lessonRefs: ['code:traffic-signs'],
+    route: '/practice/pairs',
+    load: () => import('./match-pairs'),
     sizeBudgetKiB: 40,
   },
 ];

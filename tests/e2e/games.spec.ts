@@ -1,5 +1,5 @@
-// End-to-end tests for Clutch's games (plan.md Steps 23-24 and amendments
-// E25 and E27; later joined by Match Pairs, Step 25). "tap the sign:
+// End-to-end tests for Clutch's games (plan.md Steps 23-25 and amendments
+// E25, E27 and E31). "tap the sign:
 // right, wrong, reduced motion, finish" plays a full Tap the sign round
 // seeded via ?sign=: question 1's right answer (the sheet's XP, confetti,
 // streak-free body, disabled/dimmed tiles and sheetUp animation), question
@@ -22,7 +22,17 @@
 // Practice tab shows both rounds' XP and the streak, the first answer's
 // sign page shows its collection progress, and Close leaves a fresh
 // Sprint. Every read of the sign's data-answer-id after an answer first
-// waits for it to change. Runs against the
+// waits for it to change. "Match Pairs round" plays two rounds: round 1
+// matches signs 1-3 on the first try (the selection, both tiles locked, and
+// the +10 XP badge's and tick's pop animations), taps a wrong name for sign
+// 4 (the red flash's shake animation and the cleared selection) before its
+// retried, XP-free match, then sign 5, and reaches the end card with +40 XP;
+// round 2, under emulated reduced motion, proves Play again resets the
+// board, nothing animates, and five first-try matches give +50 XP.
+// Afterwards the Practice tab shows both rounds' XP and the streak, and the
+// sign pages of round 1's first-try sign 1 and retried sign 4 show their
+// collection progress (counting round 2's first-try matches of the same
+// signs), and Close leaves a fresh board. Runs against the
 // production build (`vite preview`) with Playwright's WebKit engine and an
 // iPhone 14 device profile.
 // Depends on: @playwright/test, ./helpers (openAppAt).
@@ -339,6 +349,172 @@ test.describe('Sign Sprint run', () => {
     // Close leaves a fresh Sprint.
     await page.goto('/clutch/practice/sprint');
     await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+    await page.getByRole('button', { name: 'Close' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+});
+
+/** The Match Pairs sign tiles' data-sign-ids, in pick order (Sign 1-5). */
+function pairsSignIds(page: Page): Promise<string[]> {
+  return page
+    .locator('[data-pair-sign]')
+    .evaluateAll((elements) => elements.map((el) => el.getAttribute('data-sign-id') ?? ''));
+}
+
+function pairsSignTile(page: Page, signId: string) {
+  return page.locator(`[data-pair-sign][data-sign-id="${signId}"]`);
+}
+
+function pairsNameTile(page: Page, signId: string) {
+  return page.locator(`[data-pair-name][data-sign-id="${signId}"]`);
+}
+
+/** Taps a sign tile (expecting it pressed), then the name tile with `nameId`. */
+async function tapPair(page: Page, signId: string, nameId: string): Promise<void> {
+  await pairsSignTile(page, signId).click();
+  await expect(pairsSignTile(page, signId)).toHaveAttribute('aria-pressed', 'true');
+  await pairsNameTile(page, nameId).click();
+}
+
+/** Every computed animationName inside the Match Pairs layer. */
+function pairsAnimationNames(page: Page): Promise<string[]> {
+  return page
+    .locator('.pairs *')
+    .evaluateAll((elements) => elements.map((el) => getComputedStyle(el).animationName));
+}
+
+/**
+ * Navigates inside the running app (a history entry plus popstate, which
+ * the router follows) so the already loaded progress store is on screen at
+ * once -- a fresh page load shows "0 of 3" until the store has loaded.
+ */
+async function navigateInApp(page: Page, path: string): Promise<void> {
+  await page.evaluate((target) => {
+    window.history.pushState(null, '', target);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }, path);
+}
+
+test.describe('Match Pairs round', () => {
+  test('two rounds: first-try matches, a wrong name and its retry, reduced motion, progress', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await openAppAt(page, '/clutch/practice/pairs');
+
+    // Round 1.
+    const label = page.locator('.game-top-bar__label');
+    await expect(page.locator('.pairs__tile')).toHaveCount(10);
+    await expect(page.getByText('MATCH PAIRS')).toBeVisible();
+    await expect(page.getByText('Tap a sign, then its name.')).toBeVisible();
+    await expect(label).toHaveText('0/5');
+    const round1 = await pairsSignIds(page);
+    expect(round1).toHaveLength(5);
+
+    // Signs 1-3 on the first try.
+    for (let i = 0; i < 3; i++) {
+      const id = round1[i];
+      await tapPair(page, id, id);
+      await expect(pairsSignTile(page, id)).toHaveAttribute('data-state', 'locked');
+      await expect(pairsNameTile(page, id)).toHaveAttribute('data-state', 'locked');
+      await expect(pairsNameTile(page, id).locator('.pairs__xp')).toHaveText('+10 XP');
+      if (i === 0) {
+        await expect
+          .poll(() =>
+            pairsNameTile(page, id)
+              .locator('.pairs__xp')
+              .evaluate((el) => getComputedStyle(el).animationName),
+          )
+          .toBe('pop');
+        await expect
+          .poll(() =>
+            pairsNameTile(page, id)
+              .locator('.pairs__tick')
+              .evaluate((el) => getComputedStyle(el).animationName),
+          )
+          .toBe('pop');
+        await expect(label).toHaveText('1/5');
+      }
+    }
+    await expect(label).toHaveText('3/5');
+
+    // Sign 4, wrong first: sign 5's name flashes red and shakes.
+    const wrongName = pairsNameTile(page, round1[4]);
+    await tapPair(page, round1[3], round1[4]);
+    await expect(wrongName).toHaveAttribute('data-state', 'wrong');
+    await expect
+      .poll(() => wrongName.evaluate((el) => getComputedStyle(el).animationName))
+      .toBe('shake');
+    await expect(page.locator('.pairs [aria-pressed="true"]')).toHaveCount(0);
+    await expect(label).toHaveText('3/5');
+
+    // Then sign 4 and its own name: locked, with no XP badge.
+    await tapPair(page, round1[3], round1[3]);
+    await expect(pairsNameTile(page, round1[3])).toHaveAttribute('data-state', 'locked');
+    await expect(pairsNameTile(page, round1[3]).locator('.pairs__tick')).toHaveCount(1);
+    await expect(pairsNameTile(page, round1[3]).locator('.pairs__xp')).toHaveCount(0);
+    await expect(label).toHaveText('4/5');
+
+    // Sign 5.
+    await tapPair(page, round1[4], round1[4]);
+    await expect(label).toHaveText('5/5');
+
+    await expect(page.getByText('All pairs matched')).toBeVisible();
+    await expect(page.locator('.pairs__end-xp')).toHaveText('+40 XP');
+    const playAgain = page.getByRole('button', { name: 'Play again' });
+    await expect(playAgain).toHaveClass(/button--primary/);
+
+    // Round 2, under reduced motion.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await playAgain.click();
+    await expect(page.locator('.pairs')).toHaveClass(/pairs--static/);
+    await expect(label).toHaveText('0/5');
+    await expect(page.locator('.pairs__tile')).toHaveCount(10);
+    await expect(page.locator('.pairs [data-state="locked"]')).toHaveCount(0);
+    const round2 = await pairsSignIds(page);
+    expect(round2).toHaveLength(5);
+
+    for (let i = 0; i < 5; i++) {
+      const id = round2[i];
+      await tapPair(page, id, id);
+      await expect(pairsNameTile(page, id)).toHaveAttribute('data-state', 'locked');
+      if (i === 0) {
+        await expect(pairsNameTile(page, id).locator('.pairs__xp')).toHaveText('+10 XP');
+        for (const name of await pairsAnimationNames(page)) {
+          expect(name).toBe('none');
+        }
+      }
+    }
+
+    await expect(page.getByText('All pairs matched')).toBeVisible();
+    await expect(page.locator('.pairs__end-xp')).toHaveText('+50 XP');
+
+    // Afterwards: both rounds' XP and the streak on Practice.
+    await page.getByRole('button', { name: 'Done' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice$/);
+    const xpStat = page.locator('.practice-header__stat', { hasText: 'XP earned' });
+    const streakStat = page.locator('.practice-header__stat', { hasText: 'day streak' });
+    await expect(xpStat.locator('.practice-header__number')).toHaveText('90');
+    await expect(streakStat.locator('.practice-header__number')).toHaveText('1');
+
+    // Collection progress. Round 2 draws a random family and may reuse a
+    // round-1 sign; every round-2 match was first try, so it adds one.
+    const retriedExpected = round2.includes(round1[3])
+      ? '1 of 3 correct to collect'
+      : '0 of 3 correct to collect';
+    await navigateInApp(page, `/clutch/learn/signs/${round1[3]}`);
+    await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${round1[3]}$`));
+    await expect(page.getByText(retriedExpected)).toBeVisible();
+
+    const firstTryExpected = round2.includes(round1[0])
+      ? '2 of 3 correct to collect'
+      : '1 of 3 correct to collect';
+    await page.goto(`/clutch/learn/signs/${round1[0]}`);
+    await expect(page.getByText(firstTryExpected)).toBeVisible();
+
+    // Close leaves a fresh board.
+    await page.goto('/clutch/practice/pairs');
+    await expect(label).toHaveText('0/5');
     await page.getByRole('button', { name: 'Close' }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
   });
