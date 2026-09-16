@@ -7,9 +7,15 @@
 // whitespace/typography fixes: no visible blank lines inside a band, and
 // an interlude's prose paragraph reading in the same font/weight as the
 // rest of the rule body — and that traffic-signs' diagram links keep their
-// captioned "(diagram, online)" text. Runs against the production build
-// (`vite preview`) with Playwright's WebKit engine and an iPhone 14 device
-// profile, matching real iOS Safari behaviour.
+// captioned "(diagram, online)" text — and (Step 10, S5/C-S2) that
+// HcHtml's internal content links are rewritten to carry the /clutch/
+// base and still navigate in-app when tapped, proved with a
+// __clutchNoReload window marker (amendment E6) that only survives a
+// client-side navigation, since vite preview's navigateFallback would
+// otherwise let a full page reload pass the same URL assertion. Runs
+// against the production build (`vite preview`) with Playwright's WebKit
+// engine and an iPhone 14 device profile, matching real iOS Safari
+// behaviour.
 // Depends on: @playwright/test, node:fs, node:path, node:url, ./helpers
 // (openAppAt, startPreview, stopPreview, waitForServiceWorkerActivated),
 // content/uk/highway-code/sections/*.json (read directly, not imported).
@@ -225,4 +231,30 @@ test('interludes and captioned diagram links render', async ({ page }) => {
   expect(computedStyles!.whiteSpace).toBe('normal');
   expect(computedStyles!.interludeFontFamily).toBe(computedStyles!.bodyFontFamily);
   expect(computedStyles!.interludeFontWeight).toBe(computedStyles!.bodyFontWeight);
+});
+
+test('internal content links carry the /clutch/ base', async ({ page }) => {
+  await openAppAt(page, '/clutch/learn/code/index');
+
+  await expect(page.locator('a[href^="/code/"]')).toHaveCount(0);
+  await expect(page.locator('a[href^="/learn/"]')).toHaveCount(0);
+
+  const ruleLinks = page.locator('a[href^="/clutch/code/rule/"]');
+  await expect(ruleLinks.first()).toBeVisible();
+  expect(await ruleLinks.count()).toBeGreaterThanOrEqual(1);
+
+  // Amendment E6: vite preview (and the service worker's navigateFallback)
+  // serve the app for any /clutch/code/rule/<id> path, so asserting the
+  // post-tap URL alone would still pass after a full page reload — this
+  // marker only survives an in-app (client-side) navigation, so it proves
+  // HcHtml's click handling actually ran instead of the browser reloading.
+  await page.evaluate(() => {
+    (window as unknown as Record<string, unknown>).__clutchNoReload = true;
+  });
+
+  await ruleLinks.first().click();
+  await expect(page).toHaveURL(/\/clutch\/code\/rule\/(\d{1,3}|H[1-3])$/);
+  expect(
+    await page.evaluate(() => (window as unknown as Record<string, unknown>).__clutchNoReload),
+  ).toBe(true);
 });
