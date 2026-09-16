@@ -7,6 +7,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://vite.dev/config/
 export default defineConfig({
   base: '/clutch/',
+  build: {
+    manifest: true,
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -41,7 +44,7 @@ export default defineConfig({
     }),
   ],
   test: {
-    include: ['tests/unit/**/*.test.ts', 'tests/content/**/*.test.ts'],
+    include: ['tests/unit/**/*.test.ts', 'tests/unit/**/*.test.tsx', 'tests/content/**/*.test.ts'],
     environment: 'node',
   },
 });
