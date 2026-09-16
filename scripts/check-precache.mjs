@@ -1,25 +1,31 @@
 // Checks the production build's Workbox precache manifest against the
-// Phase 1 precache budget (plan.md Step 18, amendment P8): Workbox writes
-// manifest entries with UNQUOTED keys, e.g.
+// Phase 2 precache budget (plan.md Step 18, amendment P8; budget raised to
+// 8192 KiB by Step 16 for the sign pictures): Workbox writes manifest
+// entries with UNQUOTED keys, e.g.
 // {url:"assets/index-Cddd4Bjc.js",revision:null} — never `"url":"..."` — so
 // this parses dist/sw.js with a regex rather than JSON.parse, sums each
 // entry's file size on disk, and exits 1 unless: the total is within
 // budget; at least 5 font files and ATTRIBUTION.md are precached; every
 // built JS chunk is actually listed (Workbox silently drops any file over
 // its default 2 MiB per-file limit); no entry references a third-party
-// font host; and the manifest is not empty (an unparseable manifest must
-// never pass). Run after `npm run build`; reads nothing outside `dist/`
-// (relative to the current working directory, so it can also be pointed at
-// a copy of the build elsewhere).
+// font host; no precached `signs/…/*.svg` entry is over 150 KiB; at least
+// as many precached `signs/…/*.svg` entries exist as signs in
+// content/uk/signs/signs.json; and the manifest is not empty (an
+// unparseable manifest must never pass). Run after `npm run build`; reads
+// content/uk/signs/signs.json (relative to the current working directory)
+// plus dist/ (also relative to the cwd, so it can be pointed at a copy of
+// the build elsewhere as long as signs.json is read from the repo root).
 // Depends on: node:fs, node:path, dist/sw.js and dist/assets/*.js (the
-// production build).
+// production build), content/uk/signs/signs.json.
 // Depended on by: `npm run check:precache`, .github/workflows/ci.yml.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST_DIR = 'dist';
-const BUDGET_KIB = 3072;
+const BUDGET_KIB = 8192;
 const MIN_WOFF2_ENTRIES = 5;
+const MAX_SIGN_SVG_BYTES = 153_600;
+const SIGNS_JSON_PATH = join('content', 'uk', 'signs', 'signs.json');
 
 function readPrecacheUrls(swPath) {
   const source = readFileSync(swPath, 'utf8');
@@ -45,6 +51,8 @@ function main() {
   let totalBytes = 0;
   let woff2Count = 0;
   let hasAttribution = false;
+  let signSvgCount = 0;
+  const SIGN_SVG = /^signs\/.+\.svg$/;
 
   for (const url of urls) {
     precached.add(url);
@@ -52,14 +60,21 @@ function main() {
       problems.push(`third-party font host precached: ${url}`);
       continue;
     }
-    totalBytes += statSync(join(DIST_DIR, url)).size;
+    const bytes = statSync(join(DIST_DIR, url)).size;
+    totalBytes += bytes;
     if (url.endsWith('.woff2')) woff2Count += 1;
     if (url.endsWith('ATTRIBUTION.md')) hasAttribution = true;
+    if (SIGN_SVG.test(url)) {
+      signSvgCount += 1;
+      if (bytes > MAX_SIGN_SVG_BYTES) {
+        problems.push(`sign picture over 150 KiB precached: ${url} (${bytes} bytes)`);
+      }
+    }
   }
 
   const totalKiB = totalBytes / 1024;
   console.log(
-    `check:precache: ${urls.length} entries, ${totalKiB.toFixed(1)} KiB (budget ${BUDGET_KIB} KiB)`,
+    `check:precache: ${urls.length} entries, ${totalKiB.toFixed(1)} KiB (budget ${BUDGET_KIB} KiB), sign pictures ${signSvgCount}`,
   );
 
   if (totalKiB > BUDGET_KIB) {
@@ -81,6 +96,14 @@ function main() {
     .filter((assetUrl) => !precached.has(assetUrl));
   if (missingChunks.length > 0) {
     problems.push(`JS chunk(s) built but not precached: ${missingChunks.join(', ')}`);
+  }
+
+  const signsFile = JSON.parse(readFileSync(SIGNS_JSON_PATH, 'utf8'));
+  const signCount = signsFile.signs.length;
+  if (signSvgCount < signCount) {
+    problems.push(
+      `only ${signSvgCount} sign pictures precached, expected at least ${signCount} (content/uk/signs/signs.json)`,
+    );
   }
 
   if (problems.length > 0) {
