@@ -30,6 +30,18 @@
 // and the figcaption itself emits nothing, instead of surviving as loose
 // unwrapped text (plan.md S11, amended P1). Off reproduces exactly what this
 // module emitted before the flag existed.
+// B-S5 and F-S1 (plan.md Step 6, amended P3) need no flag: both leave the
+// committed corpus's output unchanged. `sanitiseNode`'s single "unknown tag
+// → unwrap, keep sanitised children" fallback now dispatches through four
+// named top-level functions — `dropEntirely` (the DROPPED_ENTIRELY_TAGS
+// case), `imageReplacement` (the existing image case), `unwrapFigureParts`
+// (a `<figure>`/`<figcaption>` that reaches the fallback unconsumed by a
+// figcaption pairing) and `unwrapKeepingChildren` (every other tag not in
+// ALLOWED_TAGS) — so the next unanticipated gov.uk tag gets an explicit case
+// instead of another patch to one shared branch. `sanitiseAnchorAttrs`'s
+// `isAbsolute` test also matches a protocol-relative href (`//host/…`), so
+// it gets the same `rel="external noopener" target="_blank"` as an
+// `http(s)://` link.
 // No network access — scripts/ingest-highway-code.ts (Step 9) supplies the
 // HTML it fetched via scripts/lib/govuk.ts and writes this module's output
 // to content/uk/highway-code/.
@@ -40,8 +52,9 @@
 // Depended on by: scripts/ingest-highway-code.ts, scripts/lib/highway-code-build.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
 // tests/fixtures/highway-code-section.html,
-// tests/fixtures/highway-code-figcaption.html and
-// tests/fixtures/highway-code-interlude.html).
+// tests/fixtures/highway-code-figcaption.html,
+// tests/fixtures/highway-code-interlude.html,
+// tests/fixtures/highway-code-bs5.html and tests/fixtures/highway-code-fs1.html).
 
 import { parse, NodeType } from 'node-html-parser';
 import type { HTMLElement, Node as HtmlNode, TextNode } from 'node-html-parser';
@@ -414,7 +427,11 @@ function sanitiseAnchorAttrs(el: HTMLElement, ctx: SanitiseContext): string | nu
 
   const rewritten = rewriteHref(href, ctx.crossRefs, ctx.repairHrefs);
   if (!safeHref(rewritten)) return null;
-  const isAbsolute = /^https?:\/\//i.test(rewritten);
+  // F-S1 (plan.md amended P3): a protocol-relative href ("//host/…") is
+  // treated the same as an absolute http(s) link, so it also gets
+  // rel="external noopener" target="_blank" instead of rendering as a
+  // same-tab internal link.
+  const isAbsolute = /^(https?:)?\/\//i.test(rewritten);
   let attrs = ` href="${escapeAttribute(rewritten)}"`;
   if (isAbsolute) attrs += ` rel="external noopener" target="_blank"`;
   if (title) attrs += ` title="${escapeAttribute(title)}"`;
@@ -567,6 +584,41 @@ function renderFigcaptionPaired(el: HTMLElement, ctx: SanitiseContext, caption: 
   return `<p${sanitiseAttrsFor('p', el)}>${innerHtml}</p>`;
 }
 
+/** `<figure>` and `<figcaption>` are never in `ALLOWED_TAGS`; one that
+ * reaches `sanitiseNode` unconsumed by a figcaption pairing (see
+ * `computeFigcaptionPairings` above) falls to `unwrapFigureParts` instead of
+ * the generic unknown-tag fallback (plan.md B-S5, amended P3). */
+const FIGURE_TAGS = new Set(['figure', 'figcaption']);
+
+/** B-S5 (plan.md amended P3): named case for the `DROPPED_ENTIRELY_TAGS`
+ * branch — the whole subtree (tag and content) disappears, exactly as the
+ * inline `return '';` it replaces always did. Split out so the next tag that
+ * needs whole-subtree removal is added here explicitly, not by patching a
+ * fallback shared with unwrap cases. */
+function dropEntirely(): string {
+  return '';
+}
+
+/** B-S5 (plan.md amended P3): named case for a `<figure>` or `<figcaption>`
+ * that reaches the fallback — i.e. was not consumed as a diagram's caption.
+ * Keeps its already-sanitised children, exactly as the old single "unknown
+ * tag → unwrap" fallback did for these two tags. Kept separate from
+ * `unwrapKeepingChildren` so caption/figure handling can change later
+ * without touching ordinary unknown wrappers. */
+function unwrapFigureParts(innerHtml: string): string {
+  return innerHtml;
+}
+
+/** B-S5 (plan.md amended P3): named case for every other tag not in
+ * `ALLOWED_TAGS` and not a figure/figcaption — an unknown wrapper gov.uk
+ * might introduce later. Drops the tag and its attributes, keeps the
+ * already-sanitised inner content, exactly as the old single fallback did.
+ * `script`/`style`/`noscript`/`template`/`iframe`/`object`/`embed` never
+ * reach this branch — they are dropped whole by `dropEntirely`, above. */
+function unwrapKeepingChildren(innerHtml: string): string {
+  return innerHtml;
+}
+
 function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
   if (node.nodeType === NodeType.TEXT_NODE) {
     return escapeTagLikeLessThan((node as TextNode).rawText);
@@ -576,7 +628,7 @@ function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
   const el = node as HTMLElement;
   const tag = el.localName;
 
-  if (DROPPED_ENTIRELY_TAGS.has(tag)) return '';
+  if (DROPPED_ENTIRELY_TAGS.has(tag)) return dropEntirely();
   if (tag === 'img') return imageReplacement(el, ctx);
   if (tag === 'br') return '<br />';
 
@@ -590,13 +642,9 @@ function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
     return attrs === null ? innerHtml : `<a${attrs}>${innerHtml}</a>`;
   }
 
-  if (!ALLOWED_TAGS.has(tag)) {
-    // Any other unknown wrapper tag gov.uk might introduce later: drop the
-    // tag and every attribute, keep the already-sanitised inner content.
-    // script/style/noscript/template/iframe/object/embed never reach this
-    // branch — they are dropped whole, above.
-    return innerHtml;
-  }
+  if (FIGURE_TAGS.has(tag)) return unwrapFigureParts(innerHtml);
+
+  if (!ALLOWED_TAGS.has(tag)) return unwrapKeepingChildren(innerHtml);
 
   return `<${tag}${sanitiseAttrsFor(tag, el)}>${innerHtml}</${tag}>`;
 }

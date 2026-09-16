@@ -1,0 +1,13 @@
+<!-- Fixture: a Highway Code section body in the shape of
+tests/fixtures/highway-code-section.html (plan.md Step 6, amendment P3,
+review-fix.md F-S1) — one rule whose body holds a protocol-relative link
+("//example.org/x", no "http:"/"https:" scheme), to prove
+sanitiseAnchorAttrs's widened isAbsolute test gives it the same
+rel="external noopener" target="_blank" as an absolute http(s) link. The
+prose is fixture filler, not real Highway Code text.
+Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<h3 id="rule302">Rule 302</h3>
+<p>
+  This is the body text of the fixture rule for F-S1 testing:
+  <a href="//example.org/x">protocol-relative</a>.
+</p>

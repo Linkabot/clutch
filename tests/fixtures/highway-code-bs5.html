@@ -1,0 +1,16 @@
+<!-- Fixture: a Highway Code section body in the shape of
+tests/fixtures/highway-code-section.html (plan.md Step 6, amendment P3,
+review-b.md B-S5) — one rule whose body exercises all three named
+sanitiser cases that used to share one "unknown tag → unwrap, keep
+children" fallback: a raw-text <script> (dropEntirely), a <figure> wrapping
+an unpaired <figcaption> with no image (unwrapFigureParts), and an unknown
+<section> wrapper (unwrapKeepingChildren). The prose is fixture filler, not
+real Highway Code text.
+Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<h3 id="rule301">Rule 301</h3>
+<p>This is the body text of the fixture rule for B-S5 testing.</p>
+<script>
+  x();
+</script>
+<figure><figcaption>Caption kept</figcaption></figure>
+<section><p>Kept paragraph</p></section>

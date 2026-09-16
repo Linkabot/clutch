@@ -5,9 +5,11 @@
 // `repairHrefs` flag against the five malformed hrefs found in the
 // committed corpus (plan.md D13 S12, amended P2), the `figcaptionLinks`
 // flag against the real diagram/caption markup shape (plan.md S11, amended
-// P1; tests/fixtures/highway-code-figcaption.html), and the `interludes`
-// flag against a mid-section and a trailing dropped run (plan.md S3;
-// tests/fixtures/highway-code-interlude.html).
+// P1; tests/fixtures/highway-code-figcaption.html), the `interludes` flag
+// against a mid-section and a trailing dropped run (plan.md S3;
+// tests/fixtures/highway-code-interlude.html), and B-S5/F-S1 (plan.md Step
+// 6, amended P3; tests/fixtures/highway-code-bs5.html,
+// tests/fixtures/highway-code-fs1.html) — both need no flag.
 // Depends on: vitest, node:fs, node:url, node:path,
 // scripts/lib/highway-code-parse.ts, src/content/schemas/highwayCode.ts.
 // Depended on by: `npm test` (Vitest run).
@@ -30,6 +32,14 @@ const figcaptionFixtureHtml = readFileSync(
 );
 const interludeFixtureHtml = readFileSync(
   join(__dirname, '..', 'fixtures', 'highway-code-interlude.html'),
+  'utf8',
+);
+const bs5FixtureHtml = readFileSync(
+  join(__dirname, '..', 'fixtures', 'highway-code-bs5.html'),
+  'utf8',
+);
+const fs1FixtureHtml = readFileSync(
+  join(__dirname, '..', 'fixtures', 'highway-code-fs1.html'),
   'utf8',
 );
 
@@ -499,5 +509,56 @@ describe('interludes', () => {
   it('flag off: the returned section carries no interludes key at all', () => {
     const section = parseSection(interludeFixtureHtml, INTERLUDE_META, { interludes: false });
     expect(section).not.toHaveProperty('interludes');
+  });
+});
+
+// plan.md Step 6, amendment P3 (review-b.md B-S5): sanitiseNode's single
+// "unknown tag → unwrap, keep sanitised children" fallback now dispatches
+// through four named cases; this fixture exercises all three non-image
+// cases in one rule and proves the output is unchanged.
+describe('B-S5: named sanitiser cases', () => {
+  const BS5_META = {
+    slug: 'bs5-probe',
+    title: 'B-S5 probe',
+    basePath: '/guidance/the-highway-code/bs5-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/bs5-probe',
+    order: 0,
+  };
+
+  const html = parseSection(bs5FixtureHtml, BS5_META).rules[0]?.html ?? '';
+
+  it('B-S5: dropEntirely removes a <script> tag and its content whole', () => {
+    expect(html).not.toContain('x()');
+    expect(html).not.toContain('<script');
+  });
+
+  it("B-S5: unwrapFigureParts keeps an unpaired figcaption's text with no <figure>/<figcaption> tags", () => {
+    expect(html).toContain('Caption kept');
+    expect(html).not.toContain('<figure');
+    expect(html).not.toContain('<figcaption');
+  });
+
+  it('B-S5: unwrapKeepingChildren drops an unknown <section> wrapper but keeps its sanitised children', () => {
+    expect(html).toContain('<p>Kept paragraph</p>');
+    expect(html).not.toContain('<section');
+  });
+});
+
+// plan.md Step 6, amendment P3 (review-fix.md F-S1): a protocol-relative
+// href ("//host/…") now gets the same rel/target treatment as an absolute
+// http(s) link.
+describe('F-S1: protocol-relative hrefs count as absolute', () => {
+  const FS1_META = {
+    slug: 'fs1-probe',
+    title: 'F-S1 probe',
+    basePath: '/guidance/the-highway-code/fs1-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/fs1-probe',
+    order: 0,
+  };
+
+  it('F-S1: a "//host/…" anchor carries rel="external noopener" and target="_blank"', () => {
+    const html = parseSection(fs1FixtureHtml, FS1_META).rules[0]?.html ?? '';
+    expect(html).toContain('rel="external noopener"');
+    expect(html).toContain('target="_blank"');
   });
 });
