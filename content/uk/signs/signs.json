@@ -1,0 +1,4950 @@
+{
+  "publication": {
+    "title": "Know your traffic signs",
+    "url": "https://www.gov.uk/government/publications/know-your-traffic-signs",
+    "publicUpdatedAt": "2023-12-05T12:51:12+00:00"
+  },
+  "licence": {
+    "name": "Open Government Licence v3.0",
+    "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "copyright": "© Crown copyright 2023",
+    "statement": "This publication is licensed under the terms of the Open Government Licence v3.0 except where otherwise stated."
+  },
+  "signingSystemText": "There are 3 basic types of traffic sign: signs that give orders, signs that warn and signs that give information. Each type has a different shape. A further guide to the function of a sign is its colour. All triangular signs are red. Circles give orders. Triangles warn. Rectangles inform. Blue circles generally give a mandatory instruction, such as ‘turn left’, or indicate a route available only to particular classes of traffic, e.g. buses and cycles only. Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed. Blue rectangles are used for information signs except on motorways, where blue is used for direction signs. Green rectangles are used for direction signs on primary routes. White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs. There are a few exceptions to the shape and colour rules, to give certain signs greater prominence. Examples are the ‘STOP’ and ‘GIVE WAY’ signs. The words ‘must’ or ‘must not’, when used in the descriptions that follow, refer to legal requirements that have to be obeyed. Previous chapter: Introduction Next chapter: Warning signs Know your traffic signs: Home",
+  "signs": [
+    {
+      "id": "warning-stop-100-yards",
+      "name": "Distance to STOP line.",
+      "meaning": "Distance to STOP line.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/stop-100-yards.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706b32f2b3bd5107cd87b/stop-100-yards.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "warning-give-way-50-yards",
+      "name": "Distance to GIVE WAY line.",
+      "meaning": "Distance to GIVE WAY line.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/give-way-50-yards.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e702107bc329020bb8c291/give-way-50-yards.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "warning-traffic-signals",
+      "name": "Traffic signals ahead.",
+      "meaning": "Traffic signals ahead.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/traffic-signals.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7072c7bc3290adab8c1f4/traffic-signals.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "warning-part-time-signals",
+      "name": "Traffic signals that operate only at certain times.",
+      "meaning": "Traffic signals that operate only at certain times.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/part-time-signals.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7042b7bc329020bb8c2b1/part-time-signals.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "warning-crossroads",
+      "name": "Crossroads.",
+      "meaning": "Crossroads.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/crossroads.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f9852f2b3be8b07cd7a5/crossroads.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-t-junction",
+      "name": "T-junction.",
+      "meaning": "T-junction.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/t-junction.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706e33f69457ff10360c3/t-junction.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-side-road",
+      "name": "Side road.",
+      "meaning": "Side road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/side-road.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705882f2b3bd5107cd879/side-road.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-staggered-junction",
+      "name": "Staggered junction.",
+      "meaning": "Staggered junction.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/staggered-junction.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7069c7bc3290adab8c1f3/staggered-junction.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-traffic-merges-left",
+      "name": "Traffic merges from the left.",
+      "meaning": "Traffic merges from the left.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/traffic-merges-left.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706fb2f2b3be8b07cd7d2/traffic-merges-left.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-traffic-merges-main-carriageway",
+      "name": "Traffic merges onto main carriageway.",
+      "meaning": "Traffic merges onto main carriageway.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/traffic-merges-main-carriageway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e707192f2b3be8b07cd7d4/traffic-merges-main-carriageway.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-roundabout",
+      "name": "Roundabout.",
+      "meaning": "Roundabout.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/roundabout.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705163f6945a006036021/roundabout.svg",
+        "subHeading": "Junctions"
+      }
+    },
+    {
+      "id": "warning-bend-to-the-right",
+      "name": "Bend to right (left if symbol reversed).",
+      "meaning": "Bend to right (left if symbol reversed).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/bend-to-the-right.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f8dd7bc3290adab8c1c2/bend-to-the-right.svg",
+        "subHeading": "Road bends"
+      }
+    },
+    {
+      "id": "warning-double-bend",
+      "name": "Double bend first to the left (right if symbol reversed).",
+      "meaning": "Double bend first to the left (right if symbol reversed).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/double-bend.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fa382f2b3be8b07cd7aa/double-bend.svg",
+        "subHeading": "Road bends"
+      }
+    },
+    {
+      "id": "warning-adverse-camber-lorry",
+      "name": "Risk of lorries overturning on bend to the left (right if symbol reversed).",
+      "meaning": "Risk of lorries overturning on bend to the left (right if symbol reversed).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/adverse-camber-lorry.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f8b13f69457ff1036099/adverse-camber-lorry.svg",
+        "subHeading": "Road bends"
+      }
+    },
+    {
+      "id": "warning-road-narrows",
+      "name": "Road narrows on both sides.",
+      "meaning": "Road narrows on both sides.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/road-narrows.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e704ed2f2b3bd5107cd878/road-narrows.svg",
+        "subHeading": "Road narrows"
+      }
+    },
+    {
+      "id": "warning-road-narrows-right",
+      "name": "Road narrows on right (left if symbol reversed).",
+      "meaning": "Road narrows on right (left if symbol reversed).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/road-narrows-right.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705047bc329020bb8c2b3/road-narrows-right.svg",
+        "subHeading": "Road narrows"
+      }
+    },
+    {
+      "id": "warning-end-of-dual-carriageway",
+      "name": "End of dual carriageway.",
+      "meaning": "End of dual carriageway.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/end-of-dual-carriageway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fa8b7bc3290adab8c1c8/end-of-dual-carriageway.svg",
+        "subHeading": "Road narrows › Plates used with ‘road narrows’ signs"
+      }
+    },
+    {
+      "id": "warning-two-way-traffic",
+      "name": "Two-way traffic.",
+      "meaning": "Two-way traffic.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/two-way-traffic.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e707713f6945a006036027/two-way-traffic.svg",
+        "subHeading": "Road narrows › Plates used with ‘road narrows’ signs"
+      }
+    },
+    {
+      "id": "warning-two-way-traffic-route-crossing",
+      "name": "Two-way traffic on route crossing ahead.",
+      "meaning": "Two-way traffic on route crossing ahead.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/two-way-traffic-route-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e707873f69457ff10360c6/two-way-traffic-route-crossing.svg",
+        "subHeading": "Road narrows › Plates used with ‘road narrows’ signs"
+      }
+    },
+    {
+      "id": "warning-ford",
+      "name": "Worded warning. ‘Ford’ may be varied to ‘Flood’, ‘Gate’, ‘Gates’ or ‘No smoking’.",
+      "meaning": "Worded warning. ‘Ford’ may be varied to ‘Flood’, ‘Gate’, ‘Gates’ or ‘No smoking’.",
+      "family": "warning",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/warning/ford.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fb157bc329020bb8c285/ford.svg",
+        "subHeading": "Road narrows › Plates used with ‘road narrows’ signs"
+      }
+    },
+    {
+      "id": "warning-try-your-brakes",
+      "name": "Try brakes after crossing a ford or before descending a steep hill.",
+      "meaning": "Try brakes after crossing a ford or before descending a steep hill.",
+      "family": "warning",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/warning/try-your-brakes.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e707463f6945a006036026/try-your-brakes.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-10_",
+      "name": "Steep hill downwards (10% is equivalent to 1:10).",
+      "meaning": "Steep hill downwards (10% is equivalent to 1:10).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/10_.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f7f33f6945a006035ff9/10_.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-20_",
+      "name": "Steep hill upwards (20% is equivalent to 1:5).",
+      "meaning": "Steep hill upwards (20% is equivalent to 1:5).",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/20_.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f8793f69457ff1036097/20_.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-opening-swing-bridge",
+      "name": "Opening or swing bridge.",
+      "meaning": "Opening or swing bridge.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/opening-swing-bridge.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7040d2f2b3bd5107cd875/opening-swing-bridge.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-quayside-or-river-bank",
+      "name": "Quayside or river bank.",
+      "meaning": "Quayside or river bank.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/quayside-or-river-bank.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e704567bc3290adab8c1f0/quayside-or-river-bank.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-end-of-bridge",
+      "name": "End of bridge parapet, abutment wall, tunnel mouth etc.",
+      "meaning": "End of bridge parapet, abutment wall, tunnel mouth etc.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/end-of-bridge.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fa747bc3290adab8c1c7/end-of-bridge.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-water-course",
+      "name": "Water course alongside road.",
+      "meaning": "Water course alongside road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/water-course.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7081a2f2b3bd5107cd880/water-course.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-soft-verges",
+      "name": "Soft verges for distance shown.",
+      "meaning": "Soft verges for distance shown.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/soft-verges.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706863f6945a006036023/soft-verges.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-tunnel",
+      "name": "Tunnel.",
+      "meaning": "Tunnel.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/tunnel.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7075c3f69457ff10360c5/tunnel.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-hump-bridge",
+      "name": "Hump bridge.",
+      "meaning": "Hump bridge.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/hump-bridge.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e702fd7bc329020bb8c29f/hump-bridge.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-uneven-road",
+      "name": "Uneven road.",
+      "meaning": "Uneven road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/uneven-road.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7079a3f6945a006036029/uneven-road.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-slippery-road",
+      "name": "Slippery road.",
+      "meaning": "Slippery road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/slippery-road.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705ea7bc329020bb8c2b6/slippery-road.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-side-winds",
+      "name": "Side winds.",
+      "meaning": "Side winds.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/side-winds.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7059c7bc3290adab8c1f2/side-winds.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-low-flying-aircraft",
+      "name": "Low-flying aircraft or sudden aircraft noise.",
+      "meaning": "Low-flying aircraft or sudden aircraft noise.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/low-flying-aircraft.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703612f2b3bd5107cd86a/low-flying-aircraft.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-gliders",
+      "name": "Gliders likely.",
+      "meaning": "Gliders likely.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/gliders.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7023e3f6945a00603600d/gliders.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-low-flying-helicopters",
+      "name": "Low-flying helicopters or sudden helicopter noise.",
+      "meaning": "Low-flying helicopters or sudden helicopter noise.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/low-flying-helicopters.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703787bc3290adab8c1e7/low-flying-helicopters.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-falling-rocks",
+      "name": "Risk of falling or fallen rocks.",
+      "meaning": "Risk of falling or fallen rocks.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/falling-rocks.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fab93f69457ff103609c/falling-rocks.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-queues-likely",
+      "name": "Traffic queues likely ahead.",
+      "meaning": "Traffic queues likely ahead.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/queues-likely.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7046e3f69457ff10360bc/queues-likely.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-military-vehicles",
+      "name": "Slow-moving military vehicles likely to be in or crossing the road.",
+      "meaning": "Slow-moving military vehicles likely to be in or crossing the road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/military-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703c97bc329020bb8c2a3/military-vehicles.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-slow-lorries",
+      "name": "Slow-moving vehicles for distance shown.",
+      "meaning": "Slow-moving vehicles for distance shown.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/slow-lorries.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706002f2b3bd5107cd87a/slow-lorries.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-ice",
+      "name": "Risk of ice. ‘Ice’ may be varied to ‘Snowdrifts’.",
+      "meaning": "Risk of ice. ‘Ice’ may be varied to ‘Snowdrifts’.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/ice.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703132f2b3be8b07cd7c0/ice.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-fire-station",
+      "name": "Warning of signals. ‘FIRE’ may be varied to ‘AMBULANCE’ or ‘POLICE’.",
+      "meaning": "Warning of signals. ‘FIRE’ may be varied to ‘AMBULANCE’ or ‘POLICE’.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/fire-station.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6faf13f6945a006036002/fire-station.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-hidden-dip",
+      "name": "Other danger. The plate indicates the nature of the hazard.",
+      "meaning": "Other danger. The plate indicates the nature of the hazard.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/hidden-dip.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7029b2f2b3be8b07cd7bf/hidden-dip.svg",
+        "subHeading": "Steep road"
+      }
+    },
+    {
+      "id": "warning-zebra-crossing",
+      "name": "Zebra or parallel crossing.",
+      "meaning": "Zebra or parallel crossing.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/zebra-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e708757bc3290adab8c1f5/zebra-crossing.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-no-footway",
+      "name": "Pedestrians in road for distance shown.",
+      "meaning": "Pedestrians in road for distance shown.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/no-footway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703df2f2b3bd5107cd86d/no-footway.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-frail-pedestrians",
+      "name": "Frail pedestrians likely to cross.",
+      "meaning": "Frail pedestrians likely to cross.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/frail-pedestrians.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e701f37bc3290adab8c1d8/frail-pedestrians.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-disabled-people",
+      "name": "Disabled pedestrians. ‘Disabled’ may be varied to ‘Blind’.",
+      "meaning": "Disabled pedestrians. ‘Disabled’ may be varied to ‘Blind’.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/disabled-people.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f9ca7bc329020bb8c27f/disabled-people.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-school",
+      "name": "Children going to or from school.",
+      "meaning": "Children going to or from school.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/school.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705383f6945a006036022/school.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-children-lights",
+      "name": "Lights warning of children likely to be crossing the road on their way to or from school (used with ‘school’ sign).",
+      "meaning": "Lights warning of children likely to be crossing the road on their way to or from school (used with ‘school’ sign).",
+      "family": "warning",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/warning/children-lights.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f96d3f6945a006035ffb/children-lights.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-pedestrians-crossing",
+      "name": "Pedestrians likely to be crossing a high-speed road where there is no formal crossing point.",
+      "meaning": "Pedestrians likely to be crossing a high-speed road where there is no formal crossing point.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/pedestrians-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e704422f2b3bd5107cd876/pedestrians-crossing.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-school-20mph",
+      "name": "Part-time advisory 20 mph speed limit at or near a school.",
+      "meaning": "Part-time advisory 20 mph speed limit at or near a school.",
+      "family": "warning",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/warning/school-20mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7054c3f69457ff10360bd/school-20mph.svg",
+        "subHeading": "Pedestrian warnings"
+      }
+    },
+    {
+      "id": "warning-horse-drawn-vehicles",
+      "name": "Horse-drawn vehicles likely to be in the road.",
+      "meaning": "Horse-drawn vehicles likely to be in the road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/horse-drawn-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e702c23f6945a006036017/horse-drawn-vehicles.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-horses-crossing",
+      "name": "Accompanied horses or ponies likely to be in or crossing the road.",
+      "meaning": "Accompanied horses or ponies likely to be in or crossing the road.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/horses-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e702e47bc3290adab8c1e2/horses-crossing.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-wild-horses",
+      "name": "Wild horses or ponies.",
+      "meaning": "Wild horses or ponies.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/wild-horses.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e708613f6945a00603602b/wild-horses.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-wild-animals",
+      "name": "Wild animals.",
+      "meaning": "Wild animals.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/wild-animals.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e708372f2b3bd5107cd881/wild-animals.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-small-wild-animals",
+      "name": "Small wild animals.",
+      "meaning": "Small wild animals.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/small-wild-animals.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706707bc329020bb8c2b7/small-wild-animals.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-wild-fowl",
+      "name": "Wild fowl.",
+      "meaning": "Wild fowl.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/wild-fowl.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7084c3f69457ff10360c7/wild-fowl.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-migratory-toad-crossing",
+      "name": "Migratory toad crossing.",
+      "meaning": "Migratory toad crossing.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/migratory-toad-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e703af2f2b3be8b07cd7c3/migratory-toad-crossing.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-sheep",
+      "name": "Sheep.",
+      "meaning": "Sheep.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/sheep.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e705763f69457ff10360be/sheep.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-farm-traffic",
+      "name": "Agricultural vehicles.",
+      "meaning": "Agricultural vehicles.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/farm-traffic.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6fad67bc3290adab8c1c9/farm-traffic.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-animal-infected-area",
+      "name": "Area infected by animal disease.",
+      "meaning": "Area infected by animal disease.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/animal-infected-area.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f8c67bc3290adab8c1c0/animal-infected-area.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-cattle-grid",
+      "name": "Cattle grid with indication of bypass for horse-drawn vehicles and animals.",
+      "meaning": "Cattle grid with indication of bypass for horse-drawn vehicles and animals.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/cattle-grid.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f9237bc3290adab8c1c5/cattle-grid.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-cattle",
+      "name": "Cattle.",
+      "meaning": "Cattle.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/cattle.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f8f37bc3290adab8c1c4/cattle.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-cattle-crossing",
+      "name": "Supervised cattle crossing ahead.",
+      "meaning": "Supervised cattle crossing ahead.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/cattle-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f9122f2b3bd5107cd842/cattle-crossing.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-supervised-cattle-crossing",
+      "name": "Supervised cattle crossing.",
+      "meaning": "Supervised cattle crossing.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/supervised-cattle-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e706c63f69457ff10360c1/supervised-cattle-crossing.svg",
+        "subHeading": "Animal warnings"
+      }
+    },
+    {
+      "id": "warning-cycle-route",
+      "name": "Pedal cycle route crossing or joining the road ahead.",
+      "meaning": "Pedal cycle route crossing or joining the road ahead.",
+      "family": "warning",
+      "shape": "triangle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C2",
+      "hookId": null,
+      "image": "signs/warning/cycle-route.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "warning-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/warning-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e6f9a03f69457ff103609a/cycle-route.svg",
+        "subHeading": "Cycle routes"
+      }
+    },
+    {
+      "id": "orders-stop-sign-and-road-marking",
+      "name": "The ‘STOP’ sign and road markings",
+      "meaning": "The ‘STOP’ sign and road markings: you must stop before crossing the transverse line on the road and ensure the way is clear before entering the major road.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/orders/stop-sign-and-road-marking.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f1a58c133c22b8eecd38dc/stop-sign-and-road-marking.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-give-way-road-marking",
+      "name": "The ‘GIVE WAY’ sign and road markings",
+      "meaning": "The ‘GIVE WAY’ sign and road markings: you must give way to traffic on the major road (the upright sign or both the sign and the triangle on the road might not be used at junctions where there is relatively little traffic).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/orders/give-way-road-marking.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71bdf7bc3290adab8c211/give-way-road-marking.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-entry",
+      "name": "No entry for vehicular traffic. Where there is an exception for buses or cycles, the sign may be used with a supplementary plate (shown below).",
+      "meaning": "No entry for vehicular traffic. Where there is an exception for buses or cycles, the sign may be used with a supplementary plate (shown below).",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-entry.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d1f3f6945a00603604a/no-entry.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-vehicles",
+      "name": "No vehicles except pedal cycles being pushed by hand.",
+      "meaning": "No vehicles except pedal cycles being pushed by hand.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e3e7bc329020bb8c2d8/no-vehicles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-motor-vehicles",
+      "name": "No motor vehicles.",
+      "meaning": "No motor vehicles.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-motor-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71dc43f69457ff10360ea/no-motor-vehicles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-except-solo-motorcycles",
+      "name": "No motor vehicles except solo motorcycles.",
+      "meaning": "No motor vehicles except solo motorcycles.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/except-solo-motorcycles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71bc63f69457ff10360e4/except-solo-motorcycles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-solo-motorcycles",
+      "name": "No solo motorcycles.",
+      "meaning": "No solo motorcycles.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-solo-motorcycles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e143f6945a00603604c/no-solo-motorcycles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-caravans",
+      "name": "No towed caravans.",
+      "meaning": "No towed caravans.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-caravans.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d062f2b3be8b07cd7f2/no-caravans.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-pedestrians",
+      "name": "No pedestrians.",
+      "meaning": "No pedestrians.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-pedestrians.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71dea2f2b3be8b07cd7f3/no-pedestrians.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-horses",
+      "name": "No ridden or accompanied horses.",
+      "meaning": "No ridden or accompanied horses.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-horses.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d993f6945a00603604b/no-horses.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-horse-drawn-vehicles",
+      "name": "No horse-drawn vehicles.",
+      "meaning": "No horse-drawn vehicles.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-horse-drawn-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d7e3f69457ff10360e9/no-horse-drawn-vehicles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-articulated-vehicles",
+      "name": "No articulated vehicles.",
+      "meaning": "No articulated vehicles.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-articulated-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71ce27bc3290adab8c212/no-articulated-vehicles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-goods-vehicles",
+      "name": "No goods vehicles over maximum gross weight shown in tonnes.",
+      "meaning": "No goods vehicles over maximum gross weight shown in tonnes.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-goods-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d5e3f69457ff10360e8/no-goods-vehicles.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-goods-vehicles-restrictions",
+      "name": "End of goods vehicles restriction.",
+      "meaning": "End of goods vehicles restriction.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/goods-vehicles-restrictions.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71c233f69457ff10360e5/goods-vehicles-restrictions.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-explosives",
+      "name": "No vehicles carrying explosives.",
+      "meaning": "No vehicles carrying explosives.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-explosives.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71d4a3f69457ff10360e7/no-explosives.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-vehicles-carrying-dangerous-goods",
+      "name": "Vehicles carrying dangerous goods with the restriction code indicated by the sign are prohibited from the tunnel. See table for codes that have been assigned to tunnels in the UK.",
+      "meaning": "Vehicles carrying dangerous goods with the restriction code indicated by the sign are prohibited from the tunnel. See table for codes that have been assigned to tunnels in the UK.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/vehicles-carrying-dangerous-goods.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71f1d2f2b3bd5107cd89f/vehicles-carrying-dangerous-goods.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-max-width",
+      "name": "No vehicles over maximum width shown (width shown in metric and imperial units).",
+      "meaning": "No vehicles over maximum width shown (width shown in metric and imperial units).",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/max-width.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71cb13f69457ff10360e6/max-width.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-max-length",
+      "name": "No vehicles or combinations of vehicles over maximum length shown.",
+      "meaning": "No vehicles or combinations of vehicles over maximum length shown.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/max-length.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71c8f3f6945a006036049/max-length.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-weak-bridge",
+      "name": "No vehicles over the maximum gross weight shown in tonnes. The bottom plate is used where empty vehicles are exempt.",
+      "meaning": "No vehicles over the maximum gross weight shown in tonnes. The bottom plate is used where empty vehicles are exempt.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/weak-bridge.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71f372f2b3be8b07cd7f7/weak-bridge.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-no-overtaking",
+      "name": "No overtaking.",
+      "meaning": "No overtaking.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-overtaking.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71dd72f2b3bd5107cd89c/no-overtaking.svg",
+        "subHeading": "Plates used to indicate exemptions from prohibition signs"
+      }
+    },
+    {
+      "id": "orders-give-way-to-oncoming-vehicles",
+      "name": "Where a road or bridge is very narrow, priority must be given to traffic from the other direction (there will usually be a ‘give way’ line indicating where to wait).",
+      "meaning": "Where a road or bridge is very narrow, priority must be given to traffic from the other direction (there will usually be a ‘give way’ line indicating where to wait).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/give-way-to-oncoming-vehicles.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71c0f3f6945a006036048/give-way-to-oncoming-vehicles.svg",
+        "subHeading": "Plates used to indicate exemptions from prohibition signs"
+      }
+    },
+    {
+      "id": "orders-no-u-turn",
+      "name": "No U-turn.",
+      "meaning": "No U-turn.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-u-turn.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e273f6945a00603604d/no-u-turn.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-no-right-turn",
+      "name": "No right turn.",
+      "meaning": "No right turn.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-right-turn.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e007bc329020bb8c2d7/no-right-turn.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-no-left-turn",
+      "name": "No left turn.",
+      "meaning": "No left turn.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": null,
+      "image": "signs/orders/no-left-turn.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71db17bc3290adab8c213/no-left-turn.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-school-crossing",
+      "name": "Vehicles must not go beyond the sign where displayed by a school crossing patrol.",
+      "meaning": "Vehicles must not go beyond the sign where displayed by a school crossing patrol.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/school-crossing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71eaf2f2b3bd5107cd89d/school-crossing.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-stop-police",
+      "name": "Vehicles must not go beyond the sign where displayed by a police officer or traffic warden.",
+      "meaning": "Vehicles must not go beyond the sign where displayed by a police officer or traffic warden.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/stop-police.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71ec97bc3290adab8c214/stop-police.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-no-vehicles-on-mown-verge",
+      "name": "Specified traffic must not use verge maintained in mown or ornamental condition.",
+      "meaning": "Specified traffic must not use verge maintained in mown or ornamental condition.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/no-vehicles-on-mown-verge.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e612f2b3be8b07cd7f4/no-vehicles-on-mown-verge.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-left-arrow",
+      "name": "Proceed in direction indicated by the arrow.",
+      "meaning": "Proceed in direction indicated by the arrow.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": null,
+      "image": "signs/orders/left-arrow.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71c772f2b3be8b07cd7f1/left-arrow.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-turn-left",
+      "name": "Turn left ahead (right if symbol reversed).",
+      "meaning": "Turn left ahead (right if symbol reversed).",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": null,
+      "image": "signs/orders/turn-left.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71ef32f2b3be8b07cd7f5/turn-left.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-either-side",
+      "name": "Vehicles may pass either side to reach the same destination.",
+      "meaning": "Vehicles may pass either side to reach the same destination.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": null,
+      "image": "signs/orders/either-side.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71a657bc329020bb8c2d4/either-side.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-keep-left",
+      "name": "Keep left (right if symbol reversed).",
+      "meaning": "Keep left (right if symbol reversed).",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": null,
+      "image": "signs/orders/keep-left.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71c472f2b3bd5107cd89b/keep-left.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-mini-roundabout",
+      "name": "Mini-roundabout (give way to traffic from the immediate right).",
+      "meaning": "Mini-roundabout (give way to traffic from the immediate right).",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": "sign-mini-roundabout",
+      "image": "signs/orders/mini-roundabout.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71cc77bc329020bb8c2d6/mini-roundabout.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-one-way-traffic",
+      "name": "One-way traffic.",
+      "meaning": "One-way traffic.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/one-way-traffic.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71e837bc329020bb8c2da/one-way-traffic.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-cycle-event",
+      "name": "Vehicles must not go beyond the sign where displayed during a cycle event.",
+      "meaning": "Vehicles must not go beyond the sign where displayed during a cycle event.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/cycle-event.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71a3e7bc329020bb8c2d3/cycle-event.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-entry-to-high-street",
+      "name": "Nature of and distance to a prohibition, restriction or requirement.",
+      "meaning": "Nature of and distance to a prohibition, restriction or requirement.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/entry-to-high-street.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71b3b7bc3290adab8c210/entry-to-high-street.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-weight-limit",
+      "name": "Weight restriction ahead (may show a different restriction).",
+      "meaning": "Weight restriction ahead (may show a different restriction).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/weight-limit.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71f642f2b3bd5107cd8a0/weight-limit.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-weight-limit-alternative",
+      "name": "Location of weight restriction ahead with indication of an alternative route (may show a different restriction).",
+      "meaning": "Location of weight restriction ahead with indication of an alternative route (may show a different restriction).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/weight-limit-alternative.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "regulatory-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/regulatory-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e71f793f6945a006036050/weight-limit-alternative.svg",
+        "subHeading": "Where changes of direction are prohibited, a red bar across the sign is used in addition to the red circle"
+      }
+    },
+    {
+      "id": "orders-40-mph",
+      "name": "The maximum speed, in miles per hour, at which traffic may travel, if it is safe to do so.",
+      "meaning": "The maximum speed, in miles per hour, at which traffic may travel, if it is safe to do so.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "red"
+      ],
+      "rule": "C3",
+      "hookId": "sign-speed-max-min",
+      "image": "signs/orders/40-mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e722e32f2b3be8b07cd7fc/40-mph.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-national-speed-limit",
+      "name": "The national speed limit for the type of road and class of traffic applies.",
+      "meaning": "The national speed limit for the type of road and class of traffic applies.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": "sign-national-speed-limit",
+      "image": "signs/orders/national-speed-limit.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7247e2f2b3be8b07cd7fe/national-speed-limit.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-20-mph-zone",
+      "name": "Entrance to a 20 mph zone in which traffic-calming measures may be encountered.",
+      "meaning": "Entrance to a 20 mph zone in which traffic-calming measures may be encountered.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/20-mph-zone.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e722947bc329020bb8c2e1/20-mph-zone.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-30-mph-zone",
+      "name": "End of 20 mph zone and start of 30 mph speed limit.",
+      "meaning": "End of 20 mph zone and start of 30 mph speed limit.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/30-mph-zone.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e722cc7bc3290adab8c21c/30-mph-zone.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-village-speed-limit",
+      "name": "Start of a speed limit at the boundary of a town or village.",
+      "meaning": "Start of a speed limit at the boundary of a town or village.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/village-speed-limit.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e725f52f2b3bd5107cd8aa/village-speed-limit.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-start-of-motorway",
+      "name": "Start of motorway regulations, including the national speed limit (unless a different speed limit is signed).",
+      "meaning": "Start of motorway regulations, including the national speed limit (unless a different speed limit is signed).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/start-of-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e725c57bc329020bb8c2e7/start-of-motorway.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-new-30-mph",
+      "name": "Point on a road with street lighting where an existing 30 mph limit originally ended but has subsequently been extended (temporary sign). This sign alerts drivers that a previous higher limit has been replaced by a 30 mph limit by the removal of speed limit signs.",
+      "meaning": "Point on a road with street lighting where an existing 30 mph limit originally ended but has subsequently been extended (temporary sign). This sign alerts drivers that a previous higher limit has been replaced by a 30 mph limit by the removal of speed limit signs.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/new-30-mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e724cd2f2b3be8b07cd7ff/new-30-mph.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-road-works",
+      "name": "End of road works and any temporary speed limit through those works (may be supplemented by a sign indicating the permanent speed limit beyond the road works).",
+      "meaning": "End of road works and any temporary speed limit through those works (may be supplemented by a sign indicating the permanent speed limit beyond the road works).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/road-works.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e725003f69457ff10360f5/road-works.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-speed-camera",
+      "name": "Area where speed cameras are in use.",
+      "meaning": "Area where speed cameras are in use.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/speed-camera.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7258b2f2b3be8b07cd802/speed-camera.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-average-speed-check",
+      "name": "Length of road where 2 cameras are used to measure the average speed of a vehicle between 2 points.",
+      "meaning": "Length of road where 2 cameras are used to measure the average speed of a vehicle between 2 points.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/average-speed-check.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e723083f6945a006036053/average-speed-check.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-enforcement-camera",
+      "name": "Reminder that enforcement cameras are in use (may be supplemented by a speed limit sign).",
+      "meaning": "Reminder that enforcement cameras are in use (may be supplemented by a speed limit sign).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/enforcement-camera.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e723537bc3290adab8c21d/enforcement-camera.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-speed-camera-30-mph",
+      "name": "Speed camera nearby on a lit road with a 30 mph speed limit (i.e. where there are no speed limit repeater signs).",
+      "meaning": "Speed camera nearby on a lit road with a 30 mph speed limit (i.e. where there are no speed limit repeater signs).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/speed-camera-30-mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7259f2f2b3bd5107cd8a8/speed-camera-30-mph.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-speed-camera-national-speed-limit",
+      "name": "Speed camera nearby on an unlit road subject to the national speed limit (i.e. where there are no speed limit repeater signs).",
+      "meaning": "Speed camera nearby on an unlit road subject to the national speed limit (i.e. where there are no speed limit repeater signs).",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/speed-camera-national-speed-limit.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e725b17bc329020bb8c2e6/speed-camera-national-speed-limit.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-min-30-mph",
+      "name": "Minimum speed permitted, in miles per hour, unless it is impracticable or unsafe to comply.",
+      "meaning": "Minimum speed permitted, in miles per hour, unless it is impracticable or unsafe to comply.",
+      "family": "orders",
+      "shape": "circle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C4",
+      "hookId": "sign-speed-max-min",
+      "image": "signs/orders/min-30-mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7245d7bc329020bb8c2e2/min-30-mph.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-end-of-min-30-mph",
+      "name": "End of minimum speed requirement.",
+      "meaning": "End of minimum speed requirement.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/end-of-min-30-mph.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7231d2f2b3be8b07cd7fd/end-of-min-30-mph.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-variable-speed",
+      "name": "Start of variable speed limit on a length of road where enforcement cameras are in use.",
+      "meaning": "Start of variable speed limit on a length of road where enforcement cameras are in use.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/variable-speed.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e725de3f69457ff10360f6/variable-speed.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "orders-end-of-variable-speed",
+      "name": "End of variable speed limit. The national speed limit for the type of road and class of traffic now applies.",
+      "meaning": "End of variable speed limit. The national speed limit for the type of road and class of traffic now applies.",
+      "family": "orders",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/orders/end-of-variable-speed.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "speed-limit-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/speed-limit-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e7233c3f69457ff10360f1/end-of-variable-speed.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "motorway-start-of-motorway-regulations",
+      "name": "Start of motorway regulations.",
+      "meaning": "Start of motorway regulations.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/start-of-motorway-regulations.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e995405b65240011f21b4a/start-of-motorway-regulations.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "motorway-a52-motorway-junction",
+      "name": "The first 2 signs on the approach to a junction show the destination and the route number for the exit only. The distance shown (usually 1 mile or ½ mile) is the distance to the exit (start of the deceleration lane). The junction number is shown on the black background.",
+      "meaning": "The first 2 signs on the approach to a junction show the destination and the route number for the exit only. The distance shown (usually 1 mile or ½ mile) is the distance to the exit (start of the deceleration lane). The junction number is shown on the black background.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/a52-motorway-junction.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e883843649a20011ed6361/a52-motorway-junction.svg",
+        "subHeading": "Signs for junctions on the motorway › Signs located at the side of the motorway. These are used where there is a deceleration lane. The number of lanes through the junction remains the same"
+      }
+    },
+    {
+      "id": "motorway-countdown-marker-3",
+      "name": "Countdown markers indicate the distance to the start of the deceleration lane. Each bar represents about 100 yards.",
+      "meaning": "Countdown markers indicate the distance to the start of the deceleration lane. Each bar represents about 100 yards.",
+      "family": "motorway",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/motorway/countdown-marker-3.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e885f35b65240011f21ac6/countdown-marker-3.svg",
+        "subHeading": "Signs for junctions on the motorway › Signs located at the side of the motorway. These are used where there is a deceleration lane. The number of lanes through the junction remains the same"
+      }
+    },
+    {
+      "id": "motorway-junction-motorway",
+      "name": "This sign, with the inclined arrow, is normally located just before the left-hand lane leaves the main carriageway.",
+      "meaning": "This sign, with the inclined arrow, is normally located just before the left-hand lane leaves the main carriageway.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/junction-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e988df5b65240011f21b29/junction-motorway.svg",
+        "subHeading": "Signs for junctions on the motorway › Signs located at the side of the motorway where one or more lanes leave the main carriageway to become the exit slip road. This type of junction is known as a lane drop"
+      }
+    },
+    {
+      "id": "motorway-overhead-sign-different-destinations",
+      "name": "Overhead sign showing appropriate lanes for the different destinations.",
+      "meaning": "Overhead sign showing appropriate lanes for the different destinations.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/overhead-sign-different-destinations.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e992835b6524001af21b2f/overhead-sign-different-destinations.svg",
+        "subHeading": "Signs for junctions on the motorway › Overhead signs for a lane-drop junction"
+      }
+    },
+    {
+      "id": "motorway-slip-road-1",
+      "name": "Sign for drivers on slip road.",
+      "meaning": "Sign for drivers on slip road.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/slip-road-1.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9949f62ff48001187b300/slip-road-1.svg",
+        "subHeading": "Signs for junctions on the motorway › Signs showing lanes that join the main carriageway at junctions"
+      }
+    },
+    {
+      "id": "motorway-slip-road-2",
+      "name": "Sign for drivers on main carriageway.",
+      "meaning": "Sign for drivers on main carriageway.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/slip-road-2.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e994ba5b65240011f21b49/slip-road-2.svg",
+        "subHeading": "Signs for junctions on the motorway › Signs showing lanes that join the main carriageway at junctions"
+      }
+    },
+    {
+      "id": "motorway-directions-from-junction-ahead",
+      "name": "Directions from junction ahead, usually controlled by traffic signals or a ‘give way’ sign.",
+      "meaning": "Directions from junction ahead, usually controlled by traffic signals or a ‘give way’ sign.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C5",
+      "hookId": null,
+      "image": "signs/motorway/directions-from-junction-ahead.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e886455b65240011f21ac7/directions-from-junction-ahead.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs on exit slip roads (the green panels indicate a primary route; the white panels indicate a non-primary route)"
+      }
+    },
+    {
+      "id": "motorway-directions-from-a-roundabout-ahead",
+      "name": "Directions from a roundabout ahead.",
+      "meaning": "Directions from a roundabout ahead.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C5",
+      "hookId": null,
+      "image": "signs/motorway/directions-from-a-roundabout-ahead.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e8861b3649a2001aed6364/directions-from-a-roundabout-ahead.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs on exit slip roads (the green panels indicate a primary route; the white panels indicate a non-primary route)"
+      }
+    },
+    {
+      "id": "motorway-motorway-to-motorway-junction",
+      "name": "Motorway-to-motorway junction with a roundabout (motorway regulations continue to apply).",
+      "meaning": "Motorway-to-motorway junction with a roundabout (motorway regulations continue to apply).",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C5",
+      "hookId": null,
+      "image": "signs/motorway/motorway-to-motorway-junction.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e98e4562ff48001187b2f6/motorway-to-motorway-junction.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs on exit slip roads (the green panels indicate a primary route; the white panels indicate a non-primary route)"
+      }
+    },
+    {
+      "id": "motorway-appropriate-lanes-for-turning-movements",
+      "name": "Appropriate lanes for turning movements at junction ahead.",
+      "meaning": "Appropriate lanes for turning movements at junction ahead.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C5",
+      "hookId": null,
+      "image": "signs/motorway/appropriate-lanes-for-turning-movements.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e8846c62ff48001187b298/appropriate-lanes-for-turning-movements.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs on exit slip roads (the green panels indicate a primary route; the white panels indicate a non-primary route)"
+      }
+    },
+    {
+      "id": "motorway-motorway-ends-at-a-junction",
+      "name": "Motorway ends at a junction with an all-purpose road.",
+      "meaning": "Motorway ends at a junction with an all-purpose road.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/motorway-ends-at-a-junction.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e98d2562ff48001a87b30c/motorway-ends-at-a-junction.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs where the main carriageway of a motorway ends at a roundabout"
+      }
+    },
+    {
+      "id": "motorway-motorway-ends-another-motorway",
+      "name": "Motorway ends at a junction with another motorway.",
+      "meaning": "Motorway ends at a junction with another motorway.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/motorway-ends-another-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e98ccd5b6524001af21b25/motorway-ends-another-motorway.svg",
+        "subHeading": "Signs for junctions on the motorway › Direction signs where the main carriageway of a motorway ends at a roundabout"
+      }
+    },
+    {
+      "id": "motorway-services-10m",
+      "name": "After each junction, a sign may show the distance to the next motorway service area.",
+      "meaning": "After each junction, a sign may show the distance to the next motorway service area.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/services-10m.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e994373649a20011ed63e3/services-10m.svg",
+        "subHeading": "Signs for motorway service areas"
+      }
+    },
+    {
+      "id": "motorway-good-food-small",
+      "name": "Sign located at start of the deceleration lane for a service area with direct access from the motorway.",
+      "meaning": "Sign located at start of the deceleration lane for a service area with direct access from the motorway.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/good-food-small.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e987025b65240011f21b23/good-food-small.svg",
+        "subHeading": "Signs for motorway service areas"
+      }
+    },
+    {
+      "id": "motorway-no-services-on-motorway",
+      "name": "Sign on motorway indicating that no services are available ahead. Drivers should leave the motorway if service facilities are required.",
+      "meaning": "Sign on motorway indicating that no services are available ahead. Drivers should leave the motorway if service facilities are required.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/no-services-on-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9905662ff48001187b2fb/no-services-on-motorway.svg",
+        "subHeading": "Signs for motorway service areas"
+      }
+    },
+    {
+      "id": "motorway-m1",
+      "name": "A route confirmatory sign is provided after most junctions. This shows the motorway number and the distances to the main destinations ahead.",
+      "meaning": "A route confirmatory sign is provided after most junctions. This shows the motorway number and the distances to the main destinations ahead.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/m1.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e98c063649a20011ed63d3/m1.svg",
+        "subHeading": "Other signs on motorways"
+      }
+    },
+    {
+      "id": "motorway-hertfordshire",
+      "name": "County boundary sign (may be varied to show the name of a river).",
+      "meaning": "County boundary sign (may be varied to show the name of a river).",
+      "family": "motorway",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/motorway/hertfordshire.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9873a62ff48001187b2e5/hertfordshire.svg",
+        "subHeading": "Other signs on motorways"
+      }
+    },
+    {
+      "id": "motorway-marker-post-phone",
+      "name": "Marker posts, located at the back of the hard shoulder at approximately 100-metre intervals, show the direction to the nearest emergency telephone (housed in an orange box). You can use the telephone to contact the control centre in case of an emergency or breakdown.",
+      "meaning": "Marker posts, located at the back of the hard shoulder at approximately 100-metre intervals, show the direction to the nearest emergency telephone (housed in an orange box). You can use the telephone to contact the control centre in case of an emergency or breakdown.",
+      "family": "motorway",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/motorway/marker-post-phone.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e98cb23649a20011ed63d5/marker-post-phone.svg",
+        "subHeading": "Other signs on motorways"
+      }
+    },
+    {
+      "id": "motorway-docks",
+      "name": "Direction of route recommended for goods vehicles.",
+      "meaning": "Direction of route recommended for goods vehicles.",
+      "family": "motorway",
+      "shape": "other",
+      "colours": [],
+      "rule": "C1",
+      "hookId": null,
+      "image": "signs/motorway/docks.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e8866f62ff48001a87b299/docks.svg",
+        "subHeading": "Other signs on motorways › Direction signs for drivers of goods vehicles"
+      }
+    },
+    {
+      "id": "motorway-end-of-motorway-1-mile",
+      "name": "Sign located on main carriageway to indicate the distance to the end of the motorway.",
+      "meaning": "Sign located on main carriageway to indicate the distance to the end of the motorway.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/end-of-motorway-1-mile.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e887b062ff48001a87b29e/end-of-motorway-1-mile.svg",
+        "subHeading": "Other signs on motorways › Signs indicating the end of motorway regulations"
+      }
+    },
+    {
+      "id": "motorway-end-of-motorway",
+      "name": "Sign located where the motorway ends on either the main carriageway or exit slip road.",
+      "meaning": "Sign located where the motorway ends on either the main carriageway or exit slip road.",
+      "family": "motorway",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C6",
+      "hookId": null,
+      "image": "signs/motorway/end-of-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "motorway-signs-signals-and-road-markings",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/motorway-signs-signals-and-road-markings",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e887943649a20011ed6369/end-of-motorway.svg",
+        "subHeading": "Other signs on motorways › Signs indicating the end of motorway regulations"
+      }
+    },
+    {
+      "id": "direction-london-a2",
+      "name": "Junction ahead between 2 primary routes.",
+      "meaning": "Junction ahead between 2 primary routes.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "green"
+      ],
+      "rule": "C7-green",
+      "hookId": null,
+      "image": "signs/direction/london-a2.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9bf5f5b6524001af21b8c/london-a2.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-junction-ahead-two-non-primary-routes",
+      "name": "Junction ahead between 2 non-primary routes.",
+      "meaning": "Junction ahead between 2 non-primary routes.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "white"
+      ],
+      "rule": "C7-white",
+      "hookId": null,
+      "image": "signs/direction/junction-ahead-two-non-primary-routes.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f0361e133c220011cd3823/junction-ahead-two-non-primary-routes.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-sign-primary-route-indicating-non-primary-route",
+      "name": "Sign on a primary route indicating a non-primary route.",
+      "meaning": "Sign on a primary route indicating a non-primary route.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C7-green-white",
+      "hookId": null,
+      "image": "signs/direction/sign-primary-route-indicating-non-primary-route.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f2f84010cd8e001d36c5b3/sign-primary-route-indicating-non-primary-route.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-sign-non-primary-route-indicating-primary-route",
+      "name": "Sign on a non-primary route indicating a primary route.",
+      "meaning": "Sign on a non-primary route indicating a primary route.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "green",
+        "white"
+      ],
+      "rule": "C7-green-white",
+      "hookId": null,
+      "image": "signs/direction/sign-non-primary-route-indicating-primary-route.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f2f85c9d99de001d03ded1/sign-non-primary-route-indicating-primary-route.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-map-type-roundabout-ahead",
+      "name": "Map-type sign on primary route indicating a roundabout ahead.",
+      "meaning": "Map-type sign on primary route indicating a roundabout ahead.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "green"
+      ],
+      "rule": "C7-green",
+      "hookId": null,
+      "image": "signs/direction/map-type-roundabout-ahead.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9c1c962ff48001a87b36a/map-type-roundabout-ahead.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-map-type-mini-roundabout",
+      "name": "Map-type sign for a mini-roundabout.",
+      "meaning": "Map-type sign for a mini-roundabout.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/map-type-mini-roundabout.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65eade4a5b652445f6f21a8d/map-type-mini-roundabout.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-flag-type-sign-non-primary",
+      "name": "Flag-type sign indicating a non-primary route.",
+      "meaning": "Flag-type sign indicating a non-primary route.",
+      "family": "direction",
+      "shape": "rectangle",
+      "colours": [
+        "white"
+      ],
+      "rule": "C7-white",
+      "hookId": null,
+      "image": "signs/direction/flag-type-sign-non-primary.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ba805b6524001af21b85/flag-type-sign-non-primary.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-route-confirmation-sign",
+      "name": "Route confirmatory sign.",
+      "meaning": "Route confirmatory sign.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/route-confirmation-sign.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f02ab7133c220019cd3804/route-confirmation-sign.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "direction-tourist",
+      "name": "Tourist information.",
+      "meaning": "Tourist information.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/tourist.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f30623fa1851001a011736/tourist.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-castle",
+      "name": "Castle.",
+      "meaning": "Castle.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/castle.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ab305b6524001af21b6f/castle.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-national-trust",
+      "name": "National Trust.",
+      "meaning": "National Trust.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/national-trust.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9c4543649a20011ed6456/national-trust.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-english-heritage",
+      "name": "English Heritage.",
+      "meaning": "English Heritage.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/english-heritage.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9b9693649a20011ed6442/english-heritage.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-bird-garden",
+      "name": "Bird garden.",
+      "meaning": "Bird garden.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/bird-garden.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9a81d62ff489bab87b251/bird-garden.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-farm-park",
+      "name": "Farm park.",
+      "meaning": "Farm park.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/farm-park.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9b99b62ff489bab87b270/farm-park.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-museum",
+      "name": "Museum (England).",
+      "meaning": "Museum (England).",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/museum.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9c4355b65240011f21bad/museum.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-aviation-museum",
+      "name": "Aviation museum.",
+      "meaning": "Aviation museum.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/aviation-museum.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9a64c62ff489bab87b24c/aviation-museum.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-football",
+      "name": "Football ground.",
+      "meaning": "Football ground.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/football.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ba983649a2001aed6450/football.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-cricket",
+      "name": "Cricket ground.",
+      "meaning": "Cricket ground.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/cricket.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ac1d5b65240011f21b89/cricket.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-motor-sport",
+      "name": "Motor sport.",
+      "meaning": "Motor sport.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/motor-sport.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9c3675b65240011f21bac/motor-sport.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-golf",
+      "name": "Golf course.",
+      "meaning": "Golf course.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/golf.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9bab75b6524001af21b86/golf.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-fishing",
+      "name": "Fishing.",
+      "meaning": "Fishing.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/fishing.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9b9f03649a20011ed6443/fishing.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-cycle-hire",
+      "name": "Cycle hire.",
+      "meaning": "Cycle hire.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/cycle-hire.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ac373649a2001aed643f/cycle-hire.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-england",
+      "name": "England.",
+      "meaning": "England.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/england.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9b94c5b6524001af21b83/england.svg",
+        "subHeading": "Signs for tourist destinations"
+      }
+    },
+    {
+      "id": "direction-service-sign-1",
+      "name": "Distance to services.",
+      "meaning": "Distance to services.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/service-sign-1.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9ce185b65240011f21bbc/service-sign-1.svg",
+        "subHeading": "Services signs"
+      }
+    },
+    {
+      "id": "direction-multi-storey-250-yards",
+      "name": "Direction and distance to a multi-storey car park.",
+      "meaning": "Direction and distance to a multi-storey car park.",
+      "family": "direction",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/direction/multi-storey-250-yards.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "direction-signs-on-all-purpose-roads",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65e9c41362ff48001a87b36c/multi-storey-250-yards.svg",
+        "subHeading": "Parking signs"
+      }
+    },
+    {
+      "id": "information-dual-carriageway-ahead",
+      "name": "A section of dual carriageway road begins directly ahead.",
+      "meaning": "A section of dual carriageway road begins directly ahead.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/dual-carriageway-ahead.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05b66ff11700011615967/dual-carriageway-ahead.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-road-ahead-motorway",
+      "name": "Motorway.",
+      "meaning": "Motorway.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/road-ahead-motorway.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f060b2133c220011cd387c/road-ahead-motorway.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-road-ahead-primary-route",
+      "name": "Primary route.",
+      "meaning": "Primary route.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "green"
+      ],
+      "rule": "C7-green",
+      "hookId": null,
+      "image": "signs/information/road-ahead-primary-route.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f06214981227001af61331/road-ahead-primary-route.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-road-ahead-non-primary-route",
+      "name": "Non-primary route.",
+      "meaning": "Non-primary route.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "white"
+      ],
+      "rule": "C7-white",
+      "hookId": null,
+      "image": "signs/information/road-ahead-non-primary-route.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f061da133c220019cd3880/road-ahead-non-primary-route.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-no-through-road",
+      "name": "No through road for vehicular traffic.",
+      "meaning": "No through road for vehicular traffic.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/no-through-road.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05e4b981227001af6130c/no-through-road.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-unsuitable-for-hgvs",
+      "name": "Route unsuitable for heavy goods vehicles.",
+      "meaning": "Route unsuitable for heavy goods vehicles.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/unsuitable-for-hgvs.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f06407133c220019cd3892/unsuitable-for-hgvs.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-single-track-road-with-passing-places",
+      "name": "Narrow road ahead with passing places at intervals.",
+      "meaning": "Narrow road ahead with passing places at intervals.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/single-track-road-with-passing-places.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f06224ff1170001161598b/single-track-road-with-passing-places.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-passing-place",
+      "name": "Passing place on a narrow road.",
+      "meaning": "Passing place on a narrow road.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/passing-place.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05fb6ff11700011615980/passing-place.svg",
+        "subHeading": "Information about the road ahead"
+      }
+    },
+    {
+      "id": "information-parking-place-location",
+      "name": "Location of parking place (may include an arrow to indicate the entrance to a parking area).",
+      "meaning": "Location of parking place (may include an arrow to indicate the entrance to a parking area).",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/parking-place-location.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05eeb133c220019cd3864/parking-place-location.svg",
+        "subHeading": "Signs for lay-bys and parking areas"
+      }
+    },
+    {
+      "id": "information-parking-sos-location",
+      "name": "Location of parking place with an emergency telephone (may include an arrow).",
+      "meaning": "Location of parking place with an emergency telephone (may include an arrow).",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/parking-sos-location.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05f33133c220011cd386e/parking-sos-location.svg",
+        "subHeading": "Signs for lay-bys and parking areas"
+      }
+    },
+    {
+      "id": "information-hospital-no-a-and-e",
+      "name": "Blue signs indicate hospitals without accident and emergency facilities.",
+      "meaning": "Blue signs indicate hospitals without accident and emergency facilities.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/hospital-no-a-and-e.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f05cfc981227001af61305/hospital-no-a-and-e.svg",
+        "subHeading": "Hospital signs"
+      }
+    },
+    {
+      "id": "information-police-speed-check",
+      "name": "Area where, from time to time, police carry out checks on the speed of vehicles.",
+      "meaning": "Area where, from time to time, police carry out checks on the speed of vehicles.",
+      "family": "information",
+      "shape": "rectangle",
+      "colours": [
+        "blue"
+      ],
+      "rule": "C8",
+      "hookId": null,
+      "image": "signs/information/police-speed-check.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "information-signs",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/information-signs",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f06054ff11700019615980/police-speed-check.svg",
+        "subHeading": "Police signs"
+      }
+    },
+    {
+      "id": "road-works-roadworks",
+      "name": "This sign, indicating road works or an obstruction in the carriageway ahead, may be used for any type of works, ranging from large construction schemes to minor maintenance.",
+      "meaning": "This sign, indicating road works or an obstruction in the carriageway ahead, may be used for any type of works, ranging from large construction schemes to minor maintenance.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/roadworks.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18d51ff11701fff6159b5/roadworks.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "road-works-roadworks-end",
+      "name": "End of road works and any associated temporary restrictions, including speed limits.",
+      "meaning": "End of road works and any associated temporary restrictions, including speed limits.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/roadworks-end.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18d81ff11700019615b64/roadworks-end.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "road-works-traffic-cone",
+      "name": "Traffic cones may be used to mark the edge of the route for vehicular or pedestrian traffic through or past a temporary obstruction.",
+      "meaning": "Traffic cones may be used to mark the edge of the route for vehicular or pedestrian traffic through or past a temporary obstruction.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/traffic-cone.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18ea8ff11700019615b6a/traffic-cone.svg",
+        "subHeading": ""
+      }
+    },
+    {
+      "id": "road-works-lane-closed",
+      "name": "The traffic lanes that remain open are available to all traffic. The red bar indicates a lane that is closed ahead.",
+      "meaning": "The traffic lanes that remain open are available to all traffic. The red bar indicates a lane that is closed ahead.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/lane-closed.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f193559812278a47f6131c/lane-closed.svg",
+        "subHeading": "Signs for lane closures and contraflow systems on motorways and dual carriageway roads"
+      }
+    },
+    {
+      "id": "road-works-traffic-cylinder",
+      "name": "Where a contraflow system operates, traffic cylinders are used to separate opposing flows of traffic in adjacent lanes.",
+      "meaning": "Where a contraflow system operates, traffic cylinders are used to separate opposing flows of traffic in adjacent lanes.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/traffic-cylinder.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18ed9ff11701fff6159bc/traffic-cylinder.svg",
+        "subHeading": "Signs for lane closures and contraflow systems on motorways and dual carriageway roads"
+      }
+    },
+    {
+      "id": "road-works-portable-traffic-signal",
+      "name": "Portable traffic light signals for the control of vehicular traffic.",
+      "meaning": "Portable traffic light signals for the control of vehicular traffic.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/portable-traffic-signal.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18c20133c22b8eecd3887/portable-traffic-signal.svg",
+        "subHeading": "Temporary traffic control"
+      }
+    },
+    {
+      "id": "road-works-loose-chippings",
+      "name": "Risk of skidding and maximum speed of 20 mph advised on a road that has loose chippings.",
+      "meaning": "Risk of skidding and maximum speed of 20 mph advised on a road that has loose chippings.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/loose-chippings.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f193c2ff11701fff6159d4/loose-chippings.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-ramp",
+      "name": "Temporary sudden change in level of carriageway.",
+      "meaning": "Temporary sudden change in level of carriageway.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/ramp.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18c42ff11701fff6159b1/ramp.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-sharp-left",
+      "name": "Sharp deviation of route to the left (right if chevrons reversed) at road works or other temporary obstruction.",
+      "meaning": "Sharp deviation of route to the left (right if chevrons reversed) at road works or other temporary obstruction.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/sharp-left.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f19464133c22b8eecd38ab/sharp-left.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-traffic-signal-not-in-use",
+      "name": "Traffic signals not in use.",
+      "meaning": "Traffic signals not in use.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/traffic-signal-not-in-use.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18f0a9812278a47f6130c/traffic-signal-not-in-use.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-pedestrians",
+      "name": "Temporary route for pedestrians.",
+      "meaning": "Temporary route for pedestrians.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/pedestrians.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18abb133c221271cd3804/pedestrians.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-slow-wet-tar",
+      "name": "Temporary hazard: vehicular traffic should proceed slowly.",
+      "meaning": "Temporary hazard: vehicular traffic should proceed slowly.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/slow-wet-tar.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18e36981227a772f61321/slow-wet-tar.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-stop-works",
+      "name": "Vehicular traffic must not proceed beyond the sign when it is displayed for a short period during works on or near a road (hand-held sign).",
+      "meaning": "Vehicular traffic must not proceed beyond the sign when it is displayed for a short period during works on or near a road (hand-held sign).",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/stop-works.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18e63133c221271cd380e/stop-works.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-no-hard-shoulder-400-yards",
+      "name": "Hard shoulder temporarily closed for the distance shown.",
+      "meaning": "Hard shoulder temporarily closed for the distance shown.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/no-hard-shoulder-400-yards.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18aa7981227a772f61317/no-hard-shoulder-400-yards.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    },
+    {
+      "id": "road-works-convoy-vehicle",
+      "name": "Sign on convoy vehicle (‘NO OVERTAKING’ may be omitted).",
+      "meaning": "Sign on convoy vehicle (‘NO OVERTAKING’ may be omitted).",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/convoy-vehicle.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f19204981227a772f6132f/convoy-vehicle.svg",
+        "subHeading": "Convoy working"
+      }
+    },
+    {
+      "id": "road-works-max-speed-30",
+      "name": "Maximum speed advised, in miles per hour, through road works.",
+      "meaning": "Maximum speed advised, in miles per hour, through road works.",
+      "family": "road-works",
+      "shape": "other",
+      "colours": [],
+      "rule": "C9",
+      "hookId": null,
+      "image": "signs/road-works/max-speed-30.svg",
+      "refs": [
+        {
+          "kind": "section",
+          "slug": "traffic-signs"
+        }
+      ],
+      "licence": "Open Government Licence v3.0",
+      "source": {
+        "chapterSlug": "signs-for-road-works-and-temporary-situations",
+        "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/signs-for-road-works-and-temporary-situations",
+        "imageUrl": "https://assets.publishing.service.gov.uk/media/65f18a389812278a47f612fc/max-speed-30.svg",
+        "subHeading": "Miscellaneous temporary signs"
+      }
+    }
+  ]
+}

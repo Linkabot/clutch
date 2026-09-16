@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 960 640" style="enable-background:new 0 0 960 640;" xml:space="preserve">
+<style type="text/css">
+	
+		.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;stroke:#006FB6;stroke-width:5.4357;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#006FB6;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+</style>
+<g>
+	<path class="st0" d="M480,113.2H365.9c-13.5,0-24.5,11-24.5,24.5v364.5c0,13.5,11,24.5,24.5,24.5h228.2c13.5,0,24.5-11,24.5-24.5
+		V137.7c0-13.5-11-24.5-24.5-24.5L480,113.2L480,113.2z"/>
+	<path class="st1" d="M354.9,137.7L354.9,137.7c0-5.9,4.8-10.7,10.7-10.7c0.1,0,0.2,0,0.3,0l228.2,0c5.9,0,10.7,4.8,10.7,10.7v364.5
+		c0,6.2-4.8,11-10.7,11H365.9c-6.2,0-11-4.8-11-11V137.7z"/>
+	<polygon class="st2" points="451.2,492.3 451.2,262.7 393.9,320 393.9,234 479.8,147.7 565.8,234 565.8,320 508.5,262.7 
+		508.5,492.3 	"/>
+</g>
+</svg>

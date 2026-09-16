@@ -33,6 +33,13 @@
       "licence": "Open Government Licence v3.0",
       "url": "https://www.gov.uk/guidance/national-standard-for-driving-cars-and-light-vans-category-b",
       "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
+    },
+    {
+      "id": "know-your-traffic-signs",
+      "name": "Know Your Traffic Signs",
+      "licence": "Open Government Licence v3.0",
+      "url": "https://www.gov.uk/government/publications/know-your-traffic-signs",
+      "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
     }
   ]
 }
