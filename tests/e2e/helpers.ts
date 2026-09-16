@@ -11,7 +11,9 @@
 // two `--strictPort` servers bound to the same port would race each other
 // (amendment E8, handoffs/phase-1-highway-code/plan.md).
 // Depends on: @playwright/test, node:child_process.
-// Depended on by: tests/e2e/shell.spec.ts, tests/e2e/highway-code.spec.ts.
+// Depended on by: tests/e2e/shell.spec.ts, tests/e2e/highway-code.spec.ts,
+// tests/e2e/signs.spec.ts, tests/e2e/games.spec.ts,
+// tests/e2e/signs-offline.spec.ts.
 import { expect, type Page } from '@playwright/test';
 import { spawn, execSync, type ChildProcess } from 'node:child_process';
 
