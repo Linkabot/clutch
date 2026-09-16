@@ -1,15 +1,31 @@
 // Learn tab hub: entry point into the Highway Code section browser and its
-// search screen (Step 17), plus placeholder rows for the traffic-signs and
-// lessons features that ship in later phases. The Highway Code card's rule
-// count comes from the ingested index (getHighwayCodeIndex), counted at
-// render time — no network call, no effect needed, since the index is
-// bundled and parsed eagerly.
-// Depends on: react-router-dom, ../../ui (SignPanel), ../../content/loaders
-// (getHighwayCodeIndex).
+// search screen (Step 17), the Signs browser (Step 19), plus a placeholder
+// row for the lessons feature that ships in a later phase. The Highway
+// Code card's rule count comes from the ingested index (getHighwayCodeIndex),
+// counted at render time — no network call, no effect needed, since the
+// index is bundled and parsed eagerly. The Traffic signs card's counts come
+// from loadSigns() (a lazy chunk, loaded once in an effect) and
+// useProgressStore's summary.collected (loaded once via load()). The card
+// itself, its title and its link render immediately; the "<n> of <total>
+// collected" subtitle renders only once loadSigns() has resolved
+// (amendment E19) -- nothing in its place before, no placeholder text.
+// Depends on: react, react-router-dom, ../../ui (SignPanel),
+// ../../content/loaders (getHighwayCodeIndex), ../../content/signs
+// (loadSigns), ../../content/schemas (Sign type), ../../engine/progress-state
+// (useProgressStore), ../interactives/shared/SignImage, ../signs/signs.css
+// (the .learn-signs-card full-width SignPanel rule and thumbnail sizing).
 // Depended on by: src/app/routes.tsx.
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignPanel } from '../../ui';
 import { getHighwayCodeIndex } from '../../content/loaders';
+import { loadSigns } from '../../content/signs';
+import type { Sign } from '../../content/schemas';
+import { useProgressStore } from '../../engine/progress-state';
+import SignImage from '../interactives/shared/SignImage';
+import '../signs/signs.css';
+
+const LEARN_CARD_SIGN_IDS = ['warning-roundabout', 'orders-no-entry', 'orders-turn-left'];
 
 function countNumericRules(): number {
   const index = getHighwayCodeIndex();
@@ -21,6 +37,37 @@ function countNumericRules(): number {
 
 function LearnScreen() {
   const ruleCount = countNumericRules();
+  const [signCount, setSignCount] = useState(0);
+  const [cardSigns, setCardSigns] = useState<Sign[]>([]);
+  const [signsLoaded, setSignsLoaded] = useState(false);
+  const summary = useProgressStore((state) => state.summary);
+  const load = useProgressStore((state) => state.load);
+
+  useEffect(() => {
+    load().catch(() => {});
+  }, [load]);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadSigns()
+      .then((signs) => {
+        if (cancelled) return;
+        setSignCount(signs.length);
+        setCardSigns(
+          LEARN_CARD_SIGN_IDS.map((id) => signs.find((sign) => sign.id === id)).filter(
+            (sign): sign is Sign => sign !== undefined,
+          ),
+        );
+        setSignsLoaded(true);
+      })
+      .catch(() => {
+        // content/uk/signs/signs.json not ingested yet, or failed to load:
+        // the subtitle stays hidden and no thumbnails show.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div>
@@ -41,7 +88,31 @@ function LearnScreen() {
       >
         Search The Highway Code
       </Link>
-      <p style={{ color: 'var(--color-muted)' }}>Traffic signs — later phase</p>
+      <Link
+        to="/learn/signs"
+        className="learn-signs-card"
+        style={{ display: 'block', marginTop: '22px', textDecoration: 'none' }}
+      >
+        <SignPanel colour="green">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="font-display" style={{ fontSize: '20px' }}>
+                Traffic signs
+              </div>
+              {signsLoaded && (
+                <div>
+                  {summary.collected} of {signCount} collected
+                </div>
+              )}
+            </div>
+            <div className="learn-signs-card__images">
+              {cardSigns.map((sign) => (
+                <SignImage key={sign.id} sign={sign} alt="" />
+              ))}
+            </div>
+          </div>
+        </SignPanel>
+      </Link>
       <p style={{ color: 'var(--color-muted)' }}>Lessons — later phase</p>
     </div>
   );
