@@ -5,8 +5,11 @@
 // The Highway Code index and facts.json are small and loaded eagerly
 // (bundled into the main chunk); each Highway Code section is its own lazy
 // Vite chunk, fetched only when its content is first needed, so the
-// initial bundle does not carry the whole Highway Code.
-// Depends on: ./schemas (Zod schemas), Vite's import.meta.glob.
+// initial bundle does not carry the whole Highway Code. The per-section
+// cache is a PromiseCache (./memo.ts) so a failed load can be retried
+// instead of replaying the same rejection forever (plan.md C-S1).
+// Depends on: ./schemas (Zod schemas), ./memo (PromiseCache), Vite's
+// import.meta.glob.
 // Depended on by: src/features/code/search.ts, Highway Code screens
 // (Step 15 onward).
 
@@ -19,6 +22,7 @@ import {
   type Rule,
   type Fact,
 } from './schemas';
+import { createPromiseCache } from './memo';
 
 /** Rejected by loadSection() / loadRule() for a slug the index does not list. */
 export class SectionNotFound extends Error {
@@ -89,19 +93,16 @@ async function loadSectionUncached(slug: string): Promise<Section> {
   return SectionSchema.parse(loaded.default);
 }
 
-const sectionCache = new Map<string, Promise<Section>>();
+const sectionCache = createPromiseCache<string, Section>();
 
 /**
  * Loads and validates one Highway Code section by slug, memoised in module
  * scope. Rejects with SectionNotFound for a slug the index does not list.
+ * A rejected load is evicted from the cache, so a retry after a failure
+ * (e.g. a transient chunk-fetch error) calls the loader again.
  */
 export function loadSection(slug: string): Promise<Section> {
-  let cached = sectionCache.get(slug);
-  if (!cached) {
-    cached = loadSectionUncached(slug);
-    sectionCache.set(slug, cached);
-  }
-  return cached;
+  return sectionCache.get(slug, () => loadSectionUncached(slug));
 }
 
 /** Loads every Highway Code section, in the index's published order. */
