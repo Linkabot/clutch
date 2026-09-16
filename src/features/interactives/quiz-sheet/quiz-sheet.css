@@ -1,0 +1,412 @@
+/* Quiz feedback sheet styles for
+   src/features/interactives/quiz-sheet/QuizSheet.tsx (scout-e.md's
+   ChosenQuiz and Tap the sign artboards; plan.md Step 22 and amendment E23):
+   a sheet fixed to the bottom of the screen above the app shell, sign green
+   on a correct answer and sign red on a wrong one, with a white inner frame,
+   a popping tick or cross, a yellow XP badge, pulsing in-a-row chevrons and
+   nine pieces of app-drawn confetti that land above the panel. Every motion
+   rule is scoped under the root's animated modifier class, so the component
+   rendering its static modifier (reduced motion) turns all motion off at
+   once. Colours are theme.css tokens that stay fixed in dark mode -- the
+   page surface and ink tokens are never used here, and there are no hex
+   literals (plan.md § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css; the
+   .button and .button--primary rules in src/ui/primitives.css (Continue).
+   Depended on by: src/features/interactives/quiz-sheet/QuizSheet.tsx
+   (imports this file once). */
+
+/* --- Root: bottom-anchored, above the tab bar and full-screen games ------- */
+
+.quiz-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+}
+
+/* --- Panel and inner frame ------------------------------------------------ */
+
+/* Never taller than the screen minus the top safe-area inset; past that the
+   panel scrolls inside. Positioned so it paints over the confetti layer. */
+.quiz-sheet__panel {
+  position: relative;
+  box-sizing: border-box;
+  max-height: calc(100dvh - env(safe-area-inset-top));
+  overflow-y: auto;
+  padding: 6px 6px 0;
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -8px 30px color-mix(in srgb, var(--color-sign-ink) 18%, transparent);
+}
+
+.quiz-sheet--correct .quiz-sheet__panel {
+  background-color: var(--color-sign-green);
+}
+
+.quiz-sheet--wrong .quiz-sheet__panel {
+  background-color: var(--color-sign-red);
+}
+
+.quiz-sheet--animated .quiz-sheet__panel {
+  animation: sheetUp 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+}
+
+/* Bottom padding: the artboard's 40px, or the home-indicator inset plus
+   16px, whichever is larger. */
+.quiz-sheet__frame {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 18px max(40px, calc(env(safe-area-inset-bottom) + 16px));
+  border: 2.5px solid var(--color-on-sign);
+  border-bottom: none;
+  border-radius: 17px 17px 0 0;
+  color: var(--color-on-sign);
+}
+
+/* --- Header: icon, title, XP badge ---------------------------------------- */
+
+.quiz-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-sheet__heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quiz-sheet__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-sheet__icon[data-icon='tick'] svg {
+  stroke: var(--color-sign-green);
+}
+
+.quiz-sheet__icon[data-icon='cross'] svg {
+  stroke: var(--color-sign-red);
+}
+
+.quiz-sheet--animated .quiz-sheet__icon {
+  animation: pop 0.5s 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.quiz-sheet__title {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: var(--color-on-sign);
+}
+
+.quiz-sheet__xp {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.quiz-sheet--animated .quiz-sheet__xp {
+  animation: pop 0.5s 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+/* --- In-a-row streak ------------------------------------------------------- */
+
+.quiz-sheet__streak {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.quiz-sheet__chevron {
+  flex-shrink: 0;
+  stroke: var(--color-on-sign);
+}
+
+.quiz-sheet--animated .quiz-sheet__chevron:nth-child(1) {
+  animation: chev 1.4s 0s infinite;
+}
+
+.quiz-sheet--animated .quiz-sheet__chevron:nth-child(2) {
+  animation: chev 1.4s 0.12s infinite;
+}
+
+.quiz-sheet--animated .quiz-sheet__chevron:nth-child(3) {
+  animation: chev 1.4s 0.24s infinite;
+}
+
+.quiz-sheet--animated .quiz-sheet__chevron:nth-child(4) {
+  animation: chev 1.4s 0.36s infinite;
+}
+
+.quiz-sheet__streak-text {
+  margin-left: 6px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-on-sign);
+}
+
+/* --- Body, hook and buttons ------------------------------------------------ */
+
+.quiz-sheet__body {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--color-on-sign);
+}
+
+.quiz-sheet__body strong {
+  font-weight: 700;
+}
+
+.quiz-sheet__hook {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--color-on-sign);
+}
+
+/* Two equal halves, whatever each button's own padding and border. */
+.quiz-sheet__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.quiz-sheet__sign-page {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  height: 50px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid color-mix(in srgb, var(--color-on-sign) 75%, transparent);
+  border-radius: var(--radius-button);
+  background: transparent;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--color-sign-ink) 18%, transparent);
+  color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 80ms;
+}
+
+.quiz-sheet__sign-page:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+/* Two classes, so these win over .button's size and weight whatever order
+   the stylesheets load in. */
+.quiz-sheet .quiz-sheet__continue {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* --- Confetti (correct and animated only) ---------------------------------- */
+
+/* A zero-height layer on the panel's top edge. Each piece sits at the
+   ChosenQuiz artboard's x position taken as a share of its 393px width, and
+   its top edge lands 82-156px above the panel's top edge: the artboard's
+   drawn top values measured from a panel top at y = 560, which keeps the
+   drawn scatter inside the 80-160px band whatever the sheet's height. */
+.quiz-sheet__confetti {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.quiz-sheet__piece {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.quiz-sheet__piece[data-confetti='triangle'] {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+}
+
+.quiz-sheet__piece[data-confetti='circle'] {
+  fill: var(--color-sign-blue);
+}
+
+.quiz-sheet__piece[data-confetti='ring'] {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+}
+
+.quiz-sheet__piece[data-confetti='diamond'] {
+  fill: var(--color-marking-yellow);
+}
+
+.quiz-sheet__piece[data-confetti='rectangle'] {
+  fill: var(--color-sign-green);
+  stroke: var(--color-on-sign);
+}
+
+.quiz-sheet__piece:nth-child(1) {
+  left: calc(100% * 26 / 393);
+  top: -108px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(1) {
+  animation: fall 0.9s 0.2s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(2) {
+  left: calc(100% * 84 / 393);
+  top: -128px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(2) {
+  animation: fall 1s 0.3s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(3) {
+  left: calc(100% * 140 / 393);
+  top: -90px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(3) {
+  animation: fall 0.85s 0.1s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(4) {
+  left: calc(100% * 196 / 393);
+  top: -120px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(4) {
+  animation: fall 1.05s 0.35s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(5) {
+  left: calc(100% * 244 / 393);
+  top: -82px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(5) {
+  animation: fall 0.95s 0.15s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(6) {
+  left: calc(100% * 300 / 393);
+  top: -114px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(6) {
+  animation: fall 1s 0.25s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(7) {
+  left: calc(100% * 352 / 393);
+  top: -86px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(7) {
+  animation: fall 0.9s 0.4s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(8) {
+  left: calc(100% * 112 / 393);
+  top: -156px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(8) {
+  animation: fall 1.1s 0.45s ease-out both;
+}
+
+.quiz-sheet__piece:nth-child(9) {
+  left: calc(100% * 330 / 393);
+  top: -152px;
+}
+
+.quiz-sheet--animated .quiz-sheet__piece:nth-child(9) {
+  animation: fall 0.95s 0.3s ease-out both;
+}
+
+/* --- Keyframes, as drawn on the artboards ---------------------------------- */
+
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-80px) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(240deg);
+    opacity: 1;
+  }
+}
+
+@keyframes chev {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  35% {
+    opacity: 1;
+  }
+}
