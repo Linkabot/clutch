@@ -1,0 +1,35 @@
+<!-- Fixture: the real diagram/caption markup shape found in the committed
+Highway Code cache (plan.md S11, amended P1) that
+scripts/lib/highway-code-parse.ts's `figcaptionLinks` flag must handle — a
+<p> holding exactly one <img> (never wrapped in a <figure>) immediately
+followed by a <figcaption> sibling, repeated twice with different caption
+text, then a third <p><img></p> with no following <figcaption> at all, to
+prove the no-pairing fallback. Every alt is empty so the flag-off case
+(no caption, no alt) still reproduces today's literal "Diagram (online):
+view image" text alongside the untouched loose caption text.
+Depended on by: tests/unit/highway-code-parse.test.ts. -->
+<h3 id="rule1">Rule 1</h3>
+<p>
+  This example rule exists only to give the figcaption-pairing probes a rule to live inside — the
+  wording is not from the real Highway Code.
+</p>
+<p>
+  <img
+    src="https://assets.publishing.service.gov.uk/media/000000000000000000000001/entry-to-20mph-zone.jpg"
+    alt=""
+  />
+</p>
+<figcaption>Entry to 20 mph zone</figcaption>
+<p>
+  <img
+    src="https://assets.publishing.service.gov.uk/media/000000000000000000000002/hierarchy-of-road-users.jpg"
+    alt=""
+  />
+</p>
+<figcaption>Hierarchy of road users</figcaption>
+<p>
+  <img
+    src="https://assets.publishing.service.gov.uk/media/000000000000000000000003/no-figcaption.jpg"
+    alt=""
+  />
+</p>

@@ -15,21 +15,29 @@
 // slash on `guidance/the-highway-code/…`, a bare `www.gov.uk/…`, and
 // `#rule%20`/`#rule ` before a rule number (plan.md D13 S12, amended P2) —
 // before applying today's rewrite rules; off reproduces exactly what this
+// module emitted before the flag existed. When its `figcaptionLinks` flag is
+// on (also the default), a `<p>` holding exactly one `<img>` and nothing
+// else, or a bare `<img>`, that is immediately followed (ignoring
+// whitespace-only text) by a `<figcaption>` sibling consumes that
+// figcaption: the figcaption's own text becomes the diagram link's label
+// and the figcaption itself emits nothing, instead of surviving as loose
+// unwrapped text (plan.md S11, amended P1). Off reproduces exactly what this
 // module emitted before the flag existed.
 // No network access — scripts/ingest-highway-code.ts (Step 9) supplies the
 // HTML it fetched via scripts/lib/govuk.ts and writes this module's output
 // to content/uk/highway-code/.
 // Depends on: node-html-parser, ../../src/content/text.ts
-// (normaliseWhitespace), ../../src/content/schemas/highwayCode.ts (the
-// Section/Rule/RuleImage shapes this module must produce), ./highway-code-build.ts
-// (ParseOptions, type-only).
+// (normaliseWhitespace, htmlToText), ../../src/content/schemas/highwayCode.ts
+// (the Section/Rule/RuleImage shapes this module must produce),
+// ./highway-code-build.ts (ParseOptions, type-only).
 // Depended on by: scripts/ingest-highway-code.ts, scripts/lib/highway-code-build.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
-// tests/fixtures/highway-code-section.html).
+// tests/fixtures/highway-code-section.html and
+// tests/fixtures/highway-code-figcaption.html).
 
 import { parse, NodeType } from 'node-html-parser';
 import type { HTMLElement, Node as HtmlNode, TextNode } from 'node-html-parser';
-import { normaliseWhitespace } from '../../src/content/text';
+import { htmlToText, normaliseWhitespace } from '../../src/content/text';
 import type { Rule, RuleImage, Section } from '../../src/content/schemas/highwayCode';
 import type { ParseOptions } from './highway-code-build';
 
@@ -292,6 +300,9 @@ interface SanitiseContext {
   images: RuleImage[];
   /** Forwarded to `rewriteHref` (plan.md D13 S12, amended P2). */
   repairHrefs: boolean;
+  /** Governs figcaption→link-label pairing and the diagram link's text
+   * format (plan.md S11, amended P1). */
+  figcaptionLinks: boolean;
 }
 
 function escapeAttribute(value: string): string {
@@ -396,19 +407,120 @@ function sanitiseAttrsFor(tag: string, el: HTMLElement): string {
   }
 }
 
+/** Builds the diagram link's visible label from the paired figcaption's
+ * text (if this image was consumed by one — see `computeFigcaptionPairings`
+ * below) or the image's own `alt`, and — with `figcaptionLinks` off —
+ * reproduces exactly what this module emitted before the flag existed
+ * (plan.md S11, amended P1): `alt`, else the literal "view image". With the
+ * flag on, a caption always wins over `alt`; with neither, the label is
+ * empty and `diagramLinkText` supplies the flag's own fallback wording. */
+function diagramLabel(alt: string, caption: string | undefined, figcaptionLinks: boolean): string {
+  if (!figcaptionLinks) return alt.length > 0 ? alt : 'view image';
+  if (caption && caption.length > 0) return caption;
+  return alt;
+}
+
+/** The diagram link's full visible text for `label` (already resolved by
+ * `diagramLabel`): with `figcaptionLinks` off, today's
+ * "Diagram (online): <label>"; on, "↗ <label> (diagram, online)", or the
+ * bare "↗ Diagram (online)" when `label` is empty — i.e. neither a paired
+ * caption nor an `alt` (plan.md S11, amended P1). */
+function diagramLinkText(label: string, figcaptionLinks: boolean): string {
+  if (!figcaptionLinks) return `Diagram (online): ${label}`;
+  return label.length > 0 ? `↗ ${label} (diagram, online)` : `↗ Diagram (online)`;
+}
+
 /** An <img> is never kept: it is recorded in `images[]` and replaced with a
  * clearly-labelled link out, since Phase 1 ships no images offline. When
  * the source isn't `safeHref`-safe (plan.md M4 refinement item 4), the
  * image is still recorded — offline metadata is unaffected — but rendered
- * as plain, unlinked text instead of a clickable link. */
-function imageReplacement(el: HTMLElement, ctx: SanitiseContext): string {
+ * as plain, unlinked text instead of a clickable link, with the same label
+ * as the link case would use. `caption` is passed only when
+ * `computeFigcaptionPairings` matched this image (or its wrapping <p>) with
+ * a following <figcaption> (plan.md S11, amended P1); otherwise it is
+ * `undefined` and the label falls back to `alt` (flag on) or today's
+ * behaviour (flag off). */
+function imageReplacement(el: HTMLElement, ctx: SanitiseContext, caption?: string): string {
   const src = el.getAttribute('src') ?? '';
   const alt = (el.getAttribute('alt') ?? '').trim();
   ctx.images.push({ src, alt });
-  const label = alt.length > 0 ? alt : 'view image';
-  if (!safeHref(src)) return `Diagram (online): ${escapeText(label)}`;
+  const label = diagramLabel(alt, caption, ctx.figcaptionLinks);
+  const text = diagramLinkText(label, ctx.figcaptionLinks);
+  if (!safeHref(src)) return escapeText(text);
   const href = escapeAttribute(src);
-  return `<a class="hc-image" href="${href}" rel="external noopener" target="_blank">Diagram (online): ${escapeText(label)}</a>`;
+  return `<a class="hc-image" href="${href}" rel="external noopener" target="_blank">${escapeText(text)}</a>`;
+}
+
+/** True for exactly the two node shapes `computeFigcaptionPairings` may
+ * pair with a following `<figcaption>` (plan.md S11, amended P1): a bare
+ * `<img>`, or a `<p>` whose only non-whitespace child is a single `<img>`
+ * (`isImageOnlyParagraph` plus a child-count check, since a multi-image
+ * paragraph is also "image only" but is not a diagram/caption pair). */
+function isFigcaptionCandidate(node: HtmlNode): node is HTMLElement {
+  if (node.nodeType !== NodeType.ELEMENT_NODE) return false;
+  const el = node as HTMLElement;
+  if (el.localName === 'img') return true;
+  if (el.localName !== 'p') return false;
+  const meaningfulChildren = el.childNodes.filter((child) => !isWhitespaceNode(child));
+  return meaningfulChildren.length === 1 && isImageOnlyParagraph(el);
+}
+
+function isFigcaptionElement(node: HtmlNode): node is HTMLElement {
+  return (
+    node.nodeType === NodeType.ELEMENT_NODE && (node as HTMLElement).localName === 'figcaption'
+  );
+}
+
+interface FigcaptionPairings {
+  /** The candidate node (a bare `<img>`, or the `<p>` wrapping one) mapped
+   * to its paired figcaption's text. */
+  captionByNode: Map<HtmlNode, string>;
+  /** Every `<figcaption>` a candidate consumed: it emits nothing at all. */
+  consumedFigcaptions: Set<HtmlNode>;
+}
+
+/** Scans one list of sibling nodes (exactly what a single `sanitiseNodes`
+ * call is given — a rule's own nodes, a section's preamble, or a rule-less
+ * section's whole body) for the pairing plan.md amendment P1 describes: a
+ * figcaption-candidate node (`isFigcaptionCandidate`) whose next sibling,
+ * ignoring whitespace-only text, is a `<figcaption>`. That figcaption's
+ * text (`htmlToText` of its inner HTML, so nested markup inside the
+ * caption is stripped the same way search indexing strips it) becomes the
+ * candidate's caption and the figcaption is marked consumed. */
+function computeFigcaptionPairings(nodes: HtmlNode[]): FigcaptionPairings {
+  const captionByNode = new Map<HtmlNode, string>();
+  const consumedFigcaptions = new Set<HtmlNode>();
+  const meaningful = nodes.filter((node) => !isWhitespaceNode(node));
+
+  for (let i = 0; i < meaningful.length - 1; i += 1) {
+    const candidate = meaningful[i];
+    const next = meaningful[i + 1];
+    if (!isFigcaptionCandidate(candidate)) continue;
+    if (!isFigcaptionElement(next)) continue;
+    captionByNode.set(candidate, htmlToText(next.innerHTML));
+    consumedFigcaptions.add(next);
+  }
+
+  return { captionByNode, consumedFigcaptions };
+}
+
+/** Renders a figcaption-candidate node (`isFigcaptionCandidate`) that
+ * `computeFigcaptionPairings` matched with a caption: for a bare `<img>`,
+ * that is just `imageReplacement` with the caption; for the wrapping `<p>`
+ * case, every other child (only whitespace text, by `isFigcaptionCandidate`'s
+ * own single-child check) renders exactly as `sanitiseNode` always has, and
+ * the sole `<img>` child renders with the caption instead. */
+function renderFigcaptionPaired(el: HTMLElement, ctx: SanitiseContext, caption: string): string {
+  if (el.localName === 'img') return imageReplacement(el, ctx, caption);
+  const innerHtml = el.childNodes
+    .map((child) => {
+      if (child.nodeType === NodeType.ELEMENT_NODE && (child as HTMLElement).localName === 'img') {
+        return imageReplacement(child as HTMLElement, ctx, caption);
+      }
+      return sanitiseNode(child, ctx);
+    })
+    .join('');
+  return `<p${sanitiseAttrsFor('p', el)}>${innerHtml}</p>`;
 }
 
 function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
@@ -424,7 +536,7 @@ function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
   if (tag === 'img') return imageReplacement(el, ctx);
   if (tag === 'br') return '<br />';
 
-  const innerHtml = el.childNodes.map((child) => sanitiseNode(child, ctx)).join('');
+  const innerHtml = sanitiseNodes(el.childNodes, ctx);
 
   if (tag === 'a') {
     const attrs = sanitiseAnchorAttrs(el, ctx);
@@ -445,8 +557,30 @@ function sanitiseNode(node: HtmlNode, ctx: SanitiseContext): string {
   return `<${tag}${sanitiseAttrsFor(tag, el)}>${innerHtml}</${tag}>`;
 }
 
+/** Renders one list of sibling nodes. With `ctx.figcaptionLinks` off this is
+ * exactly today's node-by-node map+join. On, it first computes the
+ * figcaption pairings for this exact list (`computeFigcaptionPairings`):
+ * a consumed `<figcaption>` renders as nothing, a paired candidate renders
+ * through `renderFigcaptionPaired` with its caption, and every other node
+ * renders exactly as before (plan.md S11, amended P1). Called both for a
+ * list of top-level siblings (a rule's own nodes, a preamble, or a
+ * rule-less section's whole body) and, via `sanitiseNode`'s own recursion,
+ * for any element's children — so a diagram/caption pair nested inside an
+ * allowed wrapper (e.g. a `<div>`) is paired the same way. */
 function sanitiseNodes(nodes: HtmlNode[], ctx: SanitiseContext): string {
-  return nodes.map((node) => sanitiseNode(node, ctx)).join('');
+  if (!ctx.figcaptionLinks) {
+    return nodes.map((node) => sanitiseNode(node, ctx)).join('');
+  }
+
+  const { captionByNode, consumedFigcaptions } = computeFigcaptionPairings(nodes);
+  return nodes
+    .map((node) => {
+      if (consumedFigcaptions.has(node)) return '';
+      const caption = captionByNode.get(node);
+      if (caption !== undefined) return renderFigcaptionPaired(node as HTMLElement, ctx, caption);
+      return sanitiseNode(node, ctx);
+    })
+    .join('');
 }
 
 /** Counts `<strong>PHRASE</strong>` occurrences in already-sanitised HTML,
@@ -460,8 +594,13 @@ function countStrongPhrase(html: string, phrase: string): number {
   return count;
 }
 
-function buildRule(bucket: RuleBucket, repairHrefs: boolean): Rule {
-  const ctx: SanitiseContext = { crossRefs: new Set<string>(), images: [], repairHrefs };
+function buildRule(bucket: RuleBucket, repairHrefs: boolean, figcaptionLinks: boolean): Rule {
+  const ctx: SanitiseContext = {
+    crossRefs: new Set<string>(),
+    images: [],
+    repairHrefs,
+    figcaptionLinks,
+  };
   const html = sanitiseNodes(bucket.nodes, ctx);
   const mustNotCount = countStrongPhrase(html, 'MUST NOT');
   const mustCount = countStrongPhrase(html, 'MUST');
@@ -485,9 +624,10 @@ function buildRule(bucket: RuleBucket, repairHrefs: boolean): Rule {
  * expects: rule boundaries at matching <h3> headings, everything before the
  * first rule as `preambleHtml`, and — for a section with no rules at all —
  * the whole sanitised body as `bodyHtml` instead (in which case
- * `preambleHtml` is empty and `rules` is empty). `options.repairHrefs`
- * defaults to `true` when omitted (plan.md D13 S12, amended P2), same as
- * `buildHighwayCode`'s own default for a caller that passes no options.
+ * `preambleHtml` is empty and `rules` is empty). `options.repairHrefs` and
+ * `options.figcaptionLinks` both default to `true` when omitted (plan.md
+ * D13 S12 amended P2, and S11 amended P1), same as `buildHighwayCode`'s own
+ * defaults for a caller that passes no options.
  */
 export function parseSection(
   bodyHtml: string,
@@ -495,6 +635,7 @@ export function parseSection(
   options: ParseOptions = {},
 ): Section {
   const repairHrefs = options.repairHrefs ?? true;
+  const figcaptionLinks = options.figcaptionLinks ?? true;
 
   // `pre` is deliberately left out of blockTextElements (unlike
   // node-html-parser's default, which raw-texts it alongside
@@ -507,15 +648,23 @@ export function parseSection(
   const topLevel = root.childNodes;
   const { preamble, rules: ruleBuckets } = splitIntoBuckets(topLevel);
 
-  const rules = ruleBuckets.map((bucket) => buildRule(bucket, repairHrefs));
+  const rules = ruleBuckets.map((bucket) => buildRule(bucket, repairHrefs, figcaptionLinks));
   const hasRules = rules.length > 0;
 
-  const preambleHtml = hasRules
-    ? sanitiseNodes(preamble, { crossRefs: new Set<string>(), images: [], repairHrefs })
-    : '';
-  const bodyHtmlOut = hasRules
-    ? ''
-    : sanitiseNodes(topLevel, { crossRefs: new Set<string>(), images: [], repairHrefs });
+  const preambleCtx: SanitiseContext = {
+    crossRefs: new Set<string>(),
+    images: [],
+    repairHrefs,
+    figcaptionLinks,
+  };
+  const preambleHtml = hasRules ? sanitiseNodes(preamble, preambleCtx) : '';
+  const bodyCtx: SanitiseContext = {
+    crossRefs: new Set<string>(),
+    images: [],
+    repairHrefs,
+    figcaptionLinks,
+  };
+  const bodyHtmlOut = hasRules ? '' : sanitiseNodes(topLevel, bodyCtx);
 
   const title = normaliseWhitespace(meta.title);
 

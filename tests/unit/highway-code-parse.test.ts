@@ -1,9 +1,11 @@
 // Unit tests for the pure Highway Code parser: rule boundaries, HTML
 // sanitisation, link rewriting and MUST/MUST NOT law detection against the
 // fixture (tests/fixtures/highway-code-section.html), every kindOf
-// precedence case named in plan.md amendment P3, and `rewriteHref`'s
+// precedence case named in plan.md amendment P3, `rewriteHref`'s
 // `repairHrefs` flag against the five malformed hrefs found in the
-// committed corpus (plan.md D13 S12, amended P2).
+// committed corpus (plan.md D13 S12, amended P2), and the `figcaptionLinks`
+// flag against the real diagram/caption markup shape (plan.md S11, amended
+// P1; tests/fixtures/highway-code-figcaption.html).
 // Depends on: vitest, node:fs, node:url, node:path,
 // scripts/lib/highway-code-parse.ts, src/content/schemas/highwayCode.ts.
 // Depended on by: `npm test` (Vitest run).
@@ -18,6 +20,10 @@ import { SectionSchema } from '../../src/content/schemas/highwayCode';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixtureHtml = readFileSync(
   join(__dirname, '..', 'fixtures', 'highway-code-section.html'),
+  'utf8',
+);
+const figcaptionFixtureHtml = readFileSync(
+  join(__dirname, '..', 'fixtures', 'highway-code-figcaption.html'),
   'utf8',
 );
 
@@ -410,5 +416,46 @@ describe('parseSection repairHrefs default', () => {
   it('turns off with an explicit repairHrefs: false', () => {
     const section = parseSection(bodyWithMalformedHref(), META, { repairHrefs: false });
     expect(section.rules[0]?.html).toContain('href="www.gov.uk/health-and-social-care/smoking"');
+  });
+});
+
+// plan.md S11, amended P1: the real markup pairs a diagram <p><img></p>
+// with a following <figcaption> sibling — never an <img> or <p> wrapped in
+// a <figure>. tests/fixtures/highway-code-figcaption.html reproduces that
+// shape twice (with different caption text) plus one unpaired diagram, to
+// prove both the pairing and its fallback.
+describe('figcaptionLinks', () => {
+  const FIGCAPTION_META = {
+    slug: 'figcaption-probe',
+    title: 'Figcaption probe',
+    basePath: '/guidance/the-highway-code/figcaption-probe',
+    sourceUrl: 'https://www.gov.uk/guidance/the-highway-code/figcaption-probe',
+    order: 0,
+  };
+
+  function countOccurrences(haystack: string, needle: string): number {
+    return haystack.split(needle).length - 1;
+  }
+
+  it('flag on (default): each paired figcaption becomes the diagram link text, and no loose caption text remains', () => {
+    const section = parseSection(figcaptionFixtureHtml, FIGCAPTION_META);
+    const html = section.rules[0]?.html ?? '';
+
+    expect(countOccurrences(html, '↗ Entry to 20 mph zone (diagram, online)')).toBe(1);
+    expect(countOccurrences(html, '↗ Hierarchy of road users (diagram, online)')).toBe(1);
+    expect(html).toContain('↗ Diagram (online)');
+    expect(html).not.toContain('<figcaption');
+    expect(html).not.toContain('<img');
+  });
+
+  it('flag off: reproduces today\'s output — "Diagram (online): view image" and the loose caption text', () => {
+    const section = parseSection(figcaptionFixtureHtml, FIGCAPTION_META, {
+      figcaptionLinks: false,
+    });
+    const html = section.rules[0]?.html ?? '';
+
+    expect(countOccurrences(html, 'Diagram (online): view image')).toBe(3);
+    expect(html).toContain('Entry to 20 mph zone');
+    expect(html).toContain('Hierarchy of road users');
   });
 });

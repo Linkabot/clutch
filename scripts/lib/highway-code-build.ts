@@ -19,11 +19,12 @@
 // `ParseOptions`/`PARSE_FLAGS` started empty in Step 2: `BuildHighwayCodeOptions`
 // already extends `ParseOptions` so a later step can add a named boolean
 // flag to both without changing this module's option shape again. Step 3
-// (S12, amended P2) adds the first field, `repairHrefs`: this module
-// resolves the "no options passed" default to `true` and forwards the
-// resolved value as `parseSection`'s third argument for every section it
-// parses; scripts/compare-highway-code.ts sets it explicitly instead
-// (`--flags off|on|repairHrefs`).
+// (S12, amended P2) added the first field, `repairHrefs`; Step 4 (S11,
+// amended P1) adds `figcaptionLinks` the same way. This module resolves
+// each flag's "no options passed" default to `true` and forwards the
+// resolved values as `parseSection`'s third argument for every section it
+// parses; scripts/compare-highway-code.ts sets flags explicitly instead
+// (`--flags off|on|<name>`).
 // Depends on: ./govuk.ts (fetchContentApi), ./highway-code-parse.ts
 // (parseSection), ../../src/content/schemas/highwayCode.ts (HighwayCodeIndex,
 // Section shapes), Node's built-in `fs` and `path` modules (to read the
@@ -53,12 +54,19 @@ export interface ParseOptions {
    * today's rewrite rules; false reproduces exactly what the parser emitted
    * before this flag existed (plan.md D13 S12, amended P2). */
   repairHrefs?: boolean;
+  /** When true (the default a caller gets by omitting it, both here and in
+   * `parseSection` itself), a diagram paragraph or bare `<img>` immediately
+   * followed by a `<figcaption>` consumes that figcaption: its text becomes
+   * the diagram link's label instead of surviving as loose unwrapped text;
+   * false reproduces exactly what the parser emitted before this flag
+   * existed (plan.md S11, amended P1). */
+  figcaptionLinks?: boolean;
 }
 
 /** Every flag name `ParseOptions` currently declares, read by
  * scripts/compare-highway-code.ts so its `--flags on|off|<name>` never
  * hard-codes a flag list of its own. */
-export const PARSE_FLAGS: readonly string[] = ['repairHrefs'];
+export const PARSE_FLAGS: readonly string[] = ['repairHrefs', 'figcaptionLinks'];
 
 export interface BuildHighwayCodeOptions extends ParseOptions {
   /** Forwarded to every `fetchContentApi` call (landing page and every
@@ -129,11 +137,13 @@ export async function buildHighwayCode(
   options: BuildHighwayCodeOptions = {},
 ): Promise<BuildHighwayCodeResult> {
   const { cacheDir, fetchedAt } = options;
-  // A caller that omits `repairHrefs` gets `true` (plan.md amendment P2's
-  // fact-check: the ingest script sets no flags, so it must build with
-  // every flag on); scripts/compare-highway-code.ts's `--flags off|on|<name>`
-  // always sets it explicitly instead of relying on this default.
+  // A caller that omits a flag gets `true` for every one of them (plan.md
+  // amendment P2's fact-check: the ingest script sets no flags, so it must
+  // build with every flag on); scripts/compare-highway-code.ts's
+  // `--flags off|on|<name>` always sets them explicitly instead of relying
+  // on these defaults.
   const repairHrefs = options.repairHrefs ?? true;
+  const figcaptionLinks = options.figcaptionLinks ?? true;
 
   const landing = (await fetchContentApi(LANDING_BASE_PATH, { cacheDir })) as ContentApiResponse;
 
@@ -165,7 +175,7 @@ export async function buildHighwayCode(
         sourceUrl: `https://www.gov.uk${child.base_path}`,
         order,
       },
-      { repairHrefs },
+      { repairHrefs, figcaptionLinks },
     );
 
     sections.push(section);
