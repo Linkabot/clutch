@@ -1,0 +1,243 @@
+{
+  "rules": [
+    {
+      "id": "C1",
+      "match": {
+        "files": [
+          {
+            "family": "warning",
+            "file": "ford.svg"
+          },
+          {
+            "family": "warning",
+            "file": "try-your-brakes.svg"
+          },
+          {
+            "family": "warning",
+            "file": "children-lights.svg"
+          },
+          {
+            "family": "warning",
+            "file": "school-20mph.svg"
+          },
+          {
+            "family": "orders",
+            "file": "stop-sign-and-road-marking.svg"
+          },
+          {
+            "family": "orders",
+            "file": "give-way-road-marking.svg"
+          },
+          {
+            "family": "motorway",
+            "file": "countdown-marker-3.svg"
+          },
+          {
+            "family": "motorway",
+            "file": "marker-post-phone.svg"
+          },
+          {
+            "family": "motorway",
+            "file": "docks.svg"
+          },
+          {
+            "family": "motorway",
+            "file": "hertfordshire.svg"
+          }
+        ]
+      },
+      "shape": "other",
+      "colours": [],
+      "sentences": []
+    },
+    {
+      "id": "C2",
+      "match": {
+        "family": "warning"
+      },
+      "shape": "triangle",
+      "colours": ["red"],
+      "sentences": ["Triangles warn.", "All triangular signs are red."]
+    },
+    {
+      "id": "C3",
+      "match": {
+        "family": "orders",
+        "captionStartsWith": ["No ", "The maximum speed"]
+      },
+      "shape": "circle",
+      "colours": ["red"],
+      "sentences": [
+        "Circles give orders.",
+        "Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed."
+      ]
+    },
+    {
+      "id": "C4",
+      "match": {
+        "family": "orders",
+        "captionStartsWith": [
+          "Turn ",
+          "Keep ",
+          "Proceed ",
+          "Vehicles may pass ",
+          "Mini-roundabout",
+          "Minimum speed permitted"
+        ]
+      },
+      "shape": "circle",
+      "colours": ["blue"],
+      "sentences": [
+        "Circles give orders.",
+        "Blue circles generally give a mandatory instruction, such as ‘turn left’, or indicate a route available only to particular classes of traffic, e.g. buses and cycles only."
+      ]
+    },
+    {
+      "id": "C5",
+      "match": {
+        "family": "motorway",
+        "subHeadingContains": "Direction signs on exit slip roads"
+      },
+      "shape": "rectangle",
+      "colours": ["green", "white"],
+      "sentences": [
+        "Rectangles inform.",
+        "Green rectangles are used for direction signs on primary routes.",
+        "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+      ]
+    },
+    {
+      "id": "C6",
+      "match": {
+        "family": "motorway"
+      },
+      "shape": "rectangle",
+      "colours": ["blue"],
+      "sentences": [
+        "Rectangles inform.",
+        "Blue rectangles are used for information signs except on motorways, where blue is used for direction signs."
+      ]
+    },
+    {
+      "id": "C7",
+      "match": {
+        "families": ["direction", "information"],
+        "routeColourTest": {
+          "containsToken": "non-primary route",
+          "remainderToken": "primary route"
+        }
+      },
+      "outcomes": {
+        "C7-green-white": {
+          "shape": "rectangle",
+          "colours": ["green", "white"],
+          "sentences": [
+            "Rectangles inform.",
+            "Green rectangles are used for direction signs on primary routes.",
+            "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+          ]
+        },
+        "C7-green": {
+          "shape": "rectangle",
+          "colours": ["green"],
+          "sentences": [
+            "Rectangles inform.",
+            "Green rectangles are used for direction signs on primary routes."
+          ]
+        },
+        "C7-white": {
+          "shape": "rectangle",
+          "colours": ["white"],
+          "sentences": [
+            "Rectangles inform.",
+            "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+          ]
+        }
+      }
+    },
+    {
+      "id": "C8",
+      "match": {
+        "family": "information"
+      },
+      "shape": "rectangle",
+      "colours": ["blue"],
+      "sentences": [
+        "Rectangles inform.",
+        "Blue rectangles are used for information signs except on motorways, where blue is used for direction signs."
+      ]
+    },
+    {
+      "id": "C9",
+      "match": {},
+      "shape": "other",
+      "colours": [],
+      "sentences": []
+    }
+  ],
+  "shapeSentences": {
+    "circle": "Circles give orders.",
+    "triangle": "Triangles warn.",
+    "rectangle": "Rectangles inform."
+  },
+  "exceptionsSentence": "There are a few exceptions to the shape and colour rules, to give certain signs greater prominence. Examples are the ‘STOP’ and ‘GIVE WAY’ signs.",
+  "decoderPairs": [
+    {
+      "shape": "circle",
+      "colour": "red",
+      "title": "Circles give orders.",
+      "body": "Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed.",
+      "examples": ["no-entry.svg", "no-right-turn.svg", "no-overtaking.svg"]
+    },
+    {
+      "shape": "circle",
+      "colour": "blue",
+      "title": "Circles give orders.",
+      "body": "Blue circles generally give a mandatory instruction, such as ‘turn left’, or indicate a route available only to particular classes of traffic, e.g. buses and cycles only.",
+      "examples": ["turn-left.svg", "keep-left.svg", "mini-roundabout.svg"]
+    },
+    {
+      "shape": "triangle",
+      "colour": "red",
+      "title": "Triangles warn.",
+      "body": "All triangular signs are red.",
+      "examples": ["crossroads.svg", "roundabout.svg", "slippery-road.svg"]
+    },
+    {
+      "shape": "rectangle",
+      "colour": "blue",
+      "title": "Rectangles inform.",
+      "body": "Blue rectangles are used for information signs except on motorways, where blue is used for direction signs.",
+      "examples": [
+        "start-of-motorway-regulations.svg",
+        "no-through-road.svg",
+        "hospital-no-a-and-e.svg"
+      ]
+    },
+    {
+      "shape": "rectangle",
+      "colour": "green",
+      "title": "Rectangles inform.",
+      "body": "Green rectangles are used for direction signs on primary routes.",
+      "examples": ["london-a2.svg", "map-type-roundabout-ahead.svg", "road-ahead-primary-route.svg"]
+    },
+    {
+      "shape": "rectangle",
+      "colour": "white",
+      "title": "Rectangles inform.",
+      "body": "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs.",
+      "examples": [
+        "junction-ahead-two-non-primary-routes.svg",
+        "flag-type-sign-non-primary.svg",
+        "road-ahead-non-primary-route.svg"
+      ]
+    },
+    {
+      "shape": null,
+      "colour": null,
+      "title": null,
+      "body": "The signing-system rules don't use this pair. Try another colour.",
+      "examples": []
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "hooks": [
+    {
+      "id": "rule-triangle-red",
+      "text": "Three sides, one message: watch out ahead.",
+      "appliesTo": {
+        "rules": ["C2"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Triangles warn."
+        },
+        {
+          "source": "signing-system",
+          "sentence": "All triangular signs are red."
+        }
+      ]
+    },
+    {
+      "id": "rule-circle-red",
+      "text": "A red ring says no.",
+      "appliesTo": {
+        "rules": ["C3"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed."
+        }
+      ]
+    },
+    {
+      "id": "rule-circle-blue",
+      "text": "A blue circle says do.",
+      "appliesTo": {
+        "rules": ["C4"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Blue circles generally give a mandatory instruction, such as ‘turn left’, or indicate a route available only to particular classes of traffic, e.g. buses and cycles only."
+        }
+      ]
+    },
+    {
+      "id": "rule-rectangle-blue",
+      "text": "Blue box: information, or directions on a motorway.",
+      "appliesTo": {
+        "rules": ["C6", "C8"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Blue rectangles are used for information signs except on motorways, where blue is used for direction signs."
+        }
+      ]
+    },
+    {
+      "id": "rule-rectangle-green",
+      "text": "Green guides you along primary routes.",
+      "appliesTo": {
+        "rules": ["C7-green"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Green rectangles are used for direction signs on primary routes."
+        }
+      ]
+    },
+    {
+      "id": "rule-rectangle-white",
+      "text": "White guides you along non-primary routes.",
+      "appliesTo": {
+        "rules": ["C7-white"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+        }
+      ]
+    },
+    {
+      "id": "rule-rectangle-green-white",
+      "text": "Green panels for primary routes, white for non-primary.",
+      "appliesTo": {
+        "rules": ["C5", "C7-green-white"]
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Green rectangles are used for direction signs on primary routes."
+        },
+        {
+          "source": "signing-system",
+          "sentence": "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+        }
+      ]
+    },
+    {
+      "id": "family-warning",
+      "text": "Warning signs: something ahead needs care.",
+      "appliesTo": {
+        "family": "warning"
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "There are 3 basic types of traffic sign: signs that give orders, signs that warn and signs that give information."
+        }
+      ]
+    },
+    {
+      "id": "family-orders",
+      "text": "Order signs aren't advice: do what they say.",
+      "appliesTo": {
+        "family": "orders"
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "There are 3 basic types of traffic sign: signs that give orders, signs that warn and signs that give information."
+        }
+      ]
+    },
+    {
+      "id": "family-motorway",
+      "text": "Motorway exits are usually signed 1 mile and ½ mile ahead.",
+      "appliesTo": {
+        "family": "motorway"
+      },
+      "cites": [
+        {
+          "source": "caption",
+          "file": "a52-motorway-junction.svg",
+          "sentence": "The first 2 signs on the approach to a junction show the destination and the route number for the exit only. The distance shown (usually 1 mile or ½ mile) is the distance to the exit (start of the deceleration lane)."
+        }
+      ]
+    },
+    {
+      "id": "family-direction",
+      "text": "Direction signs: the panel colour tells you the kind of route.",
+      "appliesTo": {
+        "family": "direction"
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "Green rectangles are used for direction signs on primary routes."
+        },
+        {
+          "source": "signing-system",
+          "sentence": "White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs."
+        }
+      ]
+    },
+    {
+      "id": "family-information",
+      "text": "Information signs tell you about the road ahead.",
+      "appliesTo": {
+        "family": "information"
+      },
+      "cites": [
+        {
+          "source": "signing-system",
+          "sentence": "There are 3 basic types of traffic sign: signs that give orders, signs that warn and signs that give information."
+        }
+      ]
+    },
+    {
+      "id": "family-road-works",
+      "text": "Road works signs: any works, big or small.",
+      "appliesTo": {
+        "family": "road-works"
+      },
+      "cites": [
+        {
+          "source": "caption",
+          "file": "roadworks.svg",
+          "sentence": "This sign, indicating road works or an obstruction in the carriageway ahead, may be used for any type of works, ranging from large construction schemes to minor maintenance."
+        }
+      ]
+    },
+    {
+      "id": "sign-speed-max-min",
+      "text": "Red ring number: the most. Blue circle number: the least.",
+      "appliesTo": {
+        "signIds": ["orders-40-mph", "orders-min-30-mph"]
+      },
+      "cites": [
+        {
+          "source": "caption",
+          "file": "40-mph.svg",
+          "sentence": "The maximum speed, in miles per hour, at which traffic may travel, if it is safe to do so."
+        },
+        {
+          "source": "caption",
+          "file": "min-30-mph.svg",
+          "sentence": "Minimum speed permitted, in miles per hour, unless it is impracticable or unsafe to comply."
+        }
+      ]
+    },
+    {
+      "id": "sign-national-speed-limit",
+      "text": "National speed limit: it depends on the road and the vehicle.",
+      "appliesTo": {
+        "signIds": ["orders-national-speed-limit"]
+      },
+      "cites": [
+        {
+          "source": "caption",
+          "file": "national-speed-limit.svg",
+          "sentence": "The national speed limit for the type of road and class of traffic applies."
+        }
+      ]
+    },
+    {
+      "id": "sign-mini-roundabout",
+      "text": "Mini-roundabout: give way to the right.",
+      "appliesTo": {
+        "signIds": ["orders-mini-roundabout"]
+      },
+      "cites": [
+        {
+          "source": "caption",
+          "file": "mini-roundabout.svg",
+          "sentence": "Mini-roundabout (give way to traffic from the immediate right)."
+        }
+      ]
+    }
+  ]
+}

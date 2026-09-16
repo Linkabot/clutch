@@ -1,0 +1,178 @@
+{
+  "chapters": [
+    {
+      "slug": "warning-signs",
+      "family": "warning"
+    },
+    {
+      "slug": "regulatory-signs",
+      "family": "orders"
+    },
+    {
+      "slug": "speed-limit-signs",
+      "family": "orders"
+    },
+    {
+      "slug": "motorway-signs-signals-and-road-markings",
+      "family": "motorway"
+    },
+    {
+      "slug": "direction-signs-on-all-purpose-roads",
+      "family": "direction"
+    },
+    {
+      "slug": "information-signs",
+      "family": "information"
+    },
+    {
+      "slug": "signs-for-road-works-and-temporary-situations",
+      "family": "road-works"
+    }
+  ],
+  "families": ["warning", "orders", "motorway", "direction", "information", "road-works"],
+  "r2CaptionPrefixes": [
+    "(",
+    "Plate ",
+    "Plates ",
+    "Alternative plates ",
+    "A time plate ",
+    "Sign used with ",
+    "Except for ",
+    "Road marking "
+  ],
+  "r3PlateFiles": [
+    {
+      "family": "warning",
+      "file": "single-file-traffic.svg"
+    },
+    {
+      "family": "warning",
+      "file": "single-track-road.svg"
+    },
+    {
+      "family": "warning",
+      "file": "distance-to-hazard.svg"
+    },
+    {
+      "family": "warning",
+      "file": "distance-and-direction-to-hazard.svg"
+    },
+    {
+      "family": "warning",
+      "file": "distance-over-which-hazard-extends.svg"
+    },
+    {
+      "family": "orders",
+      "file": "max-speed-30-mph.svg"
+    }
+  ],
+  "r5SubHeadingPrefixes": ["Motorway signals and variable signs", "Stopping on a motorway"],
+  "r8NamedParagraphCaptions": [
+    {
+      "chapter": "regulatory-signs",
+      "family": "orders",
+      "file": "stop-sign-and-road-marking.svg",
+      "paragraphPrefix": "The ‘STOP’ sign and road markings:"
+    },
+    {
+      "chapter": "regulatory-signs",
+      "family": "orders",
+      "file": "give-way-road-marking.svg",
+      "paragraphPrefix": "The ‘GIVE WAY’ sign and road markings:"
+    }
+  ],
+  "allowLists": {
+    "motorway": [
+      "start-of-motorway-regulations.svg",
+      "a52-motorway-junction.svg",
+      "countdown-marker-3.svg",
+      "junction-motorway.svg",
+      "overhead-sign-different-destinations.svg",
+      "slip-road-1.svg",
+      "slip-road-2.svg",
+      "directions-from-junction-ahead.svg",
+      "directions-from-a-roundabout-ahead.svg",
+      "motorway-to-motorway-junction.svg",
+      "appropriate-lanes-for-turning-movements.svg",
+      "motorway-ends-at-a-junction.svg",
+      "motorway-ends-another-motorway.svg",
+      "services-10m.svg",
+      "good-food-small.svg",
+      "no-services-on-motorway.svg",
+      "m1.svg",
+      "hertfordshire.svg",
+      "marker-post-phone.svg",
+      "docks.svg",
+      "end-of-motorway-1-mile.svg",
+      "end-of-motorway.svg"
+    ],
+    "direction": [
+      "london-a2.svg",
+      "junction-ahead-two-non-primary-routes.svg",
+      "sign-primary-route-indicating-non-primary-route.svg",
+      "sign-non-primary-route-indicating-primary-route.svg",
+      "map-type-roundabout-ahead.svg",
+      "map-type-mini-roundabout.svg",
+      "flag-type-sign-non-primary.svg",
+      "route-confirmation-sign.svg",
+      "tourist.svg",
+      "castle.svg",
+      "national-trust.svg",
+      "english-heritage.svg",
+      "bird-garden.svg",
+      "farm-park.svg",
+      "museum.svg",
+      "aviation-museum.svg",
+      "football.svg",
+      "cricket.svg",
+      "motor-sport.svg",
+      "golf.svg",
+      "fishing.svg",
+      "cycle-hire.svg",
+      "england.svg",
+      "service-sign-1.svg",
+      "multi-storey-250-yards.svg"
+    ],
+    "information": [
+      "dual-carriageway-ahead.svg",
+      "road-ahead-motorway.svg",
+      "road-ahead-primary-route.svg",
+      "road-ahead-non-primary-route.svg",
+      "no-through-road.svg",
+      "unsuitable-for-hgvs.svg",
+      "single-track-road-with-passing-places.svg",
+      "passing-place.svg",
+      "parking-place-location.svg",
+      "parking-sos-location.svg",
+      "hospital-no-a-and-e.svg",
+      "police-speed-check.svg"
+    ],
+    "road-works": [
+      "roadworks.svg",
+      "roadworks-end.svg",
+      "traffic-cone.svg",
+      "lane-closed.svg",
+      "traffic-cylinder.svg",
+      "portable-traffic-signal.svg",
+      "loose-chippings.svg",
+      "ramp.svg",
+      "sharp-left.svg",
+      "traffic-signal-not-in-use.svg",
+      "pedestrians.svg",
+      "slow-wet-tar.svg",
+      "stop-works.svg",
+      "no-hard-shoulder-400-yards.svg",
+      "convoy-vehicle.svg",
+      "max-speed-30.svg"
+    ]
+  },
+  "expectedCounts": {
+    "warning": 66,
+    "orders": 54,
+    "motorway": 22,
+    "direction": 25,
+    "information": 12,
+    "road-works": 16
+  },
+  "expectedTotal": 195
+}
