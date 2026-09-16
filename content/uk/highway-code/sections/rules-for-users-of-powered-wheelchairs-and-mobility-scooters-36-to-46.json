@@ -143,5 +143,15 @@
       ],
       "images": []
     }
+  ],
+  "interludes": [
+    {
+      "beforeRuleId": "38",
+      "html": "On pavements (rules 38 to 40)\n\n"
+    },
+    {
+      "beforeRuleId": "41",
+      "html": "On the road (rules 41 to 46)\n\n"
+    }
   ]
 }

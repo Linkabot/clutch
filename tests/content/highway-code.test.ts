@@ -7,15 +7,19 @@
 // exactly what was ingested from gov.uk under OGL v3.0, and — plan.md M4
 // hardening, review-b.md finding B2 + suggestion B-S1 — every committed
 // href is scheme-less or uses http/https/mailto/tel and no tag carries an
-// on…= attribute.
+// on…= attribute. Phase 2 Step 7 (re-parse from the cache with every
+// parser flag on, plan.md § Steps) adds: the traffic-signs section's
+// figcaption-linked diagram count, every section's `interludes` is an
+// array, and no committed href is malformed (scripts/lib/href-audit.ts).
 // Depends on: vitest, node:fs, node:path, src/content/schemas,
-// tests/content/helpers.ts.
+// scripts/lib/href-audit.ts, tests/content/helpers.ts.
 // Depended on by: `npm run validate:content` / `npm test`.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { HighwayCodeIndexSchema, SectionSchema } from '../../src/content/schemas';
 import type { HighwayCodeIndex, Rule, Section } from '../../src/content/schemas';
+import { countMalformedHrefs } from '../../scripts/lib/href-audit';
 import { CONTENT_ROOT, readJson } from './helpers';
 
 const SECTIONS_DIR = join(CONTENT_ROOT, 'highway-code', 'sections');
@@ -206,6 +210,29 @@ describe('content/uk/highway-code', () => {
       for (const match of html.matchAll(/href="([^"]*)"/g)) {
         expect(hasUnsafeHrefScheme(match[1]), match[1]).toBe(false);
       }
+    }
+  });
+
+  it('the traffic-signs section has 169 hc-image links, at least 160 captioned', () => {
+    const trafficSigns = sections.find((s) => s.slug === 'traffic-signs');
+    expect(trafficSigns).toBeDefined();
+    const html = allSanitisedHtml([trafficSigns!]).join('');
+    const links = html.match(/class="hc-image"/g) ?? [];
+    const captioned = html.match(/\(diagram, online\)<\/a>/g) ?? [];
+    expect(links).toHaveLength(169);
+    expect(captioned.length).toBeGreaterThanOrEqual(160);
+  });
+
+  it('every section parses with interludes as an array', () => {
+    for (const { slug, section } of sections) {
+      expect(Array.isArray(section.interludes), slug).toBe(true);
+    }
+  });
+
+  it('countMalformedHrefs over the committed index and every section is 0', () => {
+    expect(countMalformedHrefs(index)).toBe(0);
+    for (const { slug, section } of sections) {
+      expect(countMalformedHrefs(section), slug).toBe(0);
     }
   });
 });

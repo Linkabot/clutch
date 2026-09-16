@@ -13,7 +13,7 @@
       "number": 59,
       "title": "Rule 59",
       "lead": "Clothing.",
-      "html": "\n<p><strong>Clothing.</strong> You should avoid clothes that may get tangled in the chain, or in a wheel or may obscure your lights when you are cycling.</p>\n\n<p>Light-coloured or fluorescent clothing can help other road users to see you in daylight and poor light, while reflective clothing and/or accessories (belt, arm or ankle bands) can increase your visibility in the dark.</p>\n\n<p>You should wear a cycle helmet that conforms to current regulations, is the correct size and securely fastened. Evidence suggests that a correctly fitted helmet will reduce your risk of sustaining a head injury in certain circumstances.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559c35a740f0b61567000025/the-highway-code-rule-59.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 59: Help yourself to be seen</a></p>\nRule 59: Help yourself to be seen\n\n",
+      "html": "\n<p><strong>Clothing.</strong> You should avoid clothes that may get tangled in the chain, or in a wheel or may obscure your lights when you are cycling.</p>\n\n<p>Light-coloured or fluorescent clothing can help other road users to see you in daylight and poor light, while reflective clothing and/or accessories (belt, arm or ankle bands) can increase your visibility in the dark.</p>\n\n<p>You should wear a cycle helmet that conforms to current regulations, is the correct size and securely fastened. Evidence suggests that a correctly fitted helmet will reduce your risk of sustaining a head injury in certain circumstances.</p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559c35a740f0b61567000025/the-highway-code-rule-59.jpg\" rel=\"external noopener\" target=\"_blank\">↗ Rule 59: Help yourself to be seen (diagram, online)</a></p>\n\n\n",
       "law": false,
       "mustCount": 0,
       "mustNotCount": 0,
@@ -316,6 +316,20 @@
         "306"
       ],
       "images": []
+    }
+  ],
+  "interludes": [
+    {
+      "beforeRuleId": "73",
+      "html": "Road junctions (rules 73 to 77)\n\n"
+    },
+    {
+      "beforeRuleId": "78",
+      "html": "Roundabouts (rules 78 to 80)\n\n"
+    },
+    {
+      "beforeRuleId": "81",
+      "html": "Crossing the road (rules 81 to 82)\n\n"
     }
   ]
 }

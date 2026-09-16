@@ -49,7 +49,7 @@
       "number": 50,
       "title": "Rule 50",
       "lead": "Other clothing.",
-      "html": "\n<p><strong>Other clothing.</strong> You should wear</p>\n\n<ul>\n  <li>boots or shoes with hard soles and heels</li>\n  <li>light-coloured or fluorescent clothing in daylight</li>\n  <li>reflective clothing if you have to ride at night or in poor visibility.</li>\n</ul>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559c088ae5274a155c000027/the-highway-code-rule-50.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 50: Help yourself to be seen</a></p>\nRule 50: Help yourself to be seen\n\n",
+      "html": "\n<p><strong>Other clothing.</strong> You should wear</p>\n\n<ul>\n  <li>boots or shoes with hard soles and heels</li>\n  <li>light-coloured or fluorescent clothing in daylight</li>\n  <li>reflective clothing if you have to ride at night or in poor visibility.</li>\n</ul>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559c088ae5274a155c000027/the-highway-code-rule-50.jpg\" rel=\"external noopener\" target=\"_blank\">↗ Rule 50: Help yourself to be seen (diagram, online)</a></p>\n\n\n",
       "law": false,
       "mustCount": 0,
       "mustNotCount": 0,
@@ -158,6 +158,16 @@
       "mustNotCount": 0,
       "crossRefs": [],
       "images": []
+    }
+  ],
+  "interludes": [
+    {
+      "beforeRuleId": "49",
+      "html": "Horse riders (rules 49 to 55)\n\n"
+    },
+    {
+      "beforeRuleId": "56",
+      "html": "Other animals (rules 56 to 58)\n\n"
     }
   ]
 }

@@ -51,7 +51,7 @@
       "number": 229,
       "title": "Rule 229",
       "lead": null,
-      "html": "\n<p>Before you set off</p>\n\n<ul>\n  <li>you <strong>MUST</strong> be able to see, so clear all snow and ice from all your windows</li>\n  <li>you <strong>MUST</strong> ensure that lights are clean and number plates are clearly visible and legible</li>\n  <li>make sure the mirrors are clear and the windows are demisted thoroughly</li>\n  <li>remove all snow that might fall off into the path of other road users</li>\n  <li>check your planned route is clear of delays and that no further snowfalls or severe weather are predicted.</li>\n</ul>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/uksi/1986/1078/regulation/30/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Construction &amp; Use) Regulations\">CUR</abbr> reg 30</a>, <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/23/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> reg 23</a>, <a href=\"http://www.legislation.gov.uk/ukpga/1994/22/section/43\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Vehicle Excise and Registration Act\">VERA</abbr> sect 43</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2001/561/regulation/11/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Display of Registration Marks) Regulations\">RV(DRM)R</abbr> reg 11</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d35eced915d1592000030/the-highway-code-rule-229.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 229: Make sure your windscreen is completely clear</a></p>\nRule 229: Make sure your windscreen is completely clear\n\n",
+      "html": "\n<p>Before you set off</p>\n\n<ul>\n  <li>you <strong>MUST</strong> be able to see, so clear all snow and ice from all your windows</li>\n  <li>you <strong>MUST</strong> ensure that lights are clean and number plates are clearly visible and legible</li>\n  <li>make sure the mirrors are clear and the windows are demisted thoroughly</li>\n  <li>remove all snow that might fall off into the path of other road users</li>\n  <li>check your planned route is clear of delays and that no further snowfalls or severe weather are predicted.</li>\n</ul>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/uksi/1986/1078/regulation/30/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Construction &amp; Use) Regulations\">CUR</abbr> reg 30</a>, <a href=\"http://www.legislation.gov.uk/uksi/1989/1796/regulation/23/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles Lighting Regulations\">RVLR</abbr> reg 23</a>, <a href=\"http://www.legislation.gov.uk/ukpga/1994/22/section/43\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Vehicle Excise and Registration Act\">VERA</abbr> sect 43</a> &amp; <a href=\"http://www.legislation.gov.uk/uksi/2001/561/regulation/11/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Vehicles (Display of Registration Marks) Regulations\">RV(DRM)R</abbr> reg 11</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d35eced915d1592000030/the-highway-code-rule-229.jpg\" rel=\"external noopener\" target=\"_blank\">↗ Rule 229: Make sure your windscreen is completely clear (diagram, online)</a></p>\n\n\n",
       "law": true,
       "mustCount": 2,
       "mustNotCount": 0,
@@ -158,6 +158,28 @@
       "mustNotCount": 0,
       "crossRefs": [],
       "images": []
+    }
+  ],
+  "interludes": [
+    {
+      "beforeRuleId": "227",
+      "html": "Wet weather (rule 227)\n\n"
+    },
+    {
+      "beforeRuleId": "228",
+      "html": "Icy and snowy weather (rules 228 to 231)\n\n"
+    },
+    {
+      "beforeRuleId": "232",
+      "html": "Windy weather (rules 232 to 233)\n\n"
+    },
+    {
+      "beforeRuleId": "234",
+      "html": "Fog (rules 234 to 236)\n\n"
+    },
+    {
+      "beforeRuleId": "237",
+      "html": "Hot weather (rule 237)\n\n"
     }
   ]
 }

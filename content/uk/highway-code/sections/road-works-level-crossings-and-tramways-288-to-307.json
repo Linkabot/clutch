@@ -78,7 +78,7 @@
       "number": 293,
       "title": "Rule 293",
       "lead": "Controlled Crossings.",
-      "html": "\n<p><strong>Controlled Crossings.</strong> Most crossings have traffic light signals with a steady amber light, twin flashing red stop lights (see <a href=\"/learn/code/light-signals-controlling-traffic\">‘Light signals controlling traffic’</a> and <a href=\"/learn/code/traffic-signs\">‘Traffic signs’</a>) and an audible alarm for pedestrians. They may have full, half or no barriers.</p>\n\n<ul>\n  <li>You <strong>MUST</strong> always obey the flashing red stop lights.</li>\n  <li>You <strong>MUST</strong> stop behind the white line across the road.</li>\n  <li>Keep going if you have already crossed the white line when the amber light comes on.</li>\n  <li>Do not reverse onto or over a controlled crossing.</li>\n  <li>You <strong>MUST</strong> wait if a train goes by and the red lights continue to flash. This means another train will be passing soon.</li>\n  <li>Only cross when the lights go off and barriers open.</li>\n  <li>Never zig-zag around half-barriers, they lower automatically because a train is approaching.</li>\n  <li>At crossings where there are no barriers, a train is approaching when the lights show.</li>\n</ul>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/36\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sect 36</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> schedule 14 parts 1 and 4</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d527be5274a155c000031/the-highway-code-rule-293.jpg\" rel=\"external noopener\" target=\"_blank\">Diagram (online): Rule 293: Stop when the traffic lights show</a></p>\nRule 293: Stop when the traffic lights show\n\n",
+      "html": "\n<p><strong>Controlled Crossings.</strong> Most crossings have traffic light signals with a steady amber light, twin flashing red stop lights (see <a href=\"/learn/code/light-signals-controlling-traffic\">‘Light signals controlling traffic’</a> and <a href=\"/learn/code/traffic-signs\">‘Traffic signs’</a>) and an audible alarm for pedestrians. They may have full, half or no barriers.</p>\n\n<ul>\n  <li>You <strong>MUST</strong> always obey the flashing red stop lights.</li>\n  <li>You <strong>MUST</strong> stop behind the white line across the road.</li>\n  <li>Keep going if you have already crossed the white line when the amber light comes on.</li>\n  <li>Do not reverse onto or over a controlled crossing.</li>\n  <li>You <strong>MUST</strong> wait if a train goes by and the red lights continue to flash. This means another train will be passing soon.</li>\n  <li>Only cross when the lights go off and barriers open.</li>\n  <li>Never zig-zag around half-barriers, they lower automatically because a train is approaching.</li>\n  <li>At crossings where there are no barriers, a train is approaching when the lights show.</li>\n</ul>\n\n<p><strong>Laws <a href=\"http://www.legislation.gov.uk/ukpga/1988/52/section/36\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Road Traffic Act\">RTA</abbr> 1988 sect 36</a> &amp; <a href=\"https://www.legislation.gov.uk/uksi/2016/362/schedule/14/made\" rel=\"external noopener\" target=\"_blank\"><abbr title=\"Traffic Signs Regulations &amp; General Directions\">TSRGD</abbr> schedule 14 parts 1 and 4</a></strong></p>\n\n<p><a class=\"hc-image\" href=\"https://assets.digital.cabinet-office.gov.uk/media/559d527be5274a155c000031/the-highway-code-rule-293.jpg\" rel=\"external noopener\" target=\"_blank\">↗ Rule 293: Stop when the traffic lights show (diagram, online)</a></p>\n\n\n",
       "law": true,
       "mustCount": 3,
       "mustNotCount": 0,
@@ -257,6 +257,20 @@
       "mustNotCount": 0,
       "crossRefs": [],
       "images": []
+    }
+  ],
+  "interludes": [
+    {
+      "beforeRuleId": "289",
+      "html": "Additional rules for high-speed roads (rules 289 to 290)\n\n"
+    },
+    {
+      "beforeRuleId": "291",
+      "html": "Level crossings (rules 291 to 299)\n\n"
+    },
+    {
+      "beforeRuleId": "300",
+      "html": "Tramways (rules 300 to 307)\n\n"
     }
   ]
 }
