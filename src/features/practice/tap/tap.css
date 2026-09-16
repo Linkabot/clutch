@@ -1,0 +1,219 @@
+/* Tap the sign styles for src/features/practice/tap/TapTheSignScreen.tsx
+   (scout-e.md's Tap the sign artboard; plan.md Step 23 and amendments
+   E25-E26): a full-screen game layer over the app shell (GameTopBar, a
+   "TAP THE SIGN" badge, the prompt caption, a 2x2 picture grid) whose
+   tiles lock and mark themselves once an answer is tapped -- a 4px green
+   frame and tick for the right tile, a 4px red frame for a wrong tap (E26
+   item 4; the artboard's frame width), everything else dimmed -- then a
+   round-complete summary card. Every rule that moves is scoped under the
+   root's .tap--animated modifier (the tick reuses QuizSheet's pop
+   keyframes rather than redefining them), so rendering .tap--static under
+   reduced motion turns all motion off at once. Colours are theme.css
+   tokens only -- no hex literals (plan.md § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css; the pop
+   keyframes defined once in
+   src/features/interactives/quiz-sheet/quiz-sheet.css (loaded whenever this
+   screen mounts, since it renders QuizSheet); .button/.button--primary/
+   .button--secondary in src/ui/primitives.css (Done, Play again).
+   Depended on by: src/features/practice/tap/TapTheSignScreen.tsx (imports
+   this file once). */
+
+/* --- Root: a full-screen layer over the header and tab bar --------------- */
+
+.tap {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-page);
+  overflow-y: auto;
+  padding-top: env(safe-area-inset-top);
+}
+
+.tap__body {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 20px calc(20px + env(safe-area-inset-bottom));
+}
+
+/* --- Badge and prompt ------------------------------------------------------ */
+
+.tap__prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tap__badge {
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background-color: var(--color-sign-blue);
+  color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+}
+
+.tap__lead {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.tap__heading {
+  margin: 4px 0 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+  color: var(--color-ink);
+}
+
+.tap__heading--long {
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+/* --- Option grid and tiles -------------------------------------------------- */
+
+.tap__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tap__tile {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  box-sizing: border-box;
+  height: 140px;
+  padding: 0;
+  border-radius: var(--radius-card);
+  border: 2px solid var(--color-hairline);
+  background-color: var(--color-surface);
+  box-shadow: 0 3px 0 var(--color-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.tap__tile:disabled {
+  cursor: default;
+}
+
+.tap__tile[data-feedback='right'],
+.tap__tile[data-feedback='answer'] {
+  border-width: 4px;
+  border-color: var(--color-sign-green);
+  box-shadow: 0 3px 0 var(--color-sign-green-shadow);
+}
+
+.tap__tile[data-feedback='wrong'] {
+  border-width: 4px;
+  border-color: var(--color-sign-red);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--color-sign-red) 75%, var(--color-sign-ink));
+}
+
+.tap__tile[data-feedback='dim'] {
+  opacity: 0.5;
+}
+
+.tap__picture {
+  width: 106px;
+  height: 100px;
+}
+
+.tap__picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.tap__tick {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background-color: var(--color-sign-green);
+  border: 2px solid var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tap__tick svg {
+  stroke: var(--color-on-sign);
+}
+
+.tap--animated .tap__tick {
+  animation: pop 0.45s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+/* --- Round-complete summary card -------------------------------------------- */
+
+.tap__summary {
+  margin: auto 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 20px;
+  border-radius: var(--radius-panel);
+  border: 1px solid var(--color-hairline);
+  background-color: var(--color-surface);
+}
+
+.tap__summary-heading {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--color-ink);
+}
+
+.tap__summary-score {
+  margin: 0;
+  font-size: 17px;
+  color: var(--color-muted);
+}
+
+.tap__summary-xp {
+  align-self: flex-start;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.tap__summary-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 2px;
+}
