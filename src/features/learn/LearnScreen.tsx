@@ -9,6 +9,11 @@
 // itself, its title and its link render immediately; the "<n> of <total>
 // collected" subtitle renders only once loadSigns() has resolved
 // (amendment E19) -- nothing in its place before, no placeholder text.
+// Below it, the white "How signs work" card (Step 26, amendment E33) links
+// to the Shape & Colour Decoder at /learn/signs/decoder: a panel with a
+// 2.5px ink inner border, styled inline with tokens, holding its title,
+// subtitle and small original shape art (a triangle, a circle and a
+// rectangle the app draws, never a real sign picture).
 // Depends on: react, react-router-dom, ../../ui (SignPanel),
 // ../../content/loaders (getHighwayCodeIndex), ../../content/signs
 // (loadSigns), ../../content/schemas (Sign type), ../../engine/progress-state
@@ -112,6 +117,68 @@ function LearnScreen() {
             </div>
           </div>
         </SignPanel>
+      </Link>
+      <Link
+        to="/learn/signs/decoder"
+        className="learn-decoder-card"
+        style={{
+          display: 'block',
+          marginTop: '12px',
+          textDecoration: 'none',
+          backgroundColor: 'var(--color-surface)',
+          borderRadius: '14px',
+          padding: '5px',
+          boxShadow: '0 0 0 1px var(--color-hairline)',
+          color: 'var(--color-ink)',
+        }}
+      >
+        <div
+          style={{
+            border: '2.5px solid var(--color-ink)',
+            borderRadius: '10px',
+            padding: '12px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
+          }}
+        >
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="font-display" style={{ fontSize: '20px' }}>
+              How signs work
+            </div>
+            <div style={{ color: 'var(--color-muted)' }}>Shape & Colour Decoder</div>
+          </div>
+          <svg width="72" height="24" viewBox="0 0 72 24" aria-hidden="true">
+            <path
+              d="M11 2.5 20 20.5H2Z"
+              style={{
+                fill: 'var(--color-on-sign)',
+                stroke: 'var(--color-sign-red)',
+                strokeWidth: 3,
+                strokeLinejoin: 'round',
+              }}
+            />
+            <circle
+              cx="35"
+              cy="12"
+              r="9"
+              style={{
+                fill: 'var(--color-on-sign)',
+                stroke: 'var(--color-sign-red)',
+                strokeWidth: 3,
+                strokeLinejoin: 'round',
+              }}
+            />
+            <rect
+              x="50"
+              y="3"
+              width="21"
+              height="18"
+              rx="2.5"
+              style={{ fill: 'var(--color-sign-blue)' }}
+            />
+          </svg>
+        </div>
       </Link>
       <p style={{ color: 'var(--color-muted)' }}>Lessons — later phase</p>
     </div>

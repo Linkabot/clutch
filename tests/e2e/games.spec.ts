@@ -1,5 +1,5 @@
-// End-to-end tests for Clutch's games (plan.md Steps 23-25 and amendments
-// E25, E27 and E31). "tap the sign:
+// End-to-end tests for Clutch's games (plan.md Steps 23-26 and amendments
+// E25, E27, E31 and E33). "tap the sign:
 // right, wrong, reduced motion, finish" plays a full Tap the sign round
 // seeded via ?sign=: question 1's right answer (the sheet's XP, confetti,
 // streak-free body, disabled/dimmed tiles and sheetUp animation), question
@@ -32,9 +32,18 @@
 // Afterwards the Practice tab shows both rounds' XP and the streak, and the
 // sign pages of round 1's first-try sign 1 and retried sign 4 show their
 // collection progress (counting round 2's first-try matches of the same
-// signs), and Close leaves a fresh board. Runs against the
-// production build (`vite preview`) with Playwright's WebKit engine and an
-// iPhone 14 device profile.
+// signs), and Close leaves a fresh board. "Shape & Colour Decoder" opens
+// the Decoder from the Learn tab's "How signs work" card (the Learn tab
+// stays current, and the sign page's "Sign not found." never shows), checks
+// the Circle · Red start with its loaded example pictures and the sign's
+// and text's animations, taps Change shape twice to the invalid
+// Rectangle · Red (the app line, no examples, the ghost's animation), taps
+// Change colour to Rectangle · Blue (its rule sentence, hook and loaded
+// examples), opens an example's sign page and comes Back, then under
+// emulated reduced motion proves the static root, no ghost and nothing
+// animating, and finally opens the Decoder from its Practice card. Runs
+// against the production build (`vite preview`) with Playwright's WebKit
+// engine and an iPhone 14 device profile.
 // Depends on: @playwright/test, ./helpers (openAppAt).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
 import { test, expect, type Page } from '@playwright/test';
@@ -87,7 +96,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.getByText('+10 XP')).toBeVisible();
     await expect(page.locator('[data-confetti]')).toHaveCount(9);
     await expect(page.locator('.quiz-sheet')).toHaveClass(/quiz-sheet--animated/);
-    const continueButton = page.getByRole('button', { name: 'Continue' });
+    const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
     await expect(continueButton).toHaveClass(/button--primary/);
     await expect(page.getByText('Slippery road. Triangles warn.')).toBeVisible();
     await expect(page.getByText('Three sides, one message: watch out ahead.')).toBeVisible();
@@ -134,7 +143,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.locator('.quiz-sheet__xp')).toHaveCount(0);
     await expect(page.locator('.quiz-sheet__body strong')).toHaveText(promptText ?? '');
 
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('button', { name: 'Continue', exact: true }).click();
     currentId = await waitForNextAnswerId(page, currentId);
     await expect(page.locator('.game-top-bar__label')).toHaveText('3/10');
 
@@ -145,7 +154,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
       if (q === 4) {
         await expect(page.getByText('2 in a row')).toBeVisible();
       }
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
       currentId = await waitForNextAnswerId(page, currentId);
       await expect(page.locator('.game-top-bar__label')).toHaveText(`${q + 1}/10`);
     }
@@ -155,7 +164,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await page.locator(`[data-sign-id="${currentId}"]`).click();
     await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
     await expect(page.getByText('8 in a row')).toBeVisible();
-    await page.getByRole('button', { name: 'Continue' }).click();
+    await page.getByRole('button', { name: 'Continue', exact: true }).click();
 
     await expect(page.getByText('Round complete')).toBeVisible();
     await expect(page.getByText('9 of 10 right')).toBeVisible();
@@ -208,7 +217,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
 
     await page.goto('/clutch/practice/tap');
     await expect(page.locator('.game-top-bar__label')).toHaveText('1/10');
-    await page.getByRole('button', { name: 'Close' }).click();
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
   });
 });
@@ -349,7 +358,7 @@ test.describe('Sign Sprint run', () => {
     // Close leaves a fresh Sprint.
     await page.goto('/clutch/practice/sprint');
     await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
-    await page.getByRole('button', { name: 'Close' }).click();
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
   });
 });
@@ -515,7 +524,118 @@ test.describe('Match Pairs round', () => {
     // Close leaves a fresh board.
     await page.goto('/clutch/practice/pairs');
     await expect(label).toHaveText('0/5');
-    await page.getByRole('button', { name: 'Close' }).click();
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+});
+
+/** Every computed animationName inside the Decoder. */
+function decoderAnimationNames(page: Page): Promise<string[]> {
+  return page
+    .locator('.decoder *')
+    .evaluateAll((elements) => elements.map((el) => getComputedStyle(el).animationName));
+}
+
+/** Waits for the Decoder's 3 example pictures to load (a synchronous predicate). */
+async function waitForDecoderExamples(page: Page): Promise<void> {
+  await expect(page.locator('.decoder__examples img')).toHaveCount(3);
+  await page.waitForFunction(() => {
+    const images = Array.from(
+      document.querySelectorAll<HTMLImageElement>('.decoder__examples img'),
+    );
+    return images.length === 3 && images.every((img) => img.complete && img.naturalWidth > 0);
+  });
+}
+
+test.describe('Shape & Colour Decoder', () => {
+  test('Decoder: build a sign', async ({ page }) => {
+    test.setTimeout(90_000);
+    const heading = page.getByRole('heading', { level: 1 });
+    const label = page.locator('.decoder__label');
+
+    // From Learn.
+    await openAppAt(page, '/clutch/learn');
+    await page.getByRole('link', { name: /^How signs work/ }).click();
+    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/decoder$/);
+    await expect(heading).toHaveText('Shape & Colour Decoder');
+    await expect(page.getByText('Sign not found.')).toHaveCount(0);
+    await expect(
+      page.locator('nav[aria-label="Main"]').getByRole('link', { name: 'Learn', exact: true }),
+    ).toHaveAttribute('aria-current', 'page');
+
+    // Start: Circle · Red, its examples loaded, the sign popping and the text rising.
+    await expect(label).toHaveText('Circle · Red');
+    await expect(page.getByRole('link', { name: 'No right turn.', exact: true })).toBeVisible();
+    await waitForDecoderExamples(page);
+    for (const [selector, name] of [
+      ['.decoder__pop', 'signPop'],
+      ['.decoder__text', 'riseIn'],
+      ['.decoder__examples', 'riseIn'],
+    ] as const) {
+      await expect
+        .poll(() => page.locator(selector).evaluate((el) => getComputedStyle(el).animationName))
+        .toBe(name);
+    }
+
+    // Shape twice: Rectangle · Red, which the rules don't use.
+    const shapeButton = page.getByRole('button', { name: 'Change shape' });
+    await shapeButton.click();
+    await expect(label).toHaveText('Triangle · Red');
+    await shapeButton.click();
+    await expect(label).toHaveText('Rectangle · Red');
+    await expect(page.locator('.decoder__title')).toHaveText('Rectangles inform.');
+    await expect(page.locator('.decoder__body')).toHaveText(
+      "The signing-system rules don't use this pair. Try another colour.",
+    );
+    await expect(page.locator('.decoder__example')).toHaveCount(0);
+    await expect
+      .poll(() =>
+        page.locator('.decoder__ghost').evaluate((el) => getComputedStyle(el).animationName),
+      )
+      .toBe('ghostOut');
+
+    // Colour: Rectangle · Blue.
+    await page.getByRole('button', { name: 'Change colour' }).click();
+    await expect(label).toHaveText('Rectangle · Blue');
+    await expect(
+      page.getByText(
+        'Blue rectangles are used for information signs except on motorways, where blue is used for direction signs.',
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(
+      page.getByText('Blue box: information, or directions on a motorway.', { exact: true }),
+    ).toBeVisible();
+    await waitForDecoderExamples(page);
+
+    // Into an example's sign page and Back.
+    await page.getByRole('link', { name: 'Start of motorway regulations.', exact: true }).click();
+    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/motorway-start-of-motorway-regulations$/);
+    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/decoder$/);
+    await expect(heading).toHaveText('Shape & Colour Decoder');
+
+    // Reduced motion: the static root, no ghost, nothing animating.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/clutch/learn/signs/decoder');
+    await expect(page.locator('.decoder')).toHaveClass(/decoder--static/);
+    await shapeButton.click();
+    await expect(label).toHaveText('Triangle · Red');
+    await expect(page.locator('.decoder__examples img')).toHaveCount(3);
+    await expect(page.locator('.decoder__ghost')).toHaveCount(0);
+    for (const name of await decoderAnimationNames(page)) {
+      expect(name).toBe('none');
+    }
+
+    // From Practice.
+    await page.goto('/clutch/practice');
+    await page
+      .locator('.practice-card', {
+        has: page.locator('.practice-card__title', { hasText: 'Shape & Colour Decoder' }),
+      })
+      .click();
+    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/decoder$/);
+    await expect(heading).toHaveText('Shape & Colour Decoder');
+    await expect(label).toHaveText('Circle · Red');
   });
 });

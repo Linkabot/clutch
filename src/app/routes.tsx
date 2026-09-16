@@ -17,7 +17,9 @@
 // edit here. The static learn/code/search and learn/signs routes are listed
 // before the learn/code/:slug param route so the intent is obvious to a
 // reader, though React Router ranks static segments higher regardless of
-// source order.
+// source order. Likewise the Shape & Colour Decoder's static
+// learn/signs/decoder (a registry entry, Step 26) outranks learn/signs/:id
+// although it is listed later.
 // Depends on: react (lazy, Suspense), react-router-dom, ./App, ./tabs, src/features/*/*.tsx,
 // src/features/code/HighwayCodeSectionsScreen, src/features/code/SectionScreen,
 // src/features/code/SearchScreen, src/features/code/RuleScreen,

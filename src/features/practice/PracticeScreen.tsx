@@ -3,14 +3,12 @@
 // cards, each a react-router Link to a game route -- Sign Sprint
 // (/practice/sprint, Step 24), Tap the sign (/practice/tap, Step 23), Match
 // Pairs (/practice/pairs, Step 25) and the Shape & Colour Decoder
-// (/learn/signs/decoder, Step 26). None of those routes exists yet, so this
-// step only proves the cards' hrefs (plan.md Step 21); /learn/signs/decoder
-// currently falls through to the sign page's "Sign not found." for id
-// "decoder", which is expected until Step 26. The Tap card's four small
-// pictures are real SignImages, loaded lazily via loadSigns (the same
-// cancelled-flag pattern as SignsScreen.tsx); the Match Pairs and Decoder
-// tiles are original shape art the app draws itself, never a rotated or
-// recoloured real sign picture (plan.md D7, amendment E18).
+// (/learn/signs/decoder, Step 26). All four routes exist (Steps 23-26).
+// The Tap card's four small pictures are real SignImages, loaded lazily via
+// loadSigns (the same cancelled-flag pattern as SignsScreen.tsx); the Match
+// Pairs and Decoder tiles are original shape art the app draws itself,
+// never a rotated or recoloured real sign picture (plan.md D7, amendment
+// E18).
 // Depends on: react, react-router-dom, lucide-react (ChevronRight),
 // ../../engine/progress-state (useProgressStore), ../../content/signs
 // (loadSigns), ../../content/schemas (Sign type), ../../ui (Roundel),
