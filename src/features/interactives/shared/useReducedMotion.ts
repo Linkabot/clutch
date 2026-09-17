@@ -5,9 +5,12 @@
 // window.matchMedia is unavailable (SSR, or a jsdom test that has not
 // stubbed matchMedia), so components built on this hook still render there.
 // Depends on: react (useSyncExternalStore).
-// Depended on by: tests/unit/interactives-render.test.tsx (later: every
-// animated interactive -- quiz-sheet, sign-sprint, match-pairs, decoder --
-// Steps 22, 24-26).
+// Depended on by: src/features/interactives/quiz-sheet/QuizSheet.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/shape-colour-decoder/Decoder.tsx,
+// tests/unit/interactives-render.test.tsx.
 
 import { useSyncExternalStore } from 'react';
 

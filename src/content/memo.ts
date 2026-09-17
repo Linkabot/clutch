@@ -4,7 +4,8 @@
 // the factory instead of replaying the same failure forever (plan.md C-S1).
 // Depends on: nothing.
 // Depended on by: src/content/loaders.ts (per-section cache),
-// src/features/code/search.ts (search-index cache).
+// src/content/signs.ts (signs.json cache), src/features/code/search.ts
+// (search-index cache), tests/unit/memo.test.ts.
 
 /** A memoised async value keyed by K, with retry-on-rejection. */
 export interface PromiseCache<K, V> {

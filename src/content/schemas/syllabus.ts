@@ -3,8 +3,9 @@
 // each holding elements with their "must be able to" / "must know and
 // understand" lists, plus a recount of the tree in `counts`.
 // Depends on: zod.
-// Depended on by: src/content/schemas/index.ts, tests/content/syllabus.test.ts
-// (Step 10).
+// Depended on by: src/content/schemas/index.ts, scripts/ingest-national-standard.ts,
+// scripts/lib/national-standard-parse.ts, tests/content/syllabus.test.ts,
+// tests/unit/national-standard-parse.test.ts.
 import { z } from 'zod';
 
 const ROLE_ID = /^\d$/;

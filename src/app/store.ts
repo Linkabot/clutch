@@ -1,7 +1,8 @@
 // Global app state (Zustand): service-worker status and standalone-display
 // detection, both set by PWA/platform wiring added in a later step.
 // Depends on: zustand.
-// Depended on by: tests/unit/store.test.ts (later: src/app/pwa.ts, src/app/platform.ts, src/app/App.tsx).
+// Depended on by: src/app/pwa.ts, src/features/me/OfflineReady.tsx,
+// tests/unit/store.test.ts.
 
 import { create } from 'zustand';
 

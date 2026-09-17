@@ -13,8 +13,9 @@
 // and no confetti is rendered, so the stylesheet animates nothing.
 // Depends on: react, ../../../ui (Button), ../shared/useReducedMotion,
 // ./quiz-sheet.css.
-// Depended on by: tests/unit/quiz-sheet.test.tsx (later:
-// src/features/practice/tap/TapTheSignScreen.tsx -- Step 23).
+// Depended on by: src/features/practice/tap/TapTheSignScreen.tsx (the only
+// game that renders it; Sign Sprint and Match Pairs use their own feedback
+// UI), tests/unit/quiz-sheet.test.tsx.
 
 import { useEffect, useId, useRef } from 'react';
 import type { ReactNode } from 'react';

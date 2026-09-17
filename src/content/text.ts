@@ -3,8 +3,12 @@
 // runs unchanged in the browser (src/features/code/search.ts, Step 14) and
 // in Node ingestion scripts (scripts/lib/highway-code-parse.ts) alike.
 // Depends on: nothing.
-// Depended on by: scripts/lib/highway-code-parse.ts, src/features/code/search.ts
-// (Step 14), tests/content/facts.test.ts (Step 11), tests/unit/text.test.ts.
+// Depended on by: scripts/lib/highway-code-parse.ts, scripts/lib/kyts-licence.ts,
+// scripts/lib/kyts-parse.ts, scripts/lib/national-standard-parse.ts,
+// scripts/ingest-signs.ts, scripts/verify-signs.ts, src/features/code/search.ts,
+// src/features/code/RuleScreen.tsx, src/features/code/SectionScreen.tsx,
+// src/features/code/rule-heading.ts, tests/content/facts.test.ts,
+// tests/unit/text.test.ts.
 
 const NAMED_ENTITIES: Record<string, string> = {
   '&amp;': '&',

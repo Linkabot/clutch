@@ -5,9 +5,10 @@
 // colour ("tone") differs by game: Sign Sprint's clock (e.g. "0:42") is
 // ink, Tap the sign's count (e.g. "6/10") is muted.
 // Depends on: ./games.css.
-// Depended on by: tests/unit/interactives-render.test.tsx (later:
-// src/features/practice/tap/TapTheSignScreen.tsx, sign-sprint,
-// match-pairs -- Steps 23-25).
+// Depended on by: src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// tests/unit/interactives-render.test.tsx.
 
 import './games.css';
 

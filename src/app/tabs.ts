@@ -2,7 +2,8 @@
 // extra route prefixes that should also count as "active" for that tab) as
 // a single typed source of truth.
 // Depends on: lucide-react (icon components and the LucideIcon type).
-// Depended on by: src/app/TabBar.tsx, src/app/routes.tsx, tests/unit/tabs.test.ts.
+// Depended on by: src/app/App.tsx, src/app/TabBar.tsx, src/app/back.ts,
+// tests/unit/tabs.test.ts, tests/e2e/shell.spec.ts.
 import type { LucideIcon } from 'lucide-react';
 import { Route, BookOpen, ClipboardCheck, Car, UserRound } from 'lucide-react';
 

@@ -1,6 +1,9 @@
-// Content loaders: the only module inside the app that reads content/uk/.
-// Wraps import.meta.glob so every consumer gets already-parsed,
-// schema-validated HighwayCodeIndex / Section / Fact objects, never raw
+// Content loaders: reads the Highway Code index/sections and facts.json
+// from content/uk/ (src/content/signs.ts reads content/uk/signs/ on its
+// own, so this module owns the highway-code/ and facts.json subtrees, not
+// the whole content/uk/ tree). Wraps import.meta.glob so every consumer
+// gets already-parsed, schema-validated HighwayCodeIndex / Section / Fact
+// objects, never raw
 // JSON — no static `import x from '*.json'` appears anywhere else in src/.
 // The Highway Code index and facts.json are small and loaded eagerly
 // (bundled into the main chunk); each Highway Code section is its own lazy
@@ -10,8 +13,12 @@
 // instead of replaying the same rejection forever (plan.md C-S1).
 // Depends on: ./schemas (Zod schemas), ./memo (PromiseCache), Vite's
 // import.meta.glob.
-// Depended on by: src/features/code/search.ts, Highway Code screens
-// (Step 15 onward).
+// Depended on by: src/features/code/search.ts,
+// src/features/code/HighwayCodeSectionsScreen.tsx,
+// src/features/code/RuleScreen.tsx, src/features/code/SectionScreen.tsx,
+// src/features/code/StoppingDistanceTable.tsx,
+// src/features/learn/LearnScreen.tsx, tests/unit/loaders.test.ts,
+// tests/unit/search.test.ts.
 
 import {
   HighwayCodeIndexSchema,

@@ -2,7 +2,9 @@
 // per-sign collection and best-score rules (D19–D21). No Dexie import, so it
 // is unit-testable without IndexedDB and safe to call from any clock/zone.
 // Depends on: nothing.
-// Depended on by: src/engine/progress-store.ts, tests/unit/progress.test.ts.
+// Depended on by: src/engine/progress-store.ts, src/features/signs/SignScreen.tsx,
+// src/features/signs/SignsScreen.tsx, src/features/signs/filter.ts,
+// tests/unit/progress.test.ts.
 
 /** A saved day streak: how many consecutive days, and the local day key it last advanced on. */
 export interface Streak {

@@ -2,8 +2,9 @@
 // content/uk/ and a small JSON reader, so content tests validate the
 // committed files directly rather than through Vite's import.meta.glob.
 // Depends on: node:fs, node:path, node:url.
-// Depended on by: tests/content/pack.test.ts and later content tests
-// (Steps 9, 10, 11, 12, 14).
+// Depended on by: tests/content/pack.test.ts, tests/content/facts.test.ts,
+// tests/content/highway-code.test.ts, tests/content/signs.test.ts,
+// tests/content/signs-rules.test.ts, tests/content/syllabus.test.ts.
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

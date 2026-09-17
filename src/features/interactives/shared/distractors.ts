@@ -5,9 +5,12 @@
 // (isShortCaption). Callers may pass minimal Sign-shaped objects (only
 // `id`, `name` and `family` are read), so tests do not need a full Sign.
 // Depends on: ./random.ts (Rng, shuffle).
-// Depended on by: tests/unit/interactives-shared.test.ts (later:
-// src/features/practice/tap/round.ts's buildTapRound and the sign-sprint
-// option builder -- Steps 23-24).
+// Depended on by: src/features/practice/tap/round.ts (buildTapRound),
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/sign-sprint/sprint.ts,
+// src/features/interactives/match-pairs/pairs.ts,
+// src/features/signs/SignScreen.tsx, tests/unit/interactives-shared.test.ts,
+// tests/unit/match-pairs.test.tsx, tests/unit/sign-sprint.test.tsx.
 
 import type { Rng } from './random';
 import { shuffle } from './random';

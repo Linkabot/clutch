@@ -16,8 +16,9 @@
 // scripts/lib/kyts-select.ts.
 // Depends on: node-html-parser, ../../src/content/text.ts (htmlToText).
 // Depended on by: scripts/lib/kyts-select.ts (KytsPicture, type only),
-// scripts/ingest-signs.ts, tests/unit/kyts-parse.test.ts (which also loads
-// tests/fixtures/kyts-chapter.html).
+// scripts/ingest-signs.ts, scripts/verify-signs.ts,
+// tests/unit/kyts-parse.test.ts (which also loads
+// tests/fixtures/kyts-chapter.html), tests/unit/kyts-select.test.ts.
 
 import { parse, NodeType } from 'node-html-parser';
 import type { HTMLElement } from 'node-html-parser';

@@ -70,4 +70,36 @@ Why: UK road-sign vocabulary doubles as revision and reads as trustworthy; Playm
 Constraint: Fonts must be self-hosted, bundled and precached — no Google Fonts at runtime.
 Brand safety: No GDS Transport typeface, no crown/Royal Arms, no gov.uk page styling; a visible "Not an official DVSA or government app" line is shown in-app.
 Scope: The Journey map, quiz sheet, confetti, XP and the animated stopping-distance road are references for Phases 2–4 only; none of them are built in Phase 1.
-Reference: See `docs/DESIGN.md` (Step 4) for the token and component reference.
+Reference: See `docs/DESIGN.md` for the token and component reference.
+
+## Decision 14 — Road signs and games (15 September 2026)
+
+Choice: Sign pictures and captions come from Know Your Traffic Signs
+(KYTS), DfT's GOV.UK publication, fetched and shipped byte-for-byte under
+the Open Government Licence v3.0. The committed set is 195 signs across 6
+families (warning, orders, motorway, direction, information, road-works),
+including STOP and GIVE WAY, each linking into the Highway Code. Shape and
+colour follow the KYTS "signing system" sentences (`content/uk/signs/shape-rules.json`),
+with 16 memory hooks (`content/uk/signs/hooks.json`) covering the
+shape/colour rules, each family, and a handful of easily confused signs.
+Four interactives teach and test the set: Tap the sign (10 questions, no
+timer, on the shared quiz sheet), Sign Sprint (a 60-second clock, 4 names
+per turn, best score and missed signs saved), Match Pairs (5 pairs per
+round, first-try matches count) and the Shape & Colour Decoder
+(build-a-sign, quoting the signing-system sentences verbatim). Sign Sprint
+and Match Pairs use only captions of 60 characters or fewer, so every name
+fits a four-option grid or a 104px tile; Tap the sign uses every sign, so
+every sign stays collectable.
+Why: KYTS is DfT's own sign reference (one of the three books DVSA bases theory questions on), Crown-copyright and OGL
+licensed, so it is legal to reuse and distribute, and it doubles as
+revision the same way the Highway Code does. Shipping the real pictures
+(never resized, re-encoded, recoloured or edited) rather than redrawing
+them keeps the sign set trustworthy.
+Constraint: The whole app's Workbox precache budget rose to 8192 KiB to
+carry the sign pictures; no individual sign SVG may exceed 150 KiB, and
+KYTS SVGs are content-scanned for unsafe markup before they are shipped.
+Progress: +10 XP per correct answer or first-try pair; XP never goes down
+and there are no levels yet. A local-midnight day streak is saved across
+sessions; a missed day resets it. A sign is collected after 3 correct
+identifications of it in any game, on any day; uncollected signs show a
+0–3 progress dots.

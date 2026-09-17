@@ -5,9 +5,15 @@
 // calls load(). Consumed by the Signs browser and sign page (collected
 // count, per-sign correct map), the Practice header (streak, XP), and
 // Sign Sprint / tap-the-sign / Match Pairs (recordAnswer,
-// recordRoundFinished) from Step 19 onward.
+// recordRoundFinished).
 // Depends on: zustand, ./progress-store, ../storage/db.
-// Depended on by: game and progress-display screens (Step 19 onward).
+// Depended on by: src/features/learn/LearnScreen.tsx,
+// src/features/practice/PracticeScreen.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/signs/SignScreen.tsx, src/features/signs/SignsScreen.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// tests/unit/match-pairs.test.tsx, tests/unit/sign-sprint.test.tsx.
 
 import { create } from 'zustand';
 import { db } from '../storage/db';

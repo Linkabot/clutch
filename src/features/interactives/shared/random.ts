@@ -5,8 +5,13 @@
 // itself can still seed from Date.now() or similar.
 // Depends on: nothing.
 // Depended on by: src/features/interactives/shared/distractors.ts,
-// tests/unit/interactives-shared.test.ts (later: src/features/practice/
-// tap/round.ts and the sign-sprint/match-pairs reducers -- Steps 23-25).
+// src/features/practice/tap/round.ts, src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/sign-sprint/sprint.ts,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/pairs.ts,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// tests/unit/interactives-shared.test.ts, tests/unit/match-pairs.test.tsx,
+// tests/unit/sign-sprint.test.tsx, tests/unit/tap-round.test.ts.
 
 /** Returns a float in [0, 1), like Math.random(). */
 export type Rng = () => number;

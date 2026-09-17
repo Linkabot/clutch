@@ -9,7 +9,8 @@
 // in this module reaches the network.
 // Depends on: minisearch, src/content/loaders.ts, src/content/text.ts,
 // src/content/schemas, src/content/memo.ts.
-// Depended on by: src/features/code/SearchScreen.tsx.
+// Depended on by: src/features/code/SearchScreen.tsx,
+// tests/unit/search-href.test.ts, tests/unit/search.test.ts.
 
 import MiniSearch, { type SearchResult } from 'minisearch';
 import { loadAllSections } from '../../content/loaders';

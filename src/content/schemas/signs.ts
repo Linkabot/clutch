@@ -1,13 +1,14 @@
-// Zod schemas for the road-signs content: a single sign (once Step 15
-// ingests content/uk/signs/signs.json), the shape/colour rule table
+// Zod schemas for the road-signs content: a single sign
+// (content/uk/signs/signs.json), the shape/colour rule table
 // (content/uk/signs/shape-rules.json), the memory hooks
 // (content/uk/signs/hooks.json), the KYTS selection rules
-// (content/uk/signs/selection.json), and the attribution manifest Step 15
-// writes alongside the pictures under public/signs/.
+// (content/uk/signs/selection.json), and the attribution manifest shipped
+// alongside the pictures under public/signs/.
 // Depends on: zod.
 // Depended on by: src/content/schemas/index.ts, src/content/signs.ts,
+// scripts/ingest-signs.ts, scripts/verify-signs.ts, scripts/lib/kyts-select.ts,
 // tests/unit/sign-schema.test.ts, tests/unit/sign-hooks.test.ts,
-// tests/content/signs-rules.test.ts, scripts/lib/kyts-select.ts (Step 14).
+// tests/unit/kyts-select.test.ts, tests/content/signs-rules.test.ts.
 import { z } from 'zod';
 
 const SIGN_ID = /^(warning|orders|motorway|direction|information|road-works)-[a-z0-9_-]+$/;

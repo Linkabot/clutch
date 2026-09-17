@@ -3,8 +3,9 @@
 // (a page of the Code holding zero or more rules), and the top-level
 // index that lists every section in published order.
 // Depends on: zod.
-// Depended on by: src/content/schemas/index.ts, scripts/lib/highway-code-parse.ts
-// (Step 8), tests/content/highway-code.test.ts (Step 9).
+// Depended on by: src/content/schemas/index.ts, scripts/lib/highway-code-parse.ts,
+// scripts/lib/highway-code-build.ts, scripts/compare-highway-code.ts,
+// tests/content/highway-code.test.ts, tests/unit/highway-code-parse.test.ts.
 import { z } from 'zod';
 
 const RULE_ID = /^(\d{1,3}|H[1-3])$/;

@@ -7,8 +7,14 @@
 // so the alt text never gives away a game's answer).
 // Depends on: src/content/schemas (Sign, type only),
 // src/content/signs.ts (signImageUrl).
-// Depended on by: tests/unit/interactives-render.test.tsx (later: every
-// screen and game that shows a sign picture -- Steps 19-27).
+// Depended on by: src/features/signs/SignScreen.tsx,
+// src/features/signs/SignsScreen.tsx, src/features/learn/LearnScreen.tsx,
+// src/features/practice/PracticeScreen.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/shape-colour-decoder/Decoder.tsx,
+// tests/unit/interactives-render.test.tsx.
 
 import type { Sign } from '../../../content/schemas';
 import { signImageUrl } from '../../../content/signs';

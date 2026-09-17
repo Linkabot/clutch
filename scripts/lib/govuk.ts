@@ -14,10 +14,10 @@
 // `cachePath` the caller names, with the same politeness, retry and offline
 // rules.
 // Depends on: Node's built-in `fs` and `path` modules, the global fetch API.
-// Depended on by: scripts/ingest-highway-code.ts (Step 9),
-// scripts/ingest-national-standard.ts (Step 10), scripts/lib/highway-code-build.ts
-// and scripts/compare-highway-code.ts (Step 2), scripts/ingest-signs.ts
-// (Step 14), tests/unit/govuk-offline.test.ts.
+// Depended on by: scripts/ingest-national-standard.ts, scripts/ingest-signs.ts,
+// scripts/lib/highway-code-build.ts (the only path by which the Highway Code
+// ingest and comparison scripts reach gov.uk), scripts/verify-signs.ts,
+// tests/unit/govuk-offline.test.ts.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

@@ -1,19 +1,29 @@
-// Signs content loader: the shape/colour rule table, memory hooks and
-// (once Step 15 ingests it) the sign catalogue itself -- the only module
-// inside the app that reads content/uk/signs/. getShapeRules() and
-// getHooks() are small, already-committed JSON files loaded eagerly and
-// validated once; loadSigns() is a lazy import.meta.glob for
-// content/uk/signs/signs.json, which does not exist until Step 15, so it
-// rejects with SignsNotFound until then (the same eager/lazy split and
-// PromiseCache retry-on-rejection as src/content/loaders.ts, plan.md C-S1).
-// signImageUrl() builds the <img src> for a sign's picture -- pictures are
-// never statically imported or inlined (plan.md D7). hookFor() implements
-// § Memory hooks' display rule: a sign's own hook first, then (sheet
-// context only) its rule's hook, then its family's hook.
+// Signs content loader: the shape/colour rule table, memory hooks and the
+// sign catalogue itself -- the only module inside the app that reads
+// content/uk/signs/. getShapeRules() and getHooks() are small,
+// already-committed JSON files loaded eagerly and validated once;
+// loadSigns() is a lazy import.meta.glob for content/uk/signs/signs.json
+// (the same eager/lazy split and PromiseCache retry-on-rejection as
+// src/content/loaders.ts, plan.md C-S1); it rejects with SignsNotFound if
+// no module matches the glob. signImageUrl() builds the <img src> for a
+// sign's picture -- pictures are never statically imported or inlined
+// (plan.md D7). hookFor() implements § Memory hooks' display rule: a
+// sign's own hook first, then (sheet context only) its rule's hook, then
+// its family's hook.
 // Depends on: ./schemas (Zod schemas), ./memo (PromiseCache), Vite's
 // import.meta.glob.
-// Depended on by: Step 15 ingestion output, sign screens and games (Step 17
-// onward).
+// Depended on by: src/features/learn/LearnScreen.tsx,
+// src/features/practice/PracticeScreen.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/practice/tap/round.ts, src/features/signs/SignScreen.tsx,
+// src/features/signs/SignsScreen.tsx,
+// src/features/interactives/shared/SignImage.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/shape-colour-decoder/Decoder.tsx,
+// tests/unit/decoder.test.tsx, tests/unit/match-pairs.test.tsx,
+// tests/unit/sign-hooks.test.ts, tests/unit/sign-sprint.test.tsx,
+// tests/unit/tap-round.test.ts.
 
 import {
   ShapeRulesFileSchema,

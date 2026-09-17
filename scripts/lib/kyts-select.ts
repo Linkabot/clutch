@@ -25,10 +25,10 @@
 // Depends on: ../../src/content/schemas/signs.ts (Sign, SignColour,
 // SignFamily, SignRule, SignSelectionFile, SignShape, ShapeRulesFile,
 // HooksFile types), ./kyts-parse.ts (KytsPicture, type only).
-// Depended on by: scripts/ingest-signs.ts, scripts/lib/kyts-select.ts's
-// own `classifySign` export (Step 16, from committed content only, no
-// import of this file's other exports), tests/unit/kyts-select.test.ts
-// (which also loads tests/fixtures/kyts-chapter.html).
+// Depended on by: scripts/ingest-signs.ts, scripts/verify-signs.ts,
+// tests/content/signs.test.ts (classifySign, from committed content only),
+// tests/unit/kyts-select.test.ts (which also loads
+// tests/fixtures/kyts-chapter.html).
 
 import type {
   Sign,

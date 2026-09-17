@@ -18,31 +18,48 @@ clutch/
 │  ├─ IPHONE-SETUP.md           (exists)
 │  └─ DESIGN.md                 (exists) docs/DESIGN.md: tokens, primitives, motion policy
 ├─ content/uk/                  (exists) pack.json, facts.json, syllabus.json, highway-code/
+├─ content/uk/signs/            (exists) attribution.json, hooks.json, selection.json, shape-rules.json, signs.json
 ├─ public/
 │  ├─ icons/                    (exists) PWA + apple-touch icons
-│  ├─ signs/*.svg                (later phase)
+│  ├─ signs/                    (exists) public/signs/: <family>/*.svg (direction, information, motorway,
+│  │                            orders, road-works, warning — 195 files), attribution.json
 │  └─ ATTRIBUTION.md            (exists)
 ├─ scripts/
-│  ├─ lib/                      (exists) scripts/lib/: govuk.ts, highway-code-parse.ts, national-standard-parse.ts
-│  └─ make-icons.mjs            (exists)
+│  ├─ lib/                      (exists) scripts/lib/: govuk.ts, highway-code-build.ts, highway-code-parse.ts,
+│  │                            href-audit.ts, json-diff.ts, kyts-licence.ts, kyts-parse.ts, kyts-select.ts,
+│  │                            national-standard-parse.ts
+│  ├─ make-icons.mjs            (exists)
+│  └─ check-contrast.mjs, check-interactive-size.mjs, check-precache.mjs, compare-highway-code.ts,
+│                               ingest-highway-code.ts, ingest-national-standard.ts, ingest-signs.ts,
+│                               verify-signs.ts   (exists)
 ├─ src/
-│  ├─ app/                      (exists) App.tsx, routes.tsx, tabs.ts, TabBar.tsx,
+│  ├─ app/                      (exists) src/app/: App.tsx, routes.tsx, tabs.ts, TabBar.tsx, back.ts,
 │  │                            theme.css, store.ts, platform.ts, pwa.ts, AddToHomeScreen.tsx
 │  ├─ ui/                       (exists) src/ui/: SignPanel, SignPlate, Roundel, Button, Chip, primitives.css
 │  ├─ features/
-│  │  ├─ journey  learn  practice  my-car  me   (exists) placeholder screens
-│  │  ├─ me/OfflineReady.tsx    (exists)
+│  │  ├─ journey  my-car        (exists) placeholder screens
+│  │  ├─ learn/                 (exists) src/features/learn/: Highway Code browser, Signs browser entry,
+│  │  │                         lessons row
+│  │  ├─ practice/              (exists) src/features/practice/: PracticeScreen.tsx, ProgressHeader.tsx,
+│  │  │                         practice.css, src/features/practice/tap/: TapTheSignScreen.tsx, round.ts, tap.css
+│  │  ├─ me/                    (exists) src/features/me/: MeScreen.tsx, Attribution.tsx, OfflineReady.tsx
 │  │  ├─ code/                  (exists) src/features/code/: Highway Code sections, rule page, search
-│  │  └─ interactives/          (later phase)
-│  ├─ engine/                   (later phase)
-│  ├─ content/                  (exists) src/content/: schemas/, loaders.ts, text.ts
+│  │  ├─ signs/                 (exists) src/features/signs/: SignScreen.tsx, SignsScreen.tsx, families.ts,
+│  │  │                         filter.ts, signs.css
+│  │  └─ interactives/          (exists) src/features/interactives/: registry.ts, quiz-sheet/, sign-sprint/,
+│  │                            match-pairs/, shape-colour-decoder/, shared/
+│  ├─ engine/                   (exists) src/engine/: progress.ts, progress-store.ts, progress-state.ts
+│  ├─ content/                  (exists) src/content/: schemas/, loaders.ts, memo.ts, signs.ts, text.ts
 │  └─ storage/
-│     └─ db.ts                  (exists) Dexie, settings table only
+│     └─ db.ts                  (exists) Dexie version 2: settings, progress, signProgress tables
 ├─ tests/
 │  ├─ unit/                     (exists)
 │  ├─ e2e/                      (exists)
-│  ├─ content/                  (exists) tests/content/: schema, facts and Highway Code content tests
-│  └─ fixtures/                 (exists) tests/fixtures/: highway-code-section.html, national-standard-role.html
+│  ├─ content/                  (exists) tests/content/: facts, helpers, highway-code, pack, signs-rules,
+│  │                            signs and syllabus tests
+│  └─ fixtures/                 (exists) tests/fixtures/: 5 Highway Code HTML fixtures, 3 KYTS HTML fixtures
+│                               (kyts-chapter.html, kyts-page-exception.html, kyts-page-standard.html),
+│                               national-standard-role.html
 ├─ handoffs/                    (exists) audit trail per task — git-ignored
 └─ .github/workflows/ci.yml     (exists)
 ```
@@ -51,18 +68,27 @@ clutch/
 
 Live: https://linkabot.github.io/clutch/
 
-| Command                | Does                                            |
-| ---------------------- | ----------------------------------------------- |
-| `npm run dev`          | dev server at `http://localhost:5173/clutch/`   |
-| `npm run lint`         | ESLint                                          |
-| `npm run typecheck`    | `tsc -b`                                        |
-| `npm test`             | Vitest unit tests                               |
-| `npm run build`        | production build to `dist/`                     |
-| `npm run preview`      | serve the production build locally              |
-| `npm run e2e`          | build + Playwright e2e (WebKit, iPhone profile) |
-| `npm run icons`        | regenerate placeholder PWA/apple-touch icons    |
-| `npm run format`       | Prettier, write                                 |
-| `npm run format:check` | Prettier, check only                            |
+| Command                            | Does                                                                                                                                 |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`                      | dev server at `http://localhost:5173/clutch/`                                                                                        |
+| `npm run lint`                     | ESLint                                                                                                                               |
+| `npm run typecheck`                | `tsc -b`                                                                                                                             |
+| `npm test`                         | Vitest unit tests                                                                                                                    |
+| `npm run validate:content`         | Vitest content-only suite (`tests/content`): schema, facts, syllabus, Highway Code and sign content                                  |
+| `npm run build`                    | production build to `dist/`                                                                                                          |
+| `npm run preview`                  | serve the production build locally                                                                                                   |
+| `npm run e2e`                      | build + Playwright e2e (WebKit, iPhone profile)                                                                                      |
+| `npm run icons`                    | regenerate placeholder PWA/apple-touch icons                                                                                         |
+| `npm run check:contrast`           | WCAG contrast check on `src/app/theme.css` colour tokens, light and dark mode                                                        |
+| `npm run check:precache`           | checks the production build's Workbox precache manifest against the 8192 KiB budget (150 KiB per sign SVG)                           |
+| `npm run check:interactives`       | checks each interactives registry entry's built size against its `sizeBudgetKiB`                                                     |
+| `npm run ingest:highway-code`      | fetches the Highway Code from the gov.uk Content API, writes `content/uk/highway-code/` (run manually, once)                         |
+| `npm run ingest:national-standard` | fetches the National Standard for Driving Cars and Light Vans, writes `content/uk/syllabus.json` (run manually, once)                |
+| `npm run ingest:signs`             | fetches every KYTS chapter, selects and classifies the sign set, writes `content/uk/signs/` and `public/signs/` (run manually, once) |
+| `npm run verify:signs`             | offline proof (`CLUTCH_OFFLINE=1`) that the committed sign outputs match a fresh re-derivation from `content/.cache/kyts/`           |
+| `npm run compare:highway-code`     | offline comparator: rebuilds the Highway Code in memory and diffs it against the committed JSON                                      |
+| `npm run format`                   | Prettier, write                                                                                                                      |
+| `npm run format:check`             | Prettier, check only                                                                                                                 |
 
 Tool shells in this session don't have node/npm/gh on `PATH`; every command needs
 `export PATH="$PATH:/c/Program Files/nodejs:/c/Program Files/GitHub CLI"` first.
@@ -73,11 +99,11 @@ Every file under `src/`, `tests/`, `scripts/` starts with a header comment: what
 
 ## Content rules
 
-See `docs/CONTENT-GUIDE.md` for schemas, authoring rules, licensing and attribution (Phase 1+; not yet populated).
+See `docs/CONTENT-GUIDE.md` for schemas, authoring rules, licensing and attribution.
 
 ## Decisions
 
-See `docs/DECISIONS.md` for the locked decisions and their reasoning (Phase 0 Step 12).
+See `docs/DECISIONS.md` for the locked decisions and their reasoning.
 
 ## Current phase
 

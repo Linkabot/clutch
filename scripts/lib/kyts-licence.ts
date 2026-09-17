@@ -7,8 +7,9 @@
 // of defining its own copies (plan.md amendment E11(5)).
 // Depends on: node-html-parser, ../../src/content/text.ts
 // (normaliseWhitespace).
-// Depended on by: scripts/ingest-signs.ts, tests/unit/kyts-licence.test.ts
-// (which also loads tests/fixtures/kyts-page-standard.html and
+// Depended on by: scripts/ingest-signs.ts, scripts/verify-signs.ts,
+// tests/unit/kyts-licence.test.ts (which also loads
+// tests/fixtures/kyts-page-standard.html and
 // tests/fixtures/kyts-page-exception.html).
 
 import { parse } from 'node-html-parser';
