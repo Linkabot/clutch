@@ -1,8 +1,9 @@
 # CI: lint, typecheck, unit test, build and e2e-test every push/PR, then
 # deploy the built `dist/` to GitHub Pages on pushes to `main`.
 # Depends on: package.json scripts (lint, typecheck, test, build, postbuild,
-# check:contrast, check:precache), playwright.config.ts, tests/e2e/shell.spec.ts.
-# Depended on by: GitHub Pages (deploy job), Step 15/16/17 of the plan.
+# check:contrast, check:precache, check:interactives), playwright.config.ts,
+# tests/e2e/*.spec.ts.
+# Depended on by: GitHub Pages (deploy job).
 name: CI
 
 on:
@@ -36,6 +37,7 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run check:precache
+      - run: npm run check:interactives
       - run: npx playwright install --with-deps webkit
       - run: npx playwright test
         env:
