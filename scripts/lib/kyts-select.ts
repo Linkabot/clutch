@@ -404,6 +404,10 @@ export function classifySign(
  * any failure means gov.uk's content changed and the run must stop, not
  * quietly ship 194 signs. `hooks` is the parsed hooks.json, used only to
  * resolve each sign's own `hookId` (`hookIdFor`, plan.md amendment E11(2)).
+ * Step 28a: a sign whose `${family}/${file}` is listed in
+ * `selection.thirdPartyMarks` gets `thirdPartyMark: true`; a listed key
+ * that matches no selected sign throws once the loop finishes, so a stale
+ * or misspelled entry cannot mark nothing and pass silently.
  */
 export function selectSigns(
   chaptersInOrder: KytsChapter[],
@@ -418,6 +422,15 @@ export function selectSigns(
   const selectedCaptionsByFamily = new Map<SignFamily, Set<string>>();
   const signs: Sign[] = [];
   const dropped: DroppedPicture[] = [];
+
+  // Step 28a: the `family/file` keys selection.json's thirdPartyMarks
+  // names, and which of them a selected sign actually matched -- any key
+  // left unmatched once the loop below finishes throws (a stale or
+  // misspelled entry must fail loudly, never silently mark nothing).
+  const thirdPartyKeys = new Set(
+    selection.thirdPartyMarks.map((mark) => `${mark.family}/${mark.file}`),
+  );
+  const matchedThirdPartyKeys = new Set<string>();
 
   for (const ctx of ordered) {
     const isAllowListed = isAllowListFamily(ctx.family);
@@ -459,6 +472,9 @@ export function selectSigns(
       shapeRules,
     );
     const id = `${ctx.family}-${fileStem(ctx.pic.file)}`;
+    const thirdPartyKey = `${ctx.family}/${ctx.pic.file}`;
+    const marked = thirdPartyKeys.has(thirdPartyKey);
+    if (marked) matchedThirdPartyKeys.add(thirdPartyKey);
 
     signs.push({
       id,
@@ -472,6 +488,7 @@ export function selectSigns(
       image: `signs/${ctx.family}/${ctx.pic.file}`,
       refs: [{ kind: 'section', slug: 'traffic-signs' }],
       licence: 'Open Government Licence v3.0',
+      ...(marked ? { thirdPartyMark: true as const } : {}),
       source: {
         chapterSlug: ctx.chapterSlug,
         chapterUrl: `${CHAPTER_URL_ROOT}/${ctx.chapterSlug}`,
@@ -479,6 +496,12 @@ export function selectSigns(
         subHeading: ctx.pic.subHeading,
       },
     });
+  }
+
+  for (const key of thirdPartyKeys) {
+    if (!matchedThirdPartyKeys.has(key)) {
+      throw new Error(`thirdPartyMarks: ${key} is not a selected sign`);
+    }
   }
 
   return { signs, dropped };

@@ -1375,7 +1375,8 @@
       "bytes": 12041,
       "sha256": "257b83c0952e4afac7993b76343cfd44bb28ca53f7e81b0a75fb87cd82d5b4d9",
       "licence": "Open Government Licence v3.0",
-      "copyright": "© Crown copyright 2023"
+      "copyright": "© Crown copyright 2023",
+      "thirdPartyMark": true
     },
     {
       "file": "signs/direction/english-heritage.svg",
@@ -1384,7 +1385,8 @@
       "bytes": 948,
       "sha256": "506eab8866e56e85ed549ecf4c0e8018e588cce0809d96ca32d6d3ffc109dfc3",
       "licence": "Open Government Licence v3.0",
-      "copyright": "© Crown copyright 2023"
+      "copyright": "© Crown copyright 2023",
+      "thirdPartyMark": true
     },
     {
       "file": "signs/direction/bird-garden.svg",
@@ -1483,7 +1485,8 @@
       "bytes": 7687,
       "sha256": "cfddb1bb967b602a662493c015b77ed9a5ef0ba93215e9c48bf388901d08277a",
       "licence": "Open Government Licence v3.0",
-      "copyright": "© Crown copyright 2023"
+      "copyright": "© Crown copyright 2023",
+      "thirdPartyMark": true
     },
     {
       "file": "signs/direction/service-sign-1.svg",

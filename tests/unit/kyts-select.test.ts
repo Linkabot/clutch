@@ -12,7 +12,10 @@
 // scope, `hookId` resolution from a passed-in `HooksFile`, the exported
 // `classifySign` called directly (Step 16's own use), and — reading
 // tests/fixtures/kyts-chapter.html through `parseChapter` — an end-to-end
-// run proving the fixture's R8 sign and its dropped pictures.
+// run proving the fixture's R8 sign and its dropped pictures. The Step 28a
+// describe block proves `thirdPartyMark: true` lands on a listed selected
+// file and no other, and that a listed file matching no selected sign
+// throws.
 // Depends on: vitest, node:fs, node:url, node:path, scripts/lib/kyts-select.ts,
 // scripts/lib/kyts-parse.ts (parseChapter, KytsPicture),
 // src/content/schemas/signs.ts (SignSelectionFile, ShapeRulesFile,
@@ -123,6 +126,7 @@ function makeSelection(overrides: Partial<SignSelectionFile> = {}): SignSelectio
       'road-works': 0,
     },
     expectedTotal: 0,
+    thirdPartyMarks: [],
     ...overrides,
   };
 }
@@ -791,6 +795,62 @@ describe('selectSigns: hookId (E11(2))', () => {
     );
     expect(findSign(signs, 'orders-min-30-mph').hookId).toBe('test-hook');
     expect(findSign(signs, 'orders-ordinary').hookId).toBeNull();
+  });
+});
+
+describe('selectSigns: thirdPartyMark (Step 28a)', () => {
+  it('marks a listed selected file thirdPartyMark: true, and leaves an unlisted selected sign without the key', () => {
+    const selection = makeSelection({
+      allowLists: {
+        motorway: [],
+        direction: ['marked.svg', 'plain.svg'],
+        information: [],
+        'road-works': [],
+      },
+      thirdPartyMarks: [{ family: 'direction', file: 'marked.svg' }],
+    });
+    const chapters = [
+      chapter('direction-signs', [
+        pic('marked.svg', 'A marked emblem sign.'),
+        pic('plain.svg', 'An ordinary sign.'),
+      ]),
+    ];
+    const { signs } = selectSigns(
+      chapters,
+      selection,
+      makeShapeRules(),
+      bytesFor(['marked.svg', 'plain.svg']),
+      HOOKS_EMPTY,
+    );
+    const marked = findSign(signs, 'direction-marked');
+    const plain = findSign(signs, 'direction-plain');
+    expect(marked.thirdPartyMark).toBe(true);
+    expect('thirdPartyMark' in plain).toBe(false);
+  });
+
+  it('throws when a listed thirdPartyMarks file is not a selected sign', () => {
+    const selection = makeSelection({
+      allowLists: { motorway: [], direction: [], information: [], 'road-works': [] },
+      thirdPartyMarks: [{ family: 'direction', file: 'missing-emblem.svg' }],
+    });
+    const chapters = [chapter('direction-signs', [pic('present.svg', 'A present sign.')])];
+    expect(() =>
+      selectSigns(chapters, selection, makeShapeRules(), bytesFor(['present.svg']), HOOKS_EMPTY),
+    ).toThrow(/missing-emblem\.svg/);
+  });
+
+  // R4 keeps file names unique across every family, so the family half of
+  // the key only matters for an entry listed under the wrong family: it
+  // must throw, never mark the sign that shares its file name.
+  it('throws when a listed file is selected under a different family', () => {
+    const selection = makeSelection({
+      allowLists: { motorway: [], direction: ['marked.svg'], information: [], 'road-works': [] },
+      thirdPartyMarks: [{ family: 'motorway', file: 'marked.svg' }],
+    });
+    const chapters = [chapter('direction-signs', [pic('marked.svg', 'A marked emblem sign.')])];
+    expect(() =>
+      selectSigns(chapters, selection, makeShapeRules(), bytesFor(['marked.svg']), HOOKS_EMPTY),
+    ).toThrow('thirdPartyMarks: motorway/marked.svg is not a selected sign');
   });
 });
 

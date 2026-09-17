@@ -11,6 +11,9 @@
 // kept sentence absent from another page, a kept sentence with an
 // unexpected "©", a kept sentence with an unexpected "except" — on pages
 // built here so that kind is the ONLY problem `licenceProblems` reports.
+// The Step 28a describe block proves a page missing THIRD_PARTY_SENTENCE
+// (imported from scripts/lib/kyts-licence.ts, not redefined here) reports
+// it as its own "missing the sentence" problem.
 // Depends on: vitest, node:fs, node:url, node:path,
 // scripts/lib/kyts-licence.ts.
 // Depended on by: `npm test` (Vitest run).
@@ -19,7 +22,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { describe, it, expect } from 'vitest';
-import { licenceProblems, CROWN_LINE, OGL_SENTENCE } from '../../scripts/lib/kyts-licence';
+import {
+  licenceProblems,
+  CROWN_LINE,
+  OGL_SENTENCE,
+  THIRD_PARTY_SENTENCE,
+} from '../../scripts/lib/kyts-licence';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const standardHtml = readFileSync(
@@ -53,8 +61,6 @@ describe('licenceProblems', () => {
   });
 });
 
-const THIRD_PARTY_SENTENCE =
-  'Where we have identified any third party copyright information you will need to obtain permission from the copyright holders concerned.';
 const STANDARD_PARAGRAPHS = [CROWN_LINE, OGL_SENTENCE, THIRD_PARTY_SENTENCE];
 
 function page(paragraphs: string[]): string {
@@ -93,5 +99,15 @@ describe('licenceProblems: E11 problem-kind isolation', () => {
     const problems = licenceProblems([withExtra, withExtra]);
     expect(problems.length).toBeGreaterThan(0);
     expect(problems.every((p) => p.includes('unexpected "except" sentence'))).toBe(true);
+  });
+});
+
+describe('licenceProblems: Step 28a third-party sentence', () => {
+  it('reports a missing THIRD_PARTY_SENTENCE on every page it is absent from', () => {
+    const missingThirdParty = page([CROWN_LINE, OGL_SENTENCE]);
+    const problems = licenceProblems([missingThirdParty, missingThirdParty]);
+    expect(problems.length).toBeGreaterThan(0);
+    expect(problems.every((p) => p.includes('missing the sentence'))).toBe(true);
+    expect(problems.some((p) => p.includes(THIRD_PARTY_SENTENCE))).toBe(true);
   });
 });

@@ -174,5 +174,10 @@
     "information": 12,
     "road-works": 16
   },
-  "expectedTotal": 195
+  "expectedTotal": 195,
+  "thirdPartyMarks": [
+    { "family": "direction", "file": "national-trust.svg" },
+    { "family": "direction", "file": "english-heritage.svg" },
+    { "family": "direction", "file": "england.svg" }
+  ]
 }

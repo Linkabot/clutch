@@ -65,6 +65,9 @@ export const SignSchema = z.object({
   image: z.string().regex(SIGN_IMAGE),
   refs: z.array(SignRefSchema).min(1),
   licence: z.literal('Open Government Licence v3.0'),
+  // Present only on a sign listed in selection.json's thirdPartyMarks (Step
+  // 28a): the picture shows a third party's emblem the OGL does not cover.
+  thirdPartyMark: z.literal(true).optional(),
   source: z.object({
     chapterSlug: z.string(),
     chapterUrl: z.url(),
@@ -84,6 +87,7 @@ export const SignsFileSchema = z.object({
     url: z.url(),
     copyright: z.string(),
     statement: z.string(),
+    thirdPartyStatement: z.string(),
   }),
   signingSystemText: z.string(),
   signs: z.array(SignSchema),
@@ -101,6 +105,7 @@ export const AttributionManifestSchema = z.object({
       sha256: z.string().regex(SHA256),
       licence: z.string(),
       copyright: z.string(),
+      thirdPartyMark: z.literal(true).optional(),
     }),
   ),
 });
@@ -225,6 +230,7 @@ export const SignSelectionFileSchema = z.object({
     'road-works': z.number().int(),
   }),
   expectedTotal: z.number().int(),
+  thirdPartyMarks: z.array(z.object({ family: SignFamilySchema, file: z.string() })),
 });
 
 export type SignFamily = z.infer<typeof SignFamilySchema>;

@@ -12,9 +12,10 @@
 // own -- the card itself is absent when both rows are), a full-width primary
 // Button ("Play with this sign", navigating to /practice/tap?sign=<id> --
 // that route ships in Step 23) and a secondary button-styled Link to the
-// sign's Highway Code section, then the KYTS attribution line. While signs
-// are still loading, the screen renders no sign content; for an id that
-// matches no sign it renders "Sign not found." and a link back to the
+// sign's Highway Code section, then the KYTS attribution line, and, for a
+// sign marked `thirdPartyMark`, a third-party emblem notice under it. While
+// signs are still loading, the screen renders no sign content; for an id
+// that matches no sign it renders "Sign not found." and a link back to the
 // browser.
 // Depends on: react, react-router-dom, lucide-react (BookOpen),
 // ../../content/signs (loadSigns, getShapeRules, hookFor),
@@ -239,6 +240,17 @@ function SignScreen() {
           'Sign image and wording: Know Your Traffic Signs, © Crown copyright 2023, Open Government Licence v3.0.'
         }
       </p>
+
+      {/* Step 28a: a third-party emblem notice, shown only for a sign
+          flagged thirdPartyMark, kept as one JS string like the line
+          above it. */}
+      {sign.thirdPartyMark ? (
+        <p className="sign-page__attribution">
+          {
+            'The emblem on this sign belongs to a third party. The Open Government Licence does not cover third-party rights or trade marks, so reusing this picture may need permission from the owner of the emblem.'
+          }
+        </p>
+      ) : null}
     </div>
   );
 }

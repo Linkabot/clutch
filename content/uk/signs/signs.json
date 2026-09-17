@@ -8,7 +8,8 @@
     "name": "Open Government Licence v3.0",
     "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
     "copyright": "© Crown copyright 2023",
-    "statement": "This publication is licensed under the terms of the Open Government Licence v3.0 except where otherwise stated."
+    "statement": "This publication is licensed under the terms of the Open Government Licence v3.0 except where otherwise stated.",
+    "thirdPartyStatement": "Where we have identified any third party copyright information you will need to obtain permission from the copyright holders concerned."
   },
   "signingSystemText": "There are 3 basic types of traffic sign: signs that give orders, signs that warn and signs that give information. Each type has a different shape. A further guide to the function of a sign is its colour. All triangular signs are red. Circles give orders. Triangles warn. Rectangles inform. Blue circles generally give a mandatory instruction, such as ‘turn left’, or indicate a route available only to particular classes of traffic, e.g. buses and cycles only. Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed. Blue rectangles are used for information signs except on motorways, where blue is used for direction signs. Green rectangles are used for direction signs on primary routes. White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs. There are a few exceptions to the shape and colour rules, to give certain signs greater prominence. Examples are the ‘STOP’ and ‘GIVE WAY’ signs. The words ‘must’ or ‘must not’, when used in the descriptions that follow, refer to legal requirements that have to be obeyed. Previous chapter: Introduction Next chapter: Warning signs Know your traffic signs: Home",
   "signs": [
@@ -3907,6 +3908,7 @@
         }
       ],
       "licence": "Open Government Licence v3.0",
+      "thirdPartyMark": true,
       "source": {
         "chapterSlug": "direction-signs-on-all-purpose-roads",
         "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
@@ -3931,6 +3933,7 @@
         }
       ],
       "licence": "Open Government Licence v3.0",
+      "thirdPartyMark": true,
       "source": {
         "chapterSlug": "direction-signs-on-all-purpose-roads",
         "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",
@@ -4195,6 +4198,7 @@
         }
       ],
       "licence": "Open Government Licence v3.0",
+      "thirdPartyMark": true,
       "source": {
         "chapterSlug": "direction-signs-on-all-purpose-roads",
         "chapterUrl": "https://www.gov.uk/government/publications/know-your-traffic-signs/direction-signs-on-all-purpose-roads",

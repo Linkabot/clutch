@@ -19,7 +19,11 @@
 // pictures with alt="" (never the Match Pairs or Decoder tiles, which are
 // app-drawn art, D7/E18), and seeded IndexedDB progress (a fresh streak/XP
 // pair, then a stale streak that must read back as 0 while a fresh XP value
-// still loads). Runs against the production build (`vite preview`) with
+// still loads). Step 28a's "Third-party emblem notice" test proves the
+// three emblem sign pages (national-trust, english-heritage, england) show
+// both the unchanged attribution line and the new notice, and that an
+// ordinary sign page (warning-slippery-road) shows no notice at all. Runs
+// against the production build (`vite preview`) with
 // Playwright's WebKit engine and an iPhone 14 device profile, matching real
 // iOS Safari behaviour.
 // Depends on: @playwright/test, ./helpers (openAppAt).
@@ -440,6 +444,31 @@ test('Sign page', async ({ page }) => {
   await expect(heading).toHaveText('Crossroads.');
   await expect(page.getByText('COLLECTED')).toBeVisible();
   await expect(page.getByText('of 3 correct to collect')).toHaveCount(0);
+});
+
+test('Third-party emblem notice', async ({ page }) => {
+  const NOTICE =
+    'The emblem on this sign belongs to a third party. The Open Government Licence does not cover third-party rights or trade marks, so reusing this picture may need permission from the owner of the emblem.';
+  const ATTRIBUTION_LINE =
+    'Sign image and wording: Know Your Traffic Signs, © Crown copyright 2023, Open Government Licence v3.0.';
+
+  const heading = page.locator('h1');
+
+  const EMBLEM_CASES = [
+    { id: 'direction-national-trust', name: 'National Trust.' },
+    { id: 'direction-english-heritage', name: 'English Heritage.' },
+    { id: 'direction-england', name: 'England.' },
+  ];
+  for (const { id, name } of EMBLEM_CASES) {
+    await openAppAt(page, `/clutch/learn/signs/${id}`);
+    await expect(heading).toHaveText(name);
+    await expect(page.getByText(ATTRIBUTION_LINE)).toBeVisible();
+    await expect(page.getByText(NOTICE)).toBeVisible();
+  }
+
+  await page.goto('/clutch/learn/signs/warning-slippery-road');
+  await expect(heading).toHaveText('Slippery road.');
+  await expect(page.getByText(NOTICE)).toHaveCount(0);
 });
 
 test('Practice header and game cards', async ({ page }) => {

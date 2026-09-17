@@ -1,6 +1,7 @@
 // Unit tests for SignSchema (src/content/schemas/signs.ts): a valid sample
 // sign parses, and each of a bad id, a bad image path and a missing licence
-// is rejected.
+// is rejected; a sign with thirdPartyMark: true parses and thirdPartyMark:
+// false is rejected (Step 28a).
 // Depends on: vitest, src/content/schemas.
 // Depended on by: `npm test` (Vitest run).
 import { describe, it, expect } from 'vitest';
@@ -51,5 +52,13 @@ describe('SignSchema', () => {
     const sign = validSign();
     delete sign.licence;
     expect(SignSchema.safeParse(sign).success).toBe(false);
+  });
+
+  it('parses with thirdPartyMark: true, and rejects thirdPartyMark: false', () => {
+    const marked = { ...validSign(), thirdPartyMark: true };
+    expect(SignSchema.safeParse(marked).success).toBe(true);
+
+    const badMark = { ...validSign(), thirdPartyMark: false };
+    expect(SignSchema.safeParse(badMark).success).toBe(false);
   });
 });

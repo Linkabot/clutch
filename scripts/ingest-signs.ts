@@ -11,8 +11,9 @@
 // scripts/lib/govuk.ts, the one module in the repo allowed to call fetch.
 // Fails the run (throws, caught below) on any licence problem, on a
 // missing/failing allow-listed file (scripts/lib/kyts-select.ts's R7), on
-// a missing or misplaced R8 paragraph, when the final per-family or total
-// sign count doesn't exactly match content/uk/signs/selection.json's
+// a missing or misplaced R8 paragraph, on a selection.json thirdPartyMarks
+// entry that matches no selected sign (Step 28a), when the final per-family
+// or total sign count doesn't exactly match content/uk/signs/selection.json's
 // expectedCounts/expectedTotal, or when the assembled `signs.json`/
 // attribution manifest fails to validate against their schemas — nothing
 // is written to public/signs/ or content/uk/signs/ until every one of
@@ -26,7 +27,7 @@
 // (fetchContentApi, fetchCachedText, fetchCachedBytes), ./lib/kyts-parse.ts
 // (parseChapter), ./lib/kyts-select.ts (candidateFiles, selectSigns,
 // KytsChapter), ./lib/kyts-licence.ts (licenceProblems, CROWN_LINE,
-// OGL_SENTENCE), ../src/content/text.ts (htmlToText),
+// OGL_SENTENCE, THIRD_PARTY_SENTENCE), ../src/content/text.ts (htmlToText),
 // ../src/content/schemas/signs.ts (SignSelectionFileSchema,
 // ShapeRulesFileSchema, HooksFileSchema, SignsFileSchema,
 // AttributionManifestSchema, AttributionManifest, Sign types).
@@ -39,7 +40,12 @@ import { fetchCachedBytes, fetchCachedText, fetchContentApi } from './lib/govuk'
 import { parseChapter } from './lib/kyts-parse';
 import { candidateFiles, selectSigns } from './lib/kyts-select';
 import type { KytsChapter } from './lib/kyts-select';
-import { licenceProblems, CROWN_LINE, OGL_SENTENCE } from './lib/kyts-licence';
+import {
+  licenceProblems,
+  CROWN_LINE,
+  OGL_SENTENCE,
+  THIRD_PARTY_SENTENCE,
+} from './lib/kyts-licence';
 import { htmlToText } from '../src/content/text';
 import {
   SignSelectionFileSchema,
@@ -150,6 +156,7 @@ async function main(): Promise<void> {
     sha256: createHash('sha256').update(bytes).digest('hex'),
     licence: sign.licence,
     copyright: CROWN_LINE,
+    ...(sign.thirdPartyMark ? { thirdPartyMark: true as const } : {}),
   }));
 
   const signsFile = SignsFileSchema.parse({
@@ -163,6 +170,7 @@ async function main(): Promise<void> {
       url: OGL_URL,
       copyright: CROWN_LINE,
       statement: OGL_SENTENCE,
+      thirdPartyStatement: THIRD_PARTY_SENTENCE,
     },
     signingSystemText: htmlToText(signingSystem.details?.body ?? ''),
     signs,

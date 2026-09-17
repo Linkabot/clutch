@@ -18,18 +18,23 @@
 // colour rules' expected table copied here verbatim (classMismatch, amended
 // P7), every shipped .svg not listed in the manifest (orphanFiles, .svg
 // files only, plan.md amendment E10), and — plan.md amendment E14 — every
-// sign's hookId/image/refs/licence/source, every manifest entry's
-// sourceUrl/chapterUrl/licence/copyright (plus duplicate or one-sided
-// files), and signs.json's own publication/licence/signingSystemText,
-// against the same objects scripts/ingest-signs.ts would build from the
-// cache (provenanceMismatch). Never imports src/content/signs.ts — only the
-// Zod schemas and the same ingestion-library functions
+// sign's hookId/image/refs/licence/thirdPartyMark/source, every manifest
+// entry's sourceUrl/chapterUrl/licence/copyright/thirdPartyMark (plus
+// duplicate or one-sided files), and signs.json's own
+// publication/licence/signingSystemText, against the same objects
+// scripts/ingest-signs.ts would build from the cache (provenanceMismatch).
+// Step 28a additionally compares four sorted file lists — committed signs',
+// committed manifest's, fresh signs' and fresh manifest's own
+// thirdPartyMark===true entries — against EXPECTED_THIRD_PARTY_MARKS,
+// copied here rather than read from selection.json, counting any
+// difference as thirdPartyMismatch. Never imports src/content/signs.ts —
+// only the Zod schemas and the same ingestion-library functions
 // scripts/ingest-signs.ts itself uses.
 // Depends on: node:crypto, node:fs, node:path, ./lib/govuk.ts
 // (fetchContentApi, fetchCachedText, fetchCachedBytes), ./lib/kyts-parse.ts
 // (parseChapter), ./lib/kyts-select.ts (candidateFiles, selectSigns,
 // KytsChapter), ./lib/kyts-licence.ts (licenceProblems, CROWN_LINE,
-// OGL_SENTENCE), ../src/content/text.ts (htmlToText),
+// OGL_SENTENCE, THIRD_PARTY_SENTENCE), ../src/content/text.ts (htmlToText),
 // ../src/content/schemas/signs.ts (SignSelectionFileSchema,
 // ShapeRulesFileSchema, HooksFileSchema, SignsFileSchema,
 // AttributionManifestSchema, Sign, SignFamily types).
@@ -45,7 +50,12 @@ import { fetchCachedBytes, fetchCachedText, fetchContentApi } from './lib/govuk'
 import { parseChapter } from './lib/kyts-parse';
 import { candidateFiles, selectSigns } from './lib/kyts-select';
 import type { KytsChapter } from './lib/kyts-select';
-import { licenceProblems, CROWN_LINE, OGL_SENTENCE } from './lib/kyts-licence';
+import {
+  licenceProblems,
+  CROWN_LINE,
+  OGL_SENTENCE,
+  THIRD_PARTY_SENTENCE,
+} from './lib/kyts-licence';
 import { htmlToText } from '../src/content/text';
 import {
   SignSelectionFileSchema,
@@ -76,6 +86,7 @@ interface FreshManifestEntry {
   chapterUrl: string;
   licence: string;
   copyright: string;
+  thirdPartyMark?: true;
 }
 
 function chapterUrl(slug: string): string {
@@ -135,6 +146,17 @@ const FAMILY_ORDER: SignFamily[] = [
   'direction',
   'information',
   'road-works',
+];
+
+// The three files Step 28a expects marked `thirdPartyMark: true`, copied
+// here verbatim rather than read from selection.json -- so a wrong or
+// stale selection.json drifts loudly (thirdPartyMismatch) instead of
+// silently agreeing with itself, same reasoning as EXPECTED_RULE_COUNTS
+// above.
+const EXPECTED_THIRD_PARTY_MARKS = [
+  'signs/direction/england.svg',
+  'signs/direction/english-heritage.svg',
+  'signs/direction/national-trust.svg',
 ];
 
 /** Every `.svg` file under `dir`, returned as a path relative to `public/`
@@ -229,6 +251,7 @@ async function main(): Promise<void> {
     url: OGL_URL,
     copyright: CROWN_LINE,
     statement: OGL_SENTENCE,
+    thirdPartyStatement: THIRD_PARTY_SENTENCE,
   };
   const freshSigningSystemText = htmlToText(signingSystem.details?.body ?? '');
   const freshEntries: FreshManifestEntry[] = freshSigns.map((sign) => ({
@@ -237,6 +260,7 @@ async function main(): Promise<void> {
     chapterUrl: sign.source.chapterUrl,
     licence: sign.licence,
     copyright: CROWN_LINE,
+    ...(sign.thirdPartyMark ? { thirdPartyMark: true as const } : {}),
   }));
 
   const committedSigns = committedSignsFile.signs;
@@ -382,6 +406,7 @@ async function main(): Promise<void> {
       committed.image !== fresh.image ||
       JSON.stringify(committed.refs) !== JSON.stringify(fresh.refs) ||
       committed.licence !== fresh.licence ||
+      committed.thirdPartyMark !== fresh.thirdPartyMark ||
       JSON.stringify(committed.source) !== JSON.stringify(fresh.source)
     ) {
       provenanceMismatch += 1;
@@ -430,7 +455,8 @@ async function main(): Promise<void> {
         (committedEntry.sourceUrl !== freshEntry.sourceUrl ||
           committedEntry.chapterUrl !== freshEntry.chapterUrl ||
           committedEntry.licence !== freshEntry.licence ||
-          committedEntry.copyright !== freshEntry.copyright)
+          committedEntry.copyright !== freshEntry.copyright ||
+          committedEntry.thirdPartyMark !== freshEntry.thirdPartyMark)
       ) {
         provenanceMismatch += 1;
         console.log(`provenanceMismatch: manifest entry differs from the fresh one: ${file}`);
@@ -451,6 +477,50 @@ async function main(): Promise<void> {
     console.log('provenanceMismatch: signingSystemText differs from the fresh value');
   }
 
+  // --- thirdPartyMismatch (Step 28a) --------------------------------------
+  const expectedThirdPartyList = [...EXPECTED_THIRD_PARTY_MARKS].sort().join(',');
+  const thirdPartyLists: [string, string][] = [
+    [
+      'committed signs',
+      committedSigns
+        .filter((sign) => sign.thirdPartyMark === true)
+        .map((sign) => sign.image)
+        .sort()
+        .join(','),
+    ],
+    [
+      'committed manifest',
+      committedManifest.entries
+        .filter((entry) => entry.thirdPartyMark === true)
+        .map((entry) => entry.file)
+        .sort()
+        .join(','),
+    ],
+    [
+      'fresh signs',
+      freshSigns
+        .filter((sign) => sign.thirdPartyMark === true)
+        .map((sign) => sign.image)
+        .sort()
+        .join(','),
+    ],
+    [
+      'fresh manifest',
+      freshEntries
+        .filter((entry) => entry.thirdPartyMark === true)
+        .map((entry) => entry.file)
+        .sort()
+        .join(','),
+    ],
+  ];
+  let thirdPartyMismatch = 0;
+  for (const [label, list] of thirdPartyLists) {
+    if (list !== expectedThirdPartyList) {
+      thirdPartyMismatch += 1;
+      console.log(`thirdPartyMismatch: ${label} marks ${list}, expected ${expectedThirdPartyList}`);
+    }
+  }
+
   const signs = committedSigns.length;
   const files = diskSvgRelPaths.length;
   const licenceProblemsCount = licenceProblemsList.length;
@@ -462,7 +532,8 @@ async function main(): Promise<void> {
       `files=${files} bytesKiB=${bytesKiB.toFixed(1)} maxKiB=${maxKiB.toFixed(1)} ` +
       `captionMismatch=${captionMismatch} hashMismatch=${hashMismatch} ` +
       `licenceProblems=${licenceProblemsCount} classMismatch=${classMismatch} ` +
-      `orphanFiles=${orphanFiles} provenanceMismatch=${provenanceMismatch}`,
+      `orphanFiles=${orphanFiles} provenanceMismatch=${provenanceMismatch} ` +
+      `thirdPartyMismatch=${thirdPartyMismatch}`,
   );
 
   const expectedCounts: Record<SignFamily, number> = {
@@ -482,7 +553,8 @@ async function main(): Promise<void> {
     licenceProblemsCount === 0 &&
     classMismatch === 0 &&
     orphanFiles === 0 &&
-    provenanceMismatch === 0;
+    provenanceMismatch === 0 &&
+    thirdPartyMismatch === 0;
 
   if (!ok) process.exitCode = 1;
 }

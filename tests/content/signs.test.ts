@@ -12,9 +12,13 @@
 // checks every rule sentence and the exceptions sentence is a verbatim
 // substring of signingSystemText, checks every content/uk/signs/hooks.json
 // cite against signingSystemText or the named sign's caption, and checks
-// every Decoder example file against its pair's shape and colour.
+// every Decoder example file against its pair's shape and colour. Step 28a
+// adds: exactly the three emblem sign ids/manifest files carry
+// thirdPartyMark: true (and no sign carries any other value), and
+// signs.json's licence.thirdPartyStatement equals THIRD_PARTY_SENTENCE.
 // Depends on: vitest, node:fs, node:crypto, node:path, src/content/schemas,
-// scripts/lib/kyts-select.ts, tests/content/helpers.ts.
+// scripts/lib/kyts-select.ts, scripts/lib/kyts-licence.ts (THIRD_PARTY_SENTENCE),
+// tests/content/helpers.ts.
 // Depended on by: `npm run validate:content` / `npm test`.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -30,6 +34,7 @@ import {
   type HooksFile,
 } from '../../src/content/schemas';
 import { classifySign } from '../../scripts/lib/kyts-select';
+import { THIRD_PARTY_SENTENCE } from '../../scripts/lib/kyts-licence';
 import { CONTENT_ROOT, readJson } from './helpers';
 
 const PUBLIC_ROOT = join(CONTENT_ROOT, '..', '..', 'public');
@@ -38,6 +43,20 @@ const MAX_SVG_BYTES = 153_600;
 // The two signs P7 named, whose `meaning` is the whole paragraph while
 // `name` is only the text before its first colon.
 const R8_IDS = ['orders-stop-sign-and-road-marking', 'orders-give-way-road-marking'];
+
+// The three emblem pictures Step 28a marks thirdPartyMark: true, and their
+// matching sign ids -- both sorted, matching how the tests below sort the
+// signs/manifest results before comparing.
+const THIRD_PARTY_IDS = [
+  'direction-england',
+  'direction-english-heritage',
+  'direction-national-trust',
+].sort();
+const THIRD_PARTY_FILES = [
+  'signs/direction/england.svg',
+  'signs/direction/english-heritage.svg',
+  'signs/direction/national-trust.svg',
+].sort();
 
 const signsFile = readJson<SignsFile>('signs/signs.json');
 const manifest = readJson<AttributionManifest>('signs/attribution.json');
@@ -123,6 +142,24 @@ describe('content/uk/signs/signs.json', () => {
       }
     }
   });
+
+  it('marks exactly the three emblem pictures thirdPartyMark: true, and no other value (Step 28a)', () => {
+    const markedIds = signsFile.signs
+      .filter((sign) => sign.thirdPartyMark === true)
+      .map((sign) => sign.id)
+      .sort();
+    expect(markedIds).toEqual(THIRD_PARTY_IDS);
+
+    for (const sign of signsFile.signs) {
+      if ('thirdPartyMark' in sign) {
+        expect(sign.thirdPartyMark).toBe(true);
+      }
+    }
+  });
+
+  it("has licence.thirdPartyStatement equal to gov.uk's exact sentence (Step 28a)", () => {
+    expect(signsFile.licence.thirdPartyStatement).toBe(THIRD_PARTY_SENTENCE);
+  });
 });
 
 describe('content/uk/signs/attribution.json', () => {
@@ -153,6 +190,14 @@ describe('content/uk/signs/attribution.json', () => {
       expect(bytes.length).toBe(entry.bytes);
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(entry.sha256);
     }
+  });
+
+  it('marks exactly the three emblem picture files thirdPartyMark: true (Step 28a)', () => {
+    const markedFiles = manifest.entries
+      .filter((entry) => entry.thirdPartyMark === true)
+      .map((entry) => entry.file)
+      .sort();
+    expect(markedFiles).toEqual(THIRD_PARTY_FILES);
   });
 });
 

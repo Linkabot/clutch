@@ -47,6 +47,10 @@
 
 Sign pictures and sign wording: Know Your Traffic Signs, Department for Transport, © Crown copyright 2023. Licensed under the Open Government Licence v3.0: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3
 
+The publication's licence notice also says: "Where we have identified any third party copyright information you will need to obtain permission from the copyright holders concerned."
+
 Contains public sector information licensed under the Open Government Licence v3.0.
+
+Three pictures show a third party's emblem, which the Open Government Licence does not cover: National Trust (signs/direction/national-trust.svg), English Heritage (signs/direction/english-heritage.svg) and England (signs/direction/england.svg). Each is marked "thirdPartyMark": true in signs/attribution.json, and its sign page shows a notice.
 
 The pictures are reproduced unaltered from https://www.gov.uk/government/publications/know-your-traffic-signs. Every picture and its source address is listed in signs/attribution.json.

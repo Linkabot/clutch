@@ -2,7 +2,9 @@
 // (shape-rules.json, hooks.json, selection.json) parse against their Zod
 // schemas, and match the counts fixed by plan.md § Shape and colour rules,
 // § Memory hooks and § Chosen signs -- including plan amendment P7 (STOP
-// and GIVE WAY join the set: orders count 52 -> 54, C1 gains 2 files).
+// and GIVE WAY join the set: orders count 52 -> 54, C1 gains 2 files) and
+// selection.json's thirdPartyMarks holding exactly the three emblem
+// pictures, in order (Step 28a).
 // Depends on: vitest, src/content/schemas, tests/content/helpers.ts.
 // Depended on by: `npm run validate:content` / `npm test`.
 import { describe, it, expect } from 'vitest';
@@ -114,5 +116,13 @@ describe('content/uk/signs/selection.json', () => {
       'road-works': 16,
     });
     expect(selection.expectedTotal).toBe(195);
+  });
+
+  it('has the 3 third-party marks, in order (Step 28a)', () => {
+    expect(selection.thirdPartyMarks).toEqual([
+      { family: 'direction', file: 'national-trust.svg' },
+      { family: 'direction', file: 'english-heritage.svg' },
+      { family: 'direction', file: 'england.svg' },
+    ]);
   });
 });

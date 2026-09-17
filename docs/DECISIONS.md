@@ -91,10 +91,11 @@ and Match Pairs use only captions of 60 characters or fewer, so every name
 fits a four-option grid or a 104px tile; Tap the sign uses every sign, so
 every sign stays collectable.
 Why: KYTS is DfT's own sign reference (one of the three books DVSA bases theory questions on), Crown-copyright and OGL
-licensed, so it is legal to reuse and distribute, and it doubles as
-revision the same way the Highway Code does. Shipping the real pictures
-(never resized, re-encoded, recoloured or edited) rather than redrawing
-them keeps the sign set trustworthy.
+licensed, so it is legal to reuse and distribute (the OGL does not cover
+the third-party emblems in three pictures, see Decision 15), and it
+doubles as revision the same way the Highway Code does. Shipping the real
+pictures (never resized, re-encoded, recoloured or edited) rather than
+redrawing them keeps the sign set trustworthy.
 Constraint: The whole app's Workbox precache budget rose to 8192 KiB to
 carry the sign pictures; no individual sign SVG may exceed 150 KiB, and
 KYTS SVGs are content-scanned for unsafe markup before they are shipped.
@@ -103,3 +104,24 @@ and there are no levels yet. A local-midnight day streak is saved across
 sessions; a missed day resets it. A sign is collected after 3 correct
 identifications of it in any game, on any day; uncollected signs show a
 0–3 progress dots.
+
+## Decision 15 — Third-party emblems in sign pictures (17 September 2026)
+
+Choice: Keep the three Know Your Traffic Signs pictures that show a
+third party's emblem (`direction/national-trust.svg`,
+`direction/english-heritage.svg`, `direction/england.svg`) and label
+them. `content/uk/signs/selection.json` lists them in `thirdPartyMarks`;
+`npm run ingest:signs` marks each `"thirdPartyMark": true` in
+`signs.json` and both attribution manifests and copies gov.uk's
+third-party sentence into `signs.json`'s licence block;
+`npm run verify:signs` fails unless exactly these three are marked;
+each one's sign page shows a notice under the attribution line; and
+`public/ATTRIBUTION.md` names them.
+Why: The Open Government Licence does not cover trade marks or
+third-party rights the publisher is not authorised to license, and
+the licence scan reads page text, so it cannot see an
+emblem inside a picture. The pictures are road-sign symbols reproduced
+unaltered from a government publication in a free learning app, so
+labelling them keeps every tourist sign without implying the emblems
+are Crown material. Dropping them (195 signs down to 192) was the
+fallback.
