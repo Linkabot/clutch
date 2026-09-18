@@ -15,7 +15,7 @@ Status: done
 ## Phase 2 — Road signs & first games
 
 Goal: the first playable slice.
-Status: in progress
+Status: done (phone test passed, 18 September 2026)
 
 ## Phase 3 — Theory core
 
