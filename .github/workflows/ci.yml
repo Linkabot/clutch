@@ -1,7 +1,9 @@
-# CI: lint, typecheck, unit test, build and e2e-test every push/PR, then
-# deploy the built `dist/` to GitHub Pages on pushes to `main`.
-# Depends on: package.json scripts (lint, typecheck, test, build, postbuild,
-# check:contrast, check:precache, check:interactives), playwright.config.ts,
+# CI: lint, format-check, typecheck, unit test, build and e2e-test every
+# push/PR, then deploy the built `dist/` to GitHub Pages on pushes to `main`.
+# Both jobs are pinned to ubuntu-24.04: GitHub's "latest" Ubuntu runner moves to 26
+# from 19 October 2026, which may change WebKit's system dependencies.
+# Depends on: package.json scripts (lint, format:check, typecheck, test, build,
+# postbuild, check:contrast, check:precache, check:interactives), playwright.config.ts,
 # tests/e2e/*.spec.ts.
 # Depended on by: GitHub Pages (deploy job).
 name: CI
@@ -23,7 +25,7 @@ concurrency:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -32,6 +34,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - name: Format check
+        run: npm run format:check
       - run: npm run check:contrast
       - run: npm run typecheck
       - run: npm test
@@ -54,7 +58,7 @@ jobs:
   deploy:
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
