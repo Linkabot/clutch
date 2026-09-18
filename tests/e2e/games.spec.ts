@@ -88,8 +88,13 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
       )
       .toEqual(['Option A', 'Option B', 'Option C', 'Option D']);
 
+    // Every question's answer id, checked for distinctness before the
+    // summary (review F2; restores E25 item 7).
+    const answerIds: string[] = [];
+
     // Question 1: right.
     let currentId = await currentAnswerId(page);
+    answerIds.push(currentId);
     await page.locator(`[data-sign-id="${currentId}"]`).click();
 
     await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
@@ -119,6 +124,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
 
     await continueButton.click();
     currentId = await waitForNextAnswerId(page, currentId);
+    answerIds.push(currentId);
     await expect(page.locator('.game-top-bar__label')).toHaveText('2/10');
 
     // Question 2: wrong -- tap a tile that is not the answer.
@@ -145,6 +151,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
 
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     currentId = await waitForNextAnswerId(page, currentId);
+    answerIds.push(currentId);
     await expect(page.locator('.game-top-bar__label')).toHaveText('3/10');
 
     // Questions 3-9: right, using the prompt's own data-answer-id.
@@ -156,6 +163,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
       }
       await page.getByRole('button', { name: 'Continue', exact: true }).click();
       currentId = await waitForNextAnswerId(page, currentId);
+      answerIds.push(currentId);
       await expect(page.locator('.game-top-bar__label')).toHaveText(`${q + 1}/10`);
     }
 
@@ -165,6 +173,9 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
     await expect(page.getByText('8 in a row')).toBeVisible();
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
+
+    expect(answerIds).toHaveLength(10);
+    expect(new Set(answerIds).size).toBe(10);
 
     await expect(page.getByText('Round complete')).toBeVisible();
     await expect(page.getByText('9 of 10 right')).toBeVisible();

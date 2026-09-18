@@ -1,7 +1,9 @@
 // Fetches public/ATTRIBUTION.md (self-hosted, precached since Step 3) and
 // renders it on the Me tab in a surface card, above the fixed "not an
 // official app" disclaimer and the OGL licence sentence — both of which stay
-// visible even before any Highway Code content ships.
+// visible even before any Highway Code content ships. The sentence's words
+// "Open Government Licence v3.0" link out to the licence text itself
+// (plan.md amendment E44, licence lane S1).
 // Depends on: react.
 // Depended on by: src/features/me/MeScreen.tsx.
 import { useEffect, useState } from 'react';
@@ -36,7 +38,15 @@ function Attribution() {
         Not an official DVSA or government app.
       </p>
       <p style={{ color: 'var(--color-muted)' }}>
-        Contains public sector information licensed under the Open Government Licence v3.0.
+        Contains public sector information licensed under the{' '}
+        <a
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="external noopener"
+          target="_blank"
+        >
+          Open Government Licence v3.0
+        </a>
+        .
       </p>
       <h2>Attribution</h2>
       <div

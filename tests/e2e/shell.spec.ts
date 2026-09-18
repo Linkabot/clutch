@@ -4,7 +4,9 @@
 // worker registration/offline readiness, tab navigation with icons and
 // aria-current, offline reload, and (Step 12, A-S3) that the header's Back
 // button falls back to the owning tab on a cold deep link instead of
-// leaving the app).
+// leaving the app), and (amendment E44, licence lane S1) that the Me tab's
+// fixed OGL sentence links "Open Government Licence v3.0" to the licence
+// text.
 // The offline-reload test (amendment A2) spawns a second `vite preview`
 // server on port 4174 and kills it with a real OS signal, because
 // `context.setOffline(true)` is a hard network kill WebKit's service worker
@@ -57,6 +59,13 @@ test('service worker registers and Me shows Offline ready', async ({ page }) => 
     'Not an official DVSA or government app.',
   );
   await expect(page.getByText('Overpass')).toBeVisible();
+
+  // Amendment E44, licence lane S1: the OGL sentence's own words link to
+  // the licence text.
+  await expect(page.getByRole('link', { name: 'Open Government Licence v3.0' })).toHaveAttribute(
+    'href',
+    'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
+  );
 });
 
 test('tabs navigate', async ({ page }) => {

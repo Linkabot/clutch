@@ -22,7 +22,12 @@
 // still loads). Step 28a's "Third-party emblem notice" test proves the
 // three emblem sign pages (national-trust, english-heritage, england) show
 // both the unchanged attribution line and the new notice, and that an
-// ordinary sign page (warning-slippery-road) shows no notice at all. Runs
+// ordinary sign page (warning-slippery-road) shows no notice at all.
+// Amendment E44's "Filter taps add no Back steps" (review F1) proves a
+// family tap, a sign page visit and Back, then a collected tap and an All
+// tap, and a second Back, leave the browser in exactly one Back tap back to
+// Learn -- every filter tap replaces the current history entry rather than
+// pushing a new one. Runs
 // against the production build (`vite preview`) with
 // Playwright's WebKit engine and an iPhone 14 device profile, matching real
 // iOS Safari behaviour.
@@ -273,6 +278,39 @@ test('Signs browser filters', async ({ page }) => {
     'aria-pressed',
     'true',
   );
+});
+
+test('Filter taps add no Back steps', async ({ page }) => {
+  await openAppAt(page, '/clutch/learn');
+
+  await page.getByRole('link', { name: 'Traffic signs' }).click();
+  await expect(page).toHaveURL(/\/clutch\/learn\/signs$/);
+
+  await page.getByRole('button', { name: 'Warning', exact: true }).click();
+  await expect(page).toHaveURL(/\/clutch\/learn\/signs\?family=warning$/);
+
+  const grid = page.getByTestId('signs-grid');
+  const firstTile = grid.getByRole('link').first();
+  const signHref = await firstTile.getAttribute('href');
+  if (!signHref) throw new Error('first tile has no href');
+  await firstTile.click();
+  await expect(page).toHaveURL(new RegExp(`${signHref}$`));
+
+  await page.getByRole('button', { name: 'Back' }).click();
+  await expect(page).toHaveURL(/\/clutch\/learn\/signs\?family=warning$/);
+  await expect(page.getByRole('button', { name: 'Warning', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+
+  await page.getByRole('button', { name: 'Collected', exact: true }).click();
+  // The `All` family chip -- not the toggle's `All warning signs` half,
+  // which a non-exact `All` would also match with family=warning.
+  await page.getByRole('button', { name: 'All', exact: true }).click();
+
+  await page.getByRole('button', { name: 'Back' }).click();
+  await expect(page).toHaveURL(/\/clutch\/learn$/);
+  await expect(page.getByRole('heading', { name: 'Learn' })).toBeVisible();
 });
 
 test('Signs browser shows collection progress', async ({ page }) => {

@@ -4,7 +4,10 @@
 // correct answers); a three-column grid shows each surviving sign's
 // picture, caption and progress (0-3 dots, or a COLLECTED badge at 3).
 // Filter state lives in the URL (?family=<id>&collected=1), so it survives
-// a reload and a Back tap; changing the family chip keeps the collected
+// a reload and a Back tap; a filter tap replaces the current history entry
+// rather than adding one, so Back from a sign page returns to the filtered
+// browser and Back from the browser leaves it in one tap (plan.md amendment
+// E44, review F1). Changing the family chip keeps the collected
 // choice (plan.md amendment E18) -- the toggle's own badge then counts
 // collected signs within the newly chosen family, not the whole catalogue
 // (computed by reusing filterSigns's own predicate, amendment E19, rather
@@ -90,7 +93,7 @@ function SignsScreen() {
     } else {
       params.set('family', next);
     }
-    setSearchParams(params);
+    setSearchParams(params, { replace: true });
   }
 
   function selectCollected(next: boolean): void {
@@ -100,7 +103,7 @@ function SignsScreen() {
     } else {
       params.delete('collected');
     }
-    setSearchParams(params);
+    setSearchParams(params, { replace: true });
   }
 
   return (
