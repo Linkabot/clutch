@@ -31,6 +31,8 @@ const PAIRS = [
   ['on-sign', 'sign-red'],
   ['sign-ink', 'marking-yellow'],
   ['sign-ink', 'on-sign'],
+  ['link', 'page'],
+  ['link', 'surface'],
 ];
 
 const MIN_RATIO = 4.5;

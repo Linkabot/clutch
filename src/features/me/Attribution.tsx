@@ -40,6 +40,7 @@ function Attribution() {
       <p style={{ color: 'var(--color-muted)' }}>
         Contains public sector information licensed under the{' '}
         <a
+          className="text-link"
           href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
           rel="external noopener"
           target="_blank"

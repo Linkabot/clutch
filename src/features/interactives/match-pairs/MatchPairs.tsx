@@ -2,9 +2,12 @@
 // src/app/routes.tsx). A full-screen layer over the app shell (scout-e.md's
 // CHOSEN 1A PairsA artboard; plan.md Step 25 and amendment E31): GameTopBar
 // (Close, locked pairs as a bar and an n/5 label), the MATCH PAIRS badge,
-// "Tap a sign, then its name." and a board of two independent columns of
-// tiles -- 5 sign pictures (Sign 1-5, in pick order) and their 5 names,
-// shuffled. Tapping a sign selects it (a yellow halo); tapping its own name
+// "Tap a sign, then its name." and a board of two grid columns of tiles
+// (PS29, M14: sign tiles and name tiles are direct grid children sharing
+// row tracks, so row N's sign and row N's name always share a top and a
+// height) -- 5 sign pictures (Sign 1-5, in pick order) in column 1 and
+// their 5 names, shuffled, in column 2. Tapping a sign selects it (a
+// yellow halo); tapping its own name
 // locks the pair (a green border, a tick and faded content), with a +10 XP
 // pop on the name when it was matched on the first try; tapping another
 // name flashes that name red for ./pairs' FLASH_MS (shaking only when
@@ -211,60 +214,56 @@ function MatchPairs() {
 
       {state !== null && !showEnd && (
         <div className="pairs__board">
-          <div className="pairs__column">
-            {state.round.signs.map((sign, index) => {
-              const locked = state.lockedIds.includes(sign.id);
-              const selected = state.selectedId === sign.id;
-              return (
-                <button
-                  key={sign.id}
-                  type="button"
-                  className="pairs__tile pairs__tile--sign"
-                  data-pair-sign=""
-                  data-sign-id={sign.id}
-                  data-state={locked ? 'locked' : selected ? 'selected' : undefined}
-                  aria-label={`Sign ${index + 1}`}
-                  aria-pressed={selected}
-                  disabled={locked}
-                  onClick={() => handleSignTap(sign.id)}
-                >
-                  <span className="pairs__content">
-                    <span className="pairs__picture">
-                      <SignImage sign={sign} alt="" />
-                    </span>
+          {state.round.signs.map((sign, index) => {
+            const locked = state.lockedIds.includes(sign.id);
+            const selected = state.selectedId === sign.id;
+            return (
+              <button
+                key={sign.id}
+                type="button"
+                className="pairs__tile pairs__tile--sign"
+                data-pair-sign=""
+                data-sign-id={sign.id}
+                data-state={locked ? 'locked' : selected ? 'selected' : undefined}
+                aria-label={`Sign ${index + 1}`}
+                aria-pressed={selected}
+                disabled={locked}
+                onClick={() => handleSignTap(sign.id)}
+              >
+                <span className="pairs__content">
+                  <span className="pairs__picture">
+                    <SignImage sign={sign} alt="" />
                   </span>
-                  {locked && <TickBadge />}
-                </button>
-              );
-            })}
-          </div>
+                </span>
+                {locked && <TickBadge />}
+              </button>
+            );
+          })}
 
-          <div className="pairs__column">
-            {state.round.names.map((sign) => {
-              const locked = state.lockedIds.includes(sign.id);
-              const wrong = !locked && state.wrong?.nameId === sign.id;
-              return (
-                <button
-                  key={sign.id}
-                  type="button"
-                  className="pairs__tile pairs__tile--name"
-                  data-pair-name=""
-                  data-sign-id={sign.id}
-                  data-state={locked ? 'locked' : wrong ? 'wrong' : undefined}
-                  disabled={locked}
-                  onClick={() => handleNameTap(sign.id)}
-                >
-                  <span className="pairs__content">{sign.name}</span>
-                  {locked && <TickBadge />}
-                  {locked && state.earnedIds.includes(sign.id) && (
-                    <span className="pairs__xp" aria-hidden="true">
-                      +10 XP
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+          {state.round.names.map((sign) => {
+            const locked = state.lockedIds.includes(sign.id);
+            const wrong = !locked && state.wrong?.nameId === sign.id;
+            return (
+              <button
+                key={sign.id}
+                type="button"
+                className="pairs__tile pairs__tile--name"
+                data-pair-name=""
+                data-sign-id={sign.id}
+                data-state={locked ? 'locked' : wrong ? 'wrong' : undefined}
+                disabled={locked}
+                onClick={() => handleNameTap(sign.id)}
+              >
+                <span className="pairs__content">{sign.name}</span>
+                {locked && <TickBadge />}
+                {locked && state.earnedIds.includes(sign.id) && (
+                  <span className="pairs__xp" aria-hidden="true">
+                    +10 XP
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

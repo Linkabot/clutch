@@ -145,7 +145,7 @@ function RuleScreen() {
       </div>
       <footer style={{ color: 'var(--color-muted)' }}>
         <p>{getHighwayCodeIndex().licence.statement}</p>
-        <a href={govUkHref} rel="external noopener" target="_blank">
+        <a className="text-link" href={govUkHref} rel="external noopener" target="_blank">
           View on GOV.UK (online)
         </a>
       </footer>

@@ -27,6 +27,7 @@
   --color-tab-bar: #ffffff;
   --color-tab-active: #0a5db0;
   --color-tab-inactive: #6b6e75;
+  --color-link: #1d4ed8;
   --color-sign-blue: #0a5db0;
   --color-sign-blue-shadow: #073f78;
   --color-sign-green: #00703c;
@@ -64,6 +65,7 @@
     --color-tab-bar: #16181d;
     --color-tab-active: #5aa8f2;
     --color-tab-inactive: #8d9098;
+    --color-link: #8ab4f8;
     --color-map-grass: #1c352e;
     --color-road: #2a2f3e;
     /* Sign, plate, roundel and marking colours (sign-blue, sign-green,
@@ -107,6 +109,42 @@ h4,
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 800;
   line-height: 1.2;
+}
+
+/* PS16: links elsewhere in the app (card and row <Link>s) keep their own
+   styling; this class is for links inside a paragraph of reading text,
+   which otherwise render in the surrounding ink colour with no visible
+   affordance that they are tappable. */
+a.text-link {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* PS19: iOS's press-and-hold text selection fires on tap targets meant to
+   be tapped, not read, which reads as a bug on a phone. Reading text
+   (paragraphs, headings, rule and sign text, .text-link) stays selectable;
+   the rule below restores that for the inline links inside rendered
+   Highway Code text too (amendment E1), since this rule's own
+   a:not(.text-link) would otherwise catch them as well. */
+button,
+[role='button'],
+a:not(.text-link),
+label,
+summary {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* E1: links inside rendered Highway Code text (e.g. rule 103's "Signals to
+   other road users") are reading text, not tap targets, and stay
+   selectable; diagram links (.hc-image, src/features/code/hc-html.css)
+   are still tap targets and keep the PS19 rule above. */
+.hc-html a:not(.hc-image) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 
 .lead {
