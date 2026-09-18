@@ -18,4 +18,4 @@ installing the app on an iPhone.
 
 ## Licence and attribution
 
-Content sourced from gov.uk is used under the Open Government Licence v3.0; see `docs/CONTENT-GUIDE.md` and `docs/DECISIONS.md` for the full rules on sources and attribution.
+The code is under the MIT License (`LICENSE`). gov.uk content — the Highway Code, the National Standard, and the Know Your Traffic Signs pictures and captions — is used under the Open Government Licence v3.0, not the MIT License. The OGL does not cover the third-party emblems in three sign pictures (National Trust, English Heritage, England). `public/ATTRIBUTION.md` lists every source and those exceptions. See `docs/CONTENT-GUIDE.md` and `docs/DECISIONS.md` for the full rules on sources and attribution.

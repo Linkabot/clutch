@@ -102,7 +102,7 @@ KYTS SVGs are content-scanned for unsafe markup before they are shipped.
 Progress: +10 XP per correct answer or first-try pair; XP never goes down
 and there are no levels yet. A local-midnight day streak is saved across
 sessions; a missed day resets it. A sign is collected after 3 correct
-identifications of it in any game, on any day; uncollected signs show a
+identifications of it in any game, on any day; uncollected signs show
 0–3 progress dots.
 
 ## Decision 15 — Third-party emblems in sign pictures (17 September 2026)
@@ -125,3 +125,12 @@ unaltered from a government publication in a free learning app, so
 labelling them keeps every tourist sign without implying the emblems
 are Crown material. Dropping them (195 signs down to 192) was the
 fallback.
+
+## Decision 16 — Code licence (18 September 2026)
+
+Choice: The code is MIT (`LICENSE`); it covers the code only. gov.uk
+content stays Crown copyright under the Open Government Licence v3.0,
+the three emblems excepted (Decision 15); `public/ATTRIBUTION.md`
+remains the record of sources.
+Why: MIT was chosen as short and permissive, and because a public
+repo with no licence reads as all rights reserved.

@@ -68,7 +68,7 @@ layout route (`App`), under `createBrowserRouter` with
 | `/` (index)            | `JourneyScreen`             | Journey tab                                                                           |
 | `/learn`               | `LearnScreen`               | Learn tab hub; links into the Highway Code, the Signs browser and their search        |
 | `/learn/code`          | `HighwayCodeSectionsScreen` | Highway Code sections grouped by kind, each row showing its rule range                |
-| `/learn/code/search`   | `SearchScreen`              | offline MiniSearch over every rule and non-rule section                               |
+| `/learn/code/search`   | `SearchScreen`              | offline MiniSearch over every rule and section except the Index                       |
 | `/learn/signs`         | `SignsScreen`               | the Signs browser; filter state lives in the URL (`?family=<id>&collected=1`)         |
 | `/learn/signs/:id`     | `SignScreen`                | one sign's own page                                                                   |
 | `/learn/code/:slug`    | `SectionScreen`             | one Highway Code section — preamble + rule rows, or the full body for other sections  |
@@ -109,7 +109,9 @@ button and tab bar stay visible.
 `?sign=<id>` on `/practice/tap` seeds question 1 (`SignScreen`'s "Play with
 this sign" button navigates to `/practice/tap?sign=<id>`; the param is
 dropped from the URL on Play again). `?family=<id>` and `?collected=1` on
-`/learn/signs` filter the Signs browser.
+`/learn/signs` filter the Signs browser. A filter tap replaces the current
+history entry rather than adding one, so Back from a sign page returns to
+the filtered browser and Back from the browser leaves it in one tap.
 
 On a case-insensitive file system (Windows/macOS default),
 `src/features/interactives/shape-colour-decoder/index.tsx` imports
@@ -145,8 +147,8 @@ imports that is reachable from NO OTHER root — so a chunk shared with the
 shell, a Highway Code section, or another game is never double-charged. It
 fails any entry over its `sizeBudgetKiB` and prints
 `check:interactives: <n> interactives, largest <x> KiB`. CI
-(`.github/workflows/ci.yml`) runs `check:contrast` and `check:precache`, but
-not `check:interactives` — it is a local/manual gate.
+(`.github/workflows/ci.yml`) runs it directly after `check:precache`, so a game
+over its budget fails the build.
 
 ## Shared game helpers
 
@@ -199,8 +201,12 @@ given) and `getSignProgress()`.
 `src/engine/progress-state.ts`'s Zustand `useProgressStore` wraps that store
 over the default Dexie `db`, binding the one real `now: () => new Date()`
 clock at this single call site. `load()` shares one in-flight promise across
-concurrent callers and never touches IndexedDB at import time — only the
-first time a screen calls `load()`.
+concurrent callers and never touches IndexedDB at import time. `load()`
+reads again when the local day has changed since the last read, keeping the
+old numbers on screen until the new ones arrive, so a streak that lapsed
+overnight is not shown; and the first `load()` adds a `visibilitychange`
+listener that calls `load()` whenever the app becomes visible, which is what
+an iPhone does when it resumes a suspended home-screen app.
 
 **Write-failure policy:** every screen that records answers
 (`TapTheSignScreen.tsx`, `SignSprint.tsx`, `MatchPairs.tsx`) queues its Dexie
@@ -212,7 +218,7 @@ never stops or interrupts play.
 
 Highway Code, facts and syllabus content lives under `content/uk/` at the repo root, ingested by the scripts in `scripts/` and never hand-edited (see `docs/CONTENT-GUIDE.md`). Inside the app, `src/content/loaders.ts` reads the Highway Code and `facts.json`, and `src/content/signs.ts` reads `content/uk/signs/` — each module owns its own subtree, so between the two of them every result is parsed with the Zod schemas in `src/content/schemas/` before use, and no static `import x from '*.json'` appears anywhere else in `src/`. `getHighwayCodeIndex()` and `getFacts()` load the small index and facts files eagerly, bundled into the main chunk; `loadSection(slug)`, `loadAllSections()` and `loadRule(id)` load each Highway Code section lazily, one `import.meta.glob` chunk per section file. `src/content/signs.ts` follows the same eager/lazy split: `getShapeRules()` and `getHooks()` load eagerly, while `loadSigns()` is a lazy `import.meta.glob` for `content/uk/signs/signs.json`, rejecting with `SignsNotFound` if the glob matches nothing. `signImageUrl(sign)` builds a sign's `<img src>` from `import.meta.env.BASE_URL + sign.image` — pictures are never statically imported. `hookFor(sign, context)` implements § Memory hooks' display rule (see `docs/CONTENT-GUIDE.md`). Vite code-splits every lazy chunk out of the main bundle, and Workbox's existing `**/*.js` precache glob (see PWA update model, above) picks them up automatically, so every section and the sign catalogue are available offline without being fetched until a screen actually needs them.
 
-`src/features/code/search.ts` builds an in-memory MiniSearch index over every rule and non-rule section, memoised behind one promise that calls `loadAllSections()` the first time anything searches. There is no prebuilt search index file shipped with the app — it is built once, at runtime, from the same precached chunks.
+`src/features/code/search.ts` builds an in-memory MiniSearch index covering every rule and every section except the Index section (`INDEX_SECTION_SLUG`), memoised behind a `PromiseCache` (`src/content/memo.ts`) that forgets a failed build so the next search retries, calling `loadAllSections()` the first time anything searches. There is no prebuilt search index file shipped with the app — it is built once, at runtime, from the same precached chunks.
 
 ## Precache
 
