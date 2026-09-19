@@ -1,16 +1,26 @@
 // Pure progress-engine maths: local day keys, day-streak arithmetic, XP,
-// per-sign collection and best-score rules (D19–D21). No Dexie import, so it
-// is unit-testable without IndexedDB and safe to call from any clock/zone.
+// per-sign collection, the wrong-in-a-row collection-loss rule, and
+// best-score rules (D19–D21, Q12). No Dexie import, so it is unit-testable
+// without IndexedDB and safe to call from any clock/zone.
 // Depends on: nothing.
-// Depended on by: src/engine/progress-store.ts, src/features/signs/SignScreen.tsx,
+// Depended on by: src/engine/progress-store.ts, src/engine/score-band.ts,
+// src/engine/round-memory.ts, src/features/signs/SignScreen.tsx,
 // src/features/signs/SignsScreen.tsx, src/features/signs/filter.ts,
-// tests/unit/progress.test.ts.
+// tests/unit/progress.test.ts, tests/unit/round-memory.test.ts.
 
 /** A saved day streak: how many consecutive days, and the local day key it last advanced on. */
 export interface Streak {
   count: number;
   lastDay: string | null;
 }
+
+/** The four Sign Sprint round lengths a learner can choose (Q10). */
+export const SPRINT_LENGTHS = ['30s', '1m', '5m', 'none'] as const;
+export type SprintLengthId = (typeof SPRINT_LENGTHS)[number];
+
+/** The three games whose last-played time and results are tracked (Q17). */
+export const GAME_IDS = ['tap', 'sprint', 'pairs'] as const;
+export type GameId = (typeof GAME_IDS)[number];
 
 function pad2(n: number): string {
   return String(n).padStart(2, '0');
@@ -67,6 +77,50 @@ export function addCorrect(correct: number): number {
 /** A sign counts as collected once it has 3 or more correct identifications (D21). */
 export function isCollected(correct: number): boolean {
   return correct >= 3;
+}
+
+/** Three wrong answers in a row on a collected sign lose it (Q12). */
+export const LOSE_AFTER_WRONG = 3;
+
+/**
+ * Applies one answer to a sign's saved `correct` count and its
+ * wrong-in-a-row counter (Q12): a right answer advances `correct` (capped at
+ * 3) and resets the counter to 0, reporting `collectedNow` only on the
+ * answer that takes `correct` from below 3 to 3. A wrong answer on a
+ * collected sign advances the counter, and once it reaches
+ * `LOSE_AFTER_WRONG` the sign is lost (`correct` and the counter both reset
+ * to 0, `lostNow` true). A wrong answer on a sign that is not collected
+ * changes nothing: the counter only ever runs while the sign is collected,
+ * since any right answer resets it and collecting itself needs a right
+ * answer.
+ */
+export function applyAnswer(
+  row: { correct: number; wrongInARow: number },
+  right: boolean,
+): { correct: number; wrongInARow: number; collectedNow: boolean; lostNow: boolean } {
+  if (right) {
+    const wasCollected = isCollected(row.correct);
+    const correct = addCorrect(row.correct);
+    return {
+      correct,
+      wrongInARow: 0,
+      collectedNow: !wasCollected && isCollected(correct),
+      lostNow: false,
+    };
+  }
+  if (!isCollected(row.correct)) {
+    return {
+      correct: row.correct,
+      wrongInARow: row.wrongInARow,
+      collectedNow: false,
+      lostNow: false,
+    };
+  }
+  const wrongInARow = row.wrongInARow + 1;
+  if (wrongInARow >= LOSE_AFTER_WRONG) {
+    return { correct: 0, wrongInARow: 0, collectedNow: false, lostNow: true };
+  }
+  return { correct: row.correct, wrongInARow, collectedNow: false, lostNow: false };
 }
 
 /** The larger of a saved best score and a new one. */

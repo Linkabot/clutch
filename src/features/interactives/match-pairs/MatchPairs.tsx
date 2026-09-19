@@ -162,7 +162,9 @@ function MatchPairs() {
     const next = pairsReducer(state, action);
     dispatch(action);
     if (next.earnedIds.length > state.earnedIds.length) {
-      queueWrite(writeChainRef, () => recordAnswer(signId, true));
+      queueWrite(writeChainRef, async () => {
+        await recordAnswer(signId, true);
+      });
     }
   }
 

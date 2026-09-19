@@ -21,20 +21,44 @@
  * instance captures its own fake store at import time, so a leftover
  * listener from an earlier test only ever reads that earlier test's store,
  * never the current test's -- hence every test asserts only its own store's
- * read count.
+ * read count. Two further tests (Step 5, E8) check that recordAnswer's
+ * result and the Sprint choices helpers pass straight through to the
+ * fake store, untouched.
  * Depends on: vitest, jsdom (test environment), a mock of
  * src/storage/db and src/engine/progress-store, src/engine/progress-state.
  * Depended on by: `npm test` (Vitest run).
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { ProgressStore, ProgressSummary } from '../../src/engine/progress-store';
+import type {
+  AnswerResult,
+  ProgressStore,
+  ProgressSummary,
+  SprintChoices,
+} from '../../src/engine/progress-store';
 
 interface FakeStore extends ProgressStore {
   reads: number;
   summary: ProgressSummary;
   gate: Promise<void> | null;
   failNext: boolean;
+  answerResult: AnswerResult;
+  sprintChoices: SprintChoices;
+  setSprintChoicesCalls: SprintChoices[];
+}
+
+/** Fills every ProgressSummary field with a zero default, overridden by `overrides`. */
+function summaryFixture(overrides: Partial<ProgressSummary> = {}): ProgressSummary {
+  return {
+    xp: 0,
+    streak: 0,
+    sprintBest: 0,
+    sprintBests: { '30s': 0, '1m': 0, '5m': 0, none: 0 },
+    collected: 0,
+    lastPlayed: { tap: null, sprint: null, pairs: null },
+    sprintLast: null,
+    ...overrides,
+  };
 }
 
 function makeFakeStore(summary: ProgressSummary): FakeStore {
@@ -43,6 +67,9 @@ function makeFakeStore(summary: ProgressSummary): FakeStore {
     summary,
     gate: null,
     failNext: false,
+    answerResult: { collectedNow: false, lostNow: false },
+    sprintChoices: { length: '1m', families: [] },
+    setSprintChoicesCalls: [],
     async getSummary() {
       store.reads += 1;
       if (store.gate) await store.gate;
@@ -56,8 +83,16 @@ function makeFakeStore(summary: ProgressSummary): FakeStore {
       if (store.gate) await store.gate;
       return new Map();
     },
-    async recordAnswer() {},
+    async recordAnswer() {
+      return store.answerResult;
+    },
     async recordRoundFinished() {},
+    async getSprintChoices() {
+      return store.sprintChoices;
+    },
+    async setSprintChoices(choices) {
+      store.setSprintChoicesCalls.push(choices);
+    },
   };
   return store;
 }
@@ -113,12 +148,7 @@ afterEach(() => {
 describe('progress-state local-day read cache', () => {
   it('reads once per day', async () => {
     vi.setSystemTime(DAY_ONE);
-    const { store, useProgressStore } = await freshStore({
-      xp: 10,
-      streak: 1,
-      sprintBest: 0,
-      collected: 0,
-    });
+    const { store, useProgressStore } = await freshStore(summaryFixture({ xp: 10, streak: 1 }));
 
     await useProgressStore.getState().load();
     await useProgressStore.getState().load();
@@ -128,17 +158,12 @@ describe('progress-state local-day read cache', () => {
 
   it('re-reads after the local day changes', async () => {
     vi.setSystemTime(DAY_ONE);
-    const { store, useProgressStore } = await freshStore({
-      xp: 10,
-      streak: 1,
-      sprintBest: 0,
-      collected: 0,
-    });
+    const { store, useProgressStore } = await freshStore(summaryFixture({ xp: 10, streak: 1 }));
     await useProgressStore.getState().load();
     expect(store.reads).toBe(1);
 
     vi.setSystemTime(DAY_TWO);
-    store.summary = { xp: 20, streak: 2, sprintBest: 0, collected: 1 };
+    store.summary = summaryFixture({ xp: 20, streak: 2, collected: 1 });
     await Promise.all([useProgressStore.getState().load(), useProgressStore.getState().load()]);
 
     expect(store.reads).toBe(2);
@@ -147,14 +172,14 @@ describe('progress-state local-day read cache', () => {
 
   it('keeps the old summary on screen', async () => {
     vi.setSystemTime(DAY_ONE);
-    const oldSummary: ProgressSummary = { xp: 10, streak: 1, sprintBest: 0, collected: 0 };
+    const oldSummary: ProgressSummary = summaryFixture({ xp: 10, streak: 1 });
     const { store, useProgressStore } = await freshStore(oldSummary);
     await useProgressStore.getState().load();
     expect(useProgressStore.getState().status).toBe('ready');
 
     vi.setSystemTime(DAY_TWO);
     const release = holdRead(store);
-    store.summary = { xp: 20, streak: 2, sprintBest: 0, collected: 1 };
+    store.summary = summaryFixture({ xp: 20, streak: 2, collected: 1 });
     const pending = useProgressStore.getState().load();
 
     expect(useProgressStore.getState().status).toBe('ready');
@@ -167,12 +192,7 @@ describe('progress-state local-day read cache', () => {
 
   it('becoming visible on a new day re-reads', async () => {
     vi.setSystemTime(DAY_ONE);
-    const { store, useProgressStore } = await freshStore({
-      xp: 10,
-      streak: 1,
-      sprintBest: 0,
-      collected: 0,
-    });
+    const { store, useProgressStore } = await freshStore(summaryFixture({ xp: 10, streak: 1 }));
     await useProgressStore.getState().load();
     expect(store.reads).toBe(1);
 
@@ -195,12 +215,7 @@ describe('progress-state local-day read cache', () => {
 
   it('a failed load is forgotten', async () => {
     vi.setSystemTime(DAY_ONE);
-    const { store, useProgressStore } = await freshStore({
-      xp: 10,
-      streak: 1,
-      sprintBest: 0,
-      collected: 0,
-    });
+    const { store, useProgressStore } = await freshStore(summaryFixture({ xp: 10, streak: 1 }));
     store.failNext = true;
 
     await expect(useProgressStore.getState().load()).rejects.toThrow('read failed');
@@ -210,5 +225,28 @@ describe('progress-state local-day read cache', () => {
 
     expect(useProgressStore.getState().status).toBe('ready');
     expect(store.reads).toBe(2);
+  });
+
+  it('recordAnswer passes the store result through', async () => {
+    vi.setSystemTime(DAY_ONE);
+    const { store, useProgressStore } = await freshStore(summaryFixture());
+    store.answerResult = { collectedNow: true, lostNow: false };
+
+    const result = await useProgressStore.getState().recordAnswer('x', true);
+
+    expect(result).toEqual({ collectedNow: true, lostNow: false });
+  });
+
+  it('sprint choices pass through to the store', async () => {
+    vi.setSystemTime(DAY_ONE);
+    const { store, useProgressStore } = await freshStore(summaryFixture());
+    store.sprintChoices = { length: '5m', families: ['warning'] };
+
+    const choices = await useProgressStore.getState().getSprintChoices();
+    expect(choices).toEqual({ length: '5m', families: ['warning'] });
+
+    const next: SprintChoices = { length: '30s', families: [] };
+    await useProgressStore.getState().setSprintChoices(next);
+    expect(store.setSprintChoicesCalls).toEqual([next]);
   });
 });

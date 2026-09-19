@@ -1,6 +1,7 @@
 // Unit tests for the pure progress-engine functions (src/engine/progress.ts):
 // day-key arithmetic across time zones and clock changes (P9, E15), streak
-// advance, XP, collection and best-score rules (D19–D21).
+// advance, XP, collection, the wrong-in-a-row collection-loss rule (Q12) and
+// best-score rules (D19–D21).
 // Depends on: vitest, src/engine/progress.ts.
 // Depended on by: `npm test` (Vitest run).
 
@@ -13,6 +14,7 @@ import {
   addCorrect,
   isCollected,
   bestScore,
+  applyAnswer,
 } from '../../src/engine/progress';
 
 // Built only inside `it`/`beforeAll` bodies (never at describe/module scope,
@@ -119,5 +121,45 @@ describe('XP, collection and best score', () => {
   it('bestScore keeps the larger of two scores', () => {
     expect(bestScore(12, 17)).toBe(17);
     expect(bestScore(17, 9)).toBe(17);
+  });
+});
+
+describe('applyAnswer (Q12)', () => {
+  it('the third right answer collects the sign', () => {
+    const result = applyAnswer({ correct: 2, wrongInARow: 0 }, true);
+    expect(result).toEqual({ correct: 3, wrongInARow: 0, collectedNow: true, lostNow: false });
+  });
+
+  it('a right answer resets wrongInARow (on a collected sign) and collectedNow is false', () => {
+    const result = applyAnswer({ correct: 3, wrongInARow: 2 }, true);
+    expect(result).toEqual({ correct: 3, wrongInARow: 0, collectedNow: false, lostNow: false });
+  });
+
+  it('three wrong in a row on a collected sign loses it', () => {
+    let row = { correct: 3, wrongInARow: 0 };
+    row = applyAnswer(row, false);
+    expect(row.wrongInARow).toBe(1);
+    row = applyAnswer(row, false);
+    expect(row.wrongInARow).toBe(2);
+    const result = applyAnswer(row, false);
+    expect(result).toEqual({ correct: 0, wrongInARow: 0, collectedNow: false, lostNow: true });
+  });
+
+  it('two wrong then a right does not lose it', () => {
+    let row = { correct: 3, wrongInARow: 0 };
+    row = applyAnswer(row, false);
+    row = applyAnswer(row, false);
+    const result = applyAnswer(row, true);
+    expect(result.lostNow).toBe(false);
+    expect(result.correct).toBe(3);
+  });
+
+  it('wrong on a sign that is not collected changes nothing', () => {
+    expect(applyAnswer({ correct: 2, wrongInARow: 0 }, false)).toEqual({
+      correct: 2,
+      wrongInARow: 0,
+      collectedNow: false,
+      lostNow: false,
+    });
   });
 });

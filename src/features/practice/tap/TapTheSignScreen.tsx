@@ -124,7 +124,9 @@ function TapTheSignScreen() {
     setStreak((previous) => (correct ? previous + 1 : 0));
     if (correct) setRightCount((previous) => previous + 1);
 
-    queueWrite(() => recordAnswer(question.answer.id, correct));
+    queueWrite(async () => {
+      await recordAnswer(question.answer.id, correct);
+    });
     if (questionIndex === round.length - 1) {
       queueWrite(() => recordRoundFinished({}));
     }

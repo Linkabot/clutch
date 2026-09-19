@@ -10,14 +10,18 @@
 // page's collection dots, both gated on status === 'ready'). recordAnswer
 // and recordRoundFinished count their own write as that day's read once
 // their refresh() resolves, so a write just after midnight does not also
-// trigger a redundant re-read. The first call to load() registers, once
-// and only when document exists, a visibilitychange listener that calls
-// load() whenever the app becomes visible (e.g. an iPhone resuming a
-// suspended home-screen app) -- the listener itself does no day check;
-// load() does that, so a same-day resume reads nothing. Consumed by the
-// Signs browser and sign page (collected count, per-sign correct map),
-// the Practice header (streak, XP), and Sign Sprint / tap-the-sign /
-// Match Pairs (recordAnswer, recordRoundFinished).
+// trigger a redundant re-read. recordAnswer resolves to the progress
+// store's own result (collectedNow/lostNow) once that refresh has
+// completed. getSprintChoices/setSprintChoices (Q10) pass straight through
+// to the progress store; screens reach them only through this store, since
+// Dexie is never touched directly by a screen. The first call to load()
+// registers, once and only when document exists, a visibilitychange
+// listener that calls load() whenever the app becomes visible (e.g. an
+// iPhone resuming a suspended home-screen app) -- the listener itself does
+// no day check; load() does that, so a same-day resume reads nothing.
+// Consumed by the Signs browser and sign page (collected count, per-sign
+// correct map), the Practice header (streak, XP), and Sign Sprint /
+// tap-the-sign / Match Pairs (recordAnswer, recordRoundFinished).
 // Depends on: zustand, ./progress (localDayKey), ./progress-store,
 // ../storage/db.
 // Depended on by: tests/unit/progress-state.test.ts,
@@ -32,7 +36,13 @@
 import { create } from 'zustand';
 import { db } from '../storage/db';
 import { localDayKey } from './progress';
-import { createProgressStore, type ProgressSummary } from './progress-store';
+import {
+  createProgressStore,
+  type AnswerResult,
+  type ProgressSummary,
+  type RoundFinishedOptions,
+  type SprintChoices,
+} from './progress-store';
 
 export type ProgressStatus = 'idle' | 'loading' | 'ready' | 'error';
 
@@ -42,11 +52,21 @@ export interface ProgressState {
   status: ProgressStatus;
   /** Loads the summary and per-sign progress. Idempotent within a local day: concurrent calls share the in-flight load, a rejection is forgotten so a retry can succeed, and a call once a new local day has begun reads again. */
   load: () => Promise<void>;
-  recordAnswer: (signId: string, correct: boolean) => Promise<void>;
-  recordRoundFinished: (options?: { sprintScore?: number }) => Promise<void>;
+  recordAnswer: (signId: string, correct: boolean) => Promise<AnswerResult>;
+  recordRoundFinished: (options?: RoundFinishedOptions) => Promise<void>;
+  getSprintChoices: () => Promise<SprintChoices>;
+  setSprintChoices: (choices: SprintChoices) => Promise<void>;
 }
 
-const ZERO_SUMMARY: ProgressSummary = { xp: 0, streak: 0, sprintBest: 0, collected: 0 };
+const ZERO_SUMMARY: ProgressSummary = {
+  xp: 0,
+  streak: 0,
+  sprintBest: 0,
+  sprintBests: { '30s': 0, '1m': 0, '5m': 0, none: 0 },
+  collected: 0,
+  lastPlayed: { tap: null, sprint: null, pairs: null },
+  sprintLast: null,
+};
 
 const now = (): Date => new Date();
 
@@ -108,14 +128,23 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
   },
 
   async recordAnswer(signId, correct) {
-    await progressStore.recordAnswer(signId, correct);
+    const result = await progressStore.recordAnswer(signId, correct);
     await refresh();
     inFlightDay = localDayKey(now());
+    return result;
   },
 
   async recordRoundFinished(options) {
     await progressStore.recordRoundFinished(options);
     await refresh();
     inFlightDay = localDayKey(now());
+  },
+
+  async getSprintChoices() {
+    return progressStore.getSprintChoices();
+  },
+
+  async setSprintChoices(choices) {
+    await progressStore.setSprintChoices(choices);
   },
 }));

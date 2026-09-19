@@ -139,7 +139,9 @@ function SignSprint({ now = systemNow }: SignSprintProps) {
     if (!acceptsAnswer(state, at)) return;
     const right = option.id === question.answer.id;
     dispatch({ type: 'answer', signId: option.id, now: at });
-    queueWrite(writeChainRef, () => recordAnswer(question.answer.id, right));
+    queueWrite(writeChainRef, async () => {
+      await recordAnswer(question.answer.id, right);
+    });
   }
 
   function handlePlayAgain(): void {
