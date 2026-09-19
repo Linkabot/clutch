@@ -71,13 +71,15 @@ test('service worker registers and Me shows Offline ready', async ({ page }) => 
 test('tabs navigate', async ({ page }) => {
   await openApp(page);
 
-  await expect(page.locator('nav[aria-label="Main"] svg')).toHaveCount(5);
+  await expect(page.locator('nav[aria-label="Main"] svg')).toHaveCount(4);
 
+  const nav = page.locator('nav[aria-label="Main"]');
   for (const tab of TABS) {
-    await page.getByRole('link', { name: tab.label }).click();
+    await nav.getByRole('link', { name: tab.label }).click();
     const expectedSuffix = tab.path === '/' ? '/clutch/' : `/clutch${tab.path}`;
     await expect(page).toHaveURL((url) => url.pathname.endsWith(expectedSuffix));
-    await expect(page.locator('h1')).toHaveText(tab.label);
+    await expect(page.locator('header h1')).toHaveText(tab.label);
+    await expect(page.locator('main h1')).toHaveCount(0);
   }
 
   await page.getByRole('link', { name: 'Learn' }).click();
@@ -121,5 +123,5 @@ test('offline reload still renders', async ({ page }) => {
 
   await page.reload();
   await expect(page.locator('nav[aria-label="Main"]')).toBeVisible();
-  await expect(page.locator('h1')).toHaveText('Journey');
+  await expect(page.locator('header h1')).toHaveText('Journey');
 });

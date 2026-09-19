@@ -8,7 +8,6 @@ import Attribution from './Attribution';
 function MeScreen() {
   return (
     <div>
-      <h1>Me</h1>
       <OfflineReady />
       <Attribution />
     </div>

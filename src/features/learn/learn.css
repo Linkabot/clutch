@@ -1,0 +1,110 @@
+/* Learn tab styles (src/features/learn/LearnScreen.tsx): the card column,
+   card titles and icon row shared by the Highway Code and Traffic signs
+   cards (both full-width SignPanel `block` panels -- src/ui/SignPanel.tsx,
+   src/ui/primitives.css), and the How signs work card, which keeps its own
+   white panel look (amendment E3) rather than a SignPanel. Every colour and
+   radius comes from a src/app/theme.css custom property -- no hex literals
+   here (plan.md § Rules "Tokens"). The three original hand-drawn shapes on
+   How signs work are the same triangle, circle and rounded rectangle as
+   before, redrawn on 40x40 viewBoxes (shown at 32x32, amendment E4) and
+   shared with the Traffic signs thumbnails through one .learn-card__icons
+   row class; SVG presentation
+   attributes cannot read a CSS custom property directly, so each shape's
+   fill/stroke lives in a class here instead of an inline style.
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/learn/LearnScreen.tsx. */
+
+.learn-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack);
+}
+
+.learn-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.learn-card__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.learn-card__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.learn-card__title {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.learn-card__subtitle {
+  color: var(--color-muted);
+}
+
+/* Shared 32x32 icon row: the Traffic signs card's three SignImages, and the
+   How signs work card's three hand-drawn shapes. 32px with 6px gaps
+   (amendment E4, Lincoln's pick) keeps "Shape & Colour Decoder" on one
+   line at 390px, as in the chosen mockup; at 40px it wrapped. */
+.learn-card__icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.learn-card__icons > img,
+.learn-card__icons > svg {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.learn-card__icons > img {
+  object-fit: contain;
+  display: block;
+}
+
+.learn-card__glyph-triangle,
+.learn-card__glyph-circle {
+  fill: var(--color-on-sign);
+  stroke: var(--color-sign-red);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.learn-card__glyph-rect {
+  fill: var(--color-sign-blue);
+}
+
+/* How signs work (amendment E3): a white panel with a 2.5px ink inner
+   border, kept as its own look rather than SignPanel's coloured fill --
+   moved here verbatim from the inline styles this card used to carry. */
+.learn-decoder-card {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-panel);
+  padding: 5px;
+  box-shadow: 0 0 0 1px var(--color-hairline);
+  color: var(--color-ink);
+}
+
+.learn-decoder-card__inner {
+  border: 2.5px solid var(--color-ink);
+  border-radius: var(--radius-panel-inner);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.learn-cards__note {
+  color: var(--color-muted);
+}

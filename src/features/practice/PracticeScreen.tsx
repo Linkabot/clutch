@@ -61,7 +61,6 @@ function PracticeScreen() {
 
   return (
     <div>
-      <h1>Practice</h1>
       <ProgressHeader streak={summary.streak} xp={summary.xp} />
 
       <div className="practice-cards">

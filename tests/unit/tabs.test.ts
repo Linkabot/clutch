@@ -1,4 +1,4 @@
-// Unit tests for the TABS source of truth: five entries, unique ids, root
+// Unit tests for the TABS source of truth: four entries, unique ids, root
 // path first, every other path is absolute, labels match exactly, and every
 // tab has a renderable icon. lucide-react icons are React.forwardRef
 // objects (typeof 'object', with a $$typeof symbol set), not plain
@@ -11,8 +11,8 @@ import { describe, it, expect } from 'vitest';
 import { TABS } from '../../src/app/tabs';
 
 describe('TABS', () => {
-  it('has exactly five entries', () => {
-    expect(TABS).toHaveLength(5);
+  it('has exactly four entries', () => {
+    expect(TABS).toHaveLength(4);
   });
 
   it('has unique ids', () => {
@@ -30,9 +30,9 @@ describe('TABS', () => {
     }
   });
 
-  it('has exactly the five expected labels, in order', () => {
+  it('has exactly the four expected labels, in order', () => {
     const labels = TABS.map((tab) => tab.label);
-    expect(labels).toEqual(['Journey', 'Learn', 'Practice', 'My Car', 'Me']);
+    expect(labels).toEqual(['Journey', 'Learn', 'Practice', 'Me']);
   });
 
   it('has a renderable icon for every tab', () => {

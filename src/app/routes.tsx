@@ -1,4 +1,4 @@
-// Router configuration: a single layout route (App) wrapping the five tab
+// Router configuration: a single layout route (App) wrapping the four tab
 // screens, addressed by their paths from TABS, plus the Highway Code
 // sections list, section screen, search screen and single-rule deep link
 // nested under Learn (the rule route lives at /code/rule/:id, not
@@ -12,9 +12,11 @@
 // screen -- then (Step 24) one child route per INTERACTIVES registry entry
 // (Sign Sprint at /practice/sprint first), right after practice/tap: the
 // path is the entry's route without its leading slash, and the screen is a
-// React.lazy component created once at module scope from the entry's load()
-// and rendered inside <Suspense fallback={null}>, so later games need no
-// edit here. The static learn/code/search and learn/signs routes are listed
+// React.lazy component created once at module scope from the entry's
+// load(), rendered inside <Suspense> with a "Loading…" fallback line (M02),
+// so later games need no edit here. /my-car (Step 3b, Q16: My Car hidden)
+// and the catch-all `*` (the layout's last child) both redirect to '/'
+// (M37). The static learn/code/search and learn/signs routes are listed
 // before the learn/code/:slug param route so the intent is obvious to a
 // reader, though React Router ranks static segments higher regardless of
 // source order. Likewise the Shape & Colour Decoder's static
@@ -29,12 +31,11 @@
 // loads lazily through its load()).
 // Depended on by: src/main.tsx.
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from './App';
 import JourneyScreen from '../features/journey/JourneyScreen';
 import LearnScreen from '../features/learn/LearnScreen';
 import PracticeScreen from '../features/practice/PracticeScreen';
-import MyCarScreen from '../features/my-car/MyCarScreen';
 import MeScreen from '../features/me/MeScreen';
 import HighwayCodeSectionsScreen from '../features/code/HighwayCodeSectionsScreen';
 import SectionScreen from '../features/code/SectionScreen';
@@ -70,13 +71,20 @@ export const router = createBrowserRouter(
         ...INTERACTIVE_ROUTES.map(({ path, Screen }) => ({
           path,
           element: (
-            <Suspense fallback={null}>
+            <Suspense
+              fallback={
+                <p className="route-loading" role="status">
+                  Loading…
+                </p>
+              }
+            >
               <Screen />
             </Suspense>
           ),
         })),
-        { path: 'my-car', element: <MyCarScreen /> },
+        { path: 'my-car', element: <Navigate to="/" replace /> },
         { path: 'me', element: <MeScreen /> },
+        { path: '*', element: <Navigate to="/" replace /> },
       ],
     },
   ],

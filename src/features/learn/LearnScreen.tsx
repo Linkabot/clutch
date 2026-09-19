@@ -1,24 +1,26 @@
-// Learn tab hub: entry point into the Highway Code section browser and its
-// search screen (Step 17), the Signs browser (Step 19), plus a placeholder
-// row for the lessons feature that ships in a later phase. The Highway
-// Code card's rule count comes from the ingested index (getHighwayCodeIndex),
-// counted at render time — no network call, no effect needed, since the
-// index is bundled and parsed eagerly. The Traffic signs card's counts come
-// from loadSigns() (a lazy chunk, loaded once in an effect) and
-// useProgressStore's summary.collected (loaded once via load()). The card
-// itself, its title and its link render immediately; the "<n> of <total>
-// collected" subtitle renders only once loadSigns() has resolved
-// (amendment E19) -- nothing in its place before, no placeholder text.
-// Below it, the white "How signs work" card (Step 26, amendment E33) links
-// to the Shape & Colour Decoder at /learn/signs/decoder: a panel with a
-// 2.5px ink inner border, styled inline with tokens, holding its title,
-// subtitle and small original shape art (a triangle, a circle and a
-// rectangle the app draws, never a real sign picture).
+// Learn tab hub: entry point into the Highway Code section browser (Step
+// 17), the Signs browser (Step 19), plus a placeholder row for the lessons
+// feature that ships in a later phase. The Highway Code card's rule count
+// comes from the ingested index (getHighwayCodeIndex), counted at render
+// time -- no network call, no effect needed, since the index is bundled and
+// parsed eagerly. The Traffic signs card's counts come from loadSigns() (a
+// lazy chunk, loaded once in an effect) and useProgressStore's summary
+// (loaded once via load()). The card itself, its title and its link render
+// immediately; the "<n> of <total> collected" subtitle renders only once
+// loadSigns() has resolved (amendment E19) -- nothing in its place before,
+// no placeholder text. The Highway Code and Traffic signs cards each use
+// SignPanel's `block` prop to fill the width (M12); the How signs work card
+// below them (Step 26, amendment E33) keeps its own white-panel look
+// instead (amendment E3, Step 3b) -- a 2.5px ink inner border, styled
+// through learn.css -- and links to the Shape & Colour Decoder at
+// /learn/signs/decoder, showing three small original shapes (a triangle, a
+// circle and a rectangle the app draws, never a real sign picture), shared
+// with the Traffic signs card's thumbnail row through one .learn-card__icons
+// class.
 // Depends on: react, react-router-dom, ../../ui (SignPanel),
 // ../../content/loaders (getHighwayCodeIndex), ../../content/signs
 // (loadSigns), ../../content/schemas (Sign type), ../../engine/progress-state
-// (useProgressStore), ../interactives/shared/SignImage, ../signs/signs.css
-// (the .learn-signs-card full-width SignPanel rule and thumbnail sizing).
+// (useProgressStore), ../interactives/shared/SignImage, ./learn.css.
 // Depended on by: src/app/routes.tsx.
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -28,7 +30,7 @@ import { loadSigns } from '../../content/signs';
 import type { Sign } from '../../content/schemas';
 import { useProgressStore } from '../../engine/progress-state';
 import SignImage from '../interactives/shared/SignImage';
-import '../signs/signs.css';
+import './learn.css';
 
 const LEARN_CARD_SIGN_IDS = ['warning-roundabout', 'orders-no-entry', 'orders-turn-left'];
 
@@ -75,42 +77,26 @@ function LearnScreen() {
   }, []);
 
   return (
-    <div>
-      <h1>Learn</h1>
-      <Link to="/learn/code" style={{ display: 'block', textDecoration: 'none' }}>
-        <SignPanel colour="blue">
-          <span className="font-display">The Highway Code</span>
+    <div className="learn-cards">
+      <Link to="/learn/code" className="learn-card">
+        <SignPanel colour="blue" block>
+          <span className="learn-card__title">The Highway Code</span>
           <div>{ruleCount} rules, offline</div>
         </SignPanel>
       </Link>
-      {/* A Link styled with Button's own classes: satisfies "secondary
-          Button" and "Link" at once without nesting a <button> inside an
-          <a> (invalid HTML — Button.tsx renders a native <button>). */}
-      <Link
-        to="/learn/code/search"
-        className="button button--secondary"
-        style={{ marginTop: '12px', textDecoration: 'none' }}
-      >
-        Search The Highway Code
-      </Link>
-      <Link
-        to="/learn/signs"
-        className="learn-signs-card"
-        style={{ display: 'block', marginTop: '22px', textDecoration: 'none' }}
-      >
-        <SignPanel colour="green">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="font-display" style={{ fontSize: '20px' }}>
-                Traffic signs
-              </div>
+
+      <Link to="/learn/signs" className="learn-card">
+        <SignPanel colour="green" block>
+          <div className="learn-card__row">
+            <div className="learn-card__text">
+              <div className="learn-card__title">Traffic signs</div>
               {signsLoaded && (
                 <div>
                   {summary.collected} of {signCount} collected
                 </div>
               )}
             </div>
-            <div className="learn-signs-card__images">
+            <div className="learn-card__icons">
               {cardSigns.map((sign) => (
                 <SignImage key={sign.id} sign={sign} alt="" />
               ))}
@@ -118,69 +104,28 @@ function LearnScreen() {
           </div>
         </SignPanel>
       </Link>
-      <Link
-        to="/learn/signs/decoder"
-        className="learn-decoder-card"
-        style={{
-          display: 'block',
-          marginTop: '12px',
-          textDecoration: 'none',
-          backgroundColor: 'var(--color-surface)',
-          borderRadius: '14px',
-          padding: '5px',
-          boxShadow: '0 0 0 1px var(--color-hairline)',
-          color: 'var(--color-ink)',
-        }}
-      >
-        <div
-          style={{
-            border: '2.5px solid var(--color-ink)',
-            borderRadius: '10px',
-            padding: '12px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '14px',
-          }}
-        >
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="font-display" style={{ fontSize: '20px' }}>
-              How signs work
-            </div>
-            <div style={{ color: 'var(--color-muted)' }}>Shape & Colour Decoder</div>
+
+      <Link to="/learn/signs/decoder" className="learn-card learn-decoder-card">
+        <div className="learn-decoder-card__inner">
+          <div className="learn-card__text">
+            <div className="learn-card__title">How signs work</div>
+            <div className="learn-card__subtitle">Shape & Colour Decoder</div>
           </div>
-          <svg width="72" height="24" viewBox="0 0 72 24" aria-hidden="true">
-            <path
-              d="M11 2.5 20 20.5H2Z"
-              style={{
-                fill: 'var(--color-on-sign)',
-                stroke: 'var(--color-sign-red)',
-                strokeWidth: 3,
-                strokeLinejoin: 'round',
-              }}
-            />
-            <circle
-              cx="35"
-              cy="12"
-              r="9"
-              style={{
-                fill: 'var(--color-on-sign)',
-                stroke: 'var(--color-sign-red)',
-                strokeWidth: 3,
-                strokeLinejoin: 'round',
-              }}
-            />
-            <rect
-              x="50"
-              y="3"
-              width="21"
-              height="18"
-              rx="2.5"
-              style={{ fill: 'var(--color-sign-blue)' }}
-            />
-          </svg>
+          <div className="learn-card__icons">
+            <svg width="32" height="32" viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M20 5 35 33H5Z" className="learn-card__glyph-triangle" />
+            </svg>
+            <svg width="32" height="32" viewBox="0 0 40 40" aria-hidden="true">
+              <circle cx="20" cy="20" r="14" className="learn-card__glyph-circle" />
+            </svg>
+            <svg width="32" height="32" viewBox="0 0 40 40" aria-hidden="true">
+              <rect x="5" y="9" width="30" height="22" rx="3" className="learn-card__glyph-rect" />
+            </svg>
+          </div>
         </div>
       </Link>
-      <p style={{ color: 'var(--color-muted)' }}>Lessons — later phase</p>
+
+      <p className="learn-cards__note">Lessons — later phase</p>
     </div>
   );
 }

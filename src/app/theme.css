@@ -239,3 +239,109 @@ button {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* App shell (Step 3b, Q1): the sticky header band, the main content area
+   and the bottom tab bar. Used by src/app/App.tsx and src/app/TabBar.tsx,
+   replacing the inline style objects those two files used to carry. */
+.app-shell {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  min-height: 100dvh;
+}
+
+/* Three-column grid (1fr auto 1fr): column 1 is .app-header__start (the
+   Back button on inner pages, then the CLUTCH wordmark); column 2 holds the
+   tab's <h1> on tab roots only; column 3 is left empty (no element is ever
+   placed there) so the title sits centred in the band. */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.app-header__start {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-header__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  background: none;
+  border: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+/* Overrides the global h1 rule's margin and line-height (higher specificity
+   than the bare h1 element selector): a band title has no space below it to
+   reserve, and sits centred rather than left-aligned. */
+.app-header__title {
+  margin: 0;
+  font-size: var(--font-size-h1);
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.app-main {
+  padding-top: var(--space-page-top);
+  padding-bottom: calc(var(--tab-bar-height) + 44px);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* M02: the lazy-loaded games' <Suspense> fallback line (src/app/routes.tsx). */
+.route-loading {
+  color: var(--color-muted);
+  padding: var(--space-page-top) 16px;
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: var(--color-tab-bar);
+  border-top: 1px solid var(--color-hairline);
+}
+
+.tab-bar__link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 6px 0;
+  color: var(--color-tab-inactive);
+  text-decoration: none;
+}
+
+/* TabBar.tsx sets aria-current="page" on the active tab's plain Link itself,
+   from its own isTabActive (not NavLink's matching, so /code/... can light
+   Learn -- see that file's header comment); this rule reads that attribute
+   for the active colour instead of an inline style. */
+.tab-bar__link[aria-current='page'] {
+  color: var(--color-tab-active);
+}
+
+.tab-bar__label {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+}

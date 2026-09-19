@@ -22,6 +22,7 @@ export default defineConfig({
         description: 'UK learner-driver companion',
         lang: 'en-GB',
         display: 'standalone',
+        orientation: 'portrait',
         start_url: '/clutch/',
         scope: '/clutch/',
         theme_color: '#0A5DB0',

@@ -1,48 +1,19 @@
 /* Signs browser styles (src/features/signs/SignsScreen.tsx): the family
-   chip row, the collected/all toggle and the tile grid; plus the Learn
-   card's full-width SignPanel and thumbnail row (src/features/learn/
-   LearnScreen.tsx); plus (Step 20) the sign page's picture card, family
-   pill and its shape/colour glyph, heading sizes, info card and full-width
-   action buttons (src/features/signs/SignScreen.tsx). Every colour and
-   radius comes from a src/app/theme.css custom property -- no hex literals
-   here (plan.md § Rules "Tokens").
+   chip row, the collected/all toggle and the tile grid; plus (Step 20) the
+   sign page's picture card, family pill and its shape/colour glyph, heading
+   sizes, info card and full-width action buttons
+   (src/features/signs/SignScreen.tsx). The Learn tab's full-width SignPanel
+   card and thumbnail row moved to src/features/learn/learn.css in Step 3b,
+   now that SignPanel's own `block` prop replaces the descendant-selector
+   hack this file used to carry for it. Every colour and radius comes from a
+   src/app/theme.css custom property -- no hex literals here (plan.md §
+   Rules "Tokens").
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/signs/SignsScreen.tsx,
-   src/features/learn/LearnScreen.tsx, src/features/signs/SignScreen.tsx
-   (each imports this file once). */
+   src/features/signs/SignScreen.tsx (each imports this file once). */
 
 .signs-collected-line {
   color: var(--color-muted);
-}
-
-/* Learn card: SignPanel is display: inline-block by default (primitives.css)
-   and takes no className, so its width has to be filled through a
-   descendant selector on this wrapper -- same pattern as .rule-badge--list
-   .sign-panel in src/ui/primitives.css. */
-.learn-signs-card .sign-panel {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.learn-signs-card .sign-panel__inner {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.learn-signs-card__images {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
-.learn-signs-card__images img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  display: block;
-  flex-shrink: 0;
 }
 
 /* Horizontally scrolling chip row: bleeds to the right screen edge

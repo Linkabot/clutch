@@ -7,7 +7,11 @@
 // and PS29/M14 (Match Pairs renders its five sign tiles and five name
 // tiles as an aligned two-column grid that fits a real 390x844 iPhone
 // screen, row N's sign and row N's name always sharing a top and a
-// height, with no caption clipped inside its tile).
+// height, with no caption clipped inside its tile); plus Step 3b (Q1, M37):
+// the header band shows the tab's title, centred, at 28px on every tab
+// root and no title at all on an inner page (whose own big <h1> sits under
+// the band with main's 24px top padding), and the hidden My Car route and
+// any unknown route both redirect home.
 // Depends on: @playwright/test, ./helpers (openAppAt), the production
 // build served by playwright.config.ts's webServer (port 4173).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
@@ -136,4 +140,39 @@ test.describe('Match Pairs at 390x844', () => {
       }
     }
   });
+});
+
+test('header band titles', async ({ page }) => {
+  const roots: Array<{ path: string; label: string }> = [
+    { path: '/clutch/', label: 'Journey' },
+    { path: '/clutch/learn', label: 'Learn' },
+    { path: '/clutch/practice', label: 'Practice' },
+    { path: '/clutch/me', label: 'Me' },
+  ];
+
+  for (const { path, label } of roots) {
+    await openAppAt(page, path);
+    const title = page.locator('header h1');
+    await expect(title).toHaveText(label);
+    const fontSize = await title.evaluate((el) => getComputedStyle(el).fontSize);
+    expect(fontSize).toBe('28px');
+  }
+
+  await openAppAt(page, '/clutch/learn/signs');
+  await expect(page.locator('header h1')).toHaveCount(0);
+  const mainHeading = page.locator('main h1');
+  const mainFontSize = await mainHeading.evaluate((el) => getComputedStyle(el).fontSize);
+  expect(parseFloat(mainFontSize)).toBeGreaterThanOrEqual(26);
+  const mainPaddingTop = await page
+    .locator('main')
+    .evaluate((el) => getComputedStyle(el).paddingTop);
+  expect(mainPaddingTop).toBe('24px');
+});
+
+test('hidden and unknown routes go home', async ({ page }) => {
+  await openAppAt(page, '/clutch/my-car');
+  await expect(page).toHaveURL(/\/clutch\/$/);
+
+  await openAppAt(page, '/clutch/no-such-page');
+  await expect(page).toHaveURL(/\/clutch\/$/);
 });

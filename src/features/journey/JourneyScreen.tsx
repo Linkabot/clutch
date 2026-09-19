@@ -4,7 +4,6 @@
 function JourneyScreen() {
   return (
     <div>
-      <h1>Journey</h1>
       <p>Coming in a later phase.</p>
     </div>
   );
