@@ -2,46 +2,44 @@
 // loadSection and renders it — a "rule section" is one that holds at
 // least one rule (section.rules.length > 0, e.g. the Introduction's
 // H1–H3, which are not classified under the "rules" kind label; review
-// finding C1, plan.md Step 15b): its preamble followed by one row per
-// rule (Step 16's RuleScreen holds a single rule's full text), with each
-// section.interlude (Step 5, S3) normalised by interludeHtml (amendment
-// E4) and rendered through its own HcHtml inside a .hc-interlude wrapper
-// immediately before the row of its beforeRuleId, and any beforeRuleId:
-// null interludes after the last row (Step 8, S3 on screen). Every other
-// section (no rules) gets its whole body. Sets document.title while a
-// section is loaded.
+// finding C1, plan.md Step 15b): its preamble split into ordered
+// body/heading blocks (preambleBlocks, ./interlude, amendment E6c) — a
+// bare heading line (1–80 characters, e.g. "Signals (rules 103 to 106)")
+// renders inside its own .hc-interlude band, exactly like the section's
+// other interludes, instead of as body text; a first bare line repeating
+// the section's own title (e.g. the Introduction's own "Introduction"
+// line) is dropped — followed by one row per rule (Step 16's RuleScreen
+// holds a single rule's full text, ListRow'd here as its own summary
+// truncated at a word boundary, M08/PS25), with each section.interlude
+// (Step 5, S3) normalised by interludeHtml and rendered through its own
+// HcHtml inside a .hc-interlude wrapper immediately before the row of its
+// beforeRuleId, and any beforeRuleId: null interludes after the last row
+// (Step 8, S3 on screen). Every other section (no rules) gets its whole
+// body, unchanged. Sets document.title while a section is loaded.
 // Depends on: react, react-router-dom, ../../content/loaders (loadSection),
 // ../../content/schemas (Section, Rule, Interlude types), ../../content/text
-// (htmlToText), ../../ui (SignPanel, Chip), ./HcHtml, ./interlude
-// (interludeHtml).
-// Depended on by: src/app/routes.tsx.
-import { useEffect, useState, type CSSProperties } from 'react';
+// (htmlToText, truncateAtWord), ../../ui (SignPanel, Chip), ../../ui/ListRow
+// (imported by path — not re-exported from ../../ui), ./HcHtml, ./interlude
+// (interludeHtml, preambleBlocks), ./code.css.
+// Depended on by: src/app/routes.tsx, tests/unit/section-screen.test.tsx.
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { loadSection } from '../../content/loaders';
 import type { Section, Rule, Interlude } from '../../content/schemas';
-import { htmlToText } from '../../content/text';
+import { htmlToText, truncateAtWord } from '../../content/text';
 import { SignPanel, Chip } from '../../ui';
+import ListRow from '../../ui/ListRow';
 import HcHtml from './HcHtml';
-import { interludeHtml } from './interlude';
+import { interludeHtml, preambleBlocks } from './interlude';
+import './code.css';
 
 type SectionState =
   | { status: 'loading'; slug: string }
   | { status: 'loaded'; slug: string; section: Section }
   | { status: 'not-found'; slug: string };
 
-const ruleRowStyle: CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  minHeight: '44px',
-  padding: '8px 0',
-  borderBottom: '1px solid var(--color-hairline)',
-  textDecoration: 'none',
-  color: 'var(--color-ink)',
-};
-
 function ruleSummary(rule: Rule): string {
-  return rule.lead ?? htmlToText(rule.html).slice(0, 90);
+  return rule.lead ?? truncateAtWord(htmlToText(rule.html), 90);
 }
 
 /** Groups a section's interludes by the rule id they precede, keeping the
@@ -121,7 +119,15 @@ function SectionScreen() {
       <h1>{section.title}</h1>
       {isRuleSection ? (
         <>
-          <HcHtml html={section.preambleHtml} />
+          {preambleBlocks(section.preambleHtml, section.title).map((block, index) =>
+            block.kind === 'heading' ? (
+              <div key={`preamble-${index}`} className="hc-interlude">
+                <HcHtml html={block.html} />
+              </div>
+            ) : (
+              <HcHtml key={`preamble-${index}`} html={block.html} />
+            ),
+          )}
           {section.rules.map((rule) => (
             <div key={rule.id}>
               {(interludesByRuleId.get(rule.id) ?? []).map((interlude, index) => (
@@ -129,15 +135,18 @@ function SectionScreen() {
                   <HcHtml html={interludeHtml(interlude.html)} />
                 </div>
               ))}
-              <Link to={`/code/rule/${rule.id}`} style={ruleRowStyle}>
-                <span className="rule-badge--list">
-                  <SignPanel colour="blue" size="small">
-                    <span className="sign-label">Rule {rule.id}</span>
-                  </SignPanel>
-                </span>
-                <span style={{ flex: 1 }}>{ruleSummary(rule)}</span>
-                {rule.law && <Chip tone="law">Law</Chip>}
-              </Link>
+              <ListRow
+                to={`/code/rule/${rule.id}`}
+                leading={
+                  <span className="rule-badge--list">
+                    <SignPanel colour="blue" size="small" block>
+                      <span className="sign-label">Rule {rule.id}</span>
+                    </SignPanel>
+                  </span>
+                }
+                title={ruleSummary(rule)}
+                trailing={rule.law ? <Chip tone="law">Law</Chip> : undefined}
+              />
             </div>
           ))}
           {trailingInterludes.map((interlude, index) => (

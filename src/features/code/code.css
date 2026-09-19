@@ -1,0 +1,87 @@
+/* Styles for the Highway Code screens' own chrome (not the rendered
+   Highway Code HTML itself, which is src/features/code/hc-html.css):
+   HighwayCodeSectionsScreen's search box, OGL sentence and section list,
+   SearchScreen's input and results list, RuleScreen's context line, back
+   link, prev/next row and footer, and StoppingDistanceTable's static
+   layout (M04: every literal inline style object in src/features/code
+   moved here in Step 4). Tokens only — no hard-coded colours.
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/code/HighwayCodeSectionsScreen.tsx,
+   src/features/code/SectionScreen.tsx, src/features/code/SearchScreen.tsx,
+   src/features/code/RuleScreen.tsx,
+   src/features/code/StoppingDistanceTable.tsx. */
+
+.code-search {
+  margin: var(--space-stack) 0 0;
+}
+
+.code-search__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-button);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.code-ogl {
+  color: var(--color-muted);
+  margin: var(--space-stack) 0 0;
+}
+
+.code-sections {
+  margin-top: var(--space-stack);
+}
+
+.code-search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rule-context {
+  color: var(--color-muted);
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.code-back-link {
+  color: var(--color-muted);
+}
+
+.code-nav-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.code-footer {
+  color: var(--color-muted);
+}
+
+.stopping-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  margin: 0;
+}
+
+.stopping-table__caption {
+  padding: 0;
+  text-align: center;
+}
+
+.stopping-table__col-speed {
+  width: 28%;
+}
+
+.stopping-table__col-distance {
+  width: 36%;
+}
+
+.stopping-table__footnote {
+  color: var(--color-muted);
+}

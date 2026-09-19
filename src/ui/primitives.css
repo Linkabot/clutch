@@ -1,10 +1,12 @@
-/* Shared styles for the Decision 13 sign/plate/roundel/button/chip/list-row
-   primitives in src/ui/*.tsx. Imported exactly once, from src/main.tsx,
-   after theme.css, so every rule below can rely on the colour and radius
-   custom properties theme.css defines. Tokens only — no hex colours here.
+/* Shared styles for the Decision 13
+   sign/plate/roundel/button/chip/list-row/segmented primitives in
+   src/ui/*.tsx. Imported exactly once, from src/main.tsx, after theme.css,
+   so every rule below can rely on the colour and radius custom properties
+   theme.css defines. Tokens only — no hex colours here.
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/main.tsx; every component in src/ui/*.tsx via the
-   class names below, including src/ui/ListRow.tsx's .list-row rules. */
+   class names below, including src/ui/ListRow.tsx's .list-row rules and
+   src/ui/SegmentedControl.tsx's .segmented rules. */
 
 /* SignPanel: coloured outer frame holding a white inner border. */
 .sign-panel {
@@ -42,31 +44,21 @@
   color: var(--color-on-sign);
 }
 
-/* S8: rule badges in Highway Code list rows (SectionScreen, SearchScreen)
-   share one fixed width, wide enough for the widest label ("RULE 307"),
-   instead of each sizing itself to its own rule id's length. SignPanel
-   takes no className, so the wrapper's fixed width has to be filled by the
-   visible .sign-panel (and its .sign-panel__inner) through descendant
-   selectors — the wrapper alone being a fixed width is not enough, since
-   the panel inside would otherwise stay content-sized. flex-shrink: 0
-   keeps the badge from being squeezed by a long rule summary sharing the
-   same flex row (SectionScreen/SearchScreen's row style is display: flex). */
+/* S8: rule badges in Highway Code list rows (SectionScreen, SearchScreen,
+   HighwayCodeSectionsScreen) share one fixed width, wide enough for the
+   widest label ("RULE 307") or the widest range ("103–158"), instead of
+   each sizing itself to its own content's length. The visible SignPanel
+   inside now fills the wrapper through its own `block` prop (M12,
+   .sign-panel--block) rather than a descendant-selector hack (Step 4, amendment
+   E6 fact 5); this rule only sets the wrapper's own width and centres the
+   panel's text inside it. flex-shrink: 0 keeps the badge from being
+   squeezed by a long row title sharing the same flex row (.list-row is
+   display: flex). */
 .rule-badge--list {
   display: inline-flex;
   flex-shrink: 0;
   width: 120px;
   min-width: 120px;
-}
-
-.rule-badge--list .sign-panel {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.rule-badge--list .sign-panel__inner {
-  box-sizing: border-box;
-  width: 100%;
   text-align: center;
 }
 
@@ -162,6 +154,40 @@ button.roundel {
   display: flex;
   align-items: center;
   color: var(--color-muted);
+}
+
+/* SegmentedControl (Q15): a role="tablist" of equal-width options in a
+   light grey rounded track (--color-press, a fill token with no contrast
+   pair); the selected option is a raised white (--color-surface) pill with
+   ink text — the [ink, surface] pair scripts/check-contrast.mjs already
+   proves. */
+.segmented {
+  display: flex;
+  gap: 4px;
+  margin: var(--space-stack) 0;
+  padding: 4px;
+  background-color: var(--color-press);
+  border-radius: var(--radius-button);
+}
+
+.segmented__option {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  border-radius: calc(var(--radius-button) - 4px);
+  background: transparent;
+  color: var(--color-muted);
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.segmented__option[aria-selected='true'] {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
 }
 
 /* Button: primary is the yellow marking-style call to action; secondary

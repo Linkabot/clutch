@@ -21,7 +21,12 @@
 // under each Overall row — and (Step 12, S8/amendment E8) that every
 // `.rule-badge--list` rule badge in a section's list rows shares one width,
 // and that the visible `.sign-panel` inside each wrapper fills it, rather
-// than only the invisible wrapper matching. Runs against the production
+// than only the invisible wrapper matching — and (Step 4, Q15/PS26/
+// amendment E6) that the hub splits into three tabs (Rules, Signs &
+// signals, Annexes) whose choice lives in the URL and survives a section
+// visit and Back, that a rule's page shows its "Rule {id} · {heading}"
+// context line, and that the search box on the hub reaches the same
+// search screen the old Search card used to. Runs against the production
 // build (`vite preview`) with Playwright's WebKit engine and an iPhone 14
 // device profile, matching real iOS Safari behaviour.
 // Depends on: @playwright/test, node:fs, node:path, node:url, ./helpers
@@ -93,7 +98,7 @@ test('search finds Rule 126', async ({ page }) => {
   await openAppAt(page, '/clutch/learn/code/search');
 
   const input = page.getByTestId('hc-search');
-  await expect(input).toHaveAttribute('placeholder', 'Search rules and annexes');
+  await expect(input).toHaveAttribute('placeholder', 'Search the Highway Code');
   await input.fill('stopping distance');
 
   const resultLink = page.locator('[data-testid="search-results"] a[href$="/code/rule/126"]');
@@ -118,7 +123,7 @@ test('cold deep link renders Rule 126 under /clutch/', async ({ page }) => {
   // Rule 126 is advice (not law) today, but this asserts on the pair
   // generically — whichever the rule's law flag yields is what must render.
   const lawChip = page.getByText('Law · says MUST');
-  const adviceChip = page.getByText("Advice · says 'should'");
+  const adviceChip = page.getByText('Advice · not the law');
   await expect(lawChip.or(adviceChip)).toBeVisible();
 
   // Amendment M3 regression guard: Tailwind's preflight strips list markers
@@ -223,6 +228,14 @@ test('list rule badges share one width', async ({ page }) => {
 
   expect(Math.max(...wrapperWidths) - Math.min(...wrapperWidths)).toBeLessThanOrEqual(1);
   expect(Math.max(...panelWidths) - Math.min(...panelWidths)).toBeLessThanOrEqual(1);
+
+  // Amendment E7: the label stays centred in its badge now that the
+  // descendant rules are gone (text-align lives on .rule-badge--list).
+  const labelAlign = await page
+    .locator('.rule-badge--list .sign-panel__inner')
+    .first()
+    .evaluate((inner) => getComputedStyle(inner).textAlign);
+  expect(labelAlign).toBe('center');
 });
 
 test('offline: rule page and search render with the server stopped', async ({ page }) => {
@@ -326,6 +339,10 @@ test('interludes and captioned diagram links render', async ({ page }) => {
   // no longer renders as visible empty lines (Rule 117's heading/sub-heading
   // band).
   await page.goto('/clutch/code/rule/117');
+  // Amendment E6/PS26: the rule-context line reads the nearest sub-heading
+  // at or before the rule, so Rule 117 (which sits right after this
+  // interlude's own heading/sub-heading line) reads "Rule 117 · Braking".
+  await expect(page.getByText('Rule 117 · Braking')).toBeVisible();
   const controlOfVehicleInterlude = await page.locator('.hc-interlude').first().innerText();
   expect(controlOfVehicleInterlude).toBe('Control of the vehicle (rules 117 to 126)\nBraking');
 
@@ -385,4 +402,62 @@ test('internal content links carry the /clutch/ base', async ({ page }) => {
   expect(
     await page.evaluate(() => (window as unknown as Record<string, unknown>).__clutchNoReload),
   ).toBe(true);
+});
+
+test('three tabs and the search box', async ({ page }) => {
+  // Q15/amendment E6d: the hub splits into three tabs (Rules, Signs &
+  // signals, Annexes); the chosen tab lives in the URL as ?tab=... and is
+  // set with history.replaceState, not a pushed entry, so switching tabs
+  // never grows the session history — proved with history.length rather
+  // than just a single page.goBack() (amendment E6e).
+  await openAppAt(page, '/clutch/learn/code');
+
+  const rulesTab = page.getByRole('tab', { name: 'Rules', exact: true });
+  const signalsTab = page.getByRole('tab', { name: 'Signs & signals', exact: true });
+  const annexesTab = page.getByRole('tab', { name: 'Annexes', exact: true });
+
+  await expect(rulesTab).toHaveAttribute('aria-selected', 'true');
+  // Rules selected: first row is Rules for pedestrians, last is Introduction
+  // (amendment E6d: Introduction sits last in the Rules tab).
+  const rows = page.locator('.list-row');
+  await expect(rows.first()).toContainText('Rules for pedestrians');
+  await expect(rows.last()).toContainText('Introduction');
+
+  const historyLengthBefore = await page.evaluate(() => window.history.length);
+  await signalsTab.click();
+  await annexesTab.click();
+  // React Router applies a tab change a moment after the tap, so the
+  // history is read only once the Annexes tab has landed (amendment E7).
+  await expect(page).toHaveURL(/\?tab=annexes$/);
+  await expect(annexesTab).toHaveAttribute('aria-selected', 'true');
+  const historyLengthAfter = await page.evaluate(() => window.history.length);
+  expect(historyLengthAfter).toBe(historyLengthBefore);
+
+  // Opening a row (a pushed entry) then Back returns to the same replaced
+  // hub entry, still on the Annexes tab.
+  await rows.first().click();
+  await page.goBack();
+  await expect(page).toHaveURL(/\?tab=annexes$/);
+  await expect(page.getByRole('tab', { name: 'Annexes', exact: true })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  // Q15: the search box replaces the old Search card/icon-link, reaching
+  // the same search screen.
+  const searchBox = page.getByRole('searchbox', { name: 'Search the Highway Code' });
+  await searchBox.fill('mobile');
+  await searchBox.press('Enter');
+  await expect(page).toHaveURL(/\/learn\/code\/search\?q=mobile/);
+  await expect(page.locator('[data-testid="search-results"] a').first()).toBeVisible({
+    timeout: 20_000,
+  });
+  // Amendment E7: a rule result leads with its badge, like the section
+  // screen's rule rows.
+  await expect(
+    page.locator('[data-testid="search-results"] .list-row__leading .rule-badge--list').first(),
+  ).toBeVisible();
+
+  await page.goto('/clutch/learn');
+  await expect(page.getByRole('link', { name: /search/i })).toHaveCount(0);
 });

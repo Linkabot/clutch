@@ -2,24 +2,29 @@
 // on its own (from search results, a shared link, or the section list).
 // Loads the rule and its owning section via loadRule, then renders: the
 // rule-number badge as the page's only top-level heading (Step 11, S10 —
-// the separate "not found" state below keeps its own heading), a muted
-// link back to the owning section, a law/advice Chip (a MUST/MUST NOT
-// rule is "Law", everything else is "Advice" — Decision 13's wording),
+// the separate "not found" state below keeps its own heading), directly
+// under it a muted "Rule {id} · {heading}" context line when
+// ruleContextHeading (./interlude, amendment E6/PS26) finds one — the
+// sub-heading this rule sits under, read from the section's own bare
+// heading lines, so every rule shows a title even the 48 that come before
+// their section's first interlude — a muted link back to the owning
+// section, a law/advice Chip (a MUST/MUST NOT rule is "Law", everything
+// else is "Advice · not the law" — Decision 13's wording, amendment E6),
 // the owning section's interludes whose beforeRuleId equals this rule's
-// id (Step 5, S3), each normalised by interludeHtml (amendment E4) and
-// rendered through its own
-// HcHtml inside a .hc-interlude wrapper above the rule body (Step 8, S3 on
-// screen), the rule's lead sentence as its own bold paragraph when
-// shouldShowLead (amendment E5) says the body text doesn't already contain
-// it, its sanitised HTML body, the Rule 126 stopping-distance table when
-// this is Rule 126, previous/next navigation within the owning section,
-// and a footer with the OGL licence statement and an external link to the
-// same rule on GOV.UK.
+// id (Step 5, S3), each normalised by interludeHtml and rendered through
+// its own HcHtml inside a .hc-interlude wrapper above the rule body (Step
+// 8, S3 on screen), the rule's lead sentence as its own bold paragraph
+// when shouldShowLead (amendment E5) says the body text doesn't already
+// contain it, its sanitised HTML body, the Rule 126 stopping-distance
+// table when this is Rule 126, previous/next navigation within the
+// owning section, and a footer with the OGL licence statement and an
+// external link to the same rule on GOV.UK.
 // Depends on: react, react-router-dom, ../../content/loaders (loadRule,
 // getHighwayCodeIndex), ../../content/schemas (Rule, Section types),
 // ../../content/text (htmlToText), ../../ui (SignPanel, Chip, Button),
 // ./HcHtml, ./ruleNav (neighbours), ./StoppingDistanceTable, ./interlude
-// (interludeHtml), ./rule-heading (shouldShowLead).
+// (interludeHtml, ruleContextHeading), ./rule-heading (shouldShowLead),
+// ./code.css.
 // Depended on by: src/app/routes.tsx.
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -28,10 +33,11 @@ import type { Rule, Section } from '../../content/schemas';
 import { htmlToText } from '../../content/text';
 import { SignPanel, Chip, Button } from '../../ui';
 import HcHtml from './HcHtml';
-import { interludeHtml } from './interlude';
+import { interludeHtml, ruleContextHeading } from './interlude';
 import { neighbours } from './ruleNav';
 import { shouldShowLead } from './rule-heading';
 import StoppingDistanceTable from './StoppingDistanceTable';
+import './code.css';
 
 type RuleState =
   | { status: 'loading'; id: string }
@@ -93,6 +99,7 @@ function RuleScreen() {
   const govUkHref = `${section.sourceUrl}#rule${rule.id.toLowerCase()}`;
   const interludes = section.interludes.filter((interlude) => interlude.beforeRuleId === rule.id);
   const showLead = shouldShowLead(rule.lead ?? '', htmlToText(rule.html));
+  const contextHeading = ruleContextHeading(section, rule.id);
 
   return (
     <div>
@@ -101,15 +108,20 @@ function RuleScreen() {
           <span className="sign-label">Rule {rule.id}</span>
         </SignPanel>
       </h1>
+      {contextHeading && (
+        <p className="rule-context">
+          Rule {rule.id} · {contextHeading}
+        </p>
+      )}
       <p>
-        <Link to={`/learn/code/${section.slug}`} style={{ color: 'var(--color-muted)' }}>
+        <Link to={`/learn/code/${section.slug}`} className="code-back-link">
           Back to {section.title}
         </Link>
       </p>
       {rule.law ? (
         <Chip tone="law">Law · says MUST</Chip>
       ) : (
-        <Chip tone="advice">Advice · says 'should'</Chip>
+        <Chip tone="advice">Advice · not the law</Chip>
       )}
       {interludes.map((interlude, index) => (
         <div key={`${rule.id}-${index}`} className="hc-interlude">
@@ -125,9 +137,7 @@ function RuleScreen() {
         <HcHtml html={rule.html} />
       </div>
       {rule.id === '126' && <StoppingDistanceTable />}
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', margin: '16px 0' }}
-      >
+      <div className="code-nav-row">
         {prev ? (
           <Button variant="secondary" onClick={() => navigate(`/code/rule/${prev}`)}>
             Previous · Rule {prev}
@@ -143,7 +153,7 @@ function RuleScreen() {
           <span />
         )}
       </div>
-      <footer style={{ color: 'var(--color-muted)' }}>
+      <footer className="code-footer">
         <p>{getHighwayCodeIndex().licence.statement}</p>
         <a className="text-link" href={govUkHref} rel="external noopener" target="_blank">
           View on GOV.UK (online)

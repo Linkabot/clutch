@@ -1,13 +1,13 @@
-// Unit tests for the pure Highway Code section-list helpers: ruleRange
-// (rendering a section's rule ids as a human-readable range) and
-// groupSections (ordering the index's sections into the five display
-// groups). Uses a small hand-built index object, not the real committed
-// content — see tests/content/highway-code.test.ts for that.
+// Unit tests for the pure Highway Code hub helpers: ruleRange (rendering a
+// section's rule ids as a human-readable range) and CODE_TABS/groupSections
+// (splitting the index's sections into the three tabs the hub renders,
+// amendment E6d). Uses a small hand-built index object, not the real
+// committed content — see tests/content/highway-code.test.ts for that.
 // Depends on: vitest, src/features/code/sections.ts, src/content/schemas.
 // Depended on by: `npm test` (Vitest run).
 
 import { describe, it, expect } from 'vitest';
-import { ruleRange, groupSections } from '../../src/features/code/sections';
+import { CODE_TABS, ruleRange, groupSections } from '../../src/features/code/sections';
 import type { HighwayCodeIndex } from '../../src/content/schemas';
 
 describe('ruleRange', () => {
@@ -31,7 +31,10 @@ describe('ruleRange', () => {
   });
 });
 
-describe('groupSections', () => {
+describe('CODE_TABS / groupSections', () => {
+  // Deliberately lists the introduction section FIRST (as the real index
+  // does, order 0) to prove the Rules tab moves it to the end rather than
+  // just trusting the index's own published order (amendment E6d).
   const index: HighwayCodeIndex = {
     source: {
       title: 'The Highway Code',
@@ -94,34 +97,41 @@ describe('groupSections', () => {
     ],
   };
 
-  it('returns the five groups in order: Rules, Introduction, Signals, Annexes, Other', () => {
+  it('returns the three tabs in order: Rules, Signs & signals, Annexes', () => {
     const groups = groupSections(index);
-    expect(groups.map((group) => group.label)).toEqual([
-      'Rules',
-      'Introduction',
-      'Signals, signs and markings',
-      'Annexes',
-      'Other',
-    ]);
+    expect(groups.map((group) => group.label)).toEqual(['Rules', 'Signs & signals', 'Annexes']);
+    expect(groups.map((group) => group.id)).toEqual(CODE_TABS.map((tab) => tab.id));
   });
 
-  it("keeps each group's sections in the index's own published order", () => {
+  it('puts every section into exactly the tab whose kinds include its own kind', () => {
     const groups = groupSections(index);
-    const rules = groups.find((group) => group.kind === 'rules');
+    const total = groups.reduce((sum, group) => sum + group.sections.length, 0);
+    expect(total).toBe(index.sections.length);
+    for (const group of groups) {
+      const tab = CODE_TABS.find((candidate) => candidate.id === group.id);
+      expect(tab).toBeDefined();
+      for (const section of group.sections) {
+        expect(tab!.kinds).toContain(section.kind);
+      }
+    }
+  });
+
+  it("puts the Rules tab's kinds in CODE_TABS order (rules, then introduction), each in published order", () => {
+    const groups = groupSections(index);
+    const rules = groups.find((group) => group.id === 'rules');
     expect(rules?.sections.map((section) => section.slug)).toEqual([
       'rules-a-1-to-5',
       'rules-b-6-to-9',
+      'introduction',
     ]);
   });
 
-  it('places every section into exactly the group matching its own kind', () => {
+  it("keeps the Annexes tab's sections in the index's own published order within a kind", () => {
     const groups = groupSections(index);
-    for (const group of groups) {
-      for (const section of group.sections) {
-        expect(section.kind).toBe(group.kind);
-      }
-    }
-    const total = groups.reduce((sum, group) => sum + group.sections.length, 0);
-    expect(total).toBe(index.sections.length);
+    const annexes = groups.find((group) => group.id === 'annexes');
+    expect(annexes?.sections.map((section) => section.slug)).toEqual([
+      'annex-1-example',
+      'other-information',
+    ]);
   });
 });

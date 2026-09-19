@@ -1,8 +1,11 @@
-// Pure helpers for the Highway Code sections list (/learn/code): turning a
-// section's ruleIds into a human-readable range, and grouping the index's
-// sections into the fixed display order used by
-// HighwayCodeSectionsScreen. No React, no I/O — testable on a hand-built
-// index object.
+// Pure helpers for the Highway Code hub (/learn/code): turning a section's
+// ruleIds into a human-readable range, and CODE_TABS/groupSections
+// (Q15, amendment E6d), which split the index's sections into the three
+// tabs HighwayCodeSectionsScreen renders — Rules (the index's `rules`
+// sections, in published order, then the `introduction` section LAST, per
+// Lincoln's own choice at the gate), Signs & signals (`signals`) and
+// Annexes (`annex` sections, then `other`). No React, no I/O — testable on
+// a hand-built index object.
 // Depends on: ../../content/schemas (HighwayCodeIndex type only).
 // Depended on by: src/features/code/HighwayCodeSectionsScreen.tsx,
 // tests/unit/sections.test.ts.
@@ -10,18 +13,22 @@ import type { HighwayCodeIndex } from '../../content/schemas';
 
 type IndexSection = HighwayCodeIndex['sections'][number];
 
-export interface SectionGroup {
+export interface CodeTab {
+  id: string;
   label: string;
-  kind: IndexSection['kind'];
+  kinds: readonly IndexSection['kind'][];
+}
+
+export interface SectionGroup {
+  id: string;
+  label: string;
   sections: IndexSection[];
 }
 
-const GROUP_ORDER: ReadonlyArray<{ label: string; kind: IndexSection['kind'] }> = [
-  { label: 'Rules', kind: 'rules' },
-  { label: 'Introduction', kind: 'introduction' },
-  { label: 'Signals, signs and markings', kind: 'signals' },
-  { label: 'Annexes', kind: 'annex' },
-  { label: 'Other', kind: 'other' },
+export const CODE_TABS: readonly CodeTab[] = [
+  { id: 'rules', label: 'Rules', kinds: ['rules', 'introduction'] },
+  { id: 'signs', label: 'Signs & signals', kinds: ['signals'] },
+  { id: 'annexes', label: 'Annexes', kinds: ['annex', 'other'] },
 ];
 
 /**
@@ -49,14 +56,19 @@ export function ruleRange(ruleIds: string[]): string {
 }
 
 /**
- * Groups the index's sections into the five display groups, in a fixed
- * order (Rules, Introduction, Signals, Annexes, Other), each carrying its
- * own sections in the index's published order.
+ * Groups the index's sections into CODE_TABS's three tabs, in that order.
+ * Each tab lists its sections kind by kind, in the order its own `kinds`
+ * lists them, and within a kind in the index's published order — so the
+ * Rules tab holds the 14 `rules` sections first and the one `introduction`
+ * section last, even though the index itself publishes Introduction first
+ * (amendment E6d, Lincoln's choice at the gate).
  */
 export function groupSections(index: HighwayCodeIndex): SectionGroup[] {
-  return GROUP_ORDER.map(({ label, kind }) => ({
-    label,
-    kind,
-    sections: index.sections.filter((section) => section.kind === kind),
+  return CODE_TABS.map((tab) => ({
+    id: tab.id,
+    label: tab.label,
+    sections: tab.kinds.flatMap((kind) =>
+      index.sections.filter((section) => section.kind === kind),
+    ),
   }));
 }
