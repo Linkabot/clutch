@@ -1,10 +1,10 @@
-/* Shared styles for the Decision 13 sign/plate/roundel/button/chip
+/* Shared styles for the Decision 13 sign/plate/roundel/button/chip/list-row
    primitives in src/ui/*.tsx. Imported exactly once, from src/main.tsx,
    after theme.css, so every rule below can rely on the colour and radius
    custom properties theme.css defines. Tokens only — no hex colours here.
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/main.tsx; every component in src/ui/*.tsx via the
-   class names below. */
+   class names below, including src/ui/ListRow.tsx's .list-row rules. */
 
 /* SignPanel: coloured outer frame holding a white inner border. */
 .sign-panel {
@@ -24,6 +24,14 @@
 .sign-panel--small {
   border-radius: 8px;
   padding: 3px;
+}
+
+/* M12: a full-width variant used where a SignPanel frames block content
+   (a Learn tab card, a rule-badge list row) instead of sitting inline. */
+.sign-panel--block {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sign-panel__inner {
@@ -112,6 +120,50 @@ button.roundel {
   box-shadow: 0 0 0 4px var(--color-marking-yellow);
 }
 
+/* ListRow (M05): a full-width tappable navigation row. The press-state
+   background (.list-row:active) is defined in src/app/theme.css, alongside
+   every other tap target's press fill. */
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.list-row__leading {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.list-row__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-row__title {
+  font-size: 16px;
+}
+
+.list-row__subtitle {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.list-row__trailing {
+  flex-shrink: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  color: var(--color-muted);
+}
+
 /* Button: primary is the yellow marking-style call to action; secondary
    is a plain outlined surface button. */
 .button {
@@ -182,4 +234,12 @@ button.roundel {
 
 .chip--neutral {
   border: 1.5px solid var(--color-hairline);
+}
+
+/* M42: a tappable chip (an interactive <button> or <a> using the .chip
+   look, as opposed to Chip.tsx's plain <span> label) meets the 44px tap
+   target minimum. */
+button.chip,
+a.chip {
+  min-height: 44px;
 }

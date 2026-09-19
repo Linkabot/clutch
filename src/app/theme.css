@@ -28,6 +28,7 @@
   --color-tab-active: #0a5db0;
   --color-tab-inactive: #6b6e75;
   --color-link: #1d4ed8;
+  --color-press: #e6e8ec;
   --color-sign-blue: #0a5db0;
   --color-sign-blue-shadow: #073f78;
   --color-sign-green: #00703c;
@@ -53,6 +54,16 @@
   --radius-button: 10px;
   --radius-card: 12px;
   --radius-plate: 4px;
+
+  /* Type scale and page rhythm (Step 3a, M03/M04). Light :root only -- these
+     are not redefined in the dark override block below. */
+  --font-size-h1: 28px;
+  --font-size-h2: 22px;
+  --font-size-h3: 18px;
+  --font-size-h4: 16px;
+  --space-page-top: 24px;
+  --space-section: 24px;
+  --space-stack: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -66,6 +77,7 @@
     --color-tab-active: #5aa8f2;
     --color-tab-inactive: #8d9098;
     --color-link: #8ab4f8;
+    --color-press: #2a2d33;
     --color-map-grass: #1c352e;
     --color-road: #2a2f3e;
     /* Sign, plate, roundel and marking colours (sign-blue, sign-green,
@@ -109,6 +121,29 @@ h4,
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 800;
   line-height: 1.2;
+}
+
+/* Type scale (Step 3a, M03/M04): sizes live on their own element rules, not
+   the grouped block above, so .font-display (used where a heading-styled
+   element is not actually an h1-h4) never gains a font-size. Tailwind's
+   preflight sets h1-h6 { font-size: inherit } inside @layer base; this
+   unlayered rule wins over it. */
+h1 {
+  font-size: var(--font-size-h1);
+  margin: 0 0 16px;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
 }
 
 /* PS16: links elsewhere in the app (card and row <Link>s) keep their own
@@ -157,6 +192,22 @@ summary {
   font-size: 13px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+}
+
+/* M02: a shared press-state fill for every tap target that is not the
+   yellow primary button, so tapping reads as a press without a transform
+   or filter (real sign pictures inside these tiles are never altered).
+   .button--secondary:active, not .button:active (amendment E2): .button
+   alone would beat .button--primary's yellow fill by specificity and grey
+   every primary button (Play again, Continue) while pressed. */
+.button--secondary:active,
+.list-row:active,
+button.chip:active,
+.tap__tile:not(:disabled):active,
+.sprint__option:not(:disabled):active,
+.pairs__tile:not(:disabled):active,
+.signs-tile:active {
+  background-color: var(--color-press);
 }
 
 /* Users who have asked their OS for reduced motion get animations and

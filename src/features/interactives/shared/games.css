@@ -51,6 +51,9 @@
   top: 0;
   bottom: 0;
   background-color: var(--color-sign-blue);
+  /* M39: a smooth countdown/progress fill; the global reduced-motion rule
+     (src/app/theme.css) collapses this to (near) instant. */
+  transition: width 200ms linear;
 }
 
 .game-top-bar__dashes {
