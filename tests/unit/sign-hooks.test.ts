@@ -1,12 +1,14 @@
 // Unit tests for hookFor() (src/content/signs.ts): the § Memory hooks
-// display-rule fallback chain -- a sign's own hook, then (sheet context
-// only) its rule's hook, then its family's hook -- checked against the
-// real committed content/uk/signs/hooks.json (Vitest supports
+// display-rule fallback chain -- a sign's own hook, then, for a C9
+// direction sign, null, otherwise the hook whose rules include the sign's
+// rule, else its family's hook, with 'page' and 'sheet' resolving alike --
+// checked against synthetic signs and, for the 176-of-195 count, the real
+// committed content/uk/signs/{hooks,signs}.json (Vitest supports
 // import.meta.glob, so no fixtures are needed here).
 // Depends on: vitest, src/content/signs.ts, src/content/schemas.
 // Depended on by: `npm test` (Vitest run).
 import { describe, it, expect } from 'vitest';
-import { hookFor } from '../../src/content/signs';
+import { hookFor, loadSigns } from '../../src/content/signs';
 import type { Sign } from '../../src/content/schemas';
 
 function makeSign(overrides: Partial<Sign> = {}): Sign {
@@ -40,9 +42,23 @@ describe('hookFor', () => {
     expect(hookFor(sign, 'sheet')?.id).toBe('sign-mini-roundabout');
   });
 
-  it("'page' context without an own hook returns null", () => {
+  it("'page' falls back like 'sheet'", () => {
     const sign = makeSign({ hookId: null, rule: 'C2', family: 'warning' });
+    expect(hookFor(sign, 'page')).not.toBeNull();
+    expect(hookFor(sign, 'page')?.id).toBe(hookFor(sign, 'sheet')?.id);
+  });
+
+  it('a C9 direction sign without an own hook gets null in both contexts', () => {
+    const sign = makeSign({ hookId: null, rule: 'C9', family: 'direction' });
     expect(hookFor(sign, 'page')).toBeNull();
+    expect(hookFor(sign, 'sheet')).toBeNull();
+  });
+
+  it('resolves a tip for exactly 176 of 195 signs on the real catalogue', async () => {
+    const signs = await loadSigns();
+    expect(signs).toHaveLength(195);
+    const withTip = signs.filter((sign) => hookFor(sign, 'page') !== null);
+    expect(withTip).toHaveLength(176);
   });
 
   it("'sheet' context without an own hook falls back to the rule hook", () => {

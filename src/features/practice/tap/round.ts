@@ -1,26 +1,31 @@
 // Tap the sign's pure round builder, rule-sentence lookup and sheet-content
-// builder (plan.md Step 23 and amendments E25-E26): buildTapRound() picks
-// 10 distinct answers from the signs catalogue (the first is firstSignId's
-// sign when it names one; an unknown firstSignId is ignored), each paired
-// with 3 same-family distractors whose captions are distinct from each
-// other and from the answer's, the 4 options shuffled so the answer never
-// sits in one fixed slot. firstRuleSentence() reads the first sentence of a
-// sign's shape rule using the Step 20 note's lookup (C7 signs read
-// outcomes[sign.rule]; every other rule reads sentences directly), or null
-// when the rule has none (C1, C9's `other` signs). sheetContent() (E26)
-// is the single source of QuizSheet's props for one answer: outcome and
-// xpGained come from comparing `chosenId` to the question's answer, but the
-// name, rule sentence and hook always come from the ANSWER, never the
-// tapped sign, so a wrong tap still teaches the right one. Every random
-// choice is driven by the caller's Rng, so one seed always builds the same
-// round.
+// builder (plan.md Step 23 and amendments E25-E26, extended by Step 6's Q7
+// two-sign questions): optionsFor() gives a question's 4 options -- for the
+// two LOOK_ALIKE_PAIR signs (STOP and GIVE WAY), exactly the pair in
+// shuffled order with no distractor pick, since the point is telling them
+// apart; for every other answer, the answer plus 3 distractors from
+// pickDistractors (same family or look-alike tiers), shuffled so the
+// answer never sits in one fixed slot. buildTapRound() picks 10 distinct
+// answers from the signs catalogue (the first is firstSignId's sign when it
+// names one; an unknown firstSignId is ignored) and calls optionsFor() for
+// each. firstRuleSentence() reads the first sentence of a sign's shape rule
+// using the Step 20 note's lookup (C7 signs read outcomes[sign.rule];
+// every other rule reads sentences directly), or null when the rule has
+// none (C1, C9's `other` signs). sheetContent() (E26) is the single source
+// of QuizSheet's props for one answer: outcome and xpGained come from
+// comparing `chosenId` to the question's answer, but the name (via
+// gameName(), the Highway Code short name for STOP/GIVE WAY), rule
+// sentence and hook always come from the ANSWER, never the tapped sign, so
+// a wrong tap still teaches the right one. Every random choice is driven by
+// the caller's Rng, so one seed always builds the same round.
 // Depends on: ../../../content/schemas (Sign), ../../../content/signs
-// (getShapeRules, hookFor), ../../interactives/shared/random (Rng, shuffle),
+// (getShapeRules, hookFor, gameName, LOOK_ALIKE_PAIR),
+// ../../interactives/shared/random (Rng, shuffle),
 // ../../interactives/shared/distractors (pickDistractors).
 // Depended on by: ./TapTheSignScreen.tsx, tests/unit/tap-round.test.ts.
 
 import type { Sign } from '../../../content/schemas';
-import { getShapeRules, hookFor } from '../../../content/signs';
+import { getShapeRules, hookFor, gameName, LOOK_ALIKE_PAIR } from '../../../content/signs';
 import type { Rng } from '../../interactives/shared/random';
 import { shuffle } from '../../interactives/shared/random';
 import { pickDistractors } from '../../interactives/shared/distractors';
@@ -35,11 +40,29 @@ export interface TapQuestion {
 }
 
 /**
+ * A question's options for `answer`: when `answer.id` is one of
+ * LOOK_ALIKE_PAIR (STOP and GIVE WAY, Q7), exactly the two pair signs in
+ * shuffled order -- no distractor pick. Otherwise the answer plus 3
+ * distractors from pickDistractors, shuffled so the answer never sits in
+ * one fixed slot.
+ */
+export function optionsFor(signs: readonly Sign[], answer: Sign, rng: Rng): Sign[] {
+  if ((LOOK_ALIKE_PAIR as readonly string[]).includes(answer.id)) {
+    const pairSigns = LOOK_ALIKE_PAIR.map((id) => signs.find((sign) => sign.id === id)).filter(
+      (sign): sign is Sign => sign !== undefined,
+    );
+    return shuffle(pairSigns, rng);
+  }
+  const distractors = pickDistractors(signs, answer, DISTRACTORS_PER_QUESTION, rng);
+  return shuffle([answer, ...distractors], rng);
+}
+
+/**
  * Builds one Tap the sign round: 10 questions with distinct answers, each
- * with the answer plus 3 same-family distractors (distinct captions, any
- * length), 4 options shuffled per question. When `firstSignId` names one of
- * `signs`, its sign answers question 1; otherwise (including an unknown
- * id) the answers are simply the first 10 of a full shuffle.
+ * built by optionsFor() -- 4 options for an ordinary answer, exactly 2 for
+ * the LOOK_ALIKE_PAIR answer. When `firstSignId` names one of `signs`, its
+ * sign answers question 1; otherwise (including an unknown id) the answers
+ * are simply the first 10 of a full shuffle.
  */
 export function buildTapRound(
   signs: readonly Sign[],
@@ -53,8 +76,7 @@ export function buildTapRound(
     : shuffledSigns;
 
   return orderedAnswers.slice(0, QUESTIONS_PER_ROUND).map((answer) => {
-    const distractors = pickDistractors(signs, answer, DISTRACTORS_PER_QUESTION, rng);
-    const options = shuffle([answer, ...distractors], rng);
+    const options = optionsFor(signs, answer, rng);
     return { answer, options };
   });
 }
@@ -83,10 +105,11 @@ export interface SheetContent {
 
 /**
  * QuizSheet's props for one answer to `question`: `outcome`/`xpGained`
- * compare `chosenId` to the question's answer, but `answerName`,
- * `ruleSentence` and `hook` always read the ANSWER (via firstRuleSentence
- * and hookFor(answer, 'sheet')), never the tapped sign -- a wrong tap still
- * shows the right sign's name, rule sentence and hook.
+ * compare `chosenId` to the question's answer, but `answerName` (via
+ * gameName(), the Highway Code short name for STOP/GIVE WAY, displayName
+ * otherwise), `ruleSentence` and `hook` always read the ANSWER (via
+ * firstRuleSentence and hookFor(answer, 'sheet')), never the tapped sign --
+ * a wrong tap still shows the right sign's name, rule sentence and hook.
  */
 export function sheetContent(question: TapQuestion, chosenId: string): SheetContent {
   const { answer } = question;
@@ -94,7 +117,7 @@ export function sheetContent(question: TapQuestion, chosenId: string): SheetCont
   return {
     outcome: correct ? 'correct' : 'wrong',
     xpGained: correct ? 10 : 0,
-    answerName: answer.name,
+    answerName: gameName(answer),
     ruleSentence: firstRuleSentence(answer),
     hook: hookFor(answer, 'sheet')?.text ?? null,
   };

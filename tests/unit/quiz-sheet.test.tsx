@@ -4,7 +4,8 @@
  * Render tests (via @testing-library/react + jsdom) for QuizSheet, the
  * feedback sheet shown after a quiz answer (plan.md Step 22 and amendment
  * E23): the correct and wrong sheets' title, XP badge, in-a-row streak,
- * body text, hook line, tick or cross, root classes and dialog name; the
+ * body text (the rule sentence on its own line under the bold name, plan.md
+ * E10 (g)), hook line, tick or cross, root classes and dialog name; the
  * nine confetti pieces; reduced motion (a stubbed window.matchMedia) giving
  * the static class, no confetti and no animated class anywhere; and the two
  * buttons, including Continue taking focus on mount. No
@@ -264,5 +265,25 @@ describe('QuizSheet: buttons', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sign page' }));
     expect(props.onSignPage).toHaveBeenCalledTimes(1);
     expect(props.onContinue).not.toHaveBeenCalled();
+  });
+});
+
+describe('QuizSheet: rule sentence layout', () => {
+  it('puts the rule sentence on its own line', () => {
+    const { root } = renderSheet();
+    const body = root.querySelector('.quiz-sheet__body');
+    if (!body) throw new Error('QuizSheet did not render a .quiz-sheet__body');
+    const strong = body.querySelector('strong');
+    if (!strong) throw new Error('QuizSheet did not render a strong name');
+    const brs = body.querySelectorAll('br');
+    expect(brs).toHaveLength(1);
+    expect(strong.compareDocumentPosition(brs[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+
+    const { root: noSentenceRoot } = renderSheet({ ruleSentence: null });
+    const noSentenceBody = noSentenceRoot.querySelector('.quiz-sheet__body');
+    if (!noSentenceBody) throw new Error('QuizSheet did not render a .quiz-sheet__body');
+    expect(noSentenceBody.querySelectorAll('br')).toHaveLength(0);
   });
 });

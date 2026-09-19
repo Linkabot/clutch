@@ -4,8 +4,9 @@
  * Unit and render tests for Sign Sprint (plan.md Step 24 and amendment
  * E27). The deck: buildSprintDeck over the real signs catalogue gives every
  * eligible sign exactly once (131 short-caption answers), each with 4
- * distinct short same-family captions, the answer's slot and the answer
- * order shuffled and seed-dependent; a synthetic catalogue pins the
+ * distinct short captions from the answer's family or its look, the
+ * answer's slot and the answer order shuffled and seed-dependent; a
+ * synthetic catalogue pins the
  * 4-short-captions-per-family threshold. The reducer: start, right and
  * wrong answers, the 900 ms reveal, the 60,000 ms deadline (ticks and late
  * answers), missed signs kept once and in order, acceptsAnswer,
@@ -133,14 +134,25 @@ describe('buildSprintDeck over signs.json', () => {
     }
   });
 
-  it('gives every question 4 options with distinct short captions from the answer family, one of them the answer', () => {
+  it("gives every question 4 options with distinct short captions, each from the answer's family or with the answer's look, one of them the answer", () => {
+    function sameColours(a: readonly string[], b: readonly string[]): boolean {
+      if (a.length !== b.length) return false;
+      const as = [...a].sort();
+      const bs = [...b].sort();
+      return as.every((colour, index) => colour === bs[index]);
+    }
     const deck = buildSprintDeck(signs, mulberry32(1));
     for (const q of deck) {
       expect(q.options).toHaveLength(4);
       expect(new Set(q.options.map((option) => option.name)).size).toBe(4);
       for (const option of q.options) {
         expect(isShortCaption(option.name)).toBe(true);
-        expect(option.family).toBe(q.answer.family);
+        const sameFamily = option.family === q.answer.family;
+        const sameLook =
+          q.answer.shape !== 'other' &&
+          option.shape === q.answer.shape &&
+          sameColours(option.colours, q.answer.colours);
+        expect(sameFamily || sameLook).toBe(true);
       }
       expect(q.options.filter((option) => option.id === q.answer.id)).toHaveLength(1);
     }

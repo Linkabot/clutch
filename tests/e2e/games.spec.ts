@@ -49,6 +49,14 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openAppAt } from './helpers';
 
+/** The two signs learners must tell apart by shape, not caption (Q7). */
+const LOOK_ALIKE_PAIR = ['orders-stop-sign-and-road-marking', 'orders-give-way-road-marking'];
+/** Their Highway Code short names (Q7), keyed by sign id. */
+const LOOK_ALIKE_GAME_NAMES: Record<string, string> = {
+  'orders-stop-sign-and-road-marking': 'Stop and give way',
+  'orders-give-way-road-marking': 'Give way to traffic on major road',
+};
+
 /** The prompt h1's data-answer-id, throwing if it is missing. */
 async function currentAnswerId(page: Page): Promise<string> {
   const id = await page.locator('h1').getAttribute('data-answer-id');
@@ -103,7 +111,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.locator('.quiz-sheet')).toHaveClass(/quiz-sheet--animated/);
     const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
     await expect(continueButton).toHaveClass(/button--primary/);
-    await expect(page.getByText('Slippery road. Triangles warn.')).toBeVisible();
+    await expect(page.getByText('Slippery road Triangles warn.')).toBeVisible();
     await expect(page.getByText('Three sides, one message: watch out ahead.')).toBeVisible();
     await expect(page.locator('.quiz-sheet__streak')).toHaveCount(0);
     await expect(page.locator(`[data-sign-id="${currentId}"]`)).toHaveAttribute(
@@ -132,6 +140,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     const wrongId = await wrongTile.getAttribute('data-sign-id');
     if (!wrongId) throw new Error('wrong tile has no data-sign-id');
     const promptText = await heading.textContent();
+    const tileCount = await page.locator('.tap__tile').count();
 
     await wrongTile.click();
 
@@ -145,9 +154,15 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
       'data-feedback',
       'answer',
     );
-    await expect(page.locator('[data-feedback="dim"]')).toHaveCount(2);
+    await expect(page.locator('[data-feedback="dim"]')).toHaveCount(tileCount - 2);
     await expect(page.locator('.quiz-sheet__xp')).toHaveCount(0);
-    await expect(page.locator('.quiz-sheet__body strong')).toHaveText(promptText ?? '');
+    // The heading keeps the raw sign name until Step 9; the sheet's bold
+    // name is the game name (the pair's short name, or the heading text
+    // with one trailing stop removed).
+    const expectedStrongText = LOOK_ALIKE_PAIR.includes(currentId)
+      ? LOOK_ALIKE_GAME_NAMES[currentId]
+      : (promptText ?? '').replace(/\.$/, '');
+    await expect(page.locator('.quiz-sheet__body strong')).toHaveText(expectedStrongText);
 
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     currentId = await waitForNextAnswerId(page, currentId);

@@ -1,29 +1,35 @@
 // Unit tests for Tap the sign's pure round builder, rule-sentence lookup
-// and sheet-content builder (plan.md Step 23 and amendments E25-E26):
+// and sheet-content builder (plan.md Step 23 and amendments E25-E26,
+// extended by Step 6's Q7 two-sign questions): optionsFor gives the STOP
+// and GIVE WAY signs as each other's only options (LOOK_ALIKE_PAIR, no
+// distractor pick, shuffled by rng) and otherwise the answer plus 3
+// distractors from pickDistractors (same family or look-alike tiers);
 // buildTapRound gives 10 distinct answers (firstSignId first when it names
-// a sign, otherwise ignored), each with 4 options -- the answer plus 3
-// same-family distractors with distinct captions -- shuffled so the answer
-// does not always land in one slot; the same seed always builds the same
-// round, and two seeds differ. firstRuleSentence reads the first
-// shape-rule sentence, including the C7 outcomes split, and null for
-// C1/C9. sheetContent (E26) proves its outcome/XP come from comparing the
-// chosen id to the answer, while its name, rule sentence and hook always
-// come from the answer -- even when the chosen sign is a different sign
-// entirely (warning-ford, C1: no rule sentence, only the family hook).
-// Runs over the real signs catalogue (await loadSigns() works under
-// Vitest -- src/content/signs.ts).
-// Depends on: vitest, src/content/signs (loadSigns), src/content/schemas
-// (Sign type), src/features/interactives/shared/random (mulberry32),
-// src/features/practice/tap/round (buildTapRound, firstRuleSentence,
-// sheetContent, TapQuestion).
+// a sign, otherwise ignored), each built by optionsFor -- 4 options for an
+// ordinary answer, exactly 2 for a LOOK_ALIKE_PAIR answer; the same seed
+// always builds the same round, and two seeds differ. firstRuleSentence
+// reads the first shape-rule sentence, including the C7 outcomes split, and
+// null for C1/C9. sheetContent (E26) proves its outcome/XP come from
+// comparing the chosen id to the answer, while its name (via gameName --
+// the Highway Code short name for STOP/GIVE WAY, displayName otherwise),
+// rule sentence and hook always come from the answer -- even when the
+// chosen sign is a different sign entirely (warning-ford, C1: no rule
+// sentence, only the family hook). Runs over the real signs catalogue
+// (await loadSigns() works under Vitest -- src/content/signs.ts).
+// Depends on: vitest, src/content/signs (loadSigns, gameName,
+// LOOK_ALIKE_PAIR), src/content/schemas (Sign type),
+// src/features/interactives/shared/random (mulberry32),
+// src/features/practice/tap/round (buildTapRound, optionsFor,
+// firstRuleSentence, sheetContent, TapQuestion).
 // Depended on by: `npm test` (Vitest run).
 
 import { describe, it, expect, beforeAll } from 'vitest';
-import { loadSigns } from '../../src/content/signs';
+import { loadSigns, gameName, LOOK_ALIKE_PAIR } from '../../src/content/signs';
 import type { Sign } from '../../src/content/schemas';
 import { mulberry32 } from '../../src/features/interactives/shared/random';
 import {
   buildTapRound,
+  optionsFor,
   firstRuleSentence,
   sheetContent,
   type TapQuestion,
@@ -39,6 +45,18 @@ function findSign(id: string): Sign {
   const sign = signs.find((s) => s.id === id);
   if (!sign) throw new Error(`${id} missing from signs.json`);
   return sign;
+}
+
+function isLookAlike(id: string): boolean {
+  return (LOOK_ALIKE_PAIR as readonly string[]).includes(id);
+}
+
+/** True when `a` and `b` hold the same colours, regardless of order. */
+function sameColourSet(a: readonly string[], b: readonly string[]): boolean {
+  if (a.length !== b.length) return false;
+  const as = [...a].sort();
+  const bs = [...b].sort();
+  return as.every((colour, index) => colour === bs[index]);
 }
 
 describe('firstRuleSentence', () => {
@@ -78,26 +96,40 @@ describe('buildTapRound', () => {
     expect(new Set(round.map((q) => q.answer.id)).size).toBe(10);
   });
 
-  it('gives every question 4 options with exactly one matching the answer', () => {
+  it('gives every question 4 options with exactly one matching the answer, except the look-alike pair', () => {
     const round = buildTapRound(signs, mulberry32(4));
     for (const question of round) {
+      if (isLookAlike(question.answer.id)) continue;
       expect(question.options).toHaveLength(4);
       expect(question.options.filter((option) => option.id === question.answer.id)).toHaveLength(1);
     }
   });
 
-  it('gives every question 4 distinct captions', () => {
+  it('gives every question 4 distinct captions, except the look-alike pair', () => {
     const round = buildTapRound(signs, mulberry32(4));
     for (const question of round) {
+      if (isLookAlike(question.answer.id)) continue;
       expect(new Set(question.options.map((option) => option.name)).size).toBe(4);
     }
   });
 
-  it("gives every distractor the answer's family", () => {
+  it('gives a look-alike pair question exactly the 2 pair signs', () => {
+    const round = buildTapRound(signs, mulberry32(4), 'orders-stop-sign-and-road-marking');
+    expect(round[0].answer.id).toBe('orders-stop-sign-and-road-marking');
+    expect(round[0].options).toHaveLength(2);
+    expect(round[0].options.map((option) => option.id).sort()).toEqual([...LOOK_ALIKE_PAIR].sort());
+  });
+
+  it("gives every distractor the answer's family or the answer's look", () => {
     const round = buildTapRound(signs, mulberry32(5));
     for (const question of round) {
       for (const option of question.options) {
-        expect(option.family).toBe(question.answer.family);
+        const sameFamily = option.family === question.answer.family;
+        const sameLook =
+          question.answer.shape !== 'other' &&
+          option.shape === question.answer.shape &&
+          sameColourSet(option.colours, question.answer.colours);
+        expect(sameFamily || sameLook).toBe(true);
       }
     }
   });
@@ -129,6 +161,29 @@ describe('buildTapRound', () => {
   });
 });
 
+describe('optionsFor', () => {
+  it('gives exactly the STOP and GIVE WAY signs for either pair answer', () => {
+    const stop = findSign('orders-stop-sign-and-road-marking');
+    const giveWay = findSign('orders-give-way-road-marking');
+    for (const answer of [stop, giveWay]) {
+      const options = optionsFor(signs, answer, mulberry32(1));
+      expect(options.map((option) => option.id).sort()).toEqual([stop.id, giveWay.id].sort());
+    }
+  });
+
+  it('optionsFor shuffles the pair with the rng', () => {
+    const stop = findSign('orders-stop-sign-and-road-marking');
+    const orders = new Set(
+      Array.from({ length: 20 }, (_, index) =>
+        optionsFor(signs, stop, mulberry32(index + 1))
+          .map((option) => option.id)
+          .join(','),
+      ),
+    );
+    expect(orders.size).toBeGreaterThan(1);
+  });
+});
+
 describe('sheetContent', () => {
   // warning-ford (C1): no rule sentence, no own hook, so its sheet content
   // falls back to the family hook -- and its caption is long, so it is
@@ -149,7 +204,7 @@ describe('sheetContent', () => {
     expect(sheetContent(question, slipperyRoad.id)).toEqual({
       outcome: 'correct',
       xpGained: 10,
-      answerName: 'Slippery road.',
+      answerName: 'Slippery road',
       ruleSentence: 'Triangles warn.',
       hook: 'Three sides, one message: watch out ahead.',
     });
@@ -159,7 +214,7 @@ describe('sheetContent', () => {
     expect(sheetContent(question, ford.id)).toEqual({
       outcome: 'wrong',
       xpGained: 0,
-      answerName: 'Slippery road.',
+      answerName: 'Slippery road',
       ruleSentence: 'Triangles warn.',
       hook: 'Three sides, one message: watch out ahead.',
     });
@@ -170,9 +225,15 @@ describe('sheetContent', () => {
     expect(sheetContent(fordQuestion, slipperyRoad.id)).toEqual({
       outcome: 'wrong',
       xpGained: 0,
-      answerName: ford.name,
+      answerName: gameName(ford),
       ruleSentence: null,
       hook: 'Warning signs: something ahead needs care.',
     });
+  });
+
+  it('sheetContent names STOP by its Highway Code short name', () => {
+    const stop = findSign('orders-stop-sign-and-road-marking');
+    const stopQuestion: TapQuestion = { answer: stop, options: [stop] };
+    expect(sheetContent(stopQuestion, stop.id).answerName).toBe('Stop and give way');
   });
 });

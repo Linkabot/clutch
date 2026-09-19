@@ -2,10 +2,11 @@
 // (scout-e.md's ChosenQuiz and Tap the sign artboards; plan.md Step 22 and
 // amendment E23). A correct answer gets a sign-green sheet: a tick, the
 // "Correct" title, a yellow "+N XP" badge, four chevrons with "N in a row"
-// from two in a row, the bold answer name then the rule sentence, and nine
-// pieces of app-drawn confetti falling behind the sheet. A wrong answer gets
-// a sign-red sheet: a cross, "Incorrect", then "Right answer: " with the bold
-// answer name and the rule sentence. Both show the bold hook line when there
+// from two in a row, the bold answer name then the rule sentence on its own
+// line below it (plan.md E10 (g)), and nine pieces of app-drawn confetti
+// falling behind the sheet. A wrong answer gets a sign-red sheet: a cross,
+// "Incorrect", then "Right answer: " with the bold answer name and the rule
+// sentence, also on its own line. Both show the bold hook line when there
 // is one, a "Sign page" button and a primary "Continue" button that takes
 // focus when the sheet mounts. Every shape drawn here is original generic
 // art, never a real sign picture (plan.md D7). When the user asks for reduced
@@ -164,7 +165,13 @@ function QuizSheet({
           <p className="quiz-sheet__body">
             {!correct && 'Right answer: '}
             <strong>{answerName}</strong>
-            {ruleSentence !== null && ` ${ruleSentence}`}
+            {ruleSentence !== null && (
+              <>
+                {' '}
+                <br />
+                {ruleSentence}
+              </>
+            )}
           </p>
           {hook !== null && <p className="quiz-sheet__hook">{hook}</p>}
           <div className="quiz-sheet__actions">

@@ -144,7 +144,7 @@ const SIGN_PAGE_CASES: {
     glyphClass: 'sign-page__glyph--triangle',
     long: false,
     shapeColour: 'Triangles warn. All triangular signs are red.',
-    hook: null,
+    hook: 'Three sides, one message: watch out ahead.',
   },
   {
     id: 'orders-40-mph',
@@ -183,7 +183,7 @@ const SIGN_PAGE_CASES: {
     long: false,
     shapeColour:
       'Rectangles inform. Green rectangles are used for direction signs on primary routes.',
-    hook: null,
+    hook: 'Green guides you along primary routes.',
   },
   {
     id: 'information-road-ahead-non-primary-route',
@@ -193,7 +193,7 @@ const SIGN_PAGE_CASES: {
     long: false,
     shapeColour:
       'Rectangles inform. White rectangles are used for direction signs on non-primary routes, or for plates used in combination with warning and regulatory signs.',
-    hook: null,
+    hook: 'White guides you along non-primary routes.',
   },
   {
     id: 'motorway-a52-motorway-junction',
@@ -203,7 +203,7 @@ const SIGN_PAGE_CASES: {
     long: true,
     shapeColour:
       'Rectangles inform. Blue rectangles are used for information signs except on motorways, where blue is used for direction signs.',
-    hook: null,
+    hook: 'Blue box: information, or directions on a motorway.',
   },
   {
     id: 'road-works-roadworks',
@@ -212,7 +212,7 @@ const SIGN_PAGE_CASES: {
     glyphClass: null,
     long: true,
     shapeColour: null,
-    hook: null,
+    hook: 'Road works signs: any works, big or small.',
   },
 ];
 
@@ -379,7 +379,8 @@ test('Sign page', async ({ page }) => {
   // own data has actually loaded (Step 20 execution notes).
   await expect(page.getByText('Triangles warn. All triangular signs are red.')).toBeVisible();
   await expect(page.getByText('0 of 3 correct to collect')).toBeVisible();
-  await expect(page.getByText('Memory hook', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('Memory hook', { exact: true })).toBeVisible();
+  await expect(page.getByText('Three sides, one message: watch out ahead.')).toBeVisible();
   await expect(
     page.getByText(
       'Sign image and wording: Know Your Traffic Signs, © Crown copyright 2023, Open Government Licence v3.0.',
@@ -456,6 +457,12 @@ test('Sign page', async ({ page }) => {
       await expect(page.getByText('Memory hook', { exact: true })).toHaveCount(0);
     }
   }
+
+  // Plan.md Step 6, PS9: a C9 direction sign (no glyph of its own) resolves
+  // no tip, even though every SIGN_PAGE_CASES entry above now has one.
+  await page.goto('/clutch/learn/signs/direction-tourist');
+  await expect(heading).toHaveText('Tourist information.');
+  await expect(page.getByText('Memory hook', { exact: true })).toHaveCount(0);
 
   // Amendment E21: progress seeded straight into IndexedDB shows on the
   // sign page too -- partial progress (dots) and full collection
