@@ -1,28 +1,34 @@
 /**
  * @vitest-environment jsdom
  *
- * Unit and render tests for the Shape & Colour Decoder (plan.md Step 26 and
- * amendments E33 and E34). The pure logic: SHAPES and COLOURS in order, nextShape
- * and nextColour wrapping, and pairLabel's middle dot. Over the real
- * shape-rules.json, hooks.json and signs.json: each of the six valid pairs
- * gives its row's title and body, the exact rule hook id and text, and three
- * example files that exampleSigns maps to the exact sign ids, in order, each
- * with the pair's shape and colour; each of the six other pairs gives its
- * shape's sentence, the app line, no hook and no examples; exampleSigns
- * throws for a file with no sign or two, and pairContent throws when a
- * valid pair's hook is missing. The screen (jsdom, real timers, a
- * MemoryRouter, a stubbed matchMedia): the Circle · Red start with the
- * animated root, the label's polite live region, no ghost and three example
- * links; a walk through all 12 pairs by tapping, each pinning the drawn
- * art exactly (the svg's size, view box and paint class, then every child
- * shape in DOM order: its tag, decoder__shape plus its one paint class,
- * and every geometry and stroke attribute as rendered); a shape tap and a
+ * Unit and render tests for the Shape & Colour Decoder (plan.md Step 26,
+ * amendments E33 and E34, and Step 7/amendment E12). The pure logic: SHAPES
+ * and COLOURS in order, nextShape and nextColour wrapping, and pairLabel's
+ * middle dot. Over the real shape-rules.json, hooks.json and signs.json:
+ * each of the six valid pairs gives its row's title and body, the exact
+ * rule hook id and text, and three example files that exampleSigns maps to
+ * the exact sign ids, in order, each with the pair's shape and colour; each
+ * of the six invalid pairs gives the app's own "X Ys aren't used" title and
+ * "UK signs don't use this pair." body (Q5), no hook and no examples;
+ * exampleSigns throws for a file with no sign or two, and pairContent
+ * throws when a valid pair's hook is missing. The screen (jsdom, real
+ * timers, a MemoryRouter, a stubbed matchMedia): the Circle · Red start
+ * with the animated root, the label's polite live region, no ghost, both
+ * hints and three example links; a walk through all 12 pairs by tapping,
+ * each pinning the drawn art exactly (the svg's size, view box and paint
+ * class, then every child shape in DOM order: its tag, decoder__shape plus
+ * its one paint class -- decoder__dashed for the six invalid pairs -- and
+ * every geometry and stroke attribute as rendered); a shape tap and a
  * colour tap each keep the SAME button node (focus stays put) while the
  * popping sign, the text block, the examples grid and the ghost are
- * re-keyed, the ghost showing the previous pair; Triangle · Blue shows the
- * app line with no hook and no examples; the shape and colour cycles wrap
- * on screen (through Circle · White back to Circle · Red); and reduced
- * motion gives the static root, no animated class anywhere and no ghost.
+ * re-keyed, the ghost showing the previous pair (dashed when THAT pair was
+ * invalid, regardless of the current one); Triangle · Blue shows the app's
+ * "aren't used" strings with no hook and no examples; the shape and colour
+ * cycles wrap on screen (through Circle · White back to Circle · Red); the
+ * colour button's accessible name always includes the colour shown (PS10);
+ * both hints show only until the visit's first change, and show again on a
+ * fresh mount; and reduced motion gives the static root, no animated class
+ * anywhere and no ghost.
  * Depends on: vitest, @testing-library/react, react-router-dom, jsdom (test
  * environment), src/content/signs (getShapeRules, getHooks, loadSigns),
  * src/content/schemas (Sign type),
@@ -59,7 +65,7 @@ beforeAll(async () => {
 
 // --- Expected content (plan.md § Shape and colour rules, § Memory hooks) ------
 
-const APP_LINE = "The signing-system rules don't use this pair. Try another colour.";
+const UNUSED_BODY = "UK signs don't use this pair.";
 
 const C3_BODY =
   'Red rings or circles tell you what you must not do, e.g. you must not exceed 30 mph, no vehicles over the height shown may proceed.';
@@ -73,11 +79,8 @@ const EXCEPTIONS =
 const NO_ENTRY_CAPTION =
   'No entry for vehicular traffic. Where there is an exception for buses or cycles, the sign may be used with a supplementary plate (shown below).';
 
-const SHAPE_SENTENCES: Record<DecoderShape, string> = {
-  circle: 'Circles give orders.',
-  triangle: 'Triangles warn.',
-  rectangle: 'Rectangles inform.',
-};
+/** displayName(sign)'s trim (Q2), reproduced locally: the example caption never imports src/content/signs's own helper. */
+const NO_ENTRY_CAPTION_DISPLAYED = NO_ENTRY_CAPTION.replace(/\.$/, '');
 
 interface ValidPair {
   shape: DecoderShape;
@@ -167,6 +170,10 @@ const INVALID_PAIRS: { shape: DecoderShape; colour: DecoderColour }[] = [
   { shape: 'rectangle', colour: 'red' },
 ];
 
+function isInvalidPair(shape: DecoderShape, colour: DecoderColour): boolean {
+  return INVALID_PAIRS.some((pair) => pair.shape === shape && pair.colour === colour);
+}
+
 // --- Pure logic ----------------------------------------------------------------
 
 describe('decoder cycles and labels', () => {
@@ -227,13 +234,27 @@ describe('pairContent and exampleSigns over the content files', () => {
     },
   );
 
+  // Written out locally, not imported from decoder.ts's SHAPE_PLURALS --
+  // this test must be able to catch that map going wrong, too.
+  const PLURALS: Record<DecoderShape, string> = {
+    circle: 'circles',
+    triangle: 'triangles',
+    rectangle: 'rectangles',
+  };
+  const COLOUR_WORDS: Record<DecoderColour, string> = {
+    red: 'Red',
+    blue: 'Blue',
+    green: 'Green',
+    white: 'White',
+  };
+
   it.each(INVALID_PAIRS)(
-    '$shape + $colour: the shape sentence, the app line, no hook, no examples',
+    '$shape + $colour: "aren\'t used", the app body, no hook, no examples',
     ({ shape, colour }) => {
       const content = pairContent(shape, colour, getShapeRules(), getHooks());
       expect(content.valid).toBe(false);
-      expect(content.title).toBe(SHAPE_SENTENCES[shape]);
-      expect(content.body).toBe(APP_LINE);
+      expect(content.title).toBe(`${COLOUR_WORDS[colour]} ${PLURALS[shape]} aren't used`);
+      expect(content.body).toBe(UNUSED_BODY);
       expect(content.hookId).toBeNull();
       expect(content.hookText).toBeNull();
       expect(content.exampleFiles).toEqual([]);
@@ -298,9 +319,15 @@ function artOf(container: HTMLElement, selector: string): [string | null, string
   return [art.getAttribute('data-shape'), art.getAttribute('data-colour')];
 }
 
-// --- The drawn art's exact shapes (amendment E34) --------------------------------
+// --- The drawn art's exact shapes (amendment E34; Step 7/E12(c) adds decoder__dashed) --
 
-const PAINT_CLASSES = ['decoder__face', 'decoder__edge', 'decoder__solid', 'decoder__outline'];
+const PAINT_CLASSES = [
+  'decoder__face',
+  'decoder__edge',
+  'decoder__solid',
+  'decoder__outline',
+  'decoder__dashed',
+];
 
 const SHAPE_NAMES: Record<DecoderShape, string> = {
   circle: 'Circle',
@@ -327,8 +354,26 @@ function artPart(tag: string, paint: string, attributes: Record<string, string>)
   return [tag, paint, ...pairs].join(' ');
 }
 
-/** The exact children E34 lists for a pair, in DOM order. */
+/** The exact children E34/E12(c) list for a pair, in DOM order. */
 function expectedArt(shape: DecoderShape, colour: DecoderColour): string[] {
+  if (isInvalidPair(shape, colour)) {
+    if (shape === 'circle') {
+      return [
+        artPart('circle', 'decoder__dashed', { ...CIRCLE_CENTRE, r: '72', 'stroke-width': '8' }),
+      ];
+    }
+    if (shape === 'triangle') {
+      return [
+        artPart('path', 'decoder__dashed', {
+          d: TRIANGLE_D,
+          'stroke-width': '8',
+          'stroke-linejoin': 'round',
+        }),
+      ];
+    }
+    return [artPart('rect', 'decoder__dashed', { ...RECT_BOX, 'stroke-width': '8' })];
+  }
+
   if (shape === 'circle') {
     const face = artPart('circle', 'decoder__face', { ...CIRCLE_CENTRE, r: '76' });
     const edge = artPart('circle', 'decoder__edge', {
@@ -414,7 +459,7 @@ afterEach(() => {
 });
 
 describe('Decoder screen', () => {
-  it('starts at Circle · Red with the animated root, its rule text and three example links', async () => {
+  it('starts at Circle · Red with the animated root, its rule text, both hints and three example links', async () => {
     const container = renderDecoder();
 
     expect(one(container, '.decoder').classList.contains('decoder--animated')).toBe(true);
@@ -424,10 +469,12 @@ describe('Decoder screen', () => {
     expect(textOf(container, '.decoder__title')).toBe('Circles give orders.');
     expect(textOf(container, '.decoder__body')).toBe(C3_BODY);
     expect(textOf(container, '.decoder__hook')).toBe('A red ring says no.');
-    expect(screen.getByRole('button', { name: 'Change colour' }).textContent).toBe('Red ▸');
+    expect(screen.getByRole('button', { name: 'Change colour, Red' }).textContent).toBe('Red ▸');
     expect(artOf(container, '.decoder__pop')).toEqual(['circle', 'red']);
     expect(container.querySelector('.decoder__ghost')).toBeNull();
     expect(textOf(container, '.decoder__exceptions')).toBe(EXCEPTIONS);
+    expect(textOf(container, '.decoder__hint--shape')).toBe('Tap the sign to change its shape');
+    expect(textOf(container, '.decoder__hint--colour')).toBe('Tap to change colour');
 
     await waitFor(() =>
       expect(container.querySelectorAll('.decoder__examples img')).toHaveLength(3),
@@ -440,8 +487,8 @@ describe('Decoder screen', () => {
       '/learn/signs/orders-no-right-turn',
       '/learn/signs/orders-no-overtaking',
     ]);
-    expect(NO_ENTRY_CAPTION).toHaveLength(143);
-    expect(textOf(container, 'a.decoder__example')).toBe(NO_ENTRY_CAPTION);
+    expect(NO_ENTRY_CAPTION_DISPLAYED).toHaveLength(142);
+    expect(textOf(container, 'a.decoder__example')).toBe(NO_ENTRY_CAPTION_DISPLAYED);
   });
 
   it('keeps both buttons while re-keying the animated parts, and cycles shapes and colours', async () => {
@@ -471,26 +518,29 @@ describe('Decoder screen', () => {
     expect(one(container, '.decoder__examples')).not.toBe(examples0);
     expect(artOf(container, '.decoder__pop')).toEqual(['triangle', 'red']);
     expect(artOf(container, '.decoder__ghost')).toEqual(['circle', 'red']);
+    // Colour never changed, so the button's accessible name still reads Red.
+    const colourButton = screen.getByRole('button', { name: 'Change colour, Red' });
 
     // A colour tap: Triangle · Blue, an invalid pair.
-    const colourButton = screen.getByRole('button', { name: 'Change colour' });
     const pop1 = one(container, '.decoder__pop');
     const text1 = one(container, '.decoder__text');
     const ghost1 = one(container, '.decoder__ghost');
     fireEvent.click(colourButton);
     await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Blue'));
-    expect(textOf(container, '.decoder__title')).toBe('Triangles warn.');
-    expect(textOf(container, '.decoder__body')).toBe(APP_LINE);
+    expect(textOf(container, '.decoder__title')).toBe("Blue triangles aren't used");
+    expect(textOf(container, '.decoder__body')).toBe(UNUSED_BODY);
     expect(container.querySelector('.decoder__hook')).toBeNull();
     expect(container.querySelectorAll('a.decoder__example')).toHaveLength(0);
     expect(container.querySelector('.decoder__examples')).toBeNull();
+    expect(container.querySelector('.decoder__exceptions')).toBeNull();
     expect(colourButton.textContent).toBe('Blue ▸');
-    expect(screen.getByRole('button', { name: 'Change colour' })).toBe(colourButton);
+    expect(screen.getByRole('button', { name: 'Change colour, Blue' })).toBe(colourButton);
     expect(one(container, '.decoder__pop')).not.toBe(pop1);
     expect(one(container, '.decoder__text')).not.toBe(text1);
     expect(one(container, '.decoder__ghost')).not.toBe(ghost1);
     expect(artOf(container, '.decoder__pop')).toEqual(['triangle', 'blue']);
     expect(artOf(container, '.decoder__ghost')).toEqual(['triangle', 'red']);
+    expect(container.querySelector('.decoder__ghost .decoder__dashed')).toBeNull();
 
     // Two shape taps: Rectangle · Blue, then Circle · Blue (the shape wraps).
     fireEvent.click(shapeButton);
@@ -516,13 +566,12 @@ describe('Decoder screen', () => {
     }
     expect(textOf(container, '.decoder__hook')).toBe('A red ring says no.');
     expect(screen.getByRole('button', { name: 'Change shape' })).toBe(shapeButton);
-    expect(screen.getByRole('button', { name: 'Change colour' })).toBe(colourButton);
+    expect(screen.getByRole('button', { name: 'Change colour, Red' })).toBe(colourButton);
   });
 
   it('draws the exact art for all 12 pairs, walked by tapping', async () => {
     const container = renderDecoder();
     const shapeButton = screen.getByRole('button', { name: 'Change shape' });
-    const colourButton = screen.getByRole('button', { name: 'Change colour' });
     const walked: string[] = [];
 
     for (const shape of SHAPES) {
@@ -533,7 +582,9 @@ describe('Decoder screen', () => {
         expect(drawnArt(container, colour)).toEqual(expectedArt(shape, colour));
         walked.push(label);
         // The fourth colour tap wraps back to Red.
-        fireEvent.click(colourButton);
+        fireEvent.click(
+          screen.getByRole('button', { name: `Change colour, ${COLOUR_NAMES[colour]}` }),
+        );
       }
       await waitFor(() =>
         expect(textOf(container, '.decoder__label')).toBe(`${SHAPE_NAMES[shape]} · Red`),
@@ -543,6 +594,75 @@ describe('Decoder screen', () => {
 
     expect(new Set(walked).size).toBe(12);
     await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Circle · Red'));
+  });
+
+  it('shows both hints until the first shape or colour change', async () => {
+    const container = renderDecoder();
+    await waitFor(() => expect(exampleHrefs(container)).toHaveLength(3));
+
+    expect(one(container, '.decoder__hint--shape').closest('button')).toBeNull();
+    expect(one(container, '.decoder__hint--colour').closest('button')).toBeNull();
+    expect(one(container, '.decoder__hint--shape').closest('[aria-hidden="true"]')).toBeNull();
+    expect(one(container, '.decoder__hint--colour').closest('[aria-hidden="true"]')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Change shape' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Red'));
+    expect(container.querySelector('.decoder__hint--shape')).toBeNull();
+    expect(container.querySelector('.decoder__hint--colour')).toBeNull();
+
+    cleanup();
+    const freshContainer = renderDecoder();
+    await waitFor(() => expect(exampleHrefs(freshContainer)).toHaveLength(3));
+    fireEvent.click(screen.getByRole('button', { name: 'Change colour, Red' }));
+    await waitFor(() => expect(textOf(freshContainer, '.decoder__label')).toBe('Circle · Blue'));
+    expect(freshContainer.querySelector('.decoder__hint--shape')).toBeNull();
+    expect(freshContainer.querySelector('.decoder__hint--colour')).toBeNull();
+  });
+
+  it('shows the hints again on a fresh visit', async () => {
+    const container = renderDecoder();
+    fireEvent.click(screen.getByRole('button', { name: 'Change shape' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Red'));
+    expect(container.querySelector('.decoder__hint--shape')).toBeNull();
+
+    cleanup();
+    const freshContainer = renderDecoder();
+    expect(one(freshContainer, '.decoder__hint--shape')).toBeTruthy();
+    expect(one(freshContainer, '.decoder__hint--colour')).toBeTruthy();
+  });
+
+  it('an unused pair has no exceptions line and a dashed outline', async () => {
+    const container = renderDecoder();
+    await waitFor(() => expect(exampleHrefs(container)).toHaveLength(3));
+
+    // Circle · Red (valid): the exceptions line, no dashed outline.
+    expect(textOf(container, '.decoder__exceptions')).toBe(EXCEPTIONS);
+    expect(container.querySelector('.decoder__pop .decoder__dashed')).toBeNull();
+
+    // One shape tap away from Circle · Red (valid) leaves no dashed ghost.
+    fireEvent.click(screen.getByRole('button', { name: 'Change shape' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Red'));
+    expect(container.querySelector('.decoder__ghost .decoder__dashed')).toBeNull();
+
+    // Triangle · Blue (invalid): no exceptions line, one dashed pop.
+    fireEvent.click(screen.getByRole('button', { name: 'Change colour, Red' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Blue'));
+    expect(container.querySelector('.decoder__exceptions')).toBeNull();
+    expect(container.querySelectorAll('.decoder__pop .decoder__dashed')).toHaveLength(1);
+
+    // One tap away from Triangle · Blue (invalid) leaves one dashed ghost.
+    fireEvent.click(screen.getByRole('button', { name: 'Change colour, Blue' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Triangle · Green'));
+    expect(container.querySelectorAll('.decoder__ghost .decoder__dashed')).toHaveLength(1);
+
+    // Amendment E13: the ghost reads the PREVIOUS pair's own validity, so a
+    // tap from an unused pair to a used one (Triangle · Green to
+    // Rectangle · Green) leaves a dashed ghost beside an undashed sign --
+    // the only direction where the current pair's validity differs.
+    fireEvent.click(screen.getByRole('button', { name: 'Change shape' }));
+    await waitFor(() => expect(textOf(container, '.decoder__label')).toBe('Rectangle · Green'));
+    expect(container.querySelectorAll('.decoder__ghost .decoder__dashed')).toHaveLength(1);
+    expect(container.querySelector('.decoder__pop .decoder__dashed')).toBeNull();
   });
 
   it('under reduced motion renders decoder--static, no animated class and no ghost', async () => {

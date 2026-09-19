@@ -3,36 +3,44 @@
 // badge at 3 -- both reusing SignsScreen's .signs-tile__dot/--empty and
 // .signs-tile__badge classes), the family pill (familyMeta(sign.family).pill
 // plus a small shape/colour glyph the app draws itself, never a second real
-// sign picture), the caption as the page's only <h1> (a shorter, larger
-// style for captions that fit isShortCaption, a smaller one otherwise so a
-// long caption doesn't push the buttons off the first screen), an info card
-// with a "Shape & colour" row (the matching shape-rule sentences, absent for
-// rule C1/C9's `other` signs, which have none) and a "Memory hook" row
-// (hookFor(sign, 'page'), absent for the many signs with no hook of their
-// own -- the card itself is absent when both rows are), a full-width primary
-// Button ("Play with this sign", navigating to /practice/tap?sign=<id> --
-// that route ships in Step 23) and a secondary button-styled Link to the
-// sign's Highway Code section, then the KYTS attribution line, and, for a
-// sign marked `thirdPartyMark`, a third-party emblem notice under it. While
-// signs are still loading, the screen renders no sign content; for an id
-// that matches no sign it renders "Sign not found." and a link back to the
-// browser.
+// sign picture), the caption as the page's only <h1> (displayName(sign),
+// Q2 -- a shorter, larger style for captions that fit isShortCaption(sign.
+// name), a smaller one otherwise so a long caption doesn't push the buttons
+// off the first screen), an info card with a "Shape & colour" row (the
+// matching shape-rule sentences, absent for rule C1/C9's `other` signs,
+// which have none) and a "Memory tip" row (hookFor(sign, 'page'), which
+// Step 6 made fall back to the rule's or family's hook -- absent only for
+// the few signs (C9 direction signs) that resolve none -- the card itself
+// is absent when both rows are), a full-width primary Button ("Practise
+// signs like this", starting a family round at /practice/tap?family=<sign.
+// family> -- Step 9 makes Tap read that param; until then it plays a
+// normal round) and a secondary button-styled Link to the sign's Highway
+// Code section, then the KYTS attribution line (with the OGL words a real
+// link, PS13), and, for a sign marked `thirdPartyMark`, a third-party
+// emblem notice under it. While signs are loading the screen renders no
+// sign content; if loadSigns() rejects it shows <LoadFailed>, whose Retry
+// (an attempt counter set from the click handler, never from the effect
+// body -- eslint-plugin-react-hooks 7) loads again; for an id that matches
+// no sign it renders "Sign not found." and a link back to the browser.
 // Depends on: react, react-router-dom, lucide-react (BookOpen),
-// ../../content/signs (loadSigns, getShapeRules, hookFor),
+// ../../content/signs (loadSigns, getShapeRules, hookFor, displayName),
 // ../../content/schemas (Sign type), ../../engine/progress-state
 // (useProgressStore), ../../engine/progress (isCollected), ../../ui
-// (Button), ../interactives/shared/SignImage, ../interactives/shared/
-// distractors (isShortCaption), ./families (familyMeta), ./signs.css.
+// (Button), ../../ui/LoadFailed (default export, straight from its file
+// like ../../ui/ListRow), ../interactives/shared/SignImage,
+// ../interactives/shared/distractors (isShortCaption), ./families
+// (familyMeta), ./signs.css.
 // Depended on by: src/app/routes.tsx.
 
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
-import { loadSigns, getShapeRules, hookFor } from '../../content/signs';
+import { loadSigns, getShapeRules, hookFor, displayName } from '../../content/signs';
 import type { Sign } from '../../content/schemas';
 import { useProgressStore } from '../../engine/progress-state';
 import { isCollected } from '../../engine/progress';
 import { Button } from '../../ui';
+import LoadFailed from '../../ui/LoadFailed';
 import SignImage from '../interactives/shared/SignImage';
 import { isShortCaption } from '../interactives/shared/distractors';
 import { familyMeta } from './families';
@@ -49,6 +57,13 @@ function shapeColourText(sign: Sign): string {
     ? rule?.outcomes?.[sign.rule]?.sentences
     : rule?.sentences;
   return (sentences ?? []).join(' ');
+}
+
+/** The collecting line (Q3) for `correct` 0, 1 or 2 right answers; 3 shows the COLLECTED badge instead. */
+function collectingLine(correct: number): string {
+  if (correct === 0) return 'Get it right 3 times to collect it';
+  if (correct === 1) return 'Get it right 2 more times to collect it';
+  return 'Get it right 1 more time to collect it';
 }
 
 /** The family pill's small glyph, drawn from the sign's own shape and first colour -- never a second real sign picture. `other` shapes (C1, C9) show no glyph. */
@@ -95,6 +110,7 @@ function SignScreen() {
   const navigate = useNavigate();
   const [status, setStatus] = useState<LoadStatus>('loading');
   const [signs, setSigns] = useState<Sign[]>([]);
+  const [attempt, setAttempt] = useState(0);
   const signProgress = useProgressStore((s) => s.signProgress);
   const progressStatus = useProgressStore((s) => s.status);
   const load = useProgressStore((s) => s.load);
@@ -118,10 +134,23 @@ function SignScreen() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [attempt]);
+
+  function handleRetry(): void {
+    setStatus('loading');
+    setAttempt((a) => a + 1);
+  }
 
   if (status === 'loading') {
     return null;
+  }
+
+  if (status === 'error') {
+    return (
+      <div className="sign-page">
+        <LoadFailed onRetry={handleRetry} />
+      </div>
+    );
   }
 
   const sign = signs.find((s) => s.id === id);
@@ -179,7 +208,7 @@ function SignScreen() {
                 />
               ))}
             </span>
-            <span className="sign-page__progress-text">{correct} of 3 correct to collect</span>
+            <span className="sign-page__progress-text">{collectingLine(correct)}</span>
           </div>
         )}
       </div>
@@ -196,7 +225,7 @@ function SignScreen() {
           isShortCaption(sign.name) ? 'sign-page__title' : 'sign-page__title sign-page__title--long'
         }
       >
-        {sign.name}
+        {displayName(sign)}
       </h1>
 
       {(shapeColour !== '' || hook) && (
@@ -210,7 +239,7 @@ function SignScreen() {
           {shapeColour !== '' && hook && <div className="sign-page__info-divider" />}
           {hook && (
             <div className="sign-page__info-row">
-              <div className="sign-page__info-label">Memory hook</div>
+              <div className="sign-page__info-label">Memory tip</div>
               <div className="sign-page__info-value sign-page__info-value--hook">{hook.text}</div>
             </div>
           )}
@@ -220,9 +249,9 @@ function SignScreen() {
       <Button
         variant="primary"
         className="sign-page__full-width sign-page__play"
-        onClick={() => navigate(`/practice/tap?sign=${sign.id}`)}
+        onClick={() => navigate(`/practice/tap?family=${sign.family}`)}
       >
-        Play with this sign
+        Practise signs like this
       </Button>
 
       <Link
@@ -233,12 +262,21 @@ function SignScreen() {
         <span>Traffic signs in The Highway Code</span>
       </Link>
 
-      {/* Kept as one JS string (not raw JSX text) so Prettier's fill-wrap
-          never splits the sentence the plan's check greps as one line. */}
+      {/* Kept as JS strings around the link (not raw JSX text) so Prettier
+          never reflows the whitespace around it, and the visible sentence
+          stays exactly as it was before the OGL words became a link
+          (PS13). */}
       <p className="sign-page__attribution">
-        {
-          'Sign image and wording: Know Your Traffic Signs, © Crown copyright 2023, Open Government Licence v3.0.'
-        }
+        {'Sign image and wording: Know Your Traffic Signs, © Crown copyright 2023, '}
+        <a
+          className="text-link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="external noopener"
+          target="_blank"
+        >
+          Open Government Licence v3.0
+        </a>
+        {'.'}
       </p>
 
       {/* Step 28a: a third-party emblem notice, shown only for a sign

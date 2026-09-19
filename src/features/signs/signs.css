@@ -5,9 +5,11 @@
    (src/features/signs/SignScreen.tsx). The Learn tab's full-width SignPanel
    card and thumbnail row moved to src/features/learn/learn.css in Step 3b,
    now that SignPanel's own `block` prop replaces the descendant-selector
-   hack this file used to carry for it. Every colour and radius comes from a
-   src/app/theme.css custom property -- no hex literals here (plan.md §
-   Rules "Tokens").
+   hack this file used to carry for it. Step 7 (M32, M34, M42) grew the
+   tile's picture and caption and shrank its padding so a picture fills more
+   of the tile, and gave .signs-chip a 44px tap-target minimum. Every colour
+   and radius comes from a src/app/theme.css custom property -- no hex
+   literals here (plan.md § Rules "Tokens").
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/signs/SignsScreen.tsx,
    src/features/signs/SignScreen.tsx (each imports this file once). */
@@ -34,7 +36,7 @@
 .signs-chip {
   flex-shrink: 0;
   box-sizing: border-box;
-  height: 40px;
+  min-height: 44px;
   padding: 0 14px;
   border-radius: var(--radius-plate);
   border: 1.5px solid var(--color-ink);
@@ -111,7 +113,7 @@
   background: var(--color-surface);
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-card);
-  padding: 10px 8px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,30 +122,36 @@
   color: var(--color-ink);
 }
 
+/* M34: the picture fills as much of the tile's inner width as a 3:2 sign
+   picture can, never cropping or transforming it (width: 100%,
+   object-fit: contain unchanged); the box's own height only grew from 62px
+   to 66px to match. */
 .signs-tile__picture {
   width: 100%;
-  height: 62px;
+  height: 66px;
   display: block;
   flex-shrink: 0;
 }
 
 .signs-tile__picture img {
   width: 100%;
-  height: 62px;
+  height: 66px;
   object-fit: contain;
   display: block;
 }
 
+/* M32: three lines of caption instead of two, so a long displayName(sign)
+   (Q2) is far less likely to clip. */
 .signs-tile__caption {
   width: 100%;
   text-align: center;
   font-weight: 700;
   font-size: 13px;
   line-height: 17px;
-  height: 34px;
+  height: 51px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 

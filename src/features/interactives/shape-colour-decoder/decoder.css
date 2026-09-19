@@ -1,18 +1,24 @@
 /* Shape & Colour Decoder styles for
    src/features/interactives/shape-colour-decoder/Decoder.tsx (scout-e.md's
-   CHOSEN 2B DecoderB artboard; plan.md Step 26 and amendment E33). The
-   screen sits inside the app shell's main column, not over it. A 236px
-   roadside stage (ground strip, four round trees, a post) holds the big
-   sign button and the pair's plate; the colour chip sits under the stage,
-   then the title, body and bold hook, a three-column grid of example signs
-   with captions clamped to two lines, and the muted exceptions line. The
-   drawn sign's paints come from classes, never SVG presentation
-   attributes: each paint modifier sets the custom property the edge and
-   solid classes read. Every rule that moves is scoped under the root's
-   animated modifier class, so the static modifier (reduced motion) turns
-   all motion off at once; the three keyframe sets at the end are copied
-   from the artboard. Colours are theme.css tokens and colour mixes of them
-   only (no literals).
+   CHOSEN 2B DecoderB artboard; plan.md Step 26, amendment E33, and Step
+   7/amendment E12(a)/(b)/(c)). The screen sits inside the app shell's main
+   column, not over it. A 236px roadside stage (ground strip, four round
+   trees, a post) holds the big sign button, the pair's plate and (until the
+   visit's first change) a yellow callout hint at the stage's top right
+   pointing down at the sign; the colour chip sits under the stage inside a
+   position: relative wrapper that also holds its own hint, pointing left at
+   the chip -- both hints are pointer-events: none, so a tap through the
+   shape hint (which overlaps the sign button) still changes the shape. An
+   unused pair (decoder__dashed) draws as an unfilled dashed grey outline,
+   never a filled shape. Then the title, body and bold hook, a three-column
+   grid of example signs with captions clamped to two lines, and the muted
+   exceptions line. The drawn sign's paints come from classes, never SVG
+   presentation attributes: each paint modifier sets the custom property the
+   edge and solid classes read. Every rule that moves is scoped under the
+   root's animated modifier class, so the static modifier (reduced motion)
+   turns all motion off at once; the three keyframe sets at the end are
+   copied from the artboard. Colours are theme.css tokens and colour mixes
+   of them only (no literals).
    Depends on: the custom properties defined in src/app/theme.css; the
    .sign-plate primitive in src/ui/primitives.css (the pair's plate).
    Depended on by: src/features/interactives/shape-colour-decoder/Decoder.tsx
@@ -147,6 +153,60 @@
   top: 12px;
 }
 
+/* --- Hints (Q4): shown only until the visit's first change --------------- */
+
+.decoder__hint {
+  position: absolute;
+  box-sizing: border-box;
+  max-width: 132px;
+  padding: 6px 10px;
+  border-radius: var(--radius-panel-inner);
+  background-color: var(--color-marking-yellow);
+  color: var(--color-sign-ink);
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.decoder__hint::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+}
+
+/* Sits at the stage's top right, its pointer on its lower edge towards the
+   sign button beneath it. */
+.decoder__hint--shape {
+  top: 12px;
+  right: 12px;
+}
+
+.decoder__hint--shape::after {
+  top: 100%;
+  right: 18px;
+  border-top-color: var(--color-marking-yellow);
+}
+
+/* Sits to the right of the colour chip, vertically centred on it, its
+   pointer on its left edge towards the chip -- decoder__colour-wrap is the
+   position: relative anchor both the chip and this hint share. */
+.decoder__hint--colour {
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+.decoder__hint--colour::after {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-right-color: var(--color-marking-yellow);
+}
+
 /* --- The drawn sign's paints ------------------------------------------------ */
 
 .decoder__paint--red {
@@ -185,12 +245,24 @@
   stroke: var(--color-sign-ink);
 }
 
+/* Q5: an unused pair's shape, unfilled with a dashed grey outline. */
+.decoder__dashed {
+  fill: none;
+  stroke: var(--color-muted);
+  stroke-dasharray: 14 10;
+}
+
 /* --- Colour chip ------------------------------------------------------------ */
 
 .decoder__controls {
   margin-top: 14px;
   display: flex;
   justify-content: center;
+}
+
+.decoder__colour-wrap {
+  position: relative;
+  display: inline-flex;
 }
 
 .decoder__colour {

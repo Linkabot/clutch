@@ -1,29 +1,42 @@
 // Shape & Colour Decoder: /learn/signs/decoder (mounted lazily from
 // ../registry by src/app/routes.tsx), rendered inside the app shell's
 // <main> with its header Back button and tab bar (scout-e.md's CHOSEN 2B
-// DecoderB artboard; plan.md Step 26 and amendment E33). A roadside stage
-// (ground, four round trees and a post) holds a big sign the app draws
-// itself -- a circle, triangle or rectangle in red, blue, green or white,
-// never a real sign picture (D7) -- as the Change shape button, with a
-// plate naming the pair; under it the Change colour chip shows a colour dot
-// and the colour's name. Below: the pair's title and body sentence, its
-// rule hook in bold, three example sign pictures linking to their sign
-// pages (valid pairs only, once loadSigns resolves), and the exceptions
-// sentence. All teaching text is read from getShapeRules() and getHooks()
-// through ./decoder's pairContent. The two buttons are never remounted, so
-// focus stays on the one just tapped; the popping sign, the text block, the
+// DecoderB artboard; plan.md Step 26, amendment E33, and Step 7/amendment
+// E12's Q4/Q5/PS10). A roadside stage (ground, four round trees and a post)
+// holds a big sign the app draws itself -- a circle, triangle or rectangle
+// in red, blue, green or white, never a real sign picture (D7) -- as the
+// Change shape button, with a plate naming the pair; a yellow callout hint
+// beside it reads "Tap the sign to change its shape", and another beside
+// the colour chip reads "Tap to change colour" -- both real text (not
+// aria-hidden), shown only until the visit's first change (state.changes
+// === 0) and with pointer-events: none, so a tap on the shape hint (which
+// overlaps the sign button) still changes the shape. Under the stage, the
+// Change colour chip shows a colour dot and the colour's name, and its
+// accessible name includes the colour (PS10, "Change colour, Red") so
+// repeated same-named lookups in tests resolve the button actually shown.
+// Below: the pair's title and body sentence, its rule hook in bold (valid
+// pairs) or the app's own "aren't used" strings (Q5, invalid pairs, whose
+// shape draws as an unfilled dashed outline, decoder__dashed, instead of a
+// filled shape -- the ghost of the previous pair gets the same treatment,
+// so it must resolve that PREVIOUS pair's own validity, not the current
+// one), three example sign pictures captioned with displayName(sign)
+// linking to their sign pages (valid pairs only, once loadSigns resolves),
+// and the exceptions sentence (valid pairs only). All teaching text besides
+// Q5's own strings is read from getShapeRules() and getHooks() through
+// ./decoder's pairContent. The two buttons are never remounted, so focus
+// stays on the one just tapped; the popping sign, the text block, the
 // examples grid and the fading ghost of the previous pair are keyed by the
 // change count, so their CSS motion restarts on every tap. Under reduced
 // motion the root carries the static modifier and no ghost is drawn.
 // Depends on: react, react-router-dom (Link), ../../../content/signs
-// (getShapeRules, getHooks, loadSigns), ../../../content/schemas (Sign
-// type), ../../../ui (SignPlate), ../shared/SignImage,
+// (getShapeRules, getHooks, loadSigns, displayName), ../../../content/
+// schemas (Sign type), ../../../ui (SignPlate), ../shared/SignImage,
 // ../shared/useReducedMotion, ./decoder, ./decoder.css.
 // Depended on by: ./index.tsx, tests/unit/decoder.test.tsx.
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getHooks, getShapeRules, loadSigns } from '../../../content/signs';
+import { displayName, getHooks, getShapeRules, loadSigns } from '../../../content/signs';
 import type { Sign } from '../../../content/schemas';
 import { SignPlate } from '../../../ui';
 import SignImage from '../shared/SignImage';
@@ -135,8 +148,43 @@ function RectangleArt({ colour }: { colour: DecoderColour }) {
   );
 }
 
-/** The app's own drawing of a pair; every paint comes from decoder.css classes. */
-function DecoderArt({ shape, colour }: DecoderPair) {
+/** An unused pair's shape (Q5): an unfilled dashed outline, not a filled shape. */
+function DashedArt({ shape }: { shape: DecoderShape }) {
+  if (shape === 'circle') {
+    return (
+      <circle className="decoder__shape decoder__dashed" cx="82" cy="78" r="72" strokeWidth="8" />
+    );
+  }
+  if (shape === 'triangle') {
+    return (
+      <path
+        className="decoder__shape decoder__dashed"
+        d={TRIANGLE_PATH}
+        strokeWidth="8"
+        strokeLinejoin="round"
+      />
+    );
+  }
+  return (
+    <rect
+      className="decoder__shape decoder__dashed"
+      x="10"
+      y="36"
+      width="144"
+      height="104"
+      rx="10"
+      strokeWidth="8"
+    />
+  );
+}
+
+/**
+ * The app's own drawing of a pair; every paint comes from decoder.css
+ * classes. `valid` draws the shape filled per its colour; an invalid pair
+ * draws DashedArt instead -- the caller resolves `valid` for the PAIR being
+ * drawn (the ghost resolves its own, previous, pair, not the current one).
+ */
+function DecoderArt({ shape, colour, valid }: DecoderPair & { valid: boolean }) {
   return (
     <svg
       className={`decoder__art decoder__paint--${colour}`}
@@ -147,9 +195,15 @@ function DecoderArt({ shape, colour }: DecoderPair) {
       viewBox="0 0 164 156"
       aria-hidden="true"
     >
-      {shape === 'circle' && <CircleArt colour={colour} />}
-      {shape === 'triangle' && <TriangleArt colour={colour} />}
-      {shape === 'rectangle' && <RectangleArt colour={colour} />}
+      {valid ? (
+        <>
+          {shape === 'circle' && <CircleArt colour={colour} />}
+          {shape === 'triangle' && <TriangleArt colour={colour} />}
+          {shape === 'rectangle' && <RectangleArt colour={colour} />}
+        </>
+      ) : (
+        <DashedArt shape={shape} />
+      )}
     </svg>
   );
 }
@@ -176,7 +230,8 @@ function Decoder() {
   }, []);
 
   const shapeRules = getShapeRules();
-  const content = pairContent(state.shape, state.colour, shapeRules, getHooks());
+  const hooks = getHooks();
+  const content = pairContent(state.shape, state.colour, shapeRules, hooks);
   const examples = signs !== null && content.valid ? exampleSigns(content.exampleFiles, signs) : [];
 
   function handleShapeTap(): void {
@@ -214,7 +269,13 @@ function Decoder() {
         <div className="decoder__post" />
         {!reducedMotion && state.previous !== null && (
           <div key={`ghost-${state.changes}`} className="decoder__ghost" aria-hidden="true">
-            <DecoderArt shape={state.previous.shape} colour={state.previous.colour} />
+            <DecoderArt
+              shape={state.previous.shape}
+              colour={state.previous.colour}
+              valid={
+                pairContent(state.previous.shape, state.previous.colour, shapeRules, hooks).valid
+              }
+            />
           </div>
         )}
         <button
@@ -224,24 +285,32 @@ function Decoder() {
           onClick={handleShapeTap}
         >
           <span key={`pop-${state.changes}`} className="decoder__pop">
-            <DecoderArt shape={state.shape} colour={state.colour} />
+            <DecoderArt shape={state.shape} colour={state.colour} valid={content.valid} />
           </span>
         </button>
+        {state.changes === 0 && (
+          <p className="decoder__hint decoder__hint--shape">Tap the sign to change its shape</p>
+        )}
         <div className="decoder__label" aria-live="polite">
           <SignPlate>{pairLabel(state.shape, state.colour)}</SignPlate>
         </div>
       </div>
 
       <div className="decoder__controls">
-        <button
-          type="button"
-          className="decoder__colour"
-          aria-label="Change colour"
-          onClick={handleColourTap}
-        >
-          <span className={`decoder__dot decoder__paint--${state.colour}`} aria-hidden="true" />
-          {`${COLOUR_LABELS[state.colour]} ▸`}
-        </button>
+        <div className="decoder__colour-wrap">
+          <button
+            type="button"
+            className="decoder__colour"
+            aria-label={`Change colour, ${COLOUR_LABELS[state.colour]}`}
+            onClick={handleColourTap}
+          >
+            <span className={`decoder__dot decoder__paint--${state.colour}`} aria-hidden="true" />
+            {`${COLOUR_LABELS[state.colour]} ▸`}
+          </button>
+          {state.changes === 0 && (
+            <p className="decoder__hint decoder__hint--colour">Tap to change colour</p>
+          )}
+        </div>
       </div>
 
       <div key={`text-${state.changes}`} className="decoder__text">
@@ -257,13 +326,13 @@ function Decoder() {
               <span className="decoder__picture">
                 <SignImage sign={sign} alt="" />
               </span>
-              <span className="decoder__caption">{sign.name}</span>
+              <span className="decoder__caption">{displayName(sign)}</span>
             </Link>
           ))}
         </div>
       )}
 
-      <p className="decoder__exceptions">{shapeRules.exceptionsSentence}</p>
+      {content.valid && <p className="decoder__exceptions">{shapeRules.exceptionsSentence}</p>}
     </div>
   );
 }

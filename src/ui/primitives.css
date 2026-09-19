@@ -1,12 +1,13 @@
 /* Shared styles for the Decision 13
-   sign/plate/roundel/button/chip/list-row/segmented primitives in
-   src/ui/*.tsx. Imported exactly once, from src/main.tsx, after theme.css,
-   so every rule below can rely on the colour and radius custom properties
-   theme.css defines. Tokens only — no hex colours here.
+   sign/plate/roundel/button/chip/list-row/segmented/load-failed primitives
+   in src/ui/*.tsx. Imported exactly once, from src/main.tsx, after
+   theme.css, so every rule below can rely on the colour and radius custom
+   properties theme.css defines. Tokens only — no hex colours here.
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/main.tsx; every component in src/ui/*.tsx via the
-   class names below, including src/ui/ListRow.tsx's .list-row rules and
-   src/ui/SegmentedControl.tsx's .segmented rules. */
+   class names below, including src/ui/ListRow.tsx's .list-row rules,
+   src/ui/SegmentedControl.tsx's .segmented rules and src/ui/LoadFailed.tsx's
+   .load-failed rule. */
 
 /* SignPanel: coloured outer frame holding a white inner border. */
 .sign-panel {
@@ -268,4 +269,16 @@ button.roundel {
 button.chip,
 a.chip {
   min-height: 44px;
+}
+
+/* LoadFailed (src/ui/LoadFailed.tsx): a centred notice with a Retry button,
+   shown wherever a screen's own content load rejects. */
+.load-failed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: var(--space-section) 0;
+  text-align: center;
+  color: var(--color-muted);
 }

@@ -2,7 +2,10 @@
 // families) filters the grid; a two-part toggle switches between every sign
 // in the chosen family and only the Collected ones (isCollected, 3+
 // correct answers); a three-column grid shows each surviving sign's
-// picture, caption and progress (0-3 dots, or a COLLECTED badge at 3).
+// picture, caption (displayName(sign), signs.json's name with its one
+// trailing stop trimmed -- Q2) and progress (0-3 dots, or a COLLECTED badge
+// at 3). The picture fills most of the tile's width (M34, signs.css); the
+// caption clamps at three lines (M32, signs.css).
 // Filter state lives in the URL (?family=<id>&collected=1), so it survives
 // a reload and a Back tap; a filter tap replaces the current history entry
 // rather than adding one, so Back from a sign page returns to the filtered
@@ -20,8 +23,8 @@
 // loading, neither shows (no placeholder text, and no false "No signs
 // collected yet" for a learner who has collected signs but whose signs
 // have not loaded yet).
-// Depends on: react, react-router-dom, ../../content/signs (loadSigns),
-// ../../content/schemas (Sign type), ../../engine/progress-state
+// Depends on: react, react-router-dom, ../../content/signs (loadSigns,
+// displayName), ../../content/schemas (Sign type), ../../engine/progress-state
 // (useProgressStore), ../../engine/progress (isCollected),
 // ../interactives/shared/SignImage, ./families (FAMILIES, ALL_CHIP_LABEL,
 // ALL_SIGNS_LABEL, familyMeta), ./filter (filterSigns, SignFamilyFilter),
@@ -29,7 +32,7 @@
 // Depended on by: src/app/routes.tsx.
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { loadSigns } from '../../content/signs';
+import { loadSigns, displayName } from '../../content/signs';
 import type { Sign } from '../../content/schemas';
 import { useProgressStore } from '../../engine/progress-state';
 import { isCollected } from '../../engine/progress';
@@ -172,7 +175,7 @@ function SignsScreen() {
                 <span className="signs-tile__picture">
                   <SignImage sign={sign} alt="" />
                 </span>
-                <span className="signs-tile__caption">{sign.name}</span>
+                <span className="signs-tile__caption">{displayName(sign)}</span>
                 <span className="signs-tile__status">
                   {isCollected(correct) ? (
                     <span className="signs-tile__badge">

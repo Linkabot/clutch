@@ -3,11 +3,13 @@
 // signs; amendment E18's sequence and exact:true locators; amendment E19's
 // Learn-card picture proof, kept-collected-param-on-All-chip proof, unknown
 // ?family= proof and the seeded-IndexedDB collection-progress test; Step
-// 20's "Sign page" test proves the picture card, family pill, heading, the
-// Shape & colour and Memory hook rows (present/absent per sign), the Play
-// button's route (no /practice/tap route until Step 23, so the assertion
-// is URL-only, per P12/the Step 20 execution notes) and the Highway Code
-// link; amendment E21 extends that same test with a SIGN_PAGE_CASES table
+// 20's "Sign page" test proves the picture card, family pill, heading
+// (displayName(sign), Q2), the Shape & colour and Memory tip rows
+// (present/absent per sign, relabelled in Step 7 from the tip row's old
+// label), the Practise signs like this button's route (a family round,
+// URL-only since Tap does not read ?family= until Step 9) and the Highway
+// Code link; amendment E21 extends that same test with a SIGN_PAGE_CASES
+// table
 // covering every shape/colour glyph, both heading sizes, a hook shown
 // without a rule row (orders-national-speed-limit, C9), both C7 route
 // colours, and seeded IndexedDB progress on the sign page itself (partial
@@ -267,7 +269,7 @@ test('Signs browser filters', async ({ page }) => {
   await page.getByRole('button', { name: 'All signs', exact: true }).click();
   await expect(tiles).toHaveCount(195);
 
-  await grid.getByRole('link', { name: 'Crossroads.', exact: true }).click();
+  await grid.getByRole('link', { name: 'Crossroads', exact: true }).click();
   await expect(page).toHaveURL(/\/clutch\/learn\/signs\/warning-crossroads$/);
 
   // E19 item 3c: an unknown ?family= falls back to 'all' rather than
@@ -373,13 +375,13 @@ test('Sign page', async ({ page }) => {
   await openAppAt(page, '/clutch/learn/signs/warning-slippery-road');
 
   const heading = page.locator('h1');
-  await expect(heading).toHaveText('Slippery road.');
+  await expect(heading).toHaveText('Slippery road');
 
   // Only assert absence/presence once the caption above proves the sign's
   // own data has actually loaded (Step 20 execution notes).
   await expect(page.getByText('Triangles warn. All triangular signs are red.')).toBeVisible();
-  await expect(page.getByText('0 of 3 correct to collect')).toBeVisible();
-  await expect(page.getByText('Memory hook', { exact: true })).toBeVisible();
+  await expect(page.getByText('Get it right 3 times to collect it')).toBeVisible();
+  await expect(page.getByText('Memory tip', { exact: true })).toBeVisible();
   await expect(page.getByText('Three sides, one message: watch out ahead.')).toBeVisible();
   await expect(
     page.getByText(
@@ -391,24 +393,24 @@ test('Sign page', async ({ page }) => {
     return !!img && img.complete && img.naturalWidth > 0;
   });
 
-  await page.getByRole('button', { name: 'Play with this sign' }).click();
-  await expect(page).toHaveURL(/\/clutch\/practice\/tap\?sign=warning-slippery-road$/);
+  await page.getByRole('button', { name: 'Practise signs like this' }).click();
+  await expect(page).toHaveURL(/\/clutch\/practice\/tap\?family=warning$/);
   await page.goBack();
-  await expect(heading).toHaveText('Slippery road.');
+  await expect(heading).toHaveText('Slippery road');
 
   await page.getByRole('link', { name: 'Traffic signs in The Highway Code' }).click();
   await expect(page).toHaveURL(/\/clutch\/learn\/code\/traffic-signs$/);
 
   await page.goto('/clutch/learn/signs/orders-mini-roundabout');
   await expect(heading).toHaveText(
-    'Mini-roundabout (give way to traffic from the immediate right).',
+    'Mini-roundabout (give way to traffic from the immediate right)',
   );
-  await expect(page.getByText('Memory hook', { exact: true })).toBeVisible();
+  await expect(page.getByText('Memory tip', { exact: true })).toBeVisible();
   await expect(page.getByText('Mini-roundabout: give way to the right.')).toBeVisible();
 
   await page.goto('/clutch/learn/signs/road-works-roadworks');
   await expect(heading).toHaveText(
-    'This sign, indicating road works or an obstruction in the carriageway ahead, may be used for any type of works, ranging from large construction schemes to minor maintenance.',
+    'This sign, indicating road works or an obstruction in the carriageway ahead, may be used for any type of works, ranging from large construction schemes to minor maintenance',
   );
   await expect(page.getByText('Shape & colour', { exact: true })).toHaveCount(0);
 
@@ -454,19 +456,19 @@ test('Sign page', async ({ page }) => {
     if (testCase.hook) {
       await expect(page.getByText(testCase.hook)).toBeVisible();
     } else {
-      await expect(page.getByText('Memory hook', { exact: true })).toHaveCount(0);
+      await expect(page.getByText('Memory tip', { exact: true })).toHaveCount(0);
     }
   }
 
   // Plan.md Step 6, PS9: a C9 direction sign (no glyph of its own) resolves
   // no tip, even though every SIGN_PAGE_CASES entry above now has one.
   await page.goto('/clutch/learn/signs/direction-tourist');
-  await expect(heading).toHaveText('Tourist information.');
-  await expect(page.getByText('Memory hook', { exact: true })).toHaveCount(0);
+  await expect(heading).toHaveText('Tourist information');
+  await expect(page.getByText('Memory tip', { exact: true })).toHaveCount(0);
 
   // Amendment E21: progress seeded straight into IndexedDB shows on the
   // sign page too -- partial progress (dots) and full collection
-  // (COLLECTED, no dots or "of 3 correct to collect" text).
+  // (COLLECTED, no dots and no "Get it right" collecting line).
   await expect
     .poll(() =>
       page.evaluate(async () =>
@@ -481,14 +483,14 @@ test('Sign page', async ({ page }) => {
   ]);
 
   await page.goto('/clutch/learn/signs/warning-slippery-road');
-  await expect(page.getByText('2 of 3 correct to collect')).toBeVisible();
+  await expect(page.getByText('Get it right 1 more time to collect it')).toBeVisible();
   await expect(page.locator('.sign-page__picture-card .signs-tile__dot')).toHaveCount(3);
   await expect(page.locator('.sign-page__picture-card .signs-tile__dot--empty')).toHaveCount(1);
 
   await page.goto('/clutch/learn/signs/warning-crossroads');
-  await expect(heading).toHaveText('Crossroads.');
+  await expect(heading).toHaveText('Crossroads');
   await expect(page.getByText('COLLECTED')).toBeVisible();
-  await expect(page.getByText('of 3 correct to collect')).toHaveCount(0);
+  await expect(page.getByText(/^Get it right/)).toHaveCount(0);
 });
 
 test('Third-party emblem notice', async ({ page }) => {
@@ -500,9 +502,9 @@ test('Third-party emblem notice', async ({ page }) => {
   const heading = page.locator('h1');
 
   const EMBLEM_CASES = [
-    { id: 'direction-national-trust', name: 'National Trust.' },
-    { id: 'direction-english-heritage', name: 'English Heritage.' },
-    { id: 'direction-england', name: 'England.' },
+    { id: 'direction-national-trust', name: 'National Trust' },
+    { id: 'direction-english-heritage', name: 'English Heritage' },
+    { id: 'direction-england', name: 'England' },
   ];
   for (const { id, name } of EMBLEM_CASES) {
     await openAppAt(page, `/clutch/learn/signs/${id}`);
@@ -512,7 +514,7 @@ test('Third-party emblem notice', async ({ page }) => {
   }
 
   await page.goto('/clutch/learn/signs/warning-slippery-road');
-  await expect(heading).toHaveText('Slippery road.');
+  await expect(heading).toHaveText('Slippery road');
   await expect(page.getByText(NOTICE)).toHaveCount(0);
 });
 

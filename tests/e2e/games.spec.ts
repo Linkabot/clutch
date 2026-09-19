@@ -37,9 +37,11 @@
 // stays current, and the sign page's "Sign not found." never shows), checks
 // the Circle · Red start with its loaded example pictures and the sign's
 // and text's animations, taps Change shape twice to the invalid
-// Rectangle · Red (the app line, no examples, the ghost's animation), taps
-// Change colour to Rectangle · Blue (its rule sentence, hook and loaded
-// examples), opens an example's sign page and comes Back, then under
+// Rectangle · Red (its "aren't used" title and body, no examples, no
+// exceptions line, the ghost's animation), taps Change colour to
+// Rectangle · Blue (the previous, unused, pair's dashed ghost, then this
+// pair's own rule sentence, hook and loaded examples), opens an example's
+// sign page and comes Back, then under
 // emulated reduced motion proves the static root, no ghost and nothing
 // animating, and finally opens the Decoder from its Practice card. Runs
 // against the production build (`vite preview`) with Playwright's WebKit
@@ -48,6 +50,17 @@
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
 import { test, expect, type Page } from '@playwright/test';
 import { openAppAt } from './helpers';
+
+/** The sign page's collecting line (Q3) for `correct` 0, 1 or 2 right answers. */
+function collectingLine(correct: 0 | 1 | 2): string {
+  return (
+    {
+      0: 'Get it right 3 times to collect it',
+      1: 'Get it right 2 more times to collect it',
+      2: 'Get it right 1 more time to collect it',
+    } as const
+  )[correct];
+}
 
 /** The two signs learners must tell apart by shape, not caption (Q7). */
 const LOOK_ALIKE_PAIR = ['orders-stop-sign-and-road-marking', 'orders-give-way-road-marking'];
@@ -209,7 +222,7 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(streakStat.locator('.practice-header__number')).toHaveText('1');
 
     await page.goto('/clutch/learn/signs/warning-slippery-road');
-    await expect(page.getByText('1 of 3 correct to collect')).toBeVisible();
+    await expect(page.getByText(collectingLine(1))).toBeVisible();
   });
 
   test('reduced motion: static sheet, no confetti, no animation', async ({ page }) => {
@@ -379,7 +392,7 @@ test.describe('Sign Sprint run', () => {
     // a random sign, so in the rare run where it is the same sign it counts twice).
     const firstCorrect = roundTwoId === firstId ? 2 : 1;
     await page.goto(`/clutch/learn/signs/${firstId}`);
-    await expect(page.getByText(`${firstCorrect} of 3 correct to collect`)).toBeVisible();
+    await expect(page.getByText(collectingLine(firstCorrect))).toBeVisible();
 
     // Close leaves a fresh Sprint.
     await page.goto('/clutch/practice/sprint');
@@ -534,16 +547,12 @@ test.describe('Match Pairs round', () => {
 
     // Collection progress. Round 2 draws a random family and may reuse a
     // round-1 sign; every round-2 match was first try, so it adds one.
-    const retriedExpected = round2.includes(round1[3])
-      ? '1 of 3 correct to collect'
-      : '0 of 3 correct to collect';
+    const retriedExpected = collectingLine(round2.includes(round1[3]) ? 1 : 0);
     await navigateInApp(page, `/clutch/learn/signs/${round1[3]}`);
     await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${round1[3]}$`));
     await expect(page.getByText(retriedExpected)).toBeVisible();
 
-    const firstTryExpected = round2.includes(round1[0])
-      ? '2 of 3 correct to collect'
-      : '1 of 3 correct to collect';
+    const firstTryExpected = collectingLine(round2.includes(round1[0]) ? 2 : 1);
     await page.goto(`/clutch/learn/signs/${round1[0]}`);
     await expect(page.getByText(firstTryExpected)).toBeVisible();
 
@@ -591,7 +600,7 @@ test.describe('Shape & Colour Decoder', () => {
 
     // Start: Circle · Red, its examples loaded, the sign popping and the text rising.
     await expect(label).toHaveText('Circle · Red');
-    await expect(page.getByRole('link', { name: 'No right turn.', exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'No right turn', exact: true })).toBeVisible();
     await waitForDecoderExamples(page);
     for (const [selector, name] of [
       ['.decoder__pop', 'signPop'],
@@ -609,20 +618,21 @@ test.describe('Shape & Colour Decoder', () => {
     await expect(label).toHaveText('Triangle · Red');
     await shapeButton.click();
     await expect(label).toHaveText('Rectangle · Red');
-    await expect(page.locator('.decoder__title')).toHaveText('Rectangles inform.');
-    await expect(page.locator('.decoder__body')).toHaveText(
-      "The signing-system rules don't use this pair. Try another colour.",
-    );
+    await expect(page.locator('.decoder__title')).toHaveText("Red rectangles aren't used");
+    await expect(page.locator('.decoder__body')).toHaveText("UK signs don't use this pair.");
     await expect(page.locator('.decoder__example')).toHaveCount(0);
+    await expect(page.locator('.decoder__exceptions')).toHaveCount(0);
     await expect
       .poll(() =>
         page.locator('.decoder__ghost').evaluate((el) => getComputedStyle(el).animationName),
       )
       .toBe('ghostOut');
 
-    // Colour: Rectangle · Blue.
-    await page.getByRole('button', { name: 'Change colour' }).click();
+    // Colour: Rectangle · Blue -- the pair left behind, Rectangle · Red, was
+    // unused, so its ghost draws the dashed outline.
+    await page.getByRole('button', { name: 'Change colour, Red', exact: true }).click();
     await expect(label).toHaveText('Rectangle · Blue');
+    await expect(page.locator('.decoder__ghost .decoder__dashed')).toHaveCount(1);
     await expect(
       page.getByText(
         'Blue rectangles are used for information signs except on motorways, where blue is used for direction signs.',
@@ -635,7 +645,7 @@ test.describe('Shape & Colour Decoder', () => {
     await waitForDecoderExamples(page);
 
     // Into an example's sign page and Back.
-    await page.getByRole('link', { name: 'Start of motorway regulations.', exact: true }).click();
+    await page.getByRole('link', { name: 'Start of motorway regulations', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/learn\/signs\/motorway-start-of-motorway-regulations$/);
     await page.getByRole('button', { name: 'Back', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/learn\/signs\/decoder$/);

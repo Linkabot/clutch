@@ -1,13 +1,16 @@
-// Shape & Colour Decoder's pure logic (plan.md Step 26 and amendment E33),
-// with no React: the shape and colour cycles the two stage buttons step
-// through (both wrap), the plate label for a pair, the content a pair shows
-// and the signs its example files name. A valid pair is a decoderPairs row
-// of shape-rules.json whose shape and colour both match: it shows that
-// row's title and body, its rule hook from hooks.json (rule-<shape>-<colour>)
-// and its three example files, in order. Any other pair shows its shape's
-// sentence, the catch-all row's body, no hook and no examples. Every piece
-// of teaching text comes from the content files passed in; none is written
-// here.
+// Shape & Colour Decoder's pure logic (plan.md Step 26, amendment E33, and
+// Step 7/amendment E12's Q5), with no React: the shape and colour cycles
+// the two stage buttons step through (both wrap), the plate label for a
+// pair, the content a pair shows and the signs its example files name. A
+// valid pair is a decoderPairs row of shape-rules.json whose shape and
+// colour both match: it shows that row's title and body, its rule hook
+// from hooks.json (rule-<shape>-<colour>) and its three example files, in
+// order -- every piece of that teaching text comes from the content files
+// passed in. Any other pair shows the app's own strings (Q5): the title
+// `${colour} ${shape plural} aren't used` (SHAPE_PLURALS, not
+// shapeSentences) and the body "UK signs don't use this pair.", no hook and
+// no examples -- shape-rules.json's catch-all decoderPairs row (shape:
+// null) is no longer read.
 // Depends on: src/content/schemas (ShapeRulesFile, Hook and Sign types only).
 // Depended on by: ./Decoder.tsx, tests/unit/decoder.test.tsx.
 
@@ -23,6 +26,13 @@ export const SHAPE_LABELS: Record<DecoderShape, string> = {
   circle: 'Circle',
   triangle: 'Triangle',
   rectangle: 'Rectangle',
+};
+
+/** Plural nouns for an unused pair's title (Q5), e.g. "Blue triangles aren't used". */
+export const SHAPE_PLURALS: Record<DecoderShape, string> = {
+  circle: 'circles',
+  triangle: 'triangles',
+  rectangle: 'rectangles',
 };
 
 export const COLOUR_LABELS: Record<DecoderColour, string> = {
@@ -57,9 +67,12 @@ export interface PairContent {
 }
 
 /**
- * What the Decoder shows for a pair, read from shape-rules.json and
- * hooks.json. Throws when a valid pair's row has no title or its rule hook
- * is missing, or when an invalid pair finds no catch-all row.
+ * What the Decoder shows for a pair. A valid pair (a decoderPairs row of
+ * shape-rules.json whose shape and colour both match) reads that row's
+ * title and body and its rule hook from hooks.json. Any other pair gets
+ * the app's own "aren't used" title and body (Q5) -- shape-rules.json's
+ * catch-all row is never read. Throws only when a valid pair's row has no
+ * title or its rule hook is missing.
  */
 export function pairContent(
   shape: DecoderShape,
@@ -89,14 +102,10 @@ export function pairContent(
     };
   }
 
-  const catchAll = shapeRules.decoderPairs.find((pair) => pair.shape === null);
-  if (!catchAll) {
-    throw new Error('shape-rules.json has no catch-all decoder pair');
-  }
   return {
     valid: false,
-    title: shapeRules.shapeSentences[shape],
-    body: catchAll.body,
+    title: `${COLOUR_LABELS[colour]} ${SHAPE_PLURALS[shape]} aren't used`,
+    body: "UK signs don't use this pair.",
     hookId: null,
     hookText: null,
     exampleFiles: [],
