@@ -1,11 +1,16 @@
 // Sign Sprint: /practice/sprint (mounted lazily from ../registry by
 // src/app/routes.tsx). A full-screen layer over the app shell (scout-e.md's
-// SprintPlay and SprintEnd artboards; plan.md Step 24 and amendment E27).
-// The play screen: GameTopBar (Close, the time left as a bar and an m:ss
-// clock), the SIGN SPRINT badge beside the score (a +10 XP pop after each
-// right answer), a roadside scene whose sign (carrying data-answer-id)
-// drives in on each new question, "Name this sign" and four lettered
-// option buttons. A wrong answer frames the right option green and the
+// SprintPlay and SprintEnd artboards; plan.md Step 24, amendment E27 and
+// Step 8/E14). The play screen is rendered through the shared
+// QuestionScreen: the top bar (Close, the time left as a bar and an m:ss
+// clock), then the question region -- the SIGN SPRINT badge beside the
+// score (a +10 XP pop after each right answer), a roadside scene whose sign
+// (carrying data-answer-id) drives in on each new question, "Name this
+// sign" and four lettered option buttons. A failed load shows the question
+// screen's failure notice instead of a frozen clock over an empty screen,
+// and its Retry (an attempt counter set from the click handler, never from
+// the effect body) loads the catalogue again and starts the round. A wrong
+// answer frames the right option green and the
 // chosen one red for ./sprint's REVEAL_MS, while every option is disabled.
 // The round runs on ./sprint's reducer, fed by an injected clock (`now`,
 // Date.now by default) that is read only in event handlers, the interval
@@ -21,7 +26,8 @@
 // Depends on: react, react-router-dom, lucide-react (ChevronRight),
 // ../../../content/signs (loadSigns), ../../../content/schemas (Sign type),
 // ../../../engine/progress-state (useProgressStore), ../../../ui (Button),
-// ../shared/GameTopBar, ../shared/SignImage, ../shared/random (mulberry32),
+// ../shared/QuestionScreen (which renders the top bar and the option
+// buttons), ../shared/SignImage, ../shared/random (mulberry32),
 // ../shared/useReducedMotion, ./sprint, ./sprint.css.
 // Depended on by: ./index.tsx, tests/unit/sign-sprint.test.tsx.
 
@@ -32,7 +38,7 @@ import { loadSigns } from '../../../content/signs';
 import type { Sign } from '../../../content/schemas';
 import { useProgressStore } from '../../../engine/progress-state';
 import { Button } from '../../../ui';
-import GameTopBar from '../shared/GameTopBar';
+import QuestionScreen from '../shared/QuestionScreen';
 import SignImage from '../shared/SignImage';
 import { mulberry32 } from '../shared/random';
 import { useReducedMotion } from '../shared/useReducedMotion';
@@ -78,6 +84,8 @@ function SignSprint({ now = systemNow }: SignSprintProps) {
   const reducedMotion = useReducedMotion();
   const [state, dispatch] = useReducer(sprintReducer, undefined, initialSprintState);
   const [settledDeck, setSettledDeck] = useState<SprintQuestion[] | null>(null);
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [attempt, setAttempt] = useState(0);
 
   const summary = useProgressStore((s) => s.summary);
   const recordAnswer = useProgressStore((s) => s.recordAnswer);
@@ -93,6 +101,7 @@ function SignSprint({ now = systemNow }: SignSprintProps) {
       .then((signs) => {
         if (cancelled) return;
         signsRef.current = signs;
+        setLoadState('ready');
         dispatch({
           type: 'start',
           deck: buildSprintDeck(signs, mulberry32(randomSeed())),
@@ -102,11 +111,18 @@ function SignSprint({ now = systemNow }: SignSprintProps) {
       .catch((error: unknown) => {
         if (cancelled) return;
         console.error(error);
+        setLoadState('error');
       });
     return () => {
       cancelled = true;
     };
-  }, [now]);
+  }, [now, attempt]);
+
+  /** Retry after a failed load: the counter is bumped here, never in the effect body. */
+  function handleRetry(): void {
+    setLoadState('loading');
+    setAttempt((a) => a + 1);
+  }
 
   const running = state.phase === 'playing' || state.phase === 'reveal';
 
@@ -259,81 +275,84 @@ function SignSprint({ now = systemNow }: SignSprintProps) {
 
   return (
     <div className={rootClassName}>
-      <GameTopBar
-        progress={left / SPRINT_MS}
-        label={formatClock(left)}
-        labelTone="ink"
-        onClose={handleClose}
-      />
-
-      {question && (
-        <div className="sprint__play">
-          <div className="sprint__status">
-            <span className="sprint__badge">SIGN SPRINT</span>
-            <div className="sprint__score-group">
-              {state.lastAnswerRight && (
-                <span key={state.score} className="sprint__xp">
-                  +10 XP
-                </span>
-              )}
-              <span className="sprint__tick" aria-hidden="true">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  strokeWidth="3.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12.5l4.5 4.5L19 7.5" />
-                </svg>
-              </span>
-              <span className="sprint__score">{state.score}</span>
-            </div>
-          </div>
-
-          <div className="sprint__panel">
-            <div className="sprint__ground" />
-            <div className="sprint__tree sprint__tree--1" />
-            <div className="sprint__tree sprint__tree--2" />
-            <div className="sprint__tree sprint__tree--3" />
-            <div className="sprint__tree sprint__tree--4" />
-            <div className="sprint__post" />
-            <div key={state.index} className="sprint__sign" data-answer-id={question.answer.id}>
-              <span className="sprint__picture">
-                <SignImage sign={question.answer} alt="Sign to name" />
-              </span>
-            </div>
-          </div>
-
-          <h1 className="sprint__prompt">Name this sign</h1>
-
-          <div className="sprint__options">
-            {question.options.map((option, optionIndex) => {
-              let feedback: 'answer' | 'wrong' | undefined;
-              if (revealing && option.id === question.answer.id) feedback = 'answer';
-              else if (revealing && option.id === state.chosenId) feedback = 'wrong';
-              return (
-                <button
-                  key={`${state.index}-${option.id}`}
-                  type="button"
-                  className="sprint__option"
-                  data-sign-id={option.id}
-                  data-feedback={feedback}
-                  disabled={revealing}
-                  onClick={() => handleAnswer(option)}
-                >
-                  <span className="sprint__letter" aria-hidden="true">
-                    {OPTION_LETTERS[optionIndex]}
+      <QuestionScreen
+        topBar={{
+          progress: left / SPRINT_MS,
+          label: formatClock(left),
+          labelTone: 'ink',
+          onClose: handleClose,
+        }}
+        loadState={loadState}
+        onRetry={handleRetry}
+        regionClassName="sprint__play"
+        optionsClassName="sprint__options"
+        optionClassName="sprint__option"
+        prompt={
+          question && (
+            <>
+              <div className="sprint__status">
+                <span className="sprint__badge">SIGN SPRINT</span>
+                <div className="sprint__score-group">
+                  {state.lastAnswerRight && (
+                    <span key={state.score} className="sprint__xp">
+                      +10 XP
+                    </span>
+                  )}
+                  <span className="sprint__tick" aria-hidden="true">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      strokeWidth="3.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12.5l4.5 4.5L19 7.5" />
+                    </svg>
                   </span>
-                  <span className="sprint__caption">{option.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                  <span className="sprint__score">{state.score}</span>
+                </div>
+              </div>
+
+              <div className="sprint__panel">
+                <div className="sprint__ground" />
+                <div className="sprint__tree sprint__tree--1" />
+                <div className="sprint__tree sprint__tree--2" />
+                <div className="sprint__tree sprint__tree--3" />
+                <div className="sprint__tree sprint__tree--4" />
+                <div className="sprint__post" />
+                <div key={state.index} className="sprint__sign" data-answer-id={question.answer.id}>
+                  <span className="sprint__picture">
+                    <SignImage sign={question.answer} alt="Sign to name" />
+                  </span>
+                </div>
+              </div>
+
+              <h1 className="sprint__prompt">Name this sign</h1>
+            </>
+          )
+        }
+        options={question ? question.options : []}
+        optionKey={(option) => `${state.index}-${option.id}`}
+        optionAttributes={(option) => ({ 'data-sign-id': option.id })}
+        feedbackFor={(option) => {
+          if (!revealing || !question) return undefined;
+          if (option.id === question.answer.id) return 'answer';
+          if (option.id === state.chosenId) return 'wrong';
+          return undefined;
+        }}
+        renderOption={(option, optionIndex) => (
+          <>
+            <span className="sprint__letter" aria-hidden="true">
+              {OPTION_LETTERS[optionIndex]}
+            </span>
+            <span className="sprint__caption">{option.name}</span>
+          </>
+        )}
+        disabled={revealing}
+        onAnswer={handleAnswer}
+      />
     </div>
   );
 }

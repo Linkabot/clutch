@@ -1,15 +1,19 @@
 // Tap the sign: /practice/tap (src/app/routes.tsx), reading an optional
 // ?sign= to seed question 1 (SignScreen.tsx's "Play with this sign"). A
 // full-screen layer over the app shell (scout-e.md's Tap the sign artboard;
-// plan.md Step 23 and amendments E25-E26): GameTopBar (close, progress,
-// N/10), a "TAP THE SIGN" badge, the prompt caption (the page's only
-// heading, carrying data-answer-id) and a 2x2 grid of option tiles built by
-// ./round's buildTapRound. A tap locks the grid -- every tile gets
-// data-feedback (right/wrong/answer/dim) and a tick badge pops on the
-// right tile -- then QuizSheet shows ./round's sheetContent (E26: its
-// outcome and XP compare the tap to the answer, but its name, rule
-// sentence and hook always come from the answer, never the tapped sign),
-// records the answer and hands Continue to the next question. Progress
+// plan.md Step 23, amendments E25-E26 and Step 8/E14), played through the
+// shared QuestionScreen: the top bar (close, progress, N/10), then the
+// question region (a "TAP THE SIGN" badge, the prompt caption -- the page's
+// only heading, carrying data-answer-id -- and a 2x2 grid of option tiles
+// built by ./round's buildTapRound). A tap locks the grid -- every tile
+// gets data-feedback (right/wrong/answer/dim) and a tick badge pops on the
+// right tile -- then the quiz sheet shows ./round's sheetContent (E26: its
+// outcome and XP compare the tap to the answer, but its label, explanation
+// and tip always come from the answer, never the tapped sign), records the
+// answer and hands Continue to the next question. A failed load shows the
+// question screen's failure notice instead, whose Retry (an attempt counter
+// set from the click handler, never from the effect body) loads the
+// catalogue again and builds a fresh round. Progress
 // writes (recordAnswer, then recordRoundFinished after question 10) run
 // through one promise chain in answer order, held in a ref, so the
 // round-complete summary only renders once every write has actually
@@ -21,12 +25,12 @@
 // loadSigns/Play-again callback, never during render.
 // Depends on: react, react-router-dom, ../../../content/signs (loadSigns),
 // ../../../content/schemas (Sign type), ../../../engine/progress-state
-// (useProgressStore), ../../../ui (Button), ../../interactives/quiz-sheet/
-// QuizSheet, ../../interactives/shared/GameTopBar, ../../interactives/
-// shared/SignImage, ../../interactives/shared/distractors (isShortCaption),
-// ../../interactives/shared/random (mulberry32), ../../interactives/
-// shared/useReducedMotion, ./round (buildTapRound, sheetContent,
-// TapQuestion), ./tap.css.
+// (useProgressStore), ../../../ui (Button), ../../interactives/shared/
+// QuestionScreen (which renders the top bar, the option buttons and the
+// quiz sheet), ../../interactives/shared/SignImage, ../../interactives/
+// shared/distractors (isShortCaption), ../../interactives/shared/random
+// (mulberry32), ../../interactives/shared/useReducedMotion, ./round
+// (buildTapRound, sheetContent, TapQuestion), ./tap.css.
 // Depended on by: src/app/routes.tsx.
 
 import { useRef, useState, useEffect } from 'react';
@@ -35,8 +39,7 @@ import { loadSigns } from '../../../content/signs';
 import type { Sign } from '../../../content/schemas';
 import { useProgressStore } from '../../../engine/progress-state';
 import { Button } from '../../../ui';
-import QuizSheet from '../../interactives/quiz-sheet/QuizSheet';
-import GameTopBar from '../../interactives/shared/GameTopBar';
+import QuestionScreen from '../../interactives/shared/QuestionScreen';
 import SignImage from '../../interactives/shared/SignImage';
 import { isShortCaption } from '../../interactives/shared/distractors';
 import { mulberry32 } from '../../interactives/shared/random';
@@ -79,6 +82,7 @@ function TapTheSignScreen() {
   const reducedMotion = useReducedMotion();
 
   const [status, setStatus] = useState<LoadStatus>('loading');
+  const [attempt, setAttempt] = useState(0);
   const [round, setRound] = useState<TapQuestion[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selection, setSelection] = useState<Selection>(null);
@@ -105,7 +109,13 @@ function TapTheSignScreen() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [attempt]);
+
+  /** Retry after a failed load: the counter is bumped here, never in the effect body. */
+  function handleRetry(): void {
+    setStatus('loading');
+    setAttempt((a) => a + 1);
+  }
 
   function queueWrite(write: () => Promise<void>): void {
     writeChainRef.current = writeChainRef.current.then(write).catch((error: unknown) => {
@@ -175,82 +185,96 @@ function TapTheSignScreen() {
   const questionNumber = status === 'ready' ? Math.min(questionIndex + 1, TOTAL_QUESTIONS) : 0;
   const rootClassName = ['tap', reducedMotion ? 'tap--static' : 'tap--animated'].join(' ');
 
+  const sheetProps =
+    currentQuestion && selection && sheet
+      ? {
+          outcome: sheet.outcome,
+          xpGained: sheet.xpGained,
+          inARow: streak,
+          answerLabel: sheet.answerName,
+          explanation: sheet.ruleSentence,
+          tip: sheet.hook,
+          more: {
+            label: 'Sign page',
+            onClick: () => navigate(`/learn/signs/${currentQuestion.answer.id}`),
+          },
+          onContinue: handleContinue,
+        }
+      : null;
+
   return (
     <div className={rootClassName}>
-      <GameTopBar
-        progress={questionNumber / TOTAL_QUESTIONS}
-        label={`${questionNumber}/${TOTAL_QUESTIONS}`}
-        onClose={handleClose}
+      <QuestionScreen
+        topBar={{
+          progress: questionNumber / TOTAL_QUESTIONS,
+          label: `${questionNumber}/${TOTAL_QUESTIONS}`,
+          onClose: handleClose,
+        }}
+        loadState={status}
+        onRetry={handleRetry}
+        regionClassName="tap__body"
+        optionsClassName="tap__grid"
+        optionClassName="tap__tile"
+        prompt={
+          currentQuestion && (
+            <div className="tap__prompt">
+              <span className="tap__badge">TAP THE SIGN</span>
+              <p className="tap__lead">Tap the sign that means</p>
+              <h1
+                className={
+                  isShortCaption(currentQuestion.answer.name)
+                    ? 'tap__heading'
+                    : 'tap__heading tap__heading--long'
+                }
+                data-answer-id={currentQuestion.answer.id}
+              >
+                {currentQuestion.answer.name}
+              </h1>
+            </div>
+          )
+        }
+        options={currentQuestion ? currentQuestion.options : []}
+        optionKey={(option) => option.id}
+        optionAttributes={(option, index) => ({
+          'data-sign-id': option.id,
+          'aria-label': `Option ${OPTION_LETTERS[index]}`,
+        })}
+        feedbackFor={(option) =>
+          currentQuestion ? feedbackFor(option, currentQuestion, selection) : undefined
+        }
+        renderOption={(option) => {
+          const feedback = currentQuestion
+            ? feedbackFor(option, currentQuestion, selection)
+            : undefined;
+          return (
+            <>
+              <span className="tap__picture">
+                <SignImage sign={option} alt="" />
+              </span>
+              {(feedback === 'right' || feedback === 'answer') && (
+                <span className="tap__tick" aria-hidden="true">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    strokeWidth="3.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12.5l4.5 4.5L19 7.5" />
+                  </svg>
+                </span>
+              )}
+            </>
+          );
+        }}
+        disabled={selection !== null}
+        onAnswer={(option) => {
+          if (currentQuestion) handleTap(option, currentQuestion);
+        }}
+        sheet={sheetProps}
       />
-
-      {currentQuestion && (
-        <div className="tap__body">
-          <div className="tap__prompt">
-            <span className="tap__badge">TAP THE SIGN</span>
-            <p className="tap__lead">Tap the sign that means</p>
-            <h1
-              className={
-                isShortCaption(currentQuestion.answer.name)
-                  ? 'tap__heading'
-                  : 'tap__heading tap__heading--long'
-              }
-              data-answer-id={currentQuestion.answer.id}
-            >
-              {currentQuestion.answer.name}
-            </h1>
-          </div>
-
-          <div className="tap__grid">
-            {currentQuestion.options.map((option, index) => {
-              const feedback = feedbackFor(option, currentQuestion, selection);
-              return (
-                <button
-                  key={option.id}
-                  type="button"
-                  className="tap__tile"
-                  data-sign-id={option.id}
-                  data-feedback={feedback}
-                  aria-label={`Option ${OPTION_LETTERS[index]}`}
-                  disabled={selection !== null}
-                  onClick={() => handleTap(option, currentQuestion)}
-                >
-                  <span className="tap__picture">
-                    <SignImage sign={option} alt="" />
-                  </span>
-                  {(feedback === 'right' || feedback === 'answer') && (
-                    <span className="tap__tick" aria-hidden="true">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        strokeWidth="3.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M5 12.5l4.5 4.5L19 7.5" />
-                      </svg>
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {currentQuestion && selection && sheet && (
-        <QuizSheet
-          outcome={sheet.outcome}
-          xpGained={sheet.xpGained}
-          inARow={streak}
-          answerName={sheet.answerName}
-          ruleSentence={sheet.ruleSentence}
-          hook={sheet.hook}
-          onSignPage={() => navigate(`/learn/signs/${currentQuestion.answer.id}`)}
-          onContinue={handleContinue}
-        />
-      )}
 
       {finished && (
         <div className="tap__summary">

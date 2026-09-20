@@ -43,7 +43,11 @@
 // pair's own rule sentence, hook and loaded examples), opens an example's
 // sign page and comes Back, then under
 // emulated reduced motion proves the static root, no ghost and nothing
-// animating, and finally opens the Decoder from its Practice card. Runs
+// animating, and finally opens the Decoder from its Practice card. A third
+// Tap the sign test aborts the signs chunk so loadSigns() rejects, checks
+// the shared question screen's failure notice stands where the tiles were,
+// then unblocks the chunk and proves Retry rebuilds the round (plan.md
+// Step 8, amendment E14 (i)). Runs
 // against the production build (`vite preview`) with Playwright's WebKit
 // engine and an iPhone 14 device profile.
 // Depends on: @playwright/test, ./helpers (openAppAt).
@@ -258,6 +262,31 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.locator('.game-top-bar__label')).toHaveText('1/10');
     await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+
+  test('Tap the sign: a failed load shows Retry, which rebuilds the round', async ({ page }) => {
+    // signs.json is its own chunk in the build (dist/assets/signs-*.js), so
+    // aborting that request is what makes loadSigns() reject on the real app.
+    let blocked = true;
+    await page.route('**/signs-*.js', async (route) => {
+      if (blocked) {
+        await route.abort();
+        return;
+      }
+      await route.continue();
+    });
+
+    await openAppAt(page, '/clutch/practice/tap');
+
+    await expect(page.getByText("This didn't load.")).toBeVisible();
+    await expect(page.locator('.tap__tile')).toHaveCount(0);
+
+    blocked = false;
+    await page.getByRole('button', { name: 'Retry' }).click();
+
+    await expect(page.locator('.tap__tile')).toHaveCount(4);
+    await expect(page.locator('h1[data-answer-id]')).toBeVisible();
+    await expect(page.getByText("This didn't load.")).toHaveCount(0);
   });
 });
 

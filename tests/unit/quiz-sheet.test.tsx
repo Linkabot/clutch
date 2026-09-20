@@ -8,7 +8,8 @@
  * E10 (g)), hook line, tick or cross, root classes and dialog name; the
  * nine confetti pieces; reduced motion (a stubbed window.matchMedia) giving
  * the static class, no confetti and no animated class anywhere; and the two
- * buttons, including Continue taking focus on mount. No
+ * buttons -- Continue taking focus on mount, and the optional `more`
+ * button, which Tap the sign labels "Sign page" (plan.md E14 (d)). No
  * @testing-library/jest-dom matchers are available, so assertions read
  * text, classes and attributes off the DOM directly. jsdom applies no CSS,
  * so these tests pin the class switches the stylesheet keys motion off, not
@@ -54,10 +55,10 @@ function renderSheet(overrides: Partial<QuizSheetProps> = {}) {
     outcome: 'correct',
     xpGained: 10,
     inARow: 5,
-    answerName: 'Slippery road.',
-    ruleSentence: 'Triangles warn.',
-    hook: 'Three sides, one message: watch out ahead.',
-    onSignPage: vi.fn(),
+    answerLabel: 'Slippery road.',
+    explanation: 'Triangles warn.',
+    tip: 'Three sides, one message: watch out ahead.',
+    more: { label: 'Sign page', onClick: vi.fn() },
     onContinue: vi.fn(),
     ...overrides,
   };
@@ -149,13 +150,13 @@ describe('QuizSheet: correct answer', () => {
   });
 
   it('shows only the name when the rule sentence is null', () => {
-    const { root } = renderSheet({ ruleSentence: null });
+    const { root } = renderSheet({ explanation: null });
     expect(bodyText(root)).toBe('Slippery road.');
     expect(root.textContent).not.toContain('null');
   });
 
   it('renders no hook line and no null text when the hook is null', () => {
-    const { root } = renderSheet({ hook: null });
+    const { root } = renderSheet({ tip: null });
     expect(root.querySelector('.quiz-sheet__hook')).toBeNull();
     expect(root.textContent).not.toContain('null');
   });
@@ -254,16 +255,16 @@ describe('QuizSheet: buttons', () => {
       expect(focusSpy.mock.calls[continueCall]).toEqual([{ preventScroll: true }]);
       fireEvent.click(continueButton);
       expect(props.onContinue).toHaveBeenCalledTimes(1);
-      expect(props.onSignPage).not.toHaveBeenCalled();
+      expect(props.more?.onClick).not.toHaveBeenCalled();
     } finally {
       focusSpy.mockRestore();
     }
   });
 
-  it('calls onSignPage from the Sign page button', () => {
+  it("calls more's onClick from the Sign page button", () => {
     const { props } = renderSheet({ outcome: 'wrong' });
     fireEvent.click(screen.getByRole('button', { name: 'Sign page' }));
-    expect(props.onSignPage).toHaveBeenCalledTimes(1);
+    expect(props.more?.onClick).toHaveBeenCalledTimes(1);
     expect(props.onContinue).not.toHaveBeenCalled();
   });
 });
@@ -281,7 +282,7 @@ describe('QuizSheet: rule sentence layout', () => {
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
 
-    const { root: noSentenceRoot } = renderSheet({ ruleSentence: null });
+    const { root: noSentenceRoot } = renderSheet({ explanation: null });
     const noSentenceBody = noSentenceRoot.querySelector('.quiz-sheet__body');
     if (!noSentenceBody) throw new Error('QuizSheet did not render a .quiz-sheet__body');
     expect(noSentenceBody.querySelectorAll('br')).toHaveLength(0);

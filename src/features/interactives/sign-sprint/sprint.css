@@ -15,7 +15,9 @@
    dark mode.
    Depends on: the custom properties defined in src/app/theme.css; .button,
    .button--primary and .button--secondary in src/ui/primitives.css (Done,
-   Play again); .game-top-bar in src/features/interactives/shared/games.css.
+   Play again); .game-top-bar in src/features/interactives/shared/games.css
+   (the bar is rendered by the shared question screen this game plays
+   through).
    Depended on by: src/features/interactives/sign-sprint/SignSprint.tsx
    (imports this file once). */
 

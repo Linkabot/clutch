@@ -1,0 +1,14 @@
+/* The shared question screen's one rule (plan.md Step 8, amendment E14
+   (e)): the load-failure notice sits in the middle of the game's
+   full-screen flex layer rather than tucked under the top bar, so a
+   rejected content load reads as a state of the game, not a blank screen.
+   .load-failed itself (src/ui/primitives.css) draws the notice; this rule
+   only places it.
+   Depends on: .load-failed in src/ui/primitives.css; the games' full-screen
+   flex roots (.tap, .sprint), which give the auto margins room to work.
+   Depended on by: src/features/interactives/shared/QuestionScreen.tsx
+   (imports this file once). */
+
+.question-screen__failed {
+  margin: auto;
+}

@@ -21,8 +21,14 @@
  * "sign named"/"signs named", the store's best and streak, and the missed
  * sign's link (no list card when nothing was missed); Play again; Close;
  * and reduced motion (a stubbed matchMedia) switching
- * every animated class off. The progress store is mocked by its path
- * relative to this file.
+ * every animated class off; and a rejected loadSigns() showing the shared
+ * question screen's failure notice in place of the options, whose Retry
+ * starts the round (plan.md Step 8, amendment E14 (h)). The progress store
+ * is mocked by its path relative to this file. src/content/signs is mocked
+ * partially (importOriginal), replacing only loadSigns with a vi.fn() that
+ * resolves the real catalogue for every case but the failure one, which
+ * rejects it once; the real catalogue is loaded through the unmocked module
+ * in beforeAll, the way tests/unit/sign-screen.test.tsx does it.
  * Depends on: vitest, @testing-library/react, react-router-dom, jsdom
  * (test environment), src/content/signs (loadSigns), src/content/schemas
  * (Sign type), src/features/interactives/shared/random (mulberry32),
@@ -36,7 +42,6 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { loadSigns } from '../../src/content/signs';
 import type { Sign } from '../../src/content/schemas';
 import { mulberry32 } from '../../src/features/interactives/shared/random';
 import { isShortCaption } from '../../src/features/interactives/shared/distractors';
@@ -56,10 +61,16 @@ import {
 import SignSprint from '../../src/features/interactives/sign-sprint/SignSprint';
 
 const mocks = vi.hoisted(() => ({
+  loadSigns: vi.fn<() => Promise<Sign[]>>(),
   recordAnswer: vi.fn<(signId: string, correct: boolean) => Promise<void>>(),
   recordRoundFinished: vi.fn<(options?: { sprintScore?: number }) => Promise<void>>(),
   summary: { xp: 0, streak: 5, sprintBest: 7, collected: 0 },
 }));
+
+vi.mock('../../src/content/signs', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/content/signs')>();
+  return { ...actual, loadSigns: mocks.loadSigns };
+});
 
 vi.mock('../../src/engine/progress-state', () => ({
   useProgressStore: (selector: (state: unknown) => unknown) =>
@@ -73,7 +84,9 @@ vi.mock('../../src/engine/progress-state', () => ({
 let signs: Sign[];
 
 beforeAll(async () => {
-  signs = await loadSigns();
+  const actual =
+    await vi.importActual<typeof import('../../src/content/signs')>('../../src/content/signs');
+  signs = await actual.loadSigns();
 });
 
 // --- Helpers -----------------------------------------------------------------
@@ -447,6 +460,8 @@ function option(container: HTMLElement, signId: string): HTMLButtonElement {
 beforeEach(() => {
   t = 0;
   pendingRoundFinished = [];
+  mocks.loadSigns.mockReset();
+  mocks.loadSigns.mockResolvedValue(signs);
   mocks.recordAnswer.mockReset();
   mocks.recordAnswer.mockResolvedValue(undefined);
   mocks.recordRoundFinished.mockReset();
@@ -619,5 +634,43 @@ describe('SignSprint screen', () => {
     await waitFor(() => expect(textOf(container, '.sprint__xp')).toBe('+10 XP'));
     expect(root?.classList.contains('sprint--static')).toBe(true);
     expect(container.querySelectorAll('[class*="--animated"]')).toHaveLength(0);
+  });
+
+  it('a failed load shows the failure notice, and Retry starts the round', async () => {
+    // Only the first call rejects; beforeEach's mockResolvedValue answers the
+    // Retry with the real catalogue.
+    mocks.loadSigns.mockRejectedValueOnce(new Error('offline'));
+    const container = renderSprint();
+
+    await screen.findByText("This didn't load.");
+    expect(screen.getByRole('alert').textContent).toContain("This didn't load.");
+    expect(container.querySelectorAll('.sprint__option')).toHaveLength(0);
+    expect(mocks.loadSigns).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+
+    await waitForSign(container);
+    expect(container.querySelectorAll('button.sprint__option')).toHaveLength(4);
+    expect(screen.queryByText("This didn't load.")).toBeNull();
+    expect(textOf(container, '.game-top-bar__label')).toBe('1:00');
+    expect(mocks.loadSigns).toHaveBeenCalledTimes(2);
+  });
+
+  // The shared question screen takes everything above the options as one
+  // `prompt` node, so their order is the game's to get right (plan.md E14 (c)).
+  // .sprint__play is a flex column, so DOM order is what the player sees.
+  it('renders the status, the panel and the prompt heading in that order, above the options', async () => {
+    const container = renderSprint();
+    await waitForSign(container);
+
+    const play = container.querySelector('.sprint__play');
+    if (!play) throw new Error('SignSprint did not render a .sprint__play region');
+    expect(Array.from(play.children, (child) => child.className)).toEqual([
+      'sprint__status',
+      'sprint__panel',
+      'sprint__prompt',
+      'sprint__options',
+    ]);
+    expect(container.querySelector('.sprint__status .sprint__score')).toBeTruthy();
   });
 });

@@ -228,6 +228,13 @@
   box-shadow: none;
 }
 
+/* This button suppresses the native focus ring with appearance: none, so it
+   defines the replacement the rest of the codebase uses (M41). */
+.quiz-sheet__sign-page:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
 /* Two classes, so these win over .button's size and weight whatever order
    the stylesheets load in. */
 .quiz-sheet .quiz-sheet__continue {

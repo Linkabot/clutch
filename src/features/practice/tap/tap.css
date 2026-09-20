@@ -13,8 +13,9 @@
    Depends on: the custom properties defined in src/app/theme.css; the pop
    keyframes defined once in
    src/features/interactives/quiz-sheet/quiz-sheet.css (loaded whenever this
-   screen mounts, since it renders QuizSheet); .button/.button--primary/
-   .button--secondary in src/ui/primitives.css (Done, Play again).
+   screen mounts, since the shared question screen it renders through
+   imports QuizSheet); .button/.button--primary/.button--secondary in
+   src/ui/primitives.css (Done, Play again).
    Depended on by: src/features/practice/tap/TapTheSignScreen.tsx (imports
    this file once). */
 
@@ -113,6 +114,13 @@
 
 .tap__tile:disabled {
   cursor: default;
+}
+
+/* The tile suppresses the native focus ring with appearance: none, so it
+   defines the replacement the rest of the codebase uses (M41). */
+.tap__tile:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
 }
 
 .tap__tile[data-feedback='right'],
