@@ -16,7 +16,11 @@
 // the same browser context and proves the Signs browser (all 195
 // pictures), the two sign pages whose picture embeds a
 // raster (road-works-roadworks, information-no-through-road) and Sign
-// Sprint's picture each load -- every navigation on that new page is built
+// Sprint's picture each load. Sign Sprint opens on its start page now
+// (plan.md Step 10), whose only job here is that its Start button is
+// pressed before the round's picture is waited for -- the one change this
+// step makes to this file (amendment E17 (a)); every navigation on that
+// new page is built
 // from the 4176 server's own origin, never a bare /clutch/... path, which
 // would instead resolve against playwright.config.ts's baseURL (4173, the
 // main preview server, which never stops) and prove nothing against a
@@ -112,6 +116,7 @@ test('offline: sign pictures load with the server stopped', async ({ page }) => 
   await expect(offline.getByText('Sign not found.')).toHaveCount(0);
 
   await offline.goto(`${origin}/clutch/practice/sprint`);
+  await offline.getByRole('button', { name: 'Start' }).click();
   await waitForSignPictures(offline, 1);
   await expect(offline.locator('.sprint__picture img')).toBeVisible();
 
@@ -119,13 +124,13 @@ test('offline: sign pictures load with the server stopped', async ({ page }) => 
   expect(await offline.evaluate(() => navigator.serviceWorker.controller !== null)).toBe(true);
 });
 
-const INLINING_CASES: { path: string; floor: number; decoder?: true }[] = [
+const INLINING_CASES: { path: string; floor: number; decoder?: true; start?: true }[] = [
   { path: '/clutch/learn', floor: 3 },
   { path: '/clutch/learn/signs', floor: 195 },
   { path: '/clutch/learn/signs/orders-no-entry', floor: 1 },
   { path: '/clutch/practice', floor: 4 },
   { path: '/clutch/practice/tap', floor: 4 },
-  { path: '/clutch/practice/sprint', floor: 1 },
+  { path: '/clutch/practice/sprint', floor: 1, start: true },
   { path: '/clutch/practice/pairs', floor: 5 },
   { path: '/clutch/learn/signs/decoder', floor: 3, decoder: true },
 ];
@@ -133,8 +138,11 @@ const INLINING_CASES: { path: string; floor: number; decoder?: true }[] = [
 test('real sign pictures are never inlined', async ({ page }) => {
   await openAppAt(page, '/clutch/');
 
-  for (const { path, floor, decoder } of INLINING_CASES) {
+  for (const { path, floor, decoder, start } of INLINING_CASES) {
     await page.goto(path);
+    if (start) {
+      await page.getByRole('button', { name: 'Start' }).click();
+    }
     await waitForSignPictures(page, floor);
 
     const counts = await page.evaluate(() => {

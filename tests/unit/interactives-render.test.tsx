@@ -3,7 +3,10 @@
  *
  * Render tests (via @testing-library/react + jsdom) for the shared
  * components later games and screens build on: SignImage,
- * useReducedMotion and GameTopBar. No @testing-library/jest-dom matchers
+ * useReducedMotion and GameTopBar -- including the bar's right-hand slot,
+ * which holds a game's label by default and a button when that game passes
+ * an action instead (Sign Sprint's Finish; plan.md Step 10, amendment
+ * E23 (g)). No @testing-library/jest-dom matchers
  * are available (only @testing-library/react and jsdom were added), so
  * assertions read attributes/classes off the DOM directly. Vitest itself
  * hard-codes `base: '/'` in its own Vite plugins (overriding
@@ -148,6 +151,35 @@ describe('GameTopBar', () => {
   it('renders its label text', () => {
     render(<GameTopBar progress={0.5} label="0:42" onClose={() => {}} />);
     expect(screen.getByText('0:42')).toBeTruthy();
+  });
+
+  it('renders an action button in place of the label, and calls its handler', () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <GameTopBar
+        progress={1}
+        label="0:42"
+        action={{ label: 'Finish', onClick }}
+        onClose={() => {}}
+      />,
+    );
+
+    // The label is not rendered at all when an action is given (E23 (g)).
+    expect(container.querySelector('.game-top-bar__label')).toBeNull();
+    expect(screen.queryByText('0:42')).toBeNull();
+    const button = screen.getByRole('button', { name: 'Finish' });
+    expect(button.className).toContain('game-top-bar__action');
+    fireEvent.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders its label, and no button, when no action is given', () => {
+    const { container } = render(<GameTopBar progress={0.5} label="6/10" onClose={() => {}} />);
+
+    expect(container.querySelector('.game-top-bar__action')).toBeNull();
+    expect(container.querySelector('.game-top-bar__label')?.textContent).toBe('6/10');
+    // Only the Close button: Tap the sign's and Match Pairs' bars are unchanged.
+    expect(screen.getAllByRole('button')).toHaveLength(1);
   });
 
   it('applies the ink label class when labelTone is "ink", and the muted class by default', () => {

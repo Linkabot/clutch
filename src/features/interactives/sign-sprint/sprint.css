@@ -1,25 +1,31 @@
 /* Sign Sprint styles for src/features/interactives/sign-sprint/SignSprint.tsx
-   (scout-e.md's SprintPlay and SprintEnd artboards; plan.md Step 24 and
-   amendment E27): a full-screen game layer over the app shell. The play
-   screen has the SIGN SPRINT badge and score, a roadside scene (grass,
-   four round trees and a post, all drawn by the app) whose real sign
-   picture drives in, "Name this sign" and four lettered options that frame
-   the right answer green and a wrong tap red during a reveal. The end
-   screen has a green result panel with white chips, the missed-signs list
-   card and two equal action buttons at the bottom. Every rule that moves
-   is scoped under the root's animated modifier class, so the static
-   modifier (reduced motion) turns all motion off at once; the two keyframe
-   sets below are copied from the artboards, and pop matches quiz-sheet.css
-   exactly. Colours are theme.css tokens and colour mixes of them only (no
-   literals); the green result panel uses only tokens that stay fixed in
-   dark mode.
-   Depends on: the custom properties defined in src/app/theme.css; .button,
-   .button--primary and .button--secondary in src/ui/primitives.css (Done,
-   Play again); .game-top-bar in src/features/interactives/shared/games.css
-   (the bar is rendered by the shared question screen this game plays
-   through).
+   and its ./SprintStart.tsx (scout-e.md's SprintPlay artboard; plan.md
+   Step 24, amendment E27, and Step 10 with amendment E23 (b), (e)): a
+   full-screen game layer over the app shell. The play screen has the SIGN
+   SPRINT badge and score, a roadside scene (grass, four round trees and a
+   post, all drawn by the app) whose real sign picture drives in, "Name
+   this sign" and four lettered options that frame the right answer green
+   and a wrong tap red during a reveal. M21: the region fills the layer and
+   the scene is the part that gives way -- it keeps min(300px, 36dvh) as
+   its size but may shrink to 190px, with the picture sized by its box, so
+   all four answers stay on screen on a short phone even when a caption
+   wraps to three lines (Lincoln's P3). The start page has the centred
+   title, the score card, the streak pill, the family chips (the Signs
+   browser's own chip rules, copied rather than imported), the length
+   control and a full-width Start pinned to the bottom. The ending is the
+   shared end screen (src/features/interactives/shared/end-screen.css), not
+   this file. Every rule that moves is scoped under the root's animated
+   modifier class, so the static modifier (reduced motion) turns all motion
+   off at once; the two keyframe sets below are copied from the artboards,
+   and pop matches quiz-sheet.css exactly. Colours are theme.css tokens and
+   colour mixes of them only (no literals).
+   Depends on: the custom properties defined in src/app/theme.css; .button
+   and .button--primary in src/ui/primitives.css (Start); .segmented in
+   src/ui/primitives.css (the length control); .game-top-bar in
+   src/features/interactives/shared/games.css (the bar is rendered by the
+   shared question screen this game plays through).
    Depended on by: src/features/interactives/sign-sprint/SignSprint.tsx
-   (imports this file once). */
+   (imports this file once, for itself and for ./SprintStart.tsx). */
 
 /* --- Root: a full-screen layer over the header and tab bar --------------- */
 
@@ -38,7 +44,11 @@
 
 /* --- Play screen ------------------------------------------------------------ */
 
+/* M21: the region fills the layer, so the scene inside it can give way
+   rather than pushing answer D off a short screen (amendment E23 (e)). */
 .sprint__play {
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
@@ -112,12 +122,15 @@
   color: var(--color-ink);
 }
 
-/* The scene: grass, trees and a post drawn by the app; the sign drives in. */
+/* The scene: grass, trees and a post drawn by the app; the sign drives in.
+   Its height is a size, not a floor: it shrinks (to 190px at the least)
+   before any answer leaves the screen (M21). */
 .sprint__panel {
   position: relative;
   box-sizing: border-box;
-  flex-shrink: 0;
-  height: 300px;
+  flex-shrink: 1;
+  height: min(300px, 36dvh);
+  min-height: 190px;
   margin: 14px 20px 0;
   overflow: hidden;
   border-radius: 16px;
@@ -177,7 +190,7 @@
   position: absolute;
   left: 50%;
   margin-left: -5px;
-  top: 120px;
+  top: min(120px, calc(50% - 8px));
   bottom: 16px;
   width: 10px;
   border-radius: 3px;
@@ -189,14 +202,20 @@
   left: 0;
   right: 0;
   top: 20px;
+  bottom: 0;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
 }
 
+/* The picture is only ever resized by its box (object-fit: contain below),
+   never transformed (D7): its box keeps the artboard's 212x200 ratio and
+   gives way with the scene. */
 .sprint__picture {
   flex-shrink: 0;
-  width: 212px;
-  height: 200px;
+  width: auto;
+  height: min(200px, calc(100% - 36px));
+  aspect-ratio: 212 / 200;
 }
 
 .sprint__picture img {
@@ -299,31 +318,28 @@
   color: var(--color-ink);
 }
 
-/* --- End screen ---------------------------------------------------------------- */
+/* --- Start page (Q10, Q11; Lincoln's card A, measured on the real app) ------- */
 
-.sprint-end {
+.sprint-start {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
 }
 
-.sprint-end__header {
+.sprint-start__header {
   flex-shrink: 0;
   height: 44px;
-  padding: 0 20px 0 8px;
-  display: flex;
+  padding: 0 8px;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
   align-items: center;
-  gap: 4px;
 }
 
-.sprint-end__close {
+.sprint-start__close {
   appearance: none;
   -webkit-appearance: none;
-  flex-shrink: 0;
   width: 44px;
   height: 44px;
-  min-width: 44px;
-  min-height: 44px;
   padding: 0;
   border: none;
   background: none;
@@ -334,125 +350,111 @@
   cursor: pointer;
 }
 
-.sprint-end__close:focus-visible {
+.sprint-start__close:focus-visible {
   outline: 2px solid var(--color-tab-active);
   outline-offset: 2px;
 }
 
-.sprint-end__title {
+/* The page's one title, centred in the bar (Lincoln: "1 title in the top middle"). */
+.sprint-start__title {
   margin: 0;
+  text-align: center;
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 800;
   font-size: 17px;
   color: var(--color-ink);
 }
 
-.sprint-end__panel {
-  margin: 8px 20px 0;
-  padding: 5px;
-  border-radius: 14px;
-  background-color: var(--color-sign-green);
+/* The load-failure notice, centred in the layer. */
+.sprint-start__failed {
+  margin: auto;
 }
 
-.sprint-end__frame {
+.sprint-start__body {
+  padding: 8px 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 14px 16px 16px;
-  border: 2.5px solid var(--color-on-sign);
-  border-radius: 10px;
-  color: var(--color-on-sign);
 }
 
-.sprint-end__label {
+.sprint-start__card {
+  border-radius: 16px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+}
+
+.sprint-start__stat {
+  position: relative;
+  padding: 12px 16px 13px;
+}
+
+.sprint-start__stat + .sprint-start__stat {
+  border-top: 1px solid var(--color-hairline);
+}
+
+.sprint-start__kicker {
   margin: 0;
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 800;
-  font-size: 13px;
-  line-height: 19.5px;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--color-on-sign);
+  color: var(--color-muted);
 }
 
-.sprint-end__result {
+.sprint-start__number {
+  margin: 0;
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.sprint-end__score {
-  display: block;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 80px;
-  line-height: 0.9;
-  letter-spacing: -2px;
-  color: var(--color-on-sign);
-}
-
-.sprint-end__named {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 4px;
-}
-
-.sprint-end__named-text {
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 1.2;
-}
-
-.sprint-end__seconds {
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-.sprint-end__chips {
-  display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
-  margin-top: 6px;
-}
-
-.sprint-end__xp {
-  box-sizing: border-box;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px;
-  background-color: var(--color-marking-yellow);
-  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
-  color: var(--color-sign-ink);
-  display: flex;
-  align-items: center;
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 900;
-  font-size: 17px;
+  font-size: 28px;
+  line-height: 34px;
+  color: var(--color-ink);
 }
 
-.sprint-end__best {
-  box-sizing: border-box;
-  height: 32px;
-  padding: 0 10px;
-  border-radius: 4px;
-  background-color: var(--color-on-sign);
-  border: 1.5px solid var(--color-sign-ink);
-  color: var(--color-sign-ink);
-  display: flex;
-  align-items: center;
-  font-family: 'Overpass', system-ui, sans-serif;
+/* The last round's Q9 band, as a dot beside its score. */
+.sprint-start__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.sprint-start__dot--red {
+  background-color: var(--color-sign-red);
+}
+
+.sprint-start__dot--orange {
+  background-color: var(--color-band-orange);
+}
+
+.sprint-start__dot--green {
+  background-color: var(--color-sign-green);
+}
+
+.sprint-start__last-length {
   font-weight: 700;
   font-size: 15px;
+  color: var(--color-muted);
 }
 
-.sprint-end__streak {
+.sprint-start__roundel {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+}
+
+.sprint-start__streak {
+  align-self: flex-start;
+  margin-top: 12px;
   box-sizing: border-box;
   height: 32px;
-  padding: 0 11px 0 8px;
+  padding: 0 12px 0 9px;
   border-radius: 16px;
-  background-color: var(--color-on-sign);
-  color: var(--color-sign-ink);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-ink);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -461,107 +463,81 @@
   font-size: 15px;
 }
 
-.sprint-end__flame {
+.sprint-start__flame {
   flex-shrink: 0;
   fill: var(--color-sign-red);
 }
 
-.sprint-end__missed-heading {
-  margin: 22px 20px 0;
+/* Drawn as a small uppercase label, not at the page's h2 size. */
+.sprint-start__heading {
+  margin: 22px 0 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Bleeds to the right screen edge and hides its scrollbar, exactly like the
+   Signs browser's own chip row (its rules are copied, not imported). */
+.sprint-start__chips {
   display: flex;
-  align-items: baseline;
   gap: 8px;
+  margin: 10px -20px 0 0;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.sprint-end__missed-title {
-  margin: 0;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 1.2;
-  color: var(--color-ink);
+.sprint-start__chips::-webkit-scrollbar {
+  display: none;
 }
 
-.sprint-end__missed-count {
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  color: var(--color-muted);
-}
-
-.sprint-end__missed-list {
-  margin: 10px 20px 0;
-  padding: 0;
-  list-style: none;
-  overflow: hidden;
-  border-radius: 14px;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-hairline);
-}
-
-.sprint-end__missed-item + .sprint-end__missed-item {
-  border-top: 1px solid var(--color-hairline);
-}
-
-.sprint-end__missed-row {
+.sprint-start__chip {
+  flex-shrink: 0;
   box-sizing: border-box;
-  min-height: 72px;
-  padding: 8px 10px 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-plate);
+  border: 1.5px solid var(--color-ink);
+  background: var(--color-surface);
   color: var(--color-ink);
-  text-decoration: none;
-}
-
-.sprint-end__missed-row:focus-visible {
-  outline: 2px solid var(--color-tab-active);
-  outline-offset: -2px;
-}
-
-.sprint-end__missed-picture {
-  flex-shrink: 0;
-  width: 58px;
-  display: flex;
-  justify-content: center;
-}
-
-.sprint-end__missed-picture img {
-  display: block;
-  width: 53px;
-  height: 50px;
-  object-fit: contain;
-}
-
-.sprint-end__missed-caption {
-  flex: 1;
-  min-width: 0;
-  font-size: 17px;
+  font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 700;
-  line-height: 1.3;
-  color: var(--color-ink);
+  font-size: 15px;
+  cursor: pointer;
 }
 
-.sprint-end__missed-chevron {
-  flex-shrink: 0;
+.sprint-start__chip[aria-pressed='true'] {
+  background: var(--color-sign-blue);
+  color: var(--color-on-sign);
+}
+
+.sprint-start__count,
+.sprint-start__hint {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--color-muted);
 }
 
-/* Pinned to the bottom of the column, and pushed down by a long list. */
-.sprint-end__actions {
+.sprint-start .segmented {
+  margin: 10px 0 0;
+}
+
+/* Start sits where the end screen's Play again sits, within thumb reach. */
+.sprint-start__actions {
   margin-top: auto;
   padding: 22px 20px max(50px, calc(env(safe-area-inset-bottom) + 16px));
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
 }
 
-.sprint-end__actions .button {
-  font-weight: 800;
-}
-
-.sprint-end__actions .button--primary {
+.sprint-start__actions .button {
+  width: 100%;
+  height: 56px;
   font-size: 18px;
+  font-weight: 800;
 }
 
 /* --- Motion: only under the root's animated modifier -------------------------- */
@@ -572,14 +548,6 @@
 
 .sprint--animated .sprint__xp {
   animation: pop 0.5s 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
-}
-
-.sprint--animated .sprint-end__score {
-  animation: pop 0.55s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
-}
-
-.sprint--animated .sprint-end__xp {
-  animation: pop 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
 }
 
 /* --- Keyframes, as drawn on the artboards ----------------------------------- */

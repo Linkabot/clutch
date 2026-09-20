@@ -1,36 +1,47 @@
 /**
  * @vitest-environment jsdom
  *
- * Unit and render tests for Sign Sprint (plan.md Step 24 and amendment
- * E27). The deck: buildSprintDeck over the real signs catalogue gives every
- * eligible sign exactly once (131 short-caption answers), each with 4
- * distinct short captions from the answer's family or its look, the
- * answer's slot and the answer order shuffled and seed-dependent; a
- * synthetic catalogue pins the
+ * Unit and render tests for Sign Sprint (plan.md Step 24, amendment E27,
+ * and Step 10 with amendment E23). The deck: buildSprintDeck over the real
+ * signs catalogue gives every eligible sign exactly once (131 short-caption
+ * answers), each with 4 distinct short captions from the answer's family or
+ * its look, the answer's slot and the answer order shuffled and
+ * seed-dependent; a family filter narrows the answers without narrowing the
+ * options; a synthetic catalogue pins the
  * 4-short-captions-per-family threshold. The reducer: start, right and
  * wrong answers, the 900 ms reveal, the 60,000 ms deadline (ticks and late
  * answers), missed signs kept once and in order, acceptsAnswer,
  * currentQuestion's wrap, tick always returning a new state, start
- * replacing the whole state, and the formatClock table. The screen (jsdom,
- * real timers and an injected clock `t` -- never fake timers, whose timers
- * @testing-library's waitFor does not see): the play screen's picture,
- * lettered options, clock and bar; a right answer's score, +10 XP and
- * recordAnswer; the reveal's frames and disabled options; the end screen
- * waiting for a pending recordRoundFinished (a late tap in that window
- * scores and records nothing), then showing the round's score, XP,
- * "sign named"/"signs named", the store's best and streak, and the missed
- * sign's link (no list card when nothing was missed); Play again; Close;
+ * replacing the whole state, the length table (No limit's Infinity
+ * deadline, which no tick ever reaches), and the formatClock table. The
+ * screen (jsdom, real timers and an injected clock `t` -- never fake
+ * timers, whose timers
+ * @testing-library's waitFor does not see): every round now begins on the
+ * start page's Start button (./sprint-start.test.tsx covers that page
+ * itself), which is also where Done and a Finish before any answer come
+ * back to; the play screen's picture, lettered options captioned with
+ * gameName, clock and bar; a right answer's score, +10 XP and
+ * recordAnswer; the reveal's frames and disabled options; a 30 sec round
+ * ending on its own clock and a No limit round ending only on Finish; the
+ * shared end screen waiting for a pending recordRoundFinished (a late tap
+ * in that window scores and records nothing), then showing the round's
+ * score, XP, "sign named"/"signs named", the store's best for that length
+ * and the streak, the lost-sign notice's family round, the gentle zero
+ * line (and no XP chip) when nothing was named, and the missed
+ * sign's row (no list when nothing was missed); Play again; Close;
  * and reduced motion (a stubbed matchMedia) switching
  * every animated class off; and a rejected loadSigns() showing the shared
- * question screen's failure notice in place of the options, whose Retry
- * starts the round (plan.md Step 8, amendment E14 (h)). The progress store
+ * load-failure notice in place of the start page, whose Retry
+ * brings the start page back (plan.md Step 8, amendment E14 (h), E23 (h)).
+ * The progress store
  * is mocked by its path relative to this file. src/content/signs is mocked
  * partially (importOriginal), replacing only loadSigns with a vi.fn() that
  * resolves the real catalogue for every case but the failure one, which
  * rejects it once; the real catalogue is loaded through the unmocked module
  * in beforeAll, the way tests/unit/sign-screen.test.tsx does it.
  * Depends on: vitest, @testing-library/react, react-router-dom, jsdom
- * (test environment), src/content/signs (loadSigns), src/content/schemas
+ * (test environment), src/content/signs (loadSigns, gameName),
+ * src/content/schemas
  * (Sign type), src/features/interactives/shared/random (mulberry32),
  * src/features/interactives/shared/distractors (isShortCaption),
  * src/features/interactives/sign-sprint/sprint,
@@ -41,18 +52,24 @@
 
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
 import type { Sign } from '../../src/content/schemas';
+import { gameName } from '../../src/content/signs';
+import type {
+  AnswerResult,
+  RoundFinishedOptions,
+  SprintChoices,
+} from '../../src/engine/progress-store';
 import { mulberry32 } from '../../src/features/interactives/shared/random';
 import { isShortCaption } from '../../src/features/interactives/shared/distractors';
 import {
-  SPRINT_MS,
   REVEAL_MS,
   acceptsAnswer,
   buildSprintDeck,
   currentQuestion,
   formatClock,
   initialSprintState,
+  lengthMs,
   sprintReducer,
   timeLeft,
   type SprintQuestion,
@@ -62,9 +79,19 @@ import SignSprint from '../../src/features/interactives/sign-sprint/SignSprint';
 
 const mocks = vi.hoisted(() => ({
   loadSigns: vi.fn<() => Promise<Sign[]>>(),
-  recordAnswer: vi.fn<(signId: string, correct: boolean) => Promise<void>>(),
-  recordRoundFinished: vi.fn<(options?: { sprintScore?: number }) => Promise<void>>(),
-  summary: { xp: 0, streak: 5, sprintBest: 7, collected: 0 },
+  load: vi.fn<() => Promise<void>>(),
+  recordAnswer: vi.fn<(signId: string, correct: boolean) => Promise<AnswerResult>>(),
+  recordRoundFinished: vi.fn<(options?: RoundFinishedOptions) => Promise<void>>(),
+  getSprintChoices: vi.fn<() => Promise<SprintChoices>>(),
+  setSprintChoices: vi.fn<(choices: SprintChoices) => Promise<void>>(),
+  summary: {
+    xp: 0,
+    streak: 5,
+    sprintBest: 7,
+    sprintBests: { '30s': 4, '1m': 7, '5m': 40, none: 23 },
+    sprintLast: null,
+    collected: 0,
+  },
 }));
 
 vi.mock('../../src/content/signs', async (importOriginal) => {
@@ -76,8 +103,14 @@ vi.mock('../../src/engine/progress-state', () => ({
   useProgressStore: (selector: (state: unknown) => unknown) =>
     selector({
       summary: mocks.summary,
+      // The scores have always landed here; tests/unit/sprint-start.test.tsx
+      // covers the start page holding back until they do (amendment E24 (a)).
+      status: 'ready',
+      load: mocks.load,
       recordAnswer: mocks.recordAnswer,
       recordRoundFinished: mocks.recordRoundFinished,
+      getSprintChoices: mocks.getSprintChoices,
+      setSprintChoices: mocks.setSprintChoices,
     }),
 }));
 
@@ -125,9 +158,9 @@ function question(answer: Sign): SprintQuestion {
 
 const DECK: SprintQuestion[] = [question(signA), question(signB), question(signC)];
 
-/** A round started at now = 1000 (deadline 61000) over DECK. */
+/** A 1-minute round started at now = 1000 (deadline 61000) over DECK. */
 function started(deck: SprintQuestion[] = DECK): SprintState {
-  return sprintReducer(initialSprintState(), { type: 'start', deck, now: 1000 });
+  return sprintReducer(initialSprintState(), { type: 'start', deck, length: '1m', now: 1000 });
 }
 
 /** The same round after a wrong tap (signB on question 1, answer signA) at now = 2000. */
@@ -222,6 +255,28 @@ describe('buildSprintDeck eligibility threshold', () => {
       expect(q.options).toHaveLength(4);
     }
   });
+
+  it('a family deck asks only about that family and still draws options from the whole catalogue', () => {
+    const deck = buildSprintDeck(signs, mulberry32(1), ['motorway']);
+    expect(deck).toHaveLength(8);
+    for (const q of deck) {
+      expect(q.answer.family).toBe('motorway');
+      expect(q.options).toHaveLength(4);
+    }
+
+    let fromOtherFamilies = 0;
+    for (let seed = 1; seed <= 20; seed += 1) {
+      for (const q of buildSprintDeck(signs, mulberry32(seed), ['motorway'])) {
+        fromOtherFamilies += q.options.filter((option) => option.family !== 'motorway').length;
+      }
+    }
+    expect(fromOtherFamilies).toBeGreaterThan(0);
+
+    // Two families together are both families' answers, and no others.
+    const pair = buildSprintDeck(signs, mulberry32(1), ['warning', 'orders']);
+    expect(pair).toHaveLength(85);
+    expect(new Set(pair.map((q) => q.answer.family))).toEqual(new Set(['warning', 'orders']));
+  });
 });
 
 // --- Reducer ----------------------------------------------------------------
@@ -235,7 +290,9 @@ describe('sprintReducer', () => {
     expect(state.index).toBe(0);
     expect(state.score).toBe(0);
     expect(state.xp).toBe(0);
-    expect(timeLeft(state)).toBe(SPRINT_MS);
+    expect(state.answered).toBe(0);
+    expect(state.length).toBe('1m');
+    expect(timeLeft(state)).toBe(60_000);
   });
 
   it('a right answer → score 1, XP 10, index 1, missed empty', () => {
@@ -369,7 +426,7 @@ describe('sprintReducer', () => {
     expect(state.revealEndsAt).toBe(2900);
     expect(state.missed).toHaveLength(1);
 
-    state = sprintReducer(state, { type: 'start', deck: DECK, now: 70000 });
+    state = sprintReducer(state, { type: 'start', deck: DECK, length: '1m', now: 70000 });
     expect(state.phase).toBe('playing');
     expect(state.chosenId).toBeNull();
     expect(state.revealEndsAt).toBeNull();
@@ -379,6 +436,36 @@ describe('sprintReducer', () => {
     expect(state.xp).toBe(0);
     expect(state.index).toBe(0);
     expect(state.deadline).toBe(130000);
+  });
+
+  it('an accepted answer counts up, right or wrong, and reset goes back to ready', () => {
+    let state = sprintReducer(started(), { type: 'answer', signId: signA.id, now: 2000 });
+    expect(state.answered).toBe(1);
+    state = sprintReducer(state, { type: 'answer', signId: signA.id, now: 3000 });
+    expect(state.answered).toBe(2);
+    expect(state.phase).toBe('reveal');
+    const ready = sprintReducer(state, { type: 'reset' });
+    expect(ready).toEqual(initialSprintState());
+  });
+
+  it("lengthMs('none') is Infinity", () => {
+    expect(lengthMs('30s')).toBe(30_000);
+    expect(lengthMs('1m')).toBe(60_000);
+    expect(lengthMs('5m')).toBe(300_000);
+    expect(lengthMs('none')).toBe(Infinity);
+
+    const none = sprintReducer(initialSprintState(), {
+      type: 'start',
+      deck: DECK,
+      length: 'none',
+      now: 1000,
+    });
+    expect(none.deadline).toBe(Infinity);
+    expect(timeLeft(none)).toBe(Infinity);
+    // No tick and no late answer ever ends it; only `finish` does.
+    expect(sprintReducer(none, { type: 'tick', now: 9_000_000 }).phase).toBe('playing');
+    expect(acceptsAnswer(none, 9_000_000)).toBe(true);
+    expect(sprintReducer(none, { type: 'finish' }).phase).toBe('finished');
   });
 });
 
@@ -414,16 +501,56 @@ function stubMatchMedia(matches: boolean) {
   vi.stubGlobal('matchMedia', vi.fn().mockReturnValue(mediaQueryList));
 }
 
+/** Stands in for Tap the sign, showing the ?family= the lost-sign button sent it. */
+function TapRoute() {
+  const [params] = useSearchParams();
+  return <p>{`Tap round: ${params.get('family') ?? ''}`}</p>;
+}
+
+/** Writes the current history entry's state where a test can read it (M25's round id lives there). */
+function LocationStateProbe() {
+  const location = useLocation();
+  return <output data-testid="location-state">{JSON.stringify(location.state)}</output>;
+}
+
+function locationState(): string | null {
+  return screen.getByTestId('location-state').textContent;
+}
+
 function renderSprint() {
   const view = render(
     <MemoryRouter initialEntries={['/practice/sprint']}>
+      <LocationStateProbe />
       <Routes>
         <Route path="/practice/sprint" element={<SignSprint now={now} />} />
+        <Route path="/practice/tap" element={<TapRoute />} />
         <Route path="/practice" element={<p>Practice tab</p>} />
       </Routes>
     </MemoryRouter>,
   );
   return view.container;
+}
+
+/**
+ * Every visit opens on the start page (Q10), so every round here begins by
+ * pressing Start -- optionally after choosing a length on the segmented
+ * control, whose options are tabs.
+ */
+async function startRound(length?: string): Promise<void> {
+  const startButton = await screen.findByRole('button', { name: 'Start' });
+  if (length !== undefined) {
+    fireEvent.click(screen.getByRole('tab', { name: length }));
+  }
+  fireEvent.click(startButton);
+}
+
+/** The first option button that is not the answer. */
+function wrongOption(container: HTMLElement, answerId: string): HTMLButtonElement {
+  const button = Array.from(container.querySelectorAll<HTMLButtonElement>('.sprint__option')).find(
+    (candidate) => candidate.getAttribute('data-sign-id') !== answerId,
+  );
+  if (!button) throw new Error('no wrong option');
+  return button;
 }
 
 function answerIdIn(container: HTMLElement): string | null {
@@ -460,10 +587,17 @@ function option(container: HTMLElement, signId: string): HTMLButtonElement {
 beforeEach(() => {
   t = 0;
   pendingRoundFinished = [];
+  mocks.summary.sprintLast = null;
   mocks.loadSigns.mockReset();
   mocks.loadSigns.mockResolvedValue(signs);
+  mocks.load.mockReset();
+  mocks.load.mockResolvedValue(undefined);
+  mocks.getSprintChoices.mockReset();
+  mocks.getSprintChoices.mockResolvedValue({ length: '1m', families: [] });
+  mocks.setSprintChoices.mockReset();
+  mocks.setSprintChoices.mockResolvedValue(undefined);
   mocks.recordAnswer.mockReset();
-  mocks.recordAnswer.mockResolvedValue(undefined);
+  mocks.recordAnswer.mockResolvedValue({ collectedNow: false, lostNow: false });
   mocks.recordRoundFinished.mockReset();
   mocks.recordRoundFinished.mockImplementation(
     () =>
@@ -482,6 +616,7 @@ afterEach(() => {
 describe('SignSprint screen', () => {
   it('shows the picture, 4 lettered options, 1:00, a full bar and the animated root', async () => {
     const container = renderSprint();
+    await startRound();
     await waitForSign(container);
 
     const picture = container.querySelector('[data-answer-id] img');
@@ -501,6 +636,7 @@ describe('SignSprint screen', () => {
 
   it('plays a round: right, the clock, wrong and the reveal, the end screen after the writes, then Play again', async () => {
     const container = renderSprint();
+    await startRound();
     const firstId = await waitForSign(container);
 
     // A right answer.
@@ -542,7 +678,7 @@ describe('SignSprint screen', () => {
     t = 60_000;
     await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
     expect(screen.queryByText('Time’s up')).toBeNull();
-    expect(container.querySelector('.sprint-end__panel')).toBeNull();
+    expect(container.querySelector('.end-screen__panel')).toBeNull();
 
     // A late tap while the writes are pending: the play screen is still up
     // and its options are enabled, but nothing is scored or recorded.
@@ -558,24 +694,29 @@ describe('SignSprint screen', () => {
       pendingRoundFinished[0]();
     });
     await waitFor(() => expect(screen.getByText('Time’s up')).toBeTruthy());
-    expect(textOf(container, '.sprint-end__score')).toBe('1');
+    expect(textOf(container, '.end-screen__score')).toBe('1');
     expect(mocks.recordAnswer).toHaveBeenCalledTimes(2);
     expect(screen.getByText('sign named')).toBeTruthy();
     expect(screen.queryByText('signs named')).toBeNull();
-    expect(container.querySelector('.sprint-end__missed-list')).not.toBeNull();
+    expect(container.querySelector('.end-screen__list')).not.toBeNull();
     expect(screen.getByText('in 60 seconds')).toBeTruthy();
-    expect(textOf(container, '.sprint-end__xp')).toBe('+10 XP');
-    expect(textOf(container, '.sprint-end__best')).toBe('Best 7');
+    expect(textOf(container, '.end-screen__xp')).toBe('+10 XP');
+    expect(textOf(container, '.end-screen__best')).toBe('Best 7');
     expect(screen.getByText('5-day streak')).toBeTruthy();
     expect(screen.getByText('Missed signs')).toBeTruthy();
-    expect(textOf(container, '.sprint-end__missed-count')).toBe('1');
-    const rows = container.querySelectorAll('a.sprint-end__missed-row');
+    expect(textOf(container, '.end-screen__list-count')).toBe('1');
+    const rows = container.querySelectorAll('.end-screen__row a');
     expect(rows).toHaveLength(1);
     expect(rows[0].getAttribute('href')).toBe(`/learn/signs/${secondId}`);
     expect(rows[0].querySelector('img')?.getAttribute('alt')).toBe('');
 
     expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1);
-    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({ sprintScore: 1 });
+    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({
+      game: 'sprint',
+      sprintScore: 1,
+      sprintLength: '1m',
+      sprintAnswered: 2,
+    });
     expect(mocks.recordAnswer).toHaveBeenCalledTimes(2);
     const lastAnswerOrder = Math.max(...mocks.recordAnswer.mock.invocationCallOrder);
     expect(mocks.recordRoundFinished.mock.invocationCallOrder[0]).toBeGreaterThan(lastAnswerOrder);
@@ -595,16 +736,22 @@ describe('SignSprint screen', () => {
     // The second round ends with nothing missed.
     t = 120_000;
     await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(2));
-    expect(mocks.recordRoundFinished).toHaveBeenLastCalledWith({ sprintScore: 0 });
+    expect(mocks.recordRoundFinished).toHaveBeenLastCalledWith({
+      game: 'sprint',
+      sprintScore: 0,
+      sprintLength: '1m',
+      sprintAnswered: 0,
+    });
     await act(async () => {
       pendingRoundFinished[1]();
     });
     await waitFor(() => expect(screen.getByText('Time’s up')).toBeTruthy());
-    expect(textOf(container, '.sprint-end__missed-count')).toBe('0');
-    expect(container.querySelectorAll('a.sprint-end__missed-row')).toHaveLength(0);
-    expect(container.querySelector('.sprint-end__missed-list')).toBeNull();
-    expect(textOf(container, '.sprint-end__score')).toBe('0');
-    expect(textOf(container, '.sprint-end__xp')).toBe('+0 XP');
+    expect(textOf(container, '.end-screen__list-count')).toBe('0');
+    expect(container.querySelectorAll('.end-screen__row a')).toHaveLength(0);
+    expect(container.querySelector('.end-screen__list')).toBeNull();
+    expect(textOf(container, '.end-screen__score')).toBe('0');
+    // Q9's gentle zero: no chip at all, rather than "+0 XP".
+    expect(container.querySelector('.end-screen__xp')).toBeNull();
     expect(screen.getByText('signs named')).toBeTruthy();
     expect(screen.queryByText('sign named')).toBeNull();
 
@@ -615,6 +762,7 @@ describe('SignSprint screen', () => {
 
   it('✕ on the play screen lands on /practice', async () => {
     const container = renderSprint();
+    await startRound();
     await waitForSign(container);
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     await waitFor(() => expect(screen.getByText('Practice tab')).toBeTruthy());
@@ -624,6 +772,7 @@ describe('SignSprint screen', () => {
   it('under reduced motion the root is sprint--static, nothing is --animated, and +10 XP still shows', async () => {
     stubMatchMedia(true);
     const container = renderSprint();
+    await startRound();
     const answerId = await waitForSign(container);
 
     const root = container.querySelector('.sprint');
@@ -636,22 +785,26 @@ describe('SignSprint screen', () => {
     expect(container.querySelectorAll('[class*="--animated"]')).toHaveLength(0);
   });
 
-  it('a failed load shows the failure notice, and Retry starts the round', async () => {
+  it('a failed load shows the failure notice, and Retry shows the start page', async () => {
     // Only the first call rejects; beforeEach's mockResolvedValue answers the
-    // Retry with the real catalogue.
+    // Retry with the real catalogue. The notice belongs to the start page
+    // now, because that is what is on screen while the catalogue loads
+    // (amendment E23 (c)).
     mocks.loadSigns.mockRejectedValueOnce(new Error('offline'));
     const container = renderSprint();
 
     await screen.findByText("This didn't load.");
     expect(screen.getByRole('alert').textContent).toContain("This didn't load.");
+    expect(screen.queryByRole('button', { name: 'Start' })).toBeNull();
     expect(container.querySelectorAll('.sprint__option')).toHaveLength(0);
     expect(mocks.loadSigns).toHaveBeenCalledTimes(1);
 
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
 
+    await startRound();
+    expect(screen.queryByText("This didn't load.")).toBeNull();
     await waitForSign(container);
     expect(container.querySelectorAll('button.sprint__option')).toHaveLength(4);
-    expect(screen.queryByText("This didn't load.")).toBeNull();
     expect(textOf(container, '.game-top-bar__label')).toBe('1:00');
     expect(mocks.loadSigns).toHaveBeenCalledTimes(2);
   });
@@ -661,6 +814,7 @@ describe('SignSprint screen', () => {
   // .sprint__play is a flex column, so DOM order is what the player sees.
   it('renders the status, the panel and the prompt heading in that order, above the options', async () => {
     const container = renderSprint();
+    await startRound();
     await waitForSign(container);
 
     const play = container.querySelector('.sprint__play');
@@ -672,5 +826,302 @@ describe('SignSprint screen', () => {
       'sprint__options',
     ]);
     expect(container.querySelector('.sprint__status .sprint__score')).toBeTruthy();
+  });
+
+  it('option captions show the game names', async () => {
+    const container = renderSprint();
+    await startRound();
+    await waitForSign(container);
+
+    const captions = Array.from(
+      container.querySelectorAll('.sprint__caption'),
+      (caption) => caption.textContent ?? '',
+    );
+    expect(captions).toHaveLength(4);
+    const shown = new Set(signs.map((sign) => gameName(sign)));
+    const raw = new Set(signs.map((sign) => sign.name));
+    for (const caption of captions) {
+      expect(shown.has(caption)).toBe(true);
+      expect(caption.endsWith('.')).toBe(false);
+    }
+    // At least one of them is a signs.json name with its full stop trimmed.
+    expect(captions.some((caption) => raw.has(`${caption}.`))).toBe(true);
+  });
+
+  it('a 30 sec round finishes at 30 s', async () => {
+    const container = renderSprint();
+    await startRound('30 sec');
+    let shown = await waitForSign(container);
+    expect(textOf(container, '.game-top-bar__label')).toBe('0:30');
+
+    // Three right answers: 3 of a 30-second round's maximum of 5 is Q9's
+    // orange band, where 3 of a 1-minute round's 10 would be red -- so the
+    // band proves which length the round was judged at (amendment E24 (b)).
+    for (let right = 1; right <= 3; right++) {
+      fireEvent.click(option(container, shown));
+      await waitFor(() => expect(textOf(container, '.sprint__score')).toBe(String(right)));
+      shown = await waitForSign(container, shown);
+    }
+
+    t = 29_900;
+    await waitFor(() => expect(textOf(container, '.game-top-bar__label')).toBe('0:01'));
+    expect(mocks.recordRoundFinished).not.toHaveBeenCalled();
+
+    t = 30_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({
+      game: 'sprint',
+      sprintScore: 3,
+      sprintLength: '30s',
+      sprintAnswered: 3,
+    });
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+    expect(screen.getByText('in 30 seconds')).toBeTruthy();
+    expect(textOf(container, '.end-screen__best')).toBe('Best 4');
+    expect(container.querySelector('.end-screen__panel')?.className).toContain(
+      'end-screen__panel--orange',
+    );
+  });
+
+  it("a No limit round's top bar shows Finish and a full bar", async () => {
+    const container = renderSprint();
+    await startRound('No limit');
+    await waitForSign(container);
+
+    expect(container.querySelector('.game-top-bar__label')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Finish' }).className).toContain(
+      'game-top-bar__action',
+    );
+    expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe('1');
+    // The words never reach the bar (scan S11): the button stands there.
+    expect(screen.queryByText('No limit')).toBeNull();
+  });
+
+  it('a No limit round does not finish on the clock; Finish after an answer shows the end screen; ✕ leaves without one', async () => {
+    const container = renderSprint();
+    await startRound('No limit');
+    const firstId = await waitForSign(container);
+
+    // Ten minutes pass and several ticks fire: nothing ends.
+    t = 600_000;
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+    });
+    expect(mocks.recordRoundFinished).not.toHaveBeenCalled();
+    expect(container.querySelector('.sprint__panel')).not.toBeNull();
+
+    // Two right and one wrong: the score (2) and the answers (3) differ, so
+    // the sub-line and the band each show which of them they were given.
+    fireEvent.click(option(container, firstId));
+    await waitFor(() => expect(textOf(container, '.sprint__score')).toBe('1'));
+    const secondId = await waitForSign(container, firstId);
+    fireEvent.click(option(container, secondId));
+    await waitFor(() => expect(textOf(container, '.sprint__score')).toBe('2'));
+    const thirdId = await waitForSign(container, secondId);
+    const wrong = wrongOption(container, thirdId);
+    fireEvent.click(wrong);
+    await waitFor(() => expect(wrong.getAttribute('data-feedback')).toBe('wrong'));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Finish' }));
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({
+      game: 'sprint',
+      sprintScore: 2,
+      sprintLength: 'none',
+      sprintAnswered: 3,
+    });
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Round complete');
+    expect(screen.queryByText('Time’s up')).toBeNull();
+    expect(screen.getByText('of 3 answered')).toBeTruthy();
+    expect(textOf(container, '.end-screen__best')).toBe('Best 23');
+    // 2 of the 3 answered is Q9's orange band; 2 of a fixed 10 would be red.
+    expect(container.querySelector('.end-screen__panel')?.className).toContain(
+      'end-screen__panel--orange',
+    );
+
+    // Play again is another round of the SAME choices: No limit, so Finish
+    // is back in the bar. Left through ✕: no end screen, nothing recorded.
+    fireEvent.click(screen.getByRole('button', { name: 'Play again' }));
+    const nextId = await waitForSign(container);
+    expect(screen.getByRole('button', { name: 'Finish' })).toBeTruthy();
+    expect(container.querySelector('.game-top-bar__label')).toBeNull();
+    fireEvent.click(option(container, nextId));
+    await waitFor(() => expect(textOf(container, '.sprint__score')).toBe('1'));
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await waitFor(() => expect(screen.getByText('Practice tab')).toBeTruthy());
+    expect(screen.queryByText('Round complete')).toBeNull();
+    expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1);
+  });
+
+  it('Finish before any answer returns to the start page', async () => {
+    const container = renderSprint();
+    await startRound('No limit');
+    await waitForSign(container);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Finish' }));
+
+    expect(await screen.findByRole('button', { name: 'Start' })).toBeTruthy();
+    expect(container.querySelectorAll('.sprint__option')).toHaveLength(0);
+    expect(screen.queryByText('Round complete')).toBeNull();
+    expect(mocks.recordRoundFinished).not.toHaveBeenCalled();
+  });
+
+  it('a round with nothing right shows no XP chip and the gentle zero line', async () => {
+    const container = renderSprint();
+    await startRound();
+    const firstId = await waitForSign(container);
+
+    const wrong = wrongOption(container, firstId);
+    fireEvent.click(wrong);
+    await waitFor(() => expect(wrong.getAttribute('data-feedback')).toBe('wrong'));
+
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+
+    expect(textOf(container, '.end-screen__score')).toBe('0');
+    expect(container.querySelector('.end-screen__xp')).toBeNull();
+    expect(container.querySelector('.end-screen--animated')).toBeNull();
+    expect(
+      screen.getByText('No signs named this time — have a look at the ones below.'),
+    ).toBeTruthy();
+
+    // A round where nothing was answered has nothing below to look at.
+    fireEvent.click(screen.getByRole('button', { name: 'Play again' }));
+    await waitForSign(container);
+    t = 120_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(2));
+    await act(async () => {
+      pendingRoundFinished[1]();
+    });
+    await waitFor(() => expect(screen.getByText('Time’s up')).toBeTruthy());
+    expect(textOf(container, '.end-screen__score')).toBe('0');
+    expect(
+      screen.queryByText('No signs named this time — have a look at the ones below.'),
+    ).toBeNull();
+  });
+
+  it('Done shows the start page', async () => {
+    const container = renderSprint();
+    await startRound();
+    await waitForSign(container);
+
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+    // The ending is remembered on this history entry (M25): its state holds the round's id.
+    await waitFor(() => expect(locationState()).toContain('roundId'));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+
+    expect(await screen.findByRole('button', { name: 'Start' })).toBeTruthy();
+    expect(screen.queryByText('Time’s up')).toBeNull();
+    expect(container.querySelectorAll('.sprint__option')).toHaveLength(0);
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Sign Sprint');
+    // Done clears the entry, so coming Back to it later shows the start page, not a finished round.
+    await waitFor(() => expect(locationState()).toBe('null'));
+  });
+
+  // The round's last write takes a moment to settle, and the play screen --
+  // with its ✕ -- is still up while it does. A continuation that ran after
+  // the player had left replaced wherever they had gone with the Sprint
+  // route and showed them the ending they had closed (Step 10 review,
+  // blocking; amendment E24 (d)).
+  it("✕ while the round's last write is still pending leaves for good", async () => {
+    const container = renderSprint();
+    await startRound();
+    await waitForSign(container);
+
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    expect(container.querySelector('.sprint__panel')).not.toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await waitFor(() => expect(screen.getByText('Practice tab')).toBeTruthy());
+
+    // Now the write settles, and its continuation gets every chance to run.
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+    expect(screen.getByText('Practice tab')).toBeTruthy();
+    expect(screen.queryByText('Time’s up')).toBeNull();
+    expect(locationState()).toBe('null');
+  });
+
+  it('a sign collected this round is named on the end screen', async () => {
+    mocks.recordAnswer.mockResolvedValue({ collectedNow: true, lostNow: false });
+    const container = renderSprint();
+    await startRound();
+    const firstId = await waitForSign(container);
+    const first = signs.find((sign) => sign.id === firstId);
+    if (!first) throw new Error(`no sign ${firstId}`);
+
+    fireEvent.click(option(container, firstId));
+    await waitFor(() => expect(textOf(container, '.sprint__score')).toBe('1'));
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+
+    expect(textOf(container, '.end-screen__collected')).toBe(`Collected! ${gameName(first)}`);
+  });
+
+  it('the VoiceOver note is one element for the whole visit', async () => {
+    const container = renderSprint();
+    await screen.findByRole('button', { name: 'Start' });
+    const note = container.querySelector('.sprint > .visually-hidden[role="status"]');
+    expect(note).not.toBeNull();
+    expect(container.querySelector('.sprint')?.firstElementChild).toBe(note);
+
+    // The same node on the play screen and on the end screen: it is never
+    // remounted, so it is announced once per visit (Q8, amendment E16 (o)).
+    await startRound();
+    await waitForSign(container);
+    expect(container.querySelector('.sprint > .visually-hidden')).toBe(note);
+
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+    expect(container.querySelector('.sprint > .visually-hidden')).toBe(note);
+    expect(container.querySelectorAll('.visually-hidden[role="status"]')).toHaveLength(1);
+  });
+
+  it("the lost notice's Practise button leaves Sprint for that sign's family round", async () => {
+    mocks.recordAnswer.mockResolvedValue({ collectedNow: false, lostNow: true });
+    const container = renderSprint();
+    await startRound();
+    const firstId = await waitForSign(container);
+    const family = signs.find((sign) => sign.id === firstId)?.family;
+    if (!family) throw new Error(`no family for ${firstId}`);
+
+    fireEvent.click(wrongOption(container, firstId));
+    t = 60_000;
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      pendingRoundFinished[0]();
+    });
+    await screen.findByText('Time’s up');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Practise signs like this' }));
+    await waitFor(() => expect(screen.getByText(`Tap round: ${family}`)).toBeTruthy());
   });
 });

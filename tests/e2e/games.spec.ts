@@ -23,16 +23,28 @@
 // fourth, at the real 390x844 phone size, measures M34 -- each tile's
 // picture paints at least 85% of the tile's width. "Sign Sprint
 // run" installs Playwright's clock before the app loads (never pausing it)
-// and plays two rounds: round 1 answers 3 signs right (the score, the +10 XP
+// and plays two rounds, each begun from the start page's Start button
+// (plan.md Step 10): round 1 answers 3 signs right (the score, the +10 XP
 // pop and the sign's driveIn animation) and 1 wrong, then fast-forwards
-// past the 60-second deadline to the end screen (score, +30 XP and their
-// pop animations, Best 3, the day streak and the one missed sign's link
-// and caption); round 2, under emulated reduced motion, proves Play again
-// resets the round, nothing animates, a score of 1 reads "sign named", and
-// a lower score never lowers the best. Afterwards the
-// Practice tab shows both rounds' XP and the streak, the first answer's
-// sign page shows its collection progress, and Close leaves a fresh
-// Sprint. Every read of the sign's data-answer-id after an answer first
+// past the 60-second deadline to the shared end screen (score, +30 XP and
+// their pop animations, Best 3, the day streak and the one missed sign's
+// row and caption); round 2, under emulated reduced motion, proves Play
+// again resets the round, nothing animates, a score of 1 reads "sign
+// named", and a lower score never lowers the best; then Done comes back to
+// the start page on the same URL, showing that best (Q11). Afterwards the
+// Practice tab, reached through the start page's ✕, shows both rounds' XP
+// and the streak, the first answer's sign page shows its collection
+// progress, and Close leaves a fresh Sprint. Four more Sprint tests cover
+// the chosen length and family surviving a reload, M25's end-screen row
+// (opened, then Back to the same end screen -- with the wait that keeps
+// that test honest, amendment E22 (a)), Q19's in-app exit (the Practice
+// card, then ✕, with the history index read back, since the URL alone
+// cannot tell a push from a step back) and S12's cold open (a fresh load
+// showing the saved best); and three more, one per phone height (390x664,
+// 390x763, 390x844), measure M21 -- the top bar, the picture panel and all
+// four answers stay inside the window, both for an ordinary question and
+// with the catalogue's widest caption in place, which takes three lines at
+// 390 wide. Every read of the sign's data-answer-id after an answer first
 // waits for it to change. "Match Pairs round" plays two rounds: round 1
 // matches signs 1-3 on the first try (the selection, both tiles locked, and
 // the +10 XP badge's and tick's pop animations), taps a wrong name for sign
@@ -445,6 +457,11 @@ test.describe('Tap the sign at the real phone size', () => {
   });
 });
 
+/** The router's own history-entry index (`window.history.state.idx`), or null on a fresh stack. */
+function historyIdx(page: Page): Promise<number | null> {
+  return page.evaluate(() => (window.history.state as { idx?: number } | null)?.idx ?? null);
+}
+
 /** The Sprint sign's data-answer-id, throwing if it is missing. */
 async function sprintAnswerId(page: Page): Promise<string> {
   const id = await page.locator('.sprint__sign').getAttribute('data-answer-id');
@@ -479,7 +496,9 @@ test.describe('Sign Sprint run', () => {
     await page.clock.install();
     await openAppAt(page, '/clutch/practice/sprint');
 
-    // Start.
+    // Every visit opens on the start page now (Q10), so the round begins
+    // with Start.
+    await page.getByRole('button', { name: 'Start' }).click();
     await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
     await expect(page.getByText('SIGN SPRINT')).toBeVisible();
     await expect(page.getByText('Name this sign')).toBeVisible();
@@ -521,18 +540,18 @@ test.describe('Sign Sprint run', () => {
     // Time's up.
     await page.clock.fastForward(61_000);
     await expect(page.getByText('Time’s up')).toBeVisible();
-    await expect(page.locator('.sprint-end__score')).toHaveText('3');
+    await expect(page.locator('.end-screen__score')).toHaveText('3');
     await expect(page.getByText('signs named', { exact: true })).toBeVisible();
-    await expect(page.locator('.sprint-end__xp')).toHaveText('+30 XP');
-    for (const part of ['.sprint-end__score', '.sprint-end__xp']) {
+    await expect(page.locator('.end-screen__xp')).toHaveText('+30 XP');
+    for (const part of ['.end-screen__score', '.end-screen__xp']) {
       await expect
         .poll(() => page.locator(part).evaluate((el) => getComputedStyle(el).animationName))
         .toBe('pop');
     }
-    await expect(page.locator('.sprint-end__best')).toHaveText('Best 3');
+    await expect(page.locator('.end-screen__best')).toHaveText('Best 3');
     await expect(page.getByText('1-day streak')).toBeVisible();
-    await expect(page.locator('.sprint-end__missed-count')).toHaveText('1');
-    const missedRows = page.locator('.sprint-end__missed-row');
+    await expect(page.locator('.end-screen__list-count')).toHaveText('1');
+    const missedRows = page.locator('.end-screen__row a');
     await expect(missedRows).toHaveCount(1);
     await expect(missedRows).toHaveAttribute('href', `/clutch/learn/signs/${missedId}`);
     await expect(missedRows).toHaveText(missedCaption);
@@ -554,18 +573,27 @@ test.describe('Sign Sprint run', () => {
 
     await page.clock.fastForward(61_000);
     await expect(page.getByText('Time’s up')).toBeVisible();
-    await expect(page.locator('.sprint-end__score')).toHaveText('1');
+    await expect(page.locator('.end-screen__score')).toHaveText('1');
     await expect(page.getByText('sign named', { exact: true })).toBeVisible();
-    await expect(page.locator('.sprint-end__xp')).toHaveText('+10 XP');
-    await expect(page.locator('.sprint-end__best')).toHaveText('Best 3');
-    await expect(page.locator('.sprint-end__missed-count')).toHaveText('0');
-    await expect(page.locator('.sprint-end__missed-row')).toHaveCount(0);
+    await expect(page.locator('.end-screen__xp')).toHaveText('+10 XP');
+    await expect(page.locator('.end-screen__best')).toHaveText('Best 3');
+    await expect(page.locator('.end-screen__list-count')).toHaveText('0');
+    await expect(page.locator('.end-screen__row a')).toHaveCount(0);
     for (const name of await sprintAnimationNames(page)) {
       expect(name).toBe('none');
     }
 
-    // Afterwards: both rounds' XP and the streak on Practice.
+    // Done comes back to the start page, on the same URL (Q11), showing the
+    // best the two rounds left behind.
     await page.getByRole('button', { name: 'Done' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice\/sprint$/);
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
+    await expect(page.locator('.sprint-start__kicker').first()).toHaveText('Best at 1 min');
+    await expect(page.locator('.sprint-start__number').first()).toHaveText('3');
+
+    // Afterwards: both rounds' XP and the streak on Practice, reached from
+    // the start page's ✕.
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
     const xpStat = page.locator('.practice-header__stat', { hasText: 'XP earned' });
     const streakStat = page.locator('.practice-header__stat', { hasText: 'day streak' });
@@ -580,11 +608,194 @@ test.describe('Sign Sprint run', () => {
 
     // Close leaves a fresh Sprint.
     await page.goto('/clutch/practice/sprint');
+    await page.getByRole('button', { name: 'Start' }).click();
     await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
     await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
   });
+
+  test('Sign Sprint: the chosen length and family survive a reload', async ({ page }) => {
+    await openAppAt(page, '/clutch/practice/sprint');
+
+    await page.getByRole('tab', { name: '30 sec' }).click();
+    await page.getByRole('button', { name: 'Warning', exact: true }).click();
+    await expect(page.locator('.sprint-start__count')).toHaveText('57 signs in this sprint');
+
+    // Start saves the choices before the round begins (amendment E23 (c)).
+    await page.getByRole('button', { name: 'Start' }).click();
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: '30 sec' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    await expect(page.getByRole('button', { name: 'Warning', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await expect(page.locator('.sprint-start__count')).toHaveText('57 signs in this sprint');
+  });
+
+  test('a Sprint end-screen row opened and Back returns to the same end screen', async ({
+    page,
+  }) => {
+    await page.clock.install();
+    await openAppAt(page, '/clutch/practice/sprint');
+    await page.getByRole('button', { name: 'Start' }).click();
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+
+    // One wrong answer, so the end screen has exactly one row to open.
+    const missedId = await sprintAnswerId(page);
+    await page.locator(`.sprint__option:not([data-sign-id="${missedId}"])`).first().click();
+    await waitForNextSprintSign(page, missedId);
+
+    await page.clock.fastForward(61_000);
+    await expect(page.getByText('Time’s up')).toBeVisible();
+    await expect(page.locator('.end-screen__score')).toHaveText('0');
+    await expect(
+      page.getByText('No signs named this time — have a look at the ones below.'),
+    ).toBeVisible();
+    const row = page.locator('.end-screen__row a.list-row');
+    await expect(row).toHaveCount(1);
+    await expect(row).toHaveAttribute('href', `/clutch/learn/signs/${missedId}`);
+
+    await row.click();
+    await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${missedId}$`));
+    // Without waiting for Sprint to leave, goBack races React's unmount and
+    // the test would pass with round memory deleted (amendment E22 (a)).
+    await expect(page.locator('.sprint')).toHaveCount(0);
+    await page.goBack();
+
+    await expect(page.getByText('Time’s up')).toBeVisible();
+    await expect(page.locator('.end-screen__score')).toHaveText('0');
+    await expect(page.locator('.end-screen__row a.list-row')).toHaveCount(1);
+  });
+
+  test('Sign Sprint: ✕ goes back to where it was opened from', async ({ page }) => {
+    await openAppAt(page, '/clutch/practice');
+    const idxBefore = await historyIdx(page);
+
+    await page.locator('a[href="/clutch/practice/sprint"]').click();
+    await expect(page).toHaveURL(/\/clutch\/practice\/sprint$/);
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice$/);
+    // Q19: a hard-coded navigate would PUSH the Practice tab and leave the
+    // history index higher, which the URL alone cannot tell apart from
+    // going back one entry.
+    await expect.poll(() => historyIdx(page)).toBe(idxBefore);
+  });
+
+  test('Sign Sprint: a cold open of the start page shows the saved best', async ({ page }) => {
+    await page.clock.install();
+    await openAppAt(page, '/clutch/practice/sprint');
+    await page.getByRole('tab', { name: '30 sec' }).click();
+    await page.getByRole('button', { name: 'Start' }).click();
+    await expect(page.locator('.sprint__sign[data-answer-id]')).toBeVisible();
+
+    const firstId = await sprintAnswerId(page);
+    await page.locator(`.sprint__option[data-sign-id="${firstId}"]`).click();
+    await expect(page.locator('.sprint__score')).toHaveText('1');
+
+    await page.clock.fastForward(31_000);
+    await expect(page.getByText('Time’s up')).toBeVisible();
+    await page.getByRole('button', { name: 'Done' }).click();
+    await expect(page.getByRole('button', { name: 'Start' })).toBeVisible();
+
+    // A fresh load: only the progress store can tell the page this best
+    // (scan S12 -- nothing else on this route loads it).
+    await page.goto('/clutch/practice/sprint');
+    await expect(page.locator('.sprint-start__kicker').first()).toHaveText('Best at 30 sec');
+    await expect(page.locator('.sprint-start__number').first()).toHaveText('1');
+  });
 });
+
+/**
+ * Everything that must stay inside the window while a Sprint question is up
+ * (M21): the top bar, the picture panel and all four answers. And the scene
+ * itself must hold together when the panel gives way (amendment E24 (c) --
+ * two mutants survived without these): the panel is never taller than
+ * min(300px, 36dvh), and the picture's box ends at least 36px above the
+ * panel's foot rather than being clipped by it.
+ */
+function sprintPartsFit(page: Page): Promise<boolean> {
+  return page.evaluate(() => {
+    const parts = [
+      document.querySelector('.game-top-bar'),
+      document.querySelector('.sprint__panel'),
+      ...document.querySelectorAll('.sprint__option'),
+    ];
+    const panel = document.querySelector('.sprint__panel')?.getBoundingClientRect();
+    const picture = document.querySelector('.sprint__picture')?.getBoundingClientRect();
+    if (!panel || !picture) return false;
+    return (
+      parts.length === 6 &&
+      parts.every(
+        (part) => part !== null && part.getBoundingClientRect().bottom <= window.innerHeight,
+      ) &&
+      panel.height <= Math.min(300, window.innerHeight * 0.36) + 1 &&
+      picture.bottom <= panel.bottom - 36
+    );
+  });
+}
+
+// P9/S13: 664 is Playwright's iPhone 14 profile (Safari before the app is
+// installed), 763 the installed app's usable height and 844 the full
+// screen. The parent fails the 664 case by 43px; 763 and 844 pass there and
+// stand as guards on the new flex layout.
+for (const height of [664, 763, 844]) {
+  test.describe(`Sign Sprint at the phone size 390x${height}`, () => {
+    test.use({ viewport: { width: 390, height } });
+
+    test(`Sign Sprint: the picture and four answers fit at 390x${height}`, async ({ page }) => {
+      await openAppAt(page, '/clutch/practice/sprint');
+      await page.getByRole('button', { name: 'Start' }).click();
+      await expect(page.locator('.sprint__option')).toHaveCount(4);
+      await page.waitForFunction(() => {
+        const img = document.querySelector('.sprint__picture img');
+        return img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0;
+      });
+
+      expect(await sprintPartsFit(page)).toBe(true);
+
+      if (height === 844) {
+        const sizes = await page.evaluate(() => ({
+          panel: document.querySelector('.sprint__panel')?.getBoundingClientRect().height ?? 0,
+          picture: document.querySelector('.sprint__picture')?.getBoundingClientRect().height ?? 0,
+        }));
+        expect(Math.round(sizes.panel)).toBe(300);
+        expect(Math.round(sizes.picture)).toBe(200);
+      }
+
+      // The catalogue's widest caption takes three lines at 390 (2 of the
+      // 131 do): the panel gives way rather than pushing answer D off.
+      await page.evaluate(() => {
+        const caption = document.querySelector('.sprint__caption');
+        if (caption) {
+          caption.textContent = 'No goods vehicles over maximum gross weight shown in tonnes';
+        }
+      });
+      // Under reduced motion theme.css gives every element a 0.01ms
+      // transition on `all`, so a size read back at once is still the old
+      // one: let two animation frames pass first.
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                resolve();
+              });
+            });
+          }),
+      );
+
+      expect(await sprintPartsFit(page)).toBe(true);
+    });
+  });
+}
 
 /** The Match Pairs sign tiles' data-sign-ids, in pick order (Sign 1-5). */
 function pairsSignIds(page: Page): Promise<string[]> {

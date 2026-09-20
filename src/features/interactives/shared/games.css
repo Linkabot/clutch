@@ -1,5 +1,9 @@
 /* Shared stylesheet for src/features/interactives/shared/*.tsx components
-   (GameTopBar today; later joined by rules for other shared pieces).
+   (GameTopBar today; later joined by rules for other shared pieces),
+   including the small outlined pill the bar's right-hand slot shows when a
+   game passes an action instead of a label -- Sign Sprint's Finish on a No
+   limit round (P12; Lincoln's F2, amendment E23 (g)), sized 32px with a
+   44px tap target around it.
    Tokens only, from src/app/theme.css -- no hex colour literals here (every
    step touching src/features/interactives/shared greps for one and fails).
    Depends on: the custom properties defined in src/app/theme.css.
@@ -82,4 +86,33 @@
 
 .game-top-bar__label--muted {
   color: var(--color-muted);
+}
+
+.game-top-bar__action {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 44px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  border: 1.5px solid var(--color-ink);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* A 44px-tall tap target around the 32px pill. */
+.game-top-bar__action::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.game-top-bar__action:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
 }
