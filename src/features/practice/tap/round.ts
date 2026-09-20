@@ -6,9 +6,11 @@
 // apart; for every other answer, the answer plus 3 distractors from
 // pickDistractors (same family or look-alike tiers), shuffled so the
 // answer never sits in one fixed slot. buildTapRound() picks 10 distinct
-// answers from the signs catalogue (the first is firstSignId's sign when it
-// names one; an unknown firstSignId is ignored) and calls optionsFor() for
-// each. firstRuleSentence() reads the first sentence of a sign's shape rule
+// answers from `pool` -- the whole catalogue, or one family's signs when
+// Q12's ?family= names one -- while its options are always drawn from
+// `allSigns`, so a family round keeps pickDistractors' tier 2 (other
+// families with the same look) rather than silently emptying it
+// (amendment E16 (d)). firstRuleSentence() reads the first sentence of a sign's shape rule
 // using the Step 20 note's lookup (C7 signs read outcomes[sign.rule];
 // every other rule reads sentences directly), or null when the rule has
 // none (C1, C9's `other` signs). sheetContent() (E26) is the single source
@@ -58,27 +60,25 @@ export function optionsFor(signs: readonly Sign[], answer: Sign, rng: Rng): Sign
 }
 
 /**
- * Builds one Tap the sign round: 10 questions with distinct answers, each
- * built by optionsFor() -- 4 options for an ordinary answer, exactly 2 for
- * the LOOK_ALIKE_PAIR answer. When `firstSignId` names one of `signs`, its
- * sign answers question 1; otherwise (including an unknown id) the answers
- * are simply the first 10 of a full shuffle.
+ * Builds one Tap the sign round: 10 questions whose distinct answers are
+ * the first 10 of a full shuffle of `pool`, each built by optionsFor()
+ * over `allSigns` -- 4 options for an ordinary answer, exactly 2 for the
+ * LOOK_ALIKE_PAIR answer. The two lists differ only for Q12's family
+ * rounds, where `pool` is one family and `allSigns` is still the whole
+ * catalogue, so the distractor tiers keep every candidate they had
+ * (amendment E16 (d)); an unfiltered round passes the same list twice.
  */
 export function buildTapRound(
-  signs: readonly Sign[],
+  pool: readonly Sign[],
+  allSigns: readonly Sign[],
   rng: Rng,
-  firstSignId?: string,
 ): TapQuestion[] {
-  const shuffledSigns = shuffle(signs, rng);
-  const first = firstSignId ? shuffledSigns.find((sign) => sign.id === firstSignId) : undefined;
-  const orderedAnswers = first
-    ? [first, ...shuffledSigns.filter((sign) => sign.id !== first.id)]
-    : shuffledSigns;
-
-  return orderedAnswers.slice(0, QUESTIONS_PER_ROUND).map((answer) => {
-    const options = optionsFor(signs, answer, rng);
-    return { answer, options };
-  });
+  return shuffle(pool, rng)
+    .slice(0, QUESTIONS_PER_ROUND)
+    .map((answer) => {
+      const options = optionsFor(allSigns, answer, rng);
+      return { answer, options };
+    });
 }
 
 /**

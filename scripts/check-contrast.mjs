@@ -29,6 +29,7 @@ const PAIRS = [
   ['on-sign', 'sign-blue'],
   ['on-sign', 'sign-green'],
   ['on-sign', 'sign-red'],
+  ['on-sign', 'band-orange'],
   ['sign-ink', 'marking-yellow'],
   ['sign-ink', 'on-sign'],
   ['link', 'page'],

@@ -15,12 +15,18 @@
  * timers -- never fake timers, whose timers @testing-library's waitFor does
  * not see): 10 tiles and the loading state, selection, a first-try lock
  * (tick, +10 XP, label, bar, recordAnswer), a wrong name's flash clearing
- * on its own and the retried lock writing nothing, the end card waiting for
- * a pending recordRoundFinished (taps in that window change nothing), then
- * the round's XP (not the store's), Play again, the end card's hold after
- * the fifth lock, Close, and reduced motion (a stubbed matchMedia) turning
- * every animated class off. The progress store is mocked by its path
- * relative to this file.
+ * on its own and the retried lock writing nothing, the shared end screen
+ * waiting for a pending recordRoundFinished (taps in that window change
+ * nothing), then the round's XP (not the store's) in the Q9 band its score
+ * earns, Play again, the end screen's hold after the fifth lock, Close, and
+ * reduced motion (a stubbed matchMedia) turning every animated class off.
+ * Step 9 adds four: a failed load's notice and its Retry, the two
+ * look-alike signs' name tiles reading as the Highway Code names them
+ * (gameName, never signs.json's curly-quoted KYTS string), ✕ going BACK to
+ * the screen the game was opened from when there is one (Q19), and the end
+ * screen's "Took more than one try" list after a mismatch. The progress
+ * store is mocked by its path relative to this file, and src/content/signs
+ * by a factory that keeps the real catalogue and only lets one load reject.
  * Depends on: vitest, @testing-library/react, react-router-dom, jsdom
  * (test environment), src/content/signs (loadSigns), src/content/schemas
  * (Sign type), src/features/interactives/shared/random (mulberry32),
@@ -34,7 +40,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { loadSigns } from '../../src/content/signs';
+import { loadSigns, gameName, LOOK_ALIKE_PAIR } from '../../src/content/signs';
 import type { Sign } from '../../src/content/schemas';
 import { mulberry32 } from '../../src/features/interactives/shared/random';
 import { isShortCaption } from '../../src/features/interactives/shared/distractors';
@@ -51,11 +57,24 @@ import {
 } from '../../src/features/interactives/match-pairs/pairs';
 import MatchPairs from '../../src/features/interactives/match-pairs/MatchPairs';
 
+interface AnswerResult {
+  collectedNow: boolean;
+  lostNow: boolean;
+}
+
 const mocks = vi.hoisted(() => ({
-  recordAnswer: vi.fn<(signId: string, correct: boolean) => Promise<void>>(),
-  recordRoundFinished: vi.fn<(options?: { sprintScore?: number }) => Promise<void>>(),
+  recordAnswer: vi.fn<(signId: string, correct: boolean) => Promise<AnswerResult>>(),
+  recordRoundFinished:
+    vi.fn<(options?: { game?: string; sprintScore?: number }) => Promise<void>>(),
   summary: { xp: 990, streak: 5, sprintBest: 7, collected: 0 },
 }));
+
+// Keeps the real catalogue everywhere; only the failure case makes one call
+// reject (amendment E16 (i), mirroring E14 (h)'s Sign Sprint mock).
+vi.mock('../../src/content/signs', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/content/signs')>();
+  return { ...actual, loadSigns: vi.fn(actual.loadSigns) };
+});
 
 vi.mock('../../src/engine/progress-state', () => ({
   useProgressStore: (selector: (state: unknown) => unknown) =>
@@ -342,7 +361,7 @@ let resolveFirstRoundFinished: (() => void) | null = null;
 beforeEach(() => {
   resolveFirstRoundFinished = null;
   mocks.recordAnswer.mockReset();
-  mocks.recordAnswer.mockResolvedValue(undefined);
+  mocks.recordAnswer.mockResolvedValue({ collectedNow: false, lostNow: false });
   mocks.recordRoundFinished.mockReset();
   mocks.recordRoundFinished.mockResolvedValue(undefined);
   mocks.recordRoundFinished.mockImplementationOnce(
@@ -357,6 +376,10 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+  // jsdom keeps one history across a file: without this, the in-app ✕ case
+  // would leave idx behind and the cold-exit cases would stop proving it.
+  window.history.replaceState(null, '');
 });
 
 describe('MatchPairs screen', () => {
@@ -464,7 +487,7 @@ describe('MatchPairs screen', () => {
       await sleep(1000);
     });
     expect(screen.queryByText('All pairs matched')).toBeNull();
-    expect(container.querySelector('.pairs__end')).toBeNull();
+    expect(container.querySelector('.end-screen')).toBeNull();
 
     await act(async () => {
       resolveFirstRoundFinished?.();
@@ -472,11 +495,18 @@ describe('MatchPairs screen', () => {
     await waitFor(() => expect(screen.getByText('All pairs matched')).toBeTruthy(), {
       timeout: 3000,
     });
-    expect(textOf(container, '.pairs__end-xp')).toBe('+40 XP');
+    expect(textOf(container, '.end-screen__xp')).toBe('+40 XP');
+    // 4 of 5 first try: scoreBand(4, 5) is 0.8, the middle Q9 band.
+    expect(textOf(container, '.end-screen__score')).toBe('4');
+    expect(textOf(container, '.end-screen__score-text')).toBe('right first time');
+    expect(container.querySelector('.end-screen__panel')?.className).toMatch(
+      /end-screen__panel--orange/,
+    );
+    expect(textOf(container, '.end-screen__streak')).toBe('5-day streak');
     expect(screen.queryByText('+990 XP')).toBeNull();
     expect(container.querySelectorAll('button.pairs__tile')).toHaveLength(0);
     expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1);
-    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({});
+    expect(mocks.recordRoundFinished).toHaveBeenCalledWith({ game: 'pairs' });
     expect(mocks.recordAnswer).toHaveBeenCalledTimes(4);
     expect(mocks.recordAnswer.mock.calls.map(([id, correct]) => [id, correct])).toEqual([
       [ids[0], true],
@@ -517,7 +547,7 @@ describe('MatchPairs screen', () => {
     await waitFor(
       () => {
         expect(screen.getByText('All pairs matched')).toBeTruthy();
-        expect(textOf(container, '.pairs__end-xp')).toBe('+50 XP');
+        expect(textOf(container, '.end-screen__xp')).toBe('+50 XP');
       },
       { interval: 20, timeout: 3000 },
     );
@@ -536,6 +566,108 @@ describe('MatchPairs screen', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     await waitFor(() => expect(screen.getByText('Practice tab')).toBeTruthy());
     expect(mocks.recordRoundFinished).not.toHaveBeenCalled();
+  });
+
+  it('a failed load shows the failure notice, and Retry builds a round', async () => {
+    vi.mocked(loadSigns).mockRejectedValueOnce(new Error('the signs chunk did not load'));
+    const container = renderPairs();
+
+    await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy());
+    expect(screen.getByRole('alert').textContent).toContain("This didn't load.");
+    expect(container.querySelectorAll('[data-pair-sign]')).toHaveLength(0);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+
+    await waitForBoard(container);
+    expect(container.querySelectorAll('[data-pair-sign]')).toHaveLength(5);
+    expect(container.querySelectorAll('[data-pair-name]')).toHaveLength(5);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('STOP and GIVE WAY name tiles use the Highway Code short names', async () => {
+    // The screen seeds itself from the Web Crypto RNG, so the seed is
+    // stubbed to one whose round actually contains a look-alike sign.
+    const [stop] = LOOK_ALIKE_PAIR;
+    let chosenSeed = 0;
+    for (let seed = 1; seed < 4000 && chosenSeed === 0; seed++) {
+      if (buildPairsRound(signs, mulberry32(seed)).signs.some((sign) => sign.id === stop)) {
+        chosenSeed = seed;
+      }
+    }
+    if (chosenSeed === 0) throw new Error('no seed below 4000 dealt the STOP sign');
+    vi.spyOn(globalThis.crypto, 'getRandomValues').mockImplementation(((array: Uint32Array) => {
+      array[0] = chosenSeed;
+      return array;
+    }) as typeof globalThis.crypto.getRandomValues);
+
+    const container = renderPairs();
+    const ids = await waitForBoard(container);
+    expect(ids).toContain(stop);
+
+    const stopSign = signs.find((sign) => sign.id === stop);
+    if (!stopSign) throw new Error('the STOP sign is missing from signs.json');
+    expect(nameTile(container, stop).textContent).toBe('Stop and give way');
+    expect(nameTile(container, stop).textContent).toBe(gameName(stopSign));
+    // signs.json's own name uses curly quotes, so it is checked as read.
+    expect(container.textContent).not.toContain(stopSign.name);
+  });
+
+  it('✕ goes back to the screen the game was opened from', async () => {
+    window.history.replaceState({ idx: 1 }, '');
+    const container = render(
+      <MemoryRouter
+        initialEntries={['/learn/signs/warning-cattle', '/practice/pairs']}
+        initialIndex={1}
+      >
+        <Routes>
+          <Route path="/practice/pairs" element={<MatchPairs />} />
+          <Route path="/practice" element={<p>Practice tab</p>} />
+          <Route path="/learn/signs/warning-cattle" element={<p>Cattle sign page</p>} />
+        </Routes>
+      </MemoryRouter>,
+    ).container;
+    await waitForBoard(container);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await waitFor(() => expect(screen.getByText('Cattle sign page')).toBeTruthy());
+    expect(screen.queryByText('Practice tab')).toBeNull();
+  });
+
+  it('shows Took more than one try after a mismatch', async () => {
+    const container = renderPairs();
+    const ids = await waitForBoard(container);
+
+    // Sign 1 first: a wrong name, then its own.
+    fireEvent.click(signTiles(container)[0]);
+    await waitFor(() => expect(signTiles(container)[0].getAttribute('aria-pressed')).toBe('true'));
+    fireEvent.click(nameTile(container, ids[1]));
+    await waitFor(() =>
+      expect(nameTile(container, ids[1]).getAttribute('data-state')).toBe('wrong'),
+    );
+    await waitFor(() => expect(nameTile(container, ids[1]).getAttribute('data-state')).toBeNull(), {
+      timeout: 1500,
+    });
+    await matchFirstTry(container, ids[0]);
+    for (const id of ids.slice(1)) {
+      await matchFirstTry(container, id);
+    }
+
+    await act(async () => {
+      resolveFirstRoundFinished?.();
+    });
+    await waitFor(() => expect(screen.getByText('Took more than one try')).toBeTruthy(), {
+      timeout: 3000,
+    });
+    const missedSign = signs.find((sign) => sign.id === ids[0]);
+    if (!missedSign) throw new Error('the missed sign is missing from signs.json');
+    // The count beside the heading is the picture Lincoln chose (Q18, ends.png B).
+    expect(textOf(container, '.end-screen__list-count')).toBe('1');
+    const rows = container.querySelectorAll('.end-screen__row a.list-row');
+    expect(rows).toHaveLength(1);
+    expect(rows[0].getAttribute('href')).toBe(`/learn/signs/${ids[0]}`);
+    expect(rows[0].querySelector('.list-row__title')?.textContent).toBe(gameName(missedSign));
+    // 4 of 5 first try, so the XP chip and the list agree.
+    expect(textOf(container, '.end-screen__xp')).toBe('+40 XP');
   });
 
   it('under reduced motion the root is pairs--static and nothing is --animated, and the wrong flash still shows', async () => {

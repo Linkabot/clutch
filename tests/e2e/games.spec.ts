@@ -1,16 +1,27 @@
-// End-to-end tests for Clutch's games (plan.md Steps 23-26 and amendments
-// E25, E27, E31 and E33). "tap the sign:
-// right, wrong, reduced motion, finish" plays a full Tap the sign round
-// seeded via ?sign=: question 1's right answer (the sheet's XP, confetti,
-// streak-free body, disabled/dimmed tiles and sheetUp animation), question
+// End-to-end tests for Clutch's games (plan.md Steps 23-26 and 9, and
+// amendments E25, E27, E31, E33 and E16). "tap the sign:
+// right, wrong, reduced motion, finish" plays a full Tap the sign round of
+// one family (?family=warning, Q12 -- ?sign= is gone): question 1's right
+// answer (the sheet's XP, confetti, streak-free body, disabled/dimmed tiles
+// and sheetUp animation), question
 // 2's wrong answer (the answer tile framed, the sheet's "Right answer:"
 // body), eight more right answers proving the "N in a row" streak and the
-// 10/10 label, then the round-complete summary, Play again resetting to
+// 10/10 label, then the shared end screen in its Q9 band, Play again
+// resetting to
 // 1/10, and the recorded XP/streak/collection progress on the Practice tab
-// and the sign page afterwards. A second test emulates reduced motion
+// and the sign page afterwards. Nothing is pinned to one sign: each
+// question's own data-answer-id drives the taps, and every name comes from
+// the committed catalogue read below (amendment E16 (n)). A second test
+// emulates reduced motion
 // before the app loads (P11): the sheet's static class, 0 confetti pieces,
 // every element inside the sheet and the tapped tile computed with
-// animationName 'none', then Sign page and Close's routes. "Sign Sprint
+// animationName 'none', then M25/M27's Sign page, Back, the same question
+// with its sheet still open, and Close's route. Three more Tap tests cover
+// Q12's family round (every answer belongs to it), Q19's in-app exit (a
+// sign page's "Practise signs like this", then ✕ back to that sign page)
+// and M25's end-screen row (opened, then Back to the same end screen); a
+// fourth, at the real 390x844 phone size, measures M34 -- each tile's
+// picture paints at least 85% of the tile's width. "Sign Sprint
 // run" installs Playwright's clock before the app loads (never pausing it)
 // and plays two rounds: round 1 answers 3 signs right (the score, the +10 XP
 // pop and the sign's driveIn animation) and 1 wrong, then fast-forwards
@@ -26,7 +37,8 @@
 // matches signs 1-3 on the first try (the selection, both tiles locked, and
 // the +10 XP badge's and tick's pop animations), taps a wrong name for sign
 // 4 (the red flash's shake animation and the cleared selection) before its
-// retried, XP-free match, then sign 5, and reaches the end card with +40 XP;
+// retried, XP-free match, then sign 5, and reaches the shared end screen
+// with +40 XP in its Q9 band;
 // round 2, under emulated reduced motion, proves Play again resets the
 // board, nothing animates, and five first-try matches give +50 XP.
 // Afterwards the Practice tab shows both rounds' XP and the streak, and the
@@ -50,10 +62,36 @@
 // Step 8, amendment E14 (i)). Runs
 // against the production build (`vite preview`) with Playwright's WebKit
 // engine and an iPhone 14 device profile.
-// Depends on: @playwright/test, ./helpers (openAppAt).
+// Depends on: @playwright/test, node:fs and node:url (reading the committed
+// content/uk/signs/signs.json -- src/content/signs.ts uses import.meta.glob
+// and cannot be imported into a Playwright test), ./helpers (openAppAt).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { test, expect, type Page } from '@playwright/test';
 import { openAppAt } from './helpers';
+
+interface CatalogueSign {
+  id: string;
+  name: string;
+  family: string;
+}
+
+/** The committed sign catalogue, read straight from content/. */
+const SIGNS: CatalogueSign[] = (
+  JSON.parse(
+    readFileSync(
+      fileURLToPath(new URL('../../content/uk/signs/signs.json', import.meta.url)),
+      'utf8',
+    ),
+  ) as { signs: CatalogueSign[] }
+).signs;
+
+function signById(id: string): CatalogueSign {
+  const sign = SIGNS.find((candidate) => candidate.id === id);
+  if (!sign) throw new Error(`${id} is missing from signs.json`);
+  return sign;
+}
 
 /** The sign page's collecting line (Q3) for `correct` 0, 1 or 2 right answers. */
 function collectingLine(correct: 0 | 1 | 2): string {
@@ -66,13 +104,16 @@ function collectingLine(correct: 0 | 1 | 2): string {
   )[correct];
 }
 
-/** The two signs learners must tell apart by shape, not caption (Q7). */
-const LOOK_ALIKE_PAIR = ['orders-stop-sign-and-road-marking', 'orders-give-way-road-marking'];
-/** Their Highway Code short names (Q7), keyed by sign id. */
+/** The two signs learners must tell apart by shape, not caption, and their Highway Code short names (Q7), keyed by sign id. */
 const LOOK_ALIKE_GAME_NAMES: Record<string, string> = {
   'orders-stop-sign-and-road-marking': 'Stop and give way',
   'orders-give-way-road-marking': 'Give way to traffic on major road',
 };
+
+/** The name a game shows for a sign: its short name (Q7), else the KYTS name with one trailing stop trimmed (Q2). */
+function gameNameOf(id: string): string {
+  return LOOK_ALIKE_GAME_NAMES[id] ?? signById(id).name.replace(/\.$/, '');
+}
 
 /** The prompt h1's data-answer-id, throwing if it is missing. */
 async function currentAnswerId(page: Page): Promise<string> {
@@ -97,11 +138,10 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     page,
   }) => {
     test.setTimeout(120_000);
-    await openAppAt(page, '/clutch/practice/tap?sign=warning-slippery-road');
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
 
     const heading = page.locator('h1');
-    await expect(heading).toHaveText('Slippery road.');
-    await expect(heading).toHaveAttribute('data-answer-id', 'warning-slippery-road');
+    await expect(heading).toHaveAttribute('data-answer-id', /^warning-/);
     await expect(page.locator('.game-top-bar__label')).toHaveText('1/10');
 
     // The four tiles' aria-labels, in DOM order (E26 (b)).
@@ -117,9 +157,10 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     // summary (review F2; restores E25 item 7).
     const answerIds: string[] = [];
 
-    // Question 1: right.
+    // Question 1: right. The heading shows the game name, not the raw one.
     let currentId = await currentAnswerId(page);
     answerIds.push(currentId);
+    await expect(heading).toHaveText(gameNameOf(currentId));
     await page.locator(`[data-sign-id="${currentId}"]`).click();
 
     await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
@@ -128,8 +169,10 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.locator('.quiz-sheet')).toHaveClass(/quiz-sheet--animated/);
     const continueButton = page.getByRole('button', { name: 'Continue', exact: true });
     await expect(continueButton).toHaveClass(/button--primary/);
-    await expect(page.getByText('Slippery road Triangles warn.')).toBeVisible();
-    await expect(page.getByText('Three sides, one message: watch out ahead.')).toBeVisible();
+    // Wording-independent: 4 of the 66 warning signs are shape-rule
+    // exceptions with no "Triangles warn." sentence (amendment E16 (n)).
+    await expect(page.locator('.quiz-sheet__body')).not.toBeEmpty();
+    await expect(page.locator('.quiz-sheet__hook')).not.toBeEmpty();
     await expect(page.locator('.quiz-sheet__streak')).toHaveCount(0);
     await expect(page.locator(`[data-sign-id="${currentId}"]`)).toHaveAttribute(
       'data-feedback',
@@ -156,7 +199,6 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     const wrongTile = page.locator(`.tap__tile:not([data-sign-id="${currentId}"])`).first();
     const wrongId = await wrongTile.getAttribute('data-sign-id');
     if (!wrongId) throw new Error('wrong tile has no data-sign-id');
-    const promptText = await heading.textContent();
     const tileCount = await page.locator('.tap__tile').count();
 
     await wrongTile.click();
@@ -173,13 +215,11 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     );
     await expect(page.locator('[data-feedback="dim"]')).toHaveCount(tileCount - 2);
     await expect(page.locator('.quiz-sheet__xp')).toHaveCount(0);
-    // The heading keeps the raw sign name until Step 9; the sheet's bold
-    // name is the game name (the pair's short name, or the heading text
-    // with one trailing stop removed).
-    const expectedStrongText = LOOK_ALIKE_PAIR.includes(currentId)
-      ? LOOK_ALIKE_GAME_NAMES[currentId]
-      : (promptText ?? '').replace(/\.$/, '');
-    await expect(page.locator('.quiz-sheet__body strong')).toHaveText(expectedStrongText);
+    // Since Step 9 the heading and the sheet's bold name are the same game
+    // name -- the pair's Highway Code short name, or the KYTS name with one
+    // trailing stop removed.
+    await expect(page.locator('.quiz-sheet__body strong')).toHaveText(gameNameOf(currentId));
+    await expect(heading).toHaveText(gameNameOf(currentId));
 
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     currentId = await waitForNextAnswerId(page, currentId);
@@ -210,8 +250,15 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     expect(new Set(answerIds).size).toBe(10);
 
     await expect(page.getByText('Round complete')).toBeVisible();
-    await expect(page.getByText('9 of 10 right')).toBeVisible();
-    await expect(page.getByText('+90 XP')).toBeVisible();
+    await expect(page.locator('.end-screen__score')).toHaveText('9');
+    await expect(page.getByText('of 10 right')).toBeVisible();
+    await expect(page.locator('.end-screen__xp')).toHaveText('+90 XP');
+    // 9 of 10 is 0.9, the top Q9 band.
+    await expect(page.locator('.end-screen__panel')).toHaveClass(/end-screen__panel--green/);
+    await expect(page.getByText('Signs to look at again')).toBeVisible();
+    // The count beside the heading is the picture Lincoln chose (Q18, ends.png B).
+    await expect(page.locator('.end-screen__list-count')).toHaveText('1');
+    await expect(page.locator('.end-screen__row a.list-row')).toHaveCount(1);
     const playAgain = page.getByRole('button', { name: 'Play again' });
     await expect(playAgain).toHaveClass(/button--primary/);
 
@@ -225,17 +272,21 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(xpStat.locator('.practice-header__number')).toHaveText('90');
     await expect(streakStat.locator('.practice-header__number')).toHaveText('1');
 
-    await page.goto('/clutch/learn/signs/warning-slippery-road');
+    // answerIds[0], not currentId, which by now holds question 10's sign.
+    await page.goto(`/clutch/learn/signs/${answerIds[0]}`);
     await expect(page.getByText(collectingLine(1))).toBeVisible();
   });
 
-  test('reduced motion: static sheet, no confetti, no animation', async ({ page }) => {
+  test('reduced motion: static sheet, no confetti, no animation, Back keeps the round', async ({
+    page,
+  }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await openAppAt(page, '/clutch/practice/tap?sign=warning-slippery-road');
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
 
     const heading = page.locator('h1');
-    await expect(heading).toHaveText('Slippery road.');
-    await page.locator('[data-sign-id="warning-slippery-road"]').click();
+    const answerId = await currentAnswerId(page);
+    await expect(heading).toHaveText(gameNameOf(answerId));
+    await page.locator(`[data-sign-id="${answerId}"]`).click();
 
     await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
     await expect(page.locator('.quiz-sheet')).toHaveClass(/quiz-sheet--static/);
@@ -249,19 +300,89 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     }
 
     const tileAnimationNames = await page
-      .locator('[data-sign-id="warning-slippery-road"], [data-sign-id="warning-slippery-road"] *')
+      .locator(`[data-sign-id="${answerId}"], [data-sign-id="${answerId}"] *`)
       .evaluateAll((elements) => elements.map((el) => getComputedStyle(el).animationName));
     for (const name of tileAnimationNames) {
       expect(name).toBe('none');
     }
 
+    // M25/M27: Sign page leaves the round, and Back brings it back with the
+    // same question and the sheet still open -- Continue then moves on.
     await page.getByRole('button', { name: 'Sign page' }).click();
-    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/warning-slippery-road$/);
+    await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${answerId}$`));
+    // The game layer must really be gone before Back, or the assertions below
+    // pass on a screen that never unmounted and so never needed recallRound.
+    await expect(page.locator('.tap')).toHaveCount(0);
+    await page.goBack();
+    await expect(page.locator('h1')).toHaveAttribute('data-answer-id', answerId);
+    await expect(heading).toHaveText(gameNameOf(answerId));
+    await expect(page.getByRole('dialog', { name: 'Correct' })).toBeVisible();
+    await page.getByRole('button', { name: 'Continue', exact: true }).click();
+    await expect(page.locator('.game-top-bar__label')).toHaveText('2/10');
 
     await page.goto('/clutch/practice/tap');
     await expect(page.locator('.game-top-bar__label')).toHaveText('1/10');
     await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+
+  test('a family round only asks about that family', async ({ page }) => {
+    test.setTimeout(120_000);
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
+
+    let currentId = await currentAnswerId(page);
+    for (let q = 1; q <= 10; q++) {
+      expect(signById(currentId).family, `question ${q}: ${currentId}`).toBe('warning');
+      await page.locator(`[data-sign-id="${currentId}"]`).click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
+      if (q < 10) currentId = await waitForNextAnswerId(page, currentId);
+    }
+    await expect(page.getByText('Round complete')).toBeVisible();
+    await expect(page.locator('.end-screen__score')).toHaveText('10');
+  });
+
+  test('opened from a sign page, Practise signs like this comes back to it', async ({ page }) => {
+    await openAppAt(page, '/clutch/learn/signs/warning-cattle');
+    await page.getByRole('button', { name: 'Practise signs like this' }).click();
+    await expect(page).toHaveURL(/\/clutch\/practice\/tap\?family=warning$/);
+    await expect(page.locator('.tap__tile')).toHaveCount(4);
+
+    // Q19: the game was reached from an in-app screen, so ✕ goes back to it,
+    // not to the Practice tab.
+    await page.getByRole('button', { name: 'Close', exact: true }).click();
+    await expect(page).toHaveURL(/\/clutch\/learn\/signs\/warning-cattle$/);
+  });
+
+  test('a Tap end-screen row opened and Back returns to the same end screen', async ({ page }) => {
+    test.setTimeout(120_000);
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
+
+    // Question 1 wrong, so the end screen has exactly one row to open.
+    let currentId = await currentAnswerId(page);
+    const missedId = currentId;
+    await page.locator(`.tap__tile:not([data-sign-id="${currentId}"])`).first().click();
+    await page.getByRole('button', { name: 'Continue', exact: true }).click();
+    currentId = await waitForNextAnswerId(page, currentId);
+
+    for (let q = 2; q <= 10; q++) {
+      await page.locator(`[data-sign-id="${currentId}"]`).click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
+      if (q < 10) currentId = await waitForNextAnswerId(page, currentId);
+    }
+
+    await expect(page.getByText('Signs to look at again')).toBeVisible();
+    const row = page.locator('.end-screen__row a.list-row');
+    await expect(row).toHaveCount(1);
+    await expect(row).toHaveAttribute('href', `/clutch/learn/signs/${missedId}`);
+    await expect(row).toHaveText(gameNameOf(missedId));
+
+    await row.click();
+    await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${missedId}$`));
+    await expect(page.locator('.tap')).toHaveCount(0);
+    await page.goBack();
+    await expect(page.getByText('Round complete')).toBeVisible();
+    await expect(page.locator('.end-screen__score')).toHaveText('9');
+    await expect(page.locator('.end-screen__row a.list-row')).toHaveCount(1);
   });
 
   test('Tap the sign: a failed load shows Retry, which rebuilds the round', async ({ page }) => {
@@ -276,7 +397,10 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
       await route.continue();
     });
 
-    await openAppAt(page, '/clutch/practice/tap');
+    // ?family=warning, like every other Tap test here: an unfiltered round can
+    // legitimately draw Q7's two-sign question, whose grid is 2 tiles, and the
+    // four-tile assertion below would then fail about one run in a hundred.
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
 
     await expect(page.getByText("This didn't load.")).toBeVisible();
     await expect(page.locator('.tap__tile')).toHaveCount(0);
@@ -287,6 +411,37 @@ test.describe('tap the sign: right, wrong, reduced motion, finish', () => {
     await expect(page.locator('.tap__tile')).toHaveCount(4);
     await expect(page.locator('h1[data-answer-id]')).toBeVisible();
     await expect(page.getByText("This didn't load.")).toHaveCount(0);
+  });
+});
+
+test.describe('Tap the sign at the real phone size', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  // M34, measured rather than asserted from the CSS (amendment E16 (j)):
+  // the painted picture -- what object-fit: contain actually draws inside
+  // the image box -- is at least 85% of the tile's own width.
+  test('Tap tiles show pictures large', async ({ page }) => {
+    await openAppAt(page, '/clutch/practice/tap?family=warning');
+    await expect(page.locator('.tap__tile')).toHaveCount(4);
+    await page.waitForFunction(() => {
+      const images = Array.from(document.querySelectorAll<HTMLImageElement>('.tap__tile img'));
+      return images.length === 4 && images.every((img) => img.complete && img.naturalWidth > 0);
+    });
+
+    const shares = await page.locator('.tap__tile').evaluateAll((tiles) =>
+      tiles.map((tile) => {
+        const img = tile.querySelector('img');
+        if (!(img instanceof HTMLImageElement)) return 0;
+        const box = img.getBoundingClientRect();
+        const painted = Math.min(box.width, (box.height * img.naturalWidth) / img.naturalHeight);
+        return painted / tile.getBoundingClientRect().width;
+      }),
+    );
+
+    expect(shares).toHaveLength(4);
+    for (const share of shares) {
+      expect(share).toBeGreaterThanOrEqual(0.85);
+    }
   });
 });
 
@@ -537,7 +692,9 @@ test.describe('Match Pairs round', () => {
     await expect(label).toHaveText('5/5');
 
     await expect(page.getByText('All pairs matched')).toBeVisible();
-    await expect(page.locator('.pairs__end-xp')).toHaveText('+40 XP');
+    await expect(page.locator('.end-screen__xp')).toHaveText('+40 XP');
+    await expect(page.locator('.end-screen__score')).toHaveText('4');
+    await expect(page.getByText('right first time')).toBeVisible();
     const playAgain = page.getByRole('button', { name: 'Play again' });
     await expect(playAgain).toHaveClass(/button--primary/);
 
@@ -564,7 +721,7 @@ test.describe('Match Pairs round', () => {
     }
 
     await expect(page.getByText('All pairs matched')).toBeVisible();
-    await expect(page.locator('.pairs__end-xp')).toHaveText('+50 XP');
+    await expect(page.locator('.end-screen__xp')).toHaveText('+50 XP');
 
     // Afterwards: both rounds' XP and the streak on Practice.
     await page.getByRole('button', { name: 'Done' }).click();
@@ -590,6 +747,39 @@ test.describe('Match Pairs round', () => {
     await expect(label).toHaveText('0/5');
     await page.getByRole('button', { name: 'Close', exact: true }).click();
     await expect(page).toHaveURL(/\/clutch\/practice$/);
+  });
+
+  test('a Pairs end-screen row opened and Back returns to the same end screen', async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await openAppAt(page, '/clutch/practice/pairs');
+    await expect(page.locator('.pairs__tile')).toHaveCount(10);
+    const ids = await pairsSignIds(page);
+
+    // Sign 1 mismatched once, so exactly one sign took more than one try.
+    await tapPair(page, ids[0], ids[1]);
+    await expect(pairsNameTile(page, ids[1])).toHaveAttribute('data-state', 'wrong');
+    await expect(pairsNameTile(page, ids[1])).not.toHaveAttribute('data-state', 'wrong');
+
+    for (const id of ids) {
+      await tapPair(page, id, id);
+      await expect(pairsNameTile(page, id)).toHaveAttribute('data-state', 'locked');
+    }
+
+    await expect(page.getByText('All pairs matched')).toBeVisible();
+    await expect(page.getByText('Took more than one try')).toBeVisible();
+    const row = page.locator('.end-screen__row a.list-row');
+    await expect(row).toHaveCount(1);
+    await expect(row).toHaveAttribute('href', `/clutch/learn/signs/${ids[0]}`);
+
+    await row.click();
+    await expect(page).toHaveURL(new RegExp(`/clutch/learn/signs/${ids[0]}$`));
+    await expect(page.locator('.pairs')).toHaveCount(0);
+    await page.goBack();
+    await expect(page.getByText('All pairs matched')).toBeVisible();
+    await expect(page.locator('.end-screen__xp')).toHaveText('+40 XP');
+    await expect(page.locator('.end-screen__row a.list-row')).toHaveCount(1);
   });
 });
 

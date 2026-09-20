@@ -1,0 +1,407 @@
+/* The shared end screen's styles for
+   src/features/interactives/shared/EndScreen.tsx (plan.md Step 9 and
+   amendment E16 (a), (g), (h); Q18's "end like Sign Sprint"). Rule for
+   rule this is Sign Sprint's own .sprint-end block with the score panel's
+   fill parameterised by the Q9 band -- red, the new --color-band-orange,
+   or green -- so one component draws all three games' endings: a 44px
+   header (the ✕ and the game's title, no progress bar), the band panel
+   (5px padding, radius 14) wrapping a 2.5px --color-on-sign frame with an
+   uppercase kicker, the 80px score beside its bold line and sub-line, and
+   the XP / Best / streak chips, then the Collected! line, the Q12
+   lost-sign notice (amendment E16 (g): a red-tinted card with the sign and
+   sentence on one row above a full-width Practise button), the gentle zero
+   line, the list heading with its muted count, the 72px list rows and the
+   two actions pinned to the bottom of the column. The pop keyframes are
+   redefined here, identically to the ones in quiz-sheet.css / pairs.css /
+   sprint.css, so this stylesheet stands on its own in whichever game's
+   chunk loads it; nothing animates unless EndScreen adds
+   .end-screen--animated (a non-zero score, motion allowed). Colours are
+   theme.css tokens and colour mixes of them only -- no hex literals
+   (plan.md § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css;
+   .button, .button--primary and .button--secondary in src/ui/primitives.css
+   (Done, Play again, Practise signs like this); .list-row and its child
+   classes in src/ui/primitives.css, which the list rows below re-size.
+   Depended on by: src/features/interactives/shared/EndScreen.tsx (imports
+   this file once). */
+
+/* --- Column, header ---------------------------------------------------- */
+
+.end-screen {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.end-screen__header {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 20px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.end-screen__close {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.end-screen__close:focus-visible {
+  outline: 2px solid var(--color-tab-active);
+  outline-offset: 2px;
+}
+
+.end-screen__title {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--color-ink);
+}
+
+/* --- Score panel: the SignPanel look, filled by the Q9 band ------------- */
+
+.end-screen__panel {
+  margin: 8px 20px 0;
+  padding: 5px;
+  border-radius: 14px;
+}
+
+.end-screen__panel--red {
+  background-color: var(--color-sign-red);
+}
+
+.end-screen__panel--orange {
+  background-color: var(--color-band-orange);
+}
+
+.end-screen__panel--green {
+  background-color: var(--color-sign-green);
+}
+
+.end-screen__frame {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border: 2.5px solid var(--color-on-sign);
+  border-radius: 10px;
+  color: var(--color-on-sign);
+}
+
+.end-screen__kicker {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 19.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-on-sign);
+}
+
+.end-screen__result {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.end-screen__score {
+  display: block;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 80px;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: var(--color-on-sign);
+}
+
+.end-screen__result-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-bottom: 4px;
+}
+
+.end-screen__score-text {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.end-screen__score-sub {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.end-screen__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.end-screen__xp {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: var(--color-marking-yellow);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.end-screen__best {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background-color: var(--color-on-sign);
+  border: 1.5px solid var(--color-sign-ink);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.end-screen__streak {
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 11px 0 8px;
+  border-radius: 16px;
+  background-color: var(--color-on-sign);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.end-screen__flame {
+  flex-shrink: 0;
+  fill: var(--color-sign-red);
+}
+
+/* --- Collected! (a sign reached 3 right answers this round, Q18) -------- */
+
+.end-screen__collected {
+  margin: 12px 20px 0;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: var(--radius-panel-inner);
+  background-color: color-mix(in srgb, var(--color-sign-green) 12%, var(--color-surface));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.end-screen__collected-tick {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: var(--color-sign-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.end-screen__collected-tick svg {
+  display: block;
+  stroke: var(--color-on-sign);
+}
+
+/* --- Q12's lost-sign notice (amendment E16 (g), Lincoln's option A) ----- */
+
+.end-screen__lost {
+  margin: 12px 20px 0;
+  padding: 12px 14px 14px;
+  border-radius: var(--radius-panel-inner);
+  border: 1px solid color-mix(in srgb, var(--color-sign-red) 45%, var(--color-hairline));
+  background-color: color-mix(in srgb, var(--color-sign-red) 10%, var(--color-surface));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.end-screen__lost-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.end-screen__lost-picture {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.end-screen__lost-picture img {
+  display: block;
+  width: 48px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.end-screen__lost-text {
+  flex: 1;
+  min-width: 0;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.end-screen__lost-button {
+  width: 100%;
+}
+
+/* --- Q9's gentle zero line ---------------------------------------------- */
+
+.end-screen__zero {
+  margin: 14px 20px 0;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* --- The list of signs to look at again --------------------------------- */
+
+.end-screen__list-heading {
+  margin: 22px 20px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.end-screen__list-title {
+  margin: 0;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+.end-screen__list-count {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--color-muted);
+}
+
+.end-screen__list {
+  margin: 10px 20px 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+}
+
+.end-screen__row + .end-screen__row {
+  border-top: 1px solid var(--color-hairline);
+}
+
+/* The ListRow primitive draws the row; these rules give it the end
+   screen's own height, padding and caption size, and drop its own
+   bottom hairline (the list's border and the sibling rule above draw the
+   separators instead). */
+.end-screen__row .list-row {
+  box-sizing: border-box;
+  min-height: 72px;
+  padding: 8px 10px 8px 12px;
+  border-bottom: none;
+}
+
+.end-screen__row-picture {
+  width: 58px;
+  display: flex;
+  justify-content: center;
+}
+
+.end-screen__row-picture img {
+  display: block;
+  width: 53px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.end-screen__row .list-row__title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* --- Actions, pinned to the bottom and pushed down by a long list ------- */
+
+.end-screen__actions {
+  margin-top: auto;
+  padding: 22px 20px max(50px, calc(env(safe-area-inset-bottom) + 16px));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.end-screen__actions .button {
+  font-weight: 800;
+}
+
+.end-screen__actions .button--primary {
+  font-size: 18px;
+}
+
+/* --- Motion: only under the root's animated modifier --------------------- */
+
+.end-screen--animated .end-screen__score {
+  animation: pop 0.55s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.end-screen--animated .end-screen__xp {
+  animation: pop 0.5s 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+/* --- Keyframes (identical to quiz-sheet.css's, so this file stands alone) - */
+
+@keyframes pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

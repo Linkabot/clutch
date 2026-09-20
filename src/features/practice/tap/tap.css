@@ -4,8 +4,12 @@
    "TAP THE SIGN" badge, the prompt caption, a 2x2 picture grid) whose
    tiles lock and mark themselves once an answer is tapped -- a 4px green
    frame and tick for the right tile, a 4px red frame for a wrong tap (E26
-   item 4; the artboard's frame width), everything else dimmed -- then a
-   round-complete summary card. Every rule that moves is scoped under the
+   item 4; the artboard's frame width), everything else dimmed. Each tile's
+   picture fills its whole content box behind a 6px inset, and the tick
+   badge shrank and gained a ring so it no longer paints over the right
+   answer's artwork (M34, amendment E16 (j), (p)). The round's ending is no
+   longer here: Step 9 replaced the summary card with the shared
+   src/features/interactives/shared/EndScreen. Every rule that moves is scoped under the
    root's .tap--animated modifier (the tick reuses QuizSheet's pop
    keyframes rather than redefining them), so rendering .tap--static under
    reduced motion turns all motion off at once. Colours are theme.css
@@ -14,8 +18,7 @@
    keyframes defined once in
    src/features/interactives/quiz-sheet/quiz-sheet.css (loaded whenever this
    screen mounts, since the shared question screen it renders through
-   imports QuizSheet); .button/.button--primary/.button--secondary in
-   src/ui/primitives.css (Done, Play again).
+   imports QuizSheet).
    Depended on by: src/features/practice/tap/TapTheSignScreen.tsx (imports
    this file once). */
 
@@ -101,7 +104,7 @@
   position: relative;
   box-sizing: border-box;
   height: 140px;
-  padding: 0;
+  padding: 6px;
   border-radius: var(--radius-card);
   border: 2px solid var(--color-hairline);
   background-color: var(--color-surface);
@@ -140,9 +143,14 @@
   opacity: 0.5;
 }
 
+/* M34: the picture box is the tile's whole content box (the tile's 6px
+   padding is the only inset), so the real KYTS artwork paints as large as
+   its own aspect ratio allows -- never scaled past it, never transformed
+   (D7). It replaces the fixed 106x100px box the artboard had. */
 .tap__picture {
-  width: 106px;
-  height: 100px;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .tap__picture img {
@@ -152,16 +160,20 @@
   display: block;
 }
 
+/* E16 (p): once the picture fills the tile the badge would paint over
+   the right answer's own artwork, so it shrinks from 30px to 26px, sits in
+   the tile's own 6px inset and gains a surface-coloured ring that keeps it
+   readable over whatever it does overlap. */
 .tap__tick {
   position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 30px;
-  height: 30px;
+  left: 6px;
+  top: 6px;
+  width: 26px;
+  height: 26px;
   box-sizing: border-box;
-  border-radius: 15px;
+  border: 2px solid var(--color-surface);
+  border-radius: 13px;
   background-color: var(--color-sign-green);
-  border: 2px solid var(--color-on-sign);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,55 +185,4 @@
 
 .tap--animated .tap__tick {
   animation: pop 0.45s 0.1s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
-}
-
-/* --- Round-complete summary card -------------------------------------------- */
-
-.tap__summary {
-  margin: auto 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 24px 20px;
-  border-radius: var(--radius-panel);
-  border: 1px solid var(--color-hairline);
-  background-color: var(--color-surface);
-}
-
-.tap__summary-heading {
-  margin: 0;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 24px;
-  color: var(--color-ink);
-}
-
-.tap__summary-score {
-  margin: 0;
-  font-size: 17px;
-  color: var(--color-muted);
-}
-
-.tap__summary-xp {
-  align-self: flex-start;
-  box-sizing: border-box;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px;
-  background-color: var(--color-marking-yellow);
-  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
-  color: var(--color-sign-ink);
-  display: flex;
-  align-items: center;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 17px;
-}
-
-.tap__summary-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 2px;
 }

@@ -8,15 +8,17 @@
    wears a yellow halo; a locked tile has a green border, a green tick and
    faded content, and a name matched on the first try carries a yellow
    +10 XP badge above its top edge, never clipped; a wrongly tapped name
-   has a red border for the flash. The end card copies Tap the sign's
-   summary card. Every rule that moves is scoped under the root's animated
+   has a red border for the flash. A failed load centres the shared
+   .load-failed notice where the board would be. The round's ending is no
+   longer here: Step 9 replaced the end card with the shared
+   src/features/interactives/shared/EndScreen. Every rule that moves is scoped under the root's animated
    modifier class, so the static modifier (reduced motion) turns all motion
    off at once while the red flash still shows; pop matches quiz-sheet.css
    exactly, and shake is the small side-to-side wobble E31 gives. Colours
    are theme.css tokens and colour mixes of them only (no literals).
-   Depends on: the custom properties defined in src/app/theme.css; .button,
-   .button--primary and .button--secondary in src/ui/primitives.css (Done,
-   Play again); .game-top-bar in src/features/interactives/shared/games.css.
+   Depends on: the custom properties defined in src/app/theme.css;
+   .load-failed in src/ui/primitives.css (the failure notice this file only
+   places); .game-top-bar in src/features/interactives/shared/games.css.
    Depended on by: src/features/interactives/match-pairs/MatchPairs.tsx
    (imports this file once). */
 
@@ -233,49 +235,10 @@
   line-height: 1;
 }
 
-/* --- End card: Tap the sign's summary card ---------------------------------- */
+/* --- Load failure: centred in the full-screen flex layer ------------------- */
 
-.pairs__end {
-  margin: auto 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 24px 20px;
-  border-radius: var(--radius-panel);
-  border: 1px solid var(--color-hairline);
-  background-color: var(--color-surface);
-}
-
-.pairs__end-heading {
-  margin: 0;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 24px;
-  color: var(--color-ink);
-}
-
-.pairs__end-xp {
-  align-self: flex-start;
-  box-sizing: border-box;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px;
-  background-color: var(--color-marking-yellow);
-  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
-  color: var(--color-sign-ink);
-  display: flex;
-  align-items: center;
-  font-family: 'Overpass', system-ui, sans-serif;
-  font-weight: 900;
-  font-size: 17px;
-}
-
-.pairs__end-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 2px;
+.pairs__failed {
+  margin: auto;
 }
 
 /* --- Motion: only under the root's animated modifier -------------------------- */

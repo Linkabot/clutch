@@ -4,10 +4,12 @@
 // and GIVE WAY signs as each other's only options (LOOK_ALIKE_PAIR, no
 // distractor pick, shuffled by rng) and otherwise the answer plus 3
 // distractors from pickDistractors (same family or look-alike tiers);
-// buildTapRound gives 10 distinct answers (firstSignId first when it names
-// a sign, otherwise ignored), each built by optionsFor -- 4 options for an
-// ordinary answer, exactly 2 for a LOOK_ALIKE_PAIR answer; the same seed
-// always builds the same round, and two seeds differ. firstRuleSentence
+// buildTapRound gives 10 distinct answers drawn from its `pool`, each built
+// by optionsFor over its `allSigns` -- 4 options for an ordinary answer,
+// exactly 2 for a LOOK_ALIKE_PAIR answer; the same seed always builds the
+// same round, and two seeds differ. A Q12 family pool still draws its
+// distractors from the whole catalogue, so pickDistractors' cross-family
+// look-alike tier keeps its candidates (amendment E16 (d)). firstRuleSentence
 // reads the first shape-rule sentence, including the C7 outcomes split, and
 // null for C1/C9. sheetContent (E26) proves its outcome/XP come from
 // comparing the chosen id to the answer, while its name (via gameName --
@@ -79,25 +81,13 @@ describe('firstRuleSentence', () => {
 
 describe('buildTapRound', () => {
   it('gives 10 questions with distinct answers', () => {
-    const round = buildTapRound(signs, mulberry32(1));
-    expect(round).toHaveLength(10);
-    expect(new Set(round.map((q) => q.answer.id)).size).toBe(10);
-  });
-
-  it('puts firstSignId first when it names a sign, answers still distinct', () => {
-    const round = buildTapRound(signs, mulberry32(2), 'warning-slippery-road');
-    expect(round[0].answer.id).toBe('warning-slippery-road');
-    expect(new Set(round.map((q) => q.answer.id)).size).toBe(10);
-  });
-
-  it('ignores an unknown firstSignId, still giving 10 distinct answers', () => {
-    const round = buildTapRound(signs, mulberry32(3), 'not-a-real-sign-id');
+    const round = buildTapRound(signs, signs, mulberry32(1));
     expect(round).toHaveLength(10);
     expect(new Set(round.map((q) => q.answer.id)).size).toBe(10);
   });
 
   it('gives every question 4 options with exactly one matching the answer, except the look-alike pair', () => {
-    const round = buildTapRound(signs, mulberry32(4));
+    const round = buildTapRound(signs, signs, mulberry32(4));
     for (const question of round) {
       if (isLookAlike(question.answer.id)) continue;
       expect(question.options).toHaveLength(4);
@@ -106,22 +96,34 @@ describe('buildTapRound', () => {
   });
 
   it('gives every question 4 distinct captions, except the look-alike pair', () => {
-    const round = buildTapRound(signs, mulberry32(4));
+    const round = buildTapRound(signs, signs, mulberry32(4));
     for (const question of round) {
       if (isLookAlike(question.answer.id)) continue;
       expect(new Set(question.options.map((option) => option.name)).size).toBe(4);
     }
   });
 
+  // Scanned rather than seeded: buildTapRound no longer takes a first sign,
+  // so the round-level proof that a LOOK_ALIKE_PAIR answer gets exactly its
+  // pair has to find a seed whose round asks about one (amendment E16 (c)).
   it('gives a look-alike pair question exactly the 2 pair signs', () => {
-    const round = buildTapRound(signs, mulberry32(4), 'orders-stop-sign-and-road-marking');
-    expect(round[0].answer.id).toBe('orders-stop-sign-and-road-marking');
-    expect(round[0].options).toHaveLength(2);
-    expect(round[0].options.map((option) => option.id).sort()).toEqual([...LOOK_ALIKE_PAIR].sort());
+    let pairQuestion: TapQuestion | undefined;
+    for (let seed = 1; seed < 200 && pairQuestion === undefined; seed++) {
+      pairQuestion = buildTapRound(signs, signs, mulberry32(seed)).find((question) =>
+        isLookAlike(question.answer.id),
+      );
+    }
+    if (pairQuestion === undefined) {
+      throw new Error('no seed below 200 gave a round with a look-alike pair answer');
+    }
+    expect(pairQuestion.options).toHaveLength(2);
+    expect(pairQuestion.options.map((option) => option.id).sort()).toEqual(
+      [...LOOK_ALIKE_PAIR].sort(),
+    );
   });
 
   it("gives every distractor the answer's family or the answer's look", () => {
-    const round = buildTapRound(signs, mulberry32(5));
+    const round = buildTapRound(signs, signs, mulberry32(5));
     for (const question of round) {
       for (const option of question.options) {
         const sameFamily = option.family === question.answer.family;
@@ -135,25 +137,25 @@ describe('buildTapRound', () => {
   });
 
   it('is repeatable for one seed', () => {
-    const a = buildTapRound(signs, mulberry32(6)).map((q) => q.answer.id);
-    const b = buildTapRound(signs, mulberry32(6)).map((q) => q.answer.id);
+    const a = buildTapRound(signs, signs, mulberry32(6)).map((q) => q.answer.id);
+    const b = buildTapRound(signs, signs, mulberry32(6)).map((q) => q.answer.id);
     expect(a).toEqual(b);
   });
 
   it('gives different answer lists for two different seeds', () => {
-    const a = buildTapRound(signs, mulberry32(7)).map((q) => q.answer.id);
-    const b = buildTapRound(signs, mulberry32(8)).map((q) => q.answer.id);
+    const a = buildTapRound(signs, signs, mulberry32(7)).map((q) => q.answer.id);
+    const b = buildTapRound(signs, signs, mulberry32(8)).map((q) => q.answer.id);
     expect(a).not.toEqual(b);
   });
 
   it('gives 10 answer ids that differ from the first 10 ids in signs.json', () => {
     const firstTen = signs.slice(0, 10).map((s) => s.id);
-    const round = buildTapRound(signs, mulberry32(9));
+    const round = buildTapRound(signs, signs, mulberry32(9));
     expect(round.map((q) => q.answer.id)).not.toEqual(firstTen);
   });
 
   it("places the answer's index among the 4 options in at least 2 different slots across the 10 questions", () => {
-    const round = buildTapRound(signs, mulberry32(10));
+    const round = buildTapRound(signs, signs, mulberry32(10));
     const positions = new Set(
       round.map((q) => q.options.findIndex((option) => option.id === q.answer.id)),
     );
@@ -169,6 +171,42 @@ describe('optionsFor', () => {
       const options = optionsFor(signs, answer, mulberry32(1));
       expect(options.map((option) => option.id).sort()).toEqual([stop.id, giveWay.id].sort());
     }
+  });
+
+  // Q12's family rounds narrow the ANSWERS only: buildTapRound still hands
+  // optionsFor the whole catalogue, so pickDistractors' tier 2 (other
+  // families with the same look) can fill. Measured over the real
+  // catalogue, exactly 8 of 195 answers need it, so the case names one --
+  // information-road-ahead-primary-route has no same-family look-alike and
+  // two cross-family ones -- and calls optionsFor directly rather than
+  // going through buildTapRound's shuffle (amendment E16 (q)).
+  it('a family pool still draws distractors from other families', () => {
+    const answer = findSign('information-road-ahead-primary-route');
+    const sameFamilyLookAlikes = signs.filter(
+      (sign) =>
+        sign.id !== answer.id &&
+        sign.family === answer.family &&
+        sign.shape === answer.shape &&
+        sameColourSet(sign.colours, answer.colours),
+    );
+    expect(sameFamilyLookAlikes).toHaveLength(0);
+
+    const options = optionsFor(signs, answer, mulberry32(11));
+    expect(options).toHaveLength(4);
+    expect(options.some((option) => option.family !== 'information')).toBe(true);
+  });
+
+  it('buildTapRound answers from the pool and draws options from the catalogue', () => {
+    // The case above proves optionsFor's tiers directly; this one proves
+    // buildTapRound's own wiring, which is the part a family round depends on.
+    // A one-sign pool makes both halves observable: the round is that sign
+    // alone, and its three distractors can only have come from `allSigns`.
+    const answer = findSign('information-road-ahead-primary-route');
+    const round = buildTapRound([answer], signs, mulberry32(11));
+    expect(round).toHaveLength(1);
+    expect(round[0].answer.id).toBe(answer.id);
+    expect(round[0].options).toHaveLength(4);
+    expect(round[0].options.some((option) => option.family !== 'information')).toBe(true);
   });
 
   it('optionsFor shuffles the pair with the rng', () => {
