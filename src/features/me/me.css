@@ -1,0 +1,170 @@
+/* Me tab (plan.md Step 11, amendment E25 (e), (f)): the three grouped
+   sections (Progress, Settings, About), their small capital labels and
+   white cards, the Add to Home Screen row that reuses ListRow's own
+   markup, and the Attribution disclosure's own summary row and rendered
+   body (headings, lists, paragraphs, code spans -- src/features/me/
+   markdown.tsx). overflow-wrap: anywhere on the rendered body is what
+   stops the page scrolling sideways on a long web address (PS11). Every
+   colour, radius and spacing value comes from a src/app/theme.css custom
+   property -- no hex literals here (plan.md § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/me/MeScreen.tsx (imports this file once). */
+
+.me {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+}
+
+.me-section__label {
+  margin: 0 0 8px 2px;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* E25 (d): held back until the progress store's scores have settled, just
+   like Today's own --pending wrapper. */
+.me-progress--pending {
+  visibility: hidden;
+}
+
+.me-progress .practice-header {
+  margin-top: 0;
+}
+
+.me-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-panel);
+  padding: 0 14px;
+}
+
+.me-progress .me-card {
+  margin-top: 10px;
+}
+
+.me-card > :last-child {
+  border-bottom: none;
+}
+
+.me-row {
+  box-sizing: border-box;
+  min-height: 56px;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: 16px;
+}
+
+.me-row-button {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-hairline);
+  border-radius: 0;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.me-about {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.me-about p + p {
+  margin-top: 8px;
+}
+
+/* --- Attribution disclosure (Attribution.tsx) ----------------------------- */
+
+.attribution > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-height: 56px;
+  padding: 10px 0;
+  font-size: 16px;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.attribution > summary::-webkit-details-marker {
+  display: none;
+}
+
+.attribution__label {
+  flex: 1;
+}
+
+.attribution__chevron {
+  flex-shrink: 0;
+  color: var(--color-muted);
+  transition: transform 120ms;
+}
+
+.attribution[open] > summary {
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.attribution[open] .attribution__chevron {
+  transform: rotate(90deg);
+}
+
+.attribution__body {
+  padding: 4px 0 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.attribution__body h3 {
+  font-size: var(--font-size-h3);
+  margin: 14px 0 0;
+}
+
+.attribution__body h4 {
+  font-size: var(--font-size-h4);
+  margin: 18px 0 0;
+}
+
+.attribution__body h5 {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin: 12px 0 0;
+}
+
+.attribution__body ul {
+  list-style: disc;
+  margin: 4px 0 0;
+  padding-left: 20px;
+  color: var(--color-muted);
+}
+
+.attribution__body p {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+}
+
+.attribution__body code {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  background-color: var(--color-press);
+  border-radius: 4px;
+  padding: 0 4px;
+  color: var(--color-ink);
+}

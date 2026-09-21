@@ -15,12 +15,26 @@
 // E12(a)/(b)): the signs browser's pictures measurably fill their tiles,
 // the sign page's OGL words are a real link, and the Decoder's two hints
 // sit fully on screen, clear of the heading, the plate label and the
-// colour chip, showing again on a fresh visit.
-// Depends on: @playwright/test, ./helpers (openAppAt), the production
-// build served by playwright.config.ts's webServer (port 4173).
+// colour chip, showing again on a fresh visit; plus Step 11 (Q17, M15,
+// PS11, M01, amendment E25): Today's Start here card suggests a game and
+// links to it, the Traffic signs card and the muted note; Today and Me
+// both hold their numbers back until the progress store and the sign
+// catalogue have settled, proved by a MutationObserver that fails on any
+// flash of a zero; Me's three sections and its Attribution disclosure,
+// opened, no longer scroll the page sideways; and Me's own Add to Home
+// Screen row opens the panel without ever storing a dismissal -- fold-in
+// E26 (c) extends that last case: the open panel is a fixed layer that
+// truly covers the header band and the tab bar (checked by
+// document.elementFromPoint at both), and its Not now button meets the
+// 44px minimum tap target at a comfortable width.
+// Depends on: @playwright/test, ./helpers (openAppAt), src/app/platform
+// (DISMISSED_KEY, a plain constant read directly rather than through the
+// built app), the production build served by playwright.config.ts's
+// webServer (port 4173).
 // Depended on by: `npm run e2e`, .github/workflows/ci.yml.
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { openAppAt } from './helpers';
+import { DISMISSED_KEY } from '../../src/app/platform';
 
 test('links are visibly links', async ({ page }) => {
   await openAppAt(page, '/clutch/me');
@@ -335,5 +349,221 @@ test.describe('Decoder hints at 390x844', () => {
     await page.reload();
     await expect(page.locator('.decoder__hint--shape')).toBeVisible();
     await expect(page.locator('.decoder__hint--colour')).toBeVisible();
+  });
+});
+
+/**
+ * Puts rows straight into the app's `progress` object store (keyPath
+ * `key`), bypassing the progress-store's own Dexie writes. Opens the
+ * database with no version argument, so the app must already have created
+ * it (openAppAt, called before this) -- same pattern as
+ * tests/e2e/signs.spec.ts's own seedProgressRows, copied locally since
+ * tests/e2e/helpers.ts is not Step 11's to edit.
+ */
+async function seedProgressRows(
+  page: Page,
+  rows: { key: string; value: unknown }[],
+): Promise<void> {
+  await page.evaluate((seedRows) => {
+    return new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open('ClutchDB');
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('progress')) {
+          db.close();
+          reject(new Error('progress object store missing'));
+          return;
+        }
+        const tx = db.transaction('progress', 'readwrite');
+        const store = tx.objectStore('progress');
+        for (const row of seedRows) {
+          store.put(row);
+        }
+        tx.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        tx.onerror = () => {
+          db.close();
+          reject(tx.error);
+        };
+      };
+    });
+  }, rows);
+}
+
+/**
+ * Puts rows straight into the app's `signProgress` object store (keyPath
+ * `signId`) -- same pattern and caveats as seedProgressRows above, copied
+ * locally from tests/e2e/signs.spec.ts.
+ */
+async function seedSignProgress(
+  page: Page,
+  rows: { signId: string; correct: number }[],
+): Promise<void> {
+  await page.evaluate((seedRows) => {
+    return new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open('ClutchDB');
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('signProgress')) {
+          db.close();
+          reject(new Error('signProgress object store missing'));
+          return;
+        }
+        const tx = db.transaction('signProgress', 'readwrite');
+        const store = tx.objectStore('signProgress');
+        for (const row of seedRows) {
+          store.put(row);
+        }
+        tx.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        tx.onerror = () => {
+          db.close();
+          reject(tx.error);
+        };
+      };
+    });
+  }, rows);
+}
+
+test.describe('Today and Me at 390x844', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test('Today suggests a game', async ({ page }) => {
+    await openAppAt(page, '/clutch/');
+
+    const start = page.getByRole('link', { name: /Start here/ });
+    await expect(start).toHaveAttribute('href', '/clutch/practice/tap');
+    await expect(start).toContainText('Play Tap the sign – 10 questions');
+    await expect(page.getByText('0 of 195 collected')).toBeVisible();
+    await expect(page.getByText('Your journey map arrives in Phase 4')).toBeVisible();
+
+    const trafficSigns = page.getByRole('link', { name: 'Traffic signs' });
+    await expect(trafficSigns).toHaveAttribute('href', '/clutch/learn/signs');
+
+    await expect(page.locator('main h1')).toHaveCount(0);
+    await expect(page.locator('main h2')).toHaveCount(0);
+
+    await start.click();
+    await expect(page).toHaveURL(/\/clutch\/practice\/tap$/);
+    await page.getByRole('button', { name: 'Close' }).click();
+    await expect(page).toHaveURL(/\/clutch\/$/);
+  });
+
+  test('Today and Me follow what was played, with no flash of zeros', async ({ page }) => {
+    // Open once so the app creates its IndexedDB database before it is seeded.
+    await openAppAt(page, '/clutch/');
+
+    await seedProgressRows(page, [
+      { key: 'xp', value: 240 },
+      { key: 'lastPlayed:tap', value: Date.now() },
+    ]);
+    await seedSignProgress(page, [{ signId: 'warning-roundabout', correct: 3 }]);
+
+    // Primary's own detector (step11-facts.md § F2), verbatim: it records
+    // ["xp 0", "xp 240"] on the parent's Practice tab, proving it catches a
+    // flash. Installed after seeding, before the cold page.goto below, so it
+    // is present from the very first paint of each reload.
+    await page.addInitScript(() => {
+      const seen: string[] = [];
+      (window as unknown as { __seenOnScreen: string[] }).__seenOnScreen = seen;
+      const shown = (el: Element) =>
+        getComputedStyle(el).visibility !== 'hidden' && el.getClientRects().length > 0;
+      const note = (text: string) => {
+        if (!seen.includes(text)) seen.push(text);
+      };
+      new MutationObserver(() => {
+        const numbers = document.querySelectorAll('main .practice-header__number');
+        if (numbers.length === 2 && shown(numbers[1])) note(`xp ${numbers[1].textContent}`);
+        for (const el of document.querySelectorAll('main a')) {
+          const match = /\d+ of \d+ collected/.exec(el.textContent ?? '');
+          if (match && shown(el)) note(match[0]);
+        }
+      }).observe(document, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: true,
+      });
+    });
+
+    await page.goto('/clutch/');
+    await expect(page.getByText('1 of 195 collected')).toBeVisible();
+    const todaySeen = await page.evaluate(
+      () => (window as unknown as { __seenOnScreen: string[] }).__seenOnScreen,
+    );
+    expect([...todaySeen].sort()).toEqual(['1 of 195 collected', 'xp 240']);
+    await expect(page.getByRole('link', { name: /Start here/ })).toHaveAttribute(
+      'href',
+      '/clutch/practice/sprint',
+    );
+
+    await page.goto('/clutch/me');
+    await expect(page.getByText('1 of 195 collected')).toBeVisible();
+    const meSeen = await page.evaluate(
+      () => (window as unknown as { __seenOnScreen: string[] }).__seenOnScreen,
+    );
+    expect([...meSeen].sort()).toEqual(['1 of 195 collected', 'xp 240']);
+  });
+
+  test('Me has three sections', async ({ page }) => {
+    await openAppAt(page, '/clutch/me');
+
+    await expect(page.locator('main h2')).toHaveText(['Progress', 'Settings', 'About']);
+
+    await page.locator('details.attribution > summary').click();
+    await expect(page.getByRole('heading', { name: 'Overpass', exact: true })).toBeVisible();
+
+    const startsWithHash = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('.attribution__body *'))
+        .filter((el) => el.children.length === 0)
+        .map((el) => (el.textContent ?? '').trim())
+        .filter((text) => text.startsWith('#')),
+    );
+    expect(startsWithHash).toEqual([]);
+
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const innerWidth = await page.evaluate(() => window.innerWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(innerWidth);
+  });
+
+  test('Add to Home Screen opens from Me and leaves the dismissal alone', async ({ page }) => {
+    await openAppAt(page, '/clutch/me');
+    await page.evaluate((key) => window.localStorage.removeItem(key), DISMISSED_KEY);
+
+    const heading = page.getByRole('heading', { name: 'Add to Home Screen' });
+    await page.getByRole('button', { name: 'Add to Home Screen' }).click();
+    await expect(heading).toBeVisible();
+
+    // M01 fold-in (E26 (c)): the panel is a fixed full-screen layer, so a
+    // point over the header band and a point over the tab bar both land
+    // inside it, not on the shell underneath.
+    const coversBandAndTabBar = await page.evaluate(() => {
+      const inLayer = (x: number, y: number) =>
+        Boolean((document.elementFromPoint(x, y) as Element | null)?.closest('.a2hs'));
+      return (
+        inLayer(window.innerWidth / 2, 30) &&
+        inLayer(window.innerWidth / 2, window.innerHeight - 20)
+      );
+    });
+    expect(coversBandAndTabBar).toBe(true);
+
+    const MIN_TAP_TARGET = 44;
+    const notNowBox = await page.getByRole('button', { name: 'Not now' }).boundingBox();
+    if (!notNowBox) throw new Error('Not now has no box');
+    expect(notNowBox.height).toBeGreaterThanOrEqual(MIN_TAP_TARGET);
+    expect(notNowBox.width).toBeGreaterThanOrEqual(300);
+
+    await page.getByRole('button', { name: 'Not now' }).click();
+    await expect(heading).toBeHidden();
+    await expect(page.getByRole('heading', { level: 2, name: 'Settings' })).toBeVisible();
+
+    const dismissed = await page.evaluate((key) => window.localStorage.getItem(key), DISMISSED_KEY);
+    expect(dismissed).toBeNull();
   });
 });

@@ -1,4 +1,6 @@
-/* Global design tokens and iOS-safe base styles for the Clutch app shell.
+/* Global design tokens and iOS-safe base styles for the Clutch app shell,
+   including the .a2hs* classes (plan.md Step 11, amendment E25 (g)) that
+   style the rebuilt Add to Home Screen panel.
    Depends on: tailwindcss (imported below); the self-hosted Overpass and
    Atkinson Hyperlegible woff2 files shipped by @fontsource/overpass and
    @fontsource/atkinson-hyperlegible (latin subset only, imported below —
@@ -222,14 +224,19 @@ summary {
    or filter (real sign pictures inside these tiles are never altered).
    .button--secondary:active, not .button:active (amendment E2): .button
    alone would beat .button--primary's yellow fill by specificity and grey
-   every primary button (Play again, Continue) while pressed. */
+   every primary button (Play again, Continue) while pressed. Step 11
+   (amendment E18 (e), E25 (h)) extends this fill to the Practice cards,
+   Today's start card and the Attribution disclosure's summary row. */
 .button--secondary:active,
 .list-row:active,
 button.chip:active,
 .tap__tile:not(:disabled):active,
 .sprint__option:not(:disabled):active,
 .pairs__tile:not(:disabled):active,
-.signs-tile:active {
+.signs-tile:active,
+.practice-card:active,
+.today__start:active,
+.attribution > summary:active {
   background-color: var(--color-press);
 }
 
@@ -367,4 +374,95 @@ button {
   font-family: 'Overpass', system-ui, sans-serif;
   font-weight: 700;
   font-size: 11px;
+}
+
+/* Add to Home Screen panel (src/app/AddToHomeScreen.tsx, plan.md Step 11,
+   amendment E25 (g), M01): a fixed full-screen layer in both of its uses
+   (replacing the shell on a first visit, and covering Me when opened from
+   its own row), a numbered steps card (a CSS counter, kept a real list for
+   VoiceOver by the component's own role="list" now that list-style is
+   none) and a full-width secondary "Not now" button. */
+.a2hs {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  overflow-y: auto;
+  padding: calc(env(safe-area-inset-top) + 24px) 20px 24px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
+
+.a2hs__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.a2hs__title {
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-h1);
+}
+
+.a2hs__steps {
+  margin: 0;
+  padding: 0 14px;
+  list-style: none;
+  counter-reset: a2hs;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-panel);
+}
+
+.a2hs__step {
+  counter-increment: a2hs;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  font-size: 17px;
+}
+
+.a2hs__step + .a2hs__step {
+  border-top: 1px solid var(--color-hairline);
+}
+
+.a2hs__step::before {
+  content: counter(a2hs);
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--color-sign-blue);
+  color: var(--color-on-sign);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.a2hs__step-text {
+  flex: 1;
+}
+
+.a2hs__glyph {
+  flex-shrink: 0;
+  color: var(--color-tab-active);
+}
+
+/* At 390x844 the button is 350x50 with its bottom at 804. */
+.a2hs__actions {
+  padding: 16px 0 max(16px, env(safe-area-inset-bottom));
+}
+
+.a2hs__actions .button {
+  width: 100%;
 }

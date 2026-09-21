@@ -6,7 +6,9 @@
 // button falls back to the owning tab on a cold deep link instead of
 // leaving the app), and (amendment E44, licence lane S1) that the Me tab's
 // fixed OGL sentence links "Open Government Licence v3.0" to the licence
-// text.
+// text. Step 11 (amendment E18 (a), E25 (i)) moved the attribution file's
+// own heading census behind a closed disclosure, so the service-worker
+// test now opens it before checking for one of its headings.
 // The offline-reload test (amendment A2) spawns a second `vite preview`
 // server on port 4174 and kills it with a real OS signal, because
 // `context.setOffline(true)` is a hard network kill WebKit's service worker
@@ -58,7 +60,8 @@ test('service worker registers and Me shows Offline ready', async ({ page }) => 
   await expect(page.getByTestId('not-official')).toHaveText(
     'Not an official DVSA or government app.',
   );
-  await expect(page.getByText('Overpass')).toBeVisible();
+  await page.locator('details.attribution > summary').click();
+  await expect(page.getByRole('heading', { name: 'Overpass', exact: true })).toBeVisible();
 
   // Amendment E44, licence lane S1: the OGL sentence's own words link to
   // the licence text.

@@ -1,0 +1,92 @@
+/* Journey tab / Today (plan.md Step 11, amendment E25 (c)): the streak/XP
+   pills (styled by src/features/practice/practice.css, imported by
+   JourneyScreen.tsx), the white-with-yellow-outline start card, the
+   Traffic signs card (src/features/learn/learn.css's own classes, reused
+   rather than duplicated) and the muted note. Every value below was
+   measured on the real app in light and dark mode (Primary,
+   step11-facts.md). Every colour and radius comes from a
+   src/app/theme.css custom property -- no hex literals here (plan.md
+   § Rules "Tokens").
+   Depends on: the custom properties defined in src/app/theme.css.
+   Depended on by: src/features/journey/JourneyScreen.tsx (imports this
+   file once). */
+
+.today {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack);
+}
+
+/* E25 (d): the whole screen renders in full from the first paint, but stays
+   invisible until the progress store's scores and the sign catalogue have
+   both settled, so nothing flashes and nothing moves. */
+.today--pending {
+  visibility: hidden;
+}
+
+.today__start {
+  margin-top: 8px;
+  box-sizing: border-box;
+  min-height: 88px;
+  padding: 12px 10px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-marking-yellow);
+  border-radius: var(--radius-panel);
+  box-shadow: 0 3px 0 var(--color-marking-yellow-shadow);
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.today__play {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--radius-card);
+  background-color: var(--color-marking-yellow);
+  color: var(--color-sign-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.today__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.today__kicker {
+  padding: 2px 6px 1px;
+  border-radius: var(--radius-plate);
+  background-color: var(--color-marking-yellow);
+  color: var(--color-sign-ink);
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 15px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.today__title {
+  font-family: 'Overpass', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.today__chevron {
+  flex-shrink: 0;
+  color: var(--color-muted);
+}
+
+.today__note {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+}
