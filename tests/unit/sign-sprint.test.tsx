@@ -42,7 +42,8 @@
  * Depends on: vitest, @testing-library/react, react-router-dom, jsdom
  * (test environment), src/content/signs (loadSigns, gameName),
  * src/content/schemas
- * (Sign type), src/features/interactives/shared/random (mulberry32),
+ * (Sign type), src/engine/progress-store.ts (types),
+ * src/features/interactives/shared/random (mulberry32),
  * src/features/interactives/shared/distractors (isShortCaption),
  * src/features/interactives/sign-sprint/sprint,
  * src/features/interactives/sign-sprint/SignSprint, and a mock of

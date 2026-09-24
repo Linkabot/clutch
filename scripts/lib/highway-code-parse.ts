@@ -49,7 +49,7 @@
 // (normaliseWhitespace, htmlToText), ../../src/content/schemas/highwayCode.ts
 // (the Section/Rule/RuleImage/Interlude shapes this module must produce),
 // ./highway-code-build.ts (ParseOptions, type-only).
-// Depended on by: scripts/ingest-highway-code.ts, scripts/lib/highway-code-build.ts,
+// Depended on by: scripts/lib/highway-code-build.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
 // tests/fixtures/highway-code-section.html,
 // tests/fixtures/highway-code-figcaption.html,

@@ -4,7 +4,8 @@
 // every committed Highway Code section — proving the transform only ever
 // removes whitespace and never touches tags or text.
 // Depends on: vitest, node:fs, node:url, node:path,
-// src/features/code/interlude.ts, content/uk/highway-code/sections/*.json.
+// src/features/code/interlude.ts, src/content/schemas/index.ts (types),
+// content/uk/highway-code/sections/*.json.
 // Depended on by: `npm test` (Vitest run).
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';

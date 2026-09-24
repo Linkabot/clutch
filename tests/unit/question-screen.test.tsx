@@ -16,7 +16,8 @@
  * when `more` is given; and loadState 'error' swaps the region for the
  * centred load-failure notice, whose Retry calls onRetry.
  * Depends on: vitest, @testing-library/react, jsdom (test environment),
- * src/features/interactives/shared/QuestionScreen.
+ * src/features/interactives/shared/QuestionScreen,
+ * src/features/interactives/quiz-sheet/QuizSheet.tsx (types).
  * Depended on by: `npm test` (Vitest run).
  */
 

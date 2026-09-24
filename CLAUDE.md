@@ -29,7 +29,7 @@ clutch/
 │  │                            href-audit.ts, json-diff.ts, kyts-licence.ts, kyts-parse.ts, kyts-select.ts,
 │  │                            national-standard-parse.ts
 │  ├─ make-icons.mjs            (exists)
-│  └─ check-contrast.mjs, check-interactive-size.mjs, check-precache.mjs, compare-highway-code.ts,
+│  └─ check-contrast.mjs, check-headers.mjs, check-interactive-size.mjs, check-precache.mjs, compare-highway-code.ts,
 │                               ingest-highway-code.ts, ingest-national-standard.ts, ingest-signs.ts,
 │                               verify-signs.ts   (exists)
 ├─ src/
@@ -90,6 +90,7 @@ Live: https://linkabot.github.io/clutch/
 | `npm run check:contrast`           | WCAG contrast check on `src/app/theme.css` colour tokens, light and dark mode                                                        |
 | `npm run check:precache`           | checks the production build's Workbox precache manifest against the 8192 KiB budget (150 KiB per sign SVG)                           |
 | `npm run check:interactives`       | checks each interactives registry entry's built size against its `sizeBudgetKiB`                                                     |
+| `npm run check:headers`            | checks every module header under `src/`, `scripts/`, `tests/` against the real import graph (no build, no git history); CI runs it   |
 | `npm run ingest:highway-code`      | fetches the Highway Code from the gov.uk Content API, writes `content/uk/highway-code/` (run manually, once)                         |
 | `npm run ingest:national-standard` | fetches the National Standard for Driving Cars and Light Vans, writes `content/uk/syllabus.json` (run manually, once)                |
 | `npm run ingest:signs`             | fetches every KYTS chapter, selects and classifies the sign set, writes `content/uk/signs/` and `public/signs/` (run manually, once) |
@@ -103,7 +104,7 @@ Tool shells in this session don't have node/npm/gh on `PATH`; every command need
 
 ## Conventions
 
-Every file under `src/`, `tests/`, `scripts/` starts with a header comment: what the module does, what it depends on, what depends on it. Commits are Conventional Commits style, ending with a `Co-Authored-By` trailer. Base path `/clutch/` is explicit everywhere (Vite `base`, router `basename`, manifest `scope`/`start_url`, Workbox `navigateFallback`) — see `docs/ARCHITECTURE.md`. Never `100vh` (use `100dvh`); form inputs stay at 16px+ font-size so iOS Safari doesn't zoom on focus.
+Every file under `src/`, `tests/`, `scripts/` starts with a header comment: what the module does, what it depends on, what depends on it. `npm run check:headers` checks those headers against the real import graph, and CI runs it. Commits are Conventional Commits style, ending with a `Co-Authored-By` trailer. Base path `/clutch/` is explicit everywhere (Vite `base`, router `basename`, manifest `scope`/`start_url`, Workbox `navigateFallback`) — see `docs/ARCHITECTURE.md`. Never `100vh` (use `100dvh`); form inputs stay at 16px+ font-size so iOS Safari doesn't zoom on focus.
 
 ## Content rules
 

@@ -13,7 +13,7 @@
 // against a fake IndexedDB factory.
 // Depends on: dexie.
 // Depended on by: src/engine/progress-store.ts (type), src/engine/progress-state.ts,
-// tests/unit/progress-store.test.ts.
+// tests/unit/progress-store.test.ts, tests/unit/progress-state.test.ts (mocks it).
 
 import Dexie, { type DexieOptions, type EntityTable } from 'dexie';
 

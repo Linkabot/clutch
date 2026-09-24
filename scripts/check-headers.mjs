@@ -3,8 +3,8 @@
 // reports NO-HEADER, NO-PARTS, MISSING-BY, MISSING-ON and SPURIOUS findings, exiting 1 on any.
 // Files come from `git ls-files`, or from a directory walk under --root <dir>.
 // Depends on: node:child_process, node:fs, node:path.
-// Depended on by: nothing imports it; it is run as a child process by
-// tests/unit/check-headers.test.ts.
+// Depended on by: package.json (`check:headers`), .github/workflows/ci.yml (runs it after
+// check:contrast), and it is run as a child process by tests/unit/check-headers.test.ts.
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, posix } from 'node:path';

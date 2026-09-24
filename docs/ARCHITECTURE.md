@@ -166,6 +166,26 @@ fails any entry over its `sizeBudgetKiB` and prints
 (`.github/workflows/ci.yml`) runs it directly after `check:precache`, so a game
 over its budget fails the build.
 
+`npm run check:headers` (`scripts/check-headers.mjs`) checks every header
+comment under `src/`, `scripts/` and `tests/` against the current import
+graph, with no build, no network and no git history, and CI runs it directly
+after `check:contrast`. It reports five findings: `NO-HEADER` (no leading
+comment at all), `NO-PARTS` (a header missing "Depends on" or "Depended on
+by"), `MISSING-BY` (an importer the header's "Depended on by" doesn't name),
+`MISSING-ON` (a relative import the header's "Depends on" doesn't name) and
+`SPURIOUS` (a full path in "Depended on by" that doesn't import the module,
+directly or through a barrel). Files under `tests/` are judged only for
+`NO-HEADER`, `NO-PARTS` and `MISSING-ON` — their "Depended on by" is `npm
+test` or the Playwright run, so no import graph applies to it. Four
+allowances keep true headers from failing: a barrel (an `index.ts`/`index.tsx`
+with at least one relative re-export) is never judged for `MISSING-BY`, so it
+needn't name any of its importers, direct or indirect; a stylesheet is never `SPURIOUS`; a path followed
+by a parenthetical containing "as text", or coming directly after a contrast
+word such as "by" or "via", declares a non-import dependency (a text read, a
+manifest key, an asset) instead of a missed one; and a pragma block (such as
+`/** @vitest-environment jsdom */`) may sit before the header comment and
+still read as part of it.
+
 ## Shared game helpers
 
 `src/features/interactives/shared/` holds the pieces every game shares:

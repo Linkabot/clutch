@@ -10,7 +10,8 @@
 // (plan.md D13 S12). scripts/compare-highway-code.ts calls this on a
 // build's index and sections to print the build's `malformed=<n>` count.
 // Depends on: nothing (plain JS/TS only).
-// Depended on by: scripts/compare-highway-code.ts, tests/unit/href-audit.test.ts.
+// Depended on by: scripts/compare-highway-code.ts, tests/content/highway-code.test.ts,
+// tests/unit/href-audit.test.ts.
 
 const HREF_ATTR = /href="([^"]*)"/g;
 const ZERO_WIDTH_SPACE = '\u200B';

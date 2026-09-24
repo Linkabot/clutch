@@ -7,7 +7,8 @@
 // tests/unit/interlude.test.ts do), so they prove behaviour against the
 // actual ingested Highway Code, not just a hand-built fixture.
 // Depends on: vitest, node:fs, node:path, node:url, src/content/text.ts,
-// src/features/code/interlude.ts, content/uk/highway-code/sections/*.json.
+// src/features/code/interlude.ts, src/content/schemas/index.ts (types),
+// content/uk/highway-code/sections/*.json.
 // Depended on by: `npm test` (Vitest run).
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

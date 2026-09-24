@@ -19,6 +19,7 @@
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:precache": "node scripts/check-precache.mjs",
     "check:interactives": "node scripts/check-interactive-size.mjs",
+    "check:headers": "node scripts/check-headers.mjs",
     "ingest:highway-code": "tsx scripts/ingest-highway-code.ts",
     "ingest:national-standard": "tsx scripts/ingest-national-standard.ts",
     "ingest:signs": "tsx scripts/ingest-signs.ts",

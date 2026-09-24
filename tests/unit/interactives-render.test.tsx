@@ -17,7 +17,8 @@
  * leading slash.
  * Depends on: vitest, @testing-library/react (incl. act), jsdom (test
  * environment),
- * src/features/interactives/shared/{SignImage,useReducedMotion,GameTopBar}.
+ * src/features/interactives/shared/{SignImage,useReducedMotion,GameTopBar},
+ * src/content/schemas/index.ts (types).
  * Depended on by: `npm test` (Vitest run).
  */
 

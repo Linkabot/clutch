@@ -3,8 +3,8 @@
 // best-score rules (D19–D21, Q12). No Dexie import, so it is unit-testable
 // without IndexedDB and safe to call from any clock/zone.
 // Depends on: nothing.
-// Depended on by: src/engine/progress-store.ts, src/engine/score-band.ts,
-// src/engine/round-memory.ts, src/engine/start-here.ts,
+// Depended on by: src/engine/progress-store.ts, src/engine/progress-state.ts,
+// src/engine/score-band.ts, src/engine/round-memory.ts, src/engine/start-here.ts,
 // src/features/journey/JourneyScreen.tsx, src/features/signs/SignScreen.tsx,
 // src/features/signs/SignsScreen.tsx, src/features/signs/filter.ts,
 // src/features/interactives/sign-sprint/SignSprint.tsx,
