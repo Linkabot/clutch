@@ -115,7 +115,7 @@ See `docs/DECISIONS.md` for the locked decisions and their reasoning.
 
 ## Current phase
 
-Phase 2b (UX foundations) built; phone test pending. The resume point is `docs/ROADMAP.md`.
+Phase 2b done; Phase 3 not started. The resume point is `docs/ROADMAP.md`.
 
 ## Handoffs
 

@@ -20,7 +20,7 @@ Status: done (phone test passed, 18 September 2026)
 ## Phase 2b — UX foundations
 
 Goal: Fix the three Phase 2 phone-test defects, then give Clutch a consistent design system, shell and screens (header band, Learn, Highway Code, Today, Me, sign pages, Decoder) and a shared question screen and end screen for the three games, exactly as Lincoln decided in `decisions.md`, so Phase 3 builds on solid foundations.
-Status: built; phone test pending.
+Status: done (phone test passed, 24 September 2026)
 
 Phone test (on the installed app, at the end of the block):
 
