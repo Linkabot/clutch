@@ -34,21 +34,29 @@ clutch/
 │                               verify-signs.ts   (exists)
 ├─ src/
 │  ├─ app/                      (exists) src/app/: App.tsx, routes.tsx, tabs.ts, TabBar.tsx, back.ts,
-│  │                            theme.css, store.ts, platform.ts, pwa.ts, AddToHomeScreen.tsx
-│  ├─ ui/                       (exists) src/ui/: SignPanel, SignPlate, Roundel, Button, Chip, primitives.css
+│  │                            theme.css, store.ts, platform.ts, pwa.ts, persist.ts, AddToHomeScreen.tsx
+│  ├─ ui/                       (exists) src/ui/: SignPanel, SignPlate, Roundel, Button, Chip (barrel-exported
+│  │                            through index.ts), plus ListRow, SegmentedControl, LoadFailed (imported
+│  │                            straight from their own files), primitives.css
 │  ├─ features/
-│  │  ├─ journey  my-car        (exists) placeholder screens
+│  │  ├─ journey/               (exists) src/features/journey/: JourneyScreen.tsx (the Today screen),
+│  │  │                         journey.css
 │  │  ├─ learn/                 (exists) src/features/learn/: Highway Code browser, Signs browser entry,
 │  │  │                         lessons row
 │  │  ├─ practice/              (exists) src/features/practice/: PracticeScreen.tsx, ProgressHeader.tsx,
 │  │  │                         practice.css, src/features/practice/tap/: TapTheSignScreen.tsx, round.ts, tap.css
-│  │  ├─ me/                    (exists) src/features/me/: MeScreen.tsx, Attribution.tsx, OfflineReady.tsx
-│  │  ├─ code/                  (exists) src/features/code/: Highway Code sections, rule page, search
+│  │  ├─ me/                    (exists) src/features/me/: MeScreen.tsx, Attribution.tsx, OfflineReady.tsx,
+│  │  │                         markdown.tsx, me.css
+│  │  ├─ code/                  (exists) src/features/code/: the Highway Code hub (search + Rules/Signs &
+│  │  │                         signals/Annexes tabs), sections, rule page, search
 │  │  ├─ signs/                 (exists) src/features/signs/: SignScreen.tsx, SignsScreen.tsx, families.ts,
 │  │  │                         filter.ts, signs.css
-│  │  └─ interactives/          (exists) src/features/interactives/: registry.ts, quiz-sheet/, sign-sprint/,
-│  │                            match-pairs/, shape-colour-decoder/, shared/
-│  ├─ engine/                   (exists) src/engine/: progress.ts, progress-store.ts, progress-state.ts
+│  │  └─ interactives/          (exists) src/features/interactives/: registry.ts, quiz-sheet/, sign-sprint/
+│  │                            (incl. SprintStart.tsx), match-pairs/, shape-colour-decoder/, shared/ (the
+│  │                            shared QuestionScreen and EndScreen, GameTopBar, VisualGameNote, exit.ts,
+│  │                            SignImage, distractors.ts, random.ts, useReducedMotion.ts)
+│  ├─ engine/                   (exists) src/engine/: progress.ts, progress-store.ts, progress-state.ts,
+│  │                            score-band.ts, round-memory.ts, start-here.ts
 │  ├─ content/                  (exists) src/content/: schemas/, loaders.ts, memo.ts, signs.ts, text.ts
 │  └─ storage/
 │     └─ db.ts                  (exists) Dexie version 2: settings, progress, signProgress tables
@@ -73,9 +81,9 @@ Live: https://linkabot.github.io/clutch/
 | `npm run dev`                      | dev server at `http://localhost:5173/clutch/`                                                                                        |
 | `npm run lint`                     | ESLint                                                                                                                               |
 | `npm run typecheck`                | `tsc -b`                                                                                                                             |
-| `npm test`                         | Vitest unit tests                                                                                                                    |
+| `npm test`                         | Vitest, `tests/unit` and `tests/content` together (`vitest run`)                                                                     |
 | `npm run validate:content`         | Vitest content-only suite (`tests/content`): schema, facts, syllabus, Highway Code and sign content                                  |
-| `npm run build`                    | production build to `dist/`                                                                                                          |
+| `npm run build`                    | production build to `dist/`, then a `postbuild` step copies `dist/index.html` to `dist/404.html` (GitHub Pages SPA fallback)         |
 | `npm run preview`                  | serve the production build locally                                                                                                   |
 | `npm run e2e`                      | build + Playwright e2e (WebKit, iPhone profile)                                                                                      |
 | `npm run icons`                    | regenerate placeholder PWA/apple-touch icons                                                                                         |
@@ -107,7 +115,7 @@ See `docs/DECISIONS.md` for the locked decisions and their reasoning.
 
 ## Current phase
 
-Phase 2 done; Phase 3 not started. The resume point is `docs/ROADMAP.md`.
+Phase 2b (UX foundations) built; phone test pending. The resume point is `docs/ROADMAP.md`.
 
 ## Handoffs
 

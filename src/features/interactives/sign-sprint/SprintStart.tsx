@@ -35,7 +35,8 @@
 // default exports imported straight from their files -- src/ui/index.ts
 // does not export either), ./sprint (eligibleSigns). Its styles are the
 // .sprint-start rules in ./sprint.css, which ./SignSprint.tsx imports.
-// Depended on by: ./SignSprint.tsx, tests/unit/sprint-start.test.tsx.
+// Depended on by: ./SignSprint.tsx (which renders it; it is reached that way by
+// tests/unit/sprint-start.test.tsx, which imports only SignSprint).
 
 import { useEffect, useState } from 'react';
 import type { Sign } from '../../../content/schemas';

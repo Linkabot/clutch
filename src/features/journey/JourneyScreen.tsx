@@ -18,7 +18,7 @@
 // ../../ui (SignPanel), ../interactives/shared/SignImage,
 // ../practice/ProgressHeader, ../practice/practice.css, ../learn/learn.css,
 // ./journey.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/journey-screen.test.tsx.
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

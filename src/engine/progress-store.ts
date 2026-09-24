@@ -5,8 +5,13 @@
 // Q10, Q12, Q17, Q18). Takes an injectable clock so callers (and tests)
 // control "now" instead of the module reaching for `new Date()` itself.
 // Depends on: ./progress, src/storage/db.ts (ClutchDB type only).
-// Depended on by: src/engine/progress-state.ts, tests/unit/progress-store.test.ts,
-// tests/unit/progress-state.test.ts (types).
+// Depended on by: src/engine/progress-state.ts, src/engine/start-here.ts,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx,
+// tests/unit/progress-store.test.ts, tests/unit/progress-state.test.ts (types),
+// tests/unit/journey-screen.test.tsx, tests/unit/me-screen.test.tsx,
+// tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx,
+// tests/unit/start-here.test.ts.
 
 import type { ClutchDB, ProgressRow } from '../storage/db';
 import {

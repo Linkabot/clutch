@@ -25,13 +25,16 @@
 // Depends on: zustand, ./progress (localDayKey), ./progress-store,
 // ../storage/db.
 // Depended on by: tests/unit/progress-state.test.ts,
-// src/features/learn/LearnScreen.tsx,
-// src/features/practice/PracticeScreen.tsx,
+// src/features/learn/LearnScreen.tsx, src/features/journey/JourneyScreen.tsx,
+// src/features/me/MeScreen.tsx, src/features/practice/PracticeScreen.tsx,
 // src/features/practice/tap/TapTheSignScreen.tsx,
 // src/features/signs/SignScreen.tsx, src/features/signs/SignsScreen.tsx,
 // src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
-// tests/unit/match-pairs.test.tsx, tests/unit/sign-sprint.test.tsx.
+// tests/unit/journey-screen.test.tsx, tests/unit/match-pairs.test.tsx,
+// tests/unit/me-screen.test.tsx, tests/unit/sign-screen.test.tsx,
+// tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx.
 
 import { create } from 'zustand';
 import { db } from '../storage/db';

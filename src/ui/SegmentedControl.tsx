@@ -8,7 +8,8 @@
 // Depends on: react (JSX only); class names are styled by
 // src/ui/primitives.css (imported once from src/main.tsx, after theme.css).
 // Depended on by: src/features/code/HighwayCodeSectionsScreen.tsx,
-// tests/unit/segmented-control.test.tsx (later steps add Sign Sprint).
+// src/features/interactives/sign-sprint/SprintStart.tsx,
+// tests/unit/segmented-control.test.tsx.
 interface SegmentedOption {
   id: string;
   label: string;

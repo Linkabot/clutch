@@ -9,8 +9,10 @@
 // src/content/signs.ts (signImageUrl).
 // Depended on by: src/features/signs/SignScreen.tsx,
 // src/features/signs/SignsScreen.tsx, src/features/learn/LearnScreen.tsx,
+// src/features/journey/JourneyScreen.tsx,
 // src/features/practice/PracticeScreen.tsx,
 // src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/shared/EndScreen.tsx,
 // src/features/interactives/sign-sprint/SignSprint.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
 // src/features/interactives/shape-colour-decoder/Decoder.tsx,

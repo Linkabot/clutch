@@ -6,9 +6,10 @@
 // through ./index.ts, which this module is deliberately outside of);
 // styled by ./primitives.css.
 // Depended on by: src/features/signs/SignScreen.tsx (imported straight from
-// this file, like src/ui/ListRow.tsx), tests/unit/sign-screen.test.tsx
-// (later steps add the shared question screen, which the games render
-// through).
+// this file, like src/ui/ListRow.tsx; its failure state is rendered by tests/unit/sign-screen.test.tsx
+// through SignScreen), src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/shared/QuestionScreen.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx.
 import Button from './Button';
 
 interface LoadFailedProps {

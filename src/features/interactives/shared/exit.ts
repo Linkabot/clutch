@@ -16,7 +16,8 @@
 // ../../../app/back (backTarget).
 // Depended on by: src/features/practice/tap/TapTheSignScreen.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
-// tests/unit/exit.test.ts (Step 10 adds Sign Sprint).
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// tests/unit/exit.test.ts.
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { backTarget } from '../../../app/back';

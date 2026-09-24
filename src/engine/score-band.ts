@@ -2,7 +2,12 @@
 // maps to a red/orange/green band, and Sign Sprint's maximum score scales
 // with the round length it was played at.
 // Depends on: ./progress (SprintLengthId).
-// Depended on by: tests/unit/score-band.test.ts.
+// Depended on by: src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/shared/EndScreen.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// tests/unit/score-band.test.ts.
 
 import type { SprintLengthId } from './progress';
 

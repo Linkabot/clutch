@@ -8,6 +8,8 @@
 // separately as ALL_CHIP_LABEL and ALL_SIGNS_LABEL.
 // Depends on: ../../content/schemas (SignFamily type only).
 // Depended on by: src/features/signs/SignsScreen.tsx, src/features/signs/SignScreen.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
 // tests/unit/signs-filter.test.ts.
 
 import type { SignFamily } from '../../content/schemas';

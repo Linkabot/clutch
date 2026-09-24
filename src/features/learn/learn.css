@@ -12,7 +12,8 @@
    attributes cannot read a CSS custom property directly, so each shape's
    fill/stroke lives in a class here instead of an inline style.
    Depends on: the custom properties defined in src/app/theme.css.
-   Depended on by: src/features/learn/LearnScreen.tsx. */
+   Depended on by: src/features/learn/LearnScreen.tsx,
+   src/features/journey/JourneyScreen.tsx. */
 
 .learn-cards {
   display: flex;

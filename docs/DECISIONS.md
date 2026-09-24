@@ -134,3 +134,223 @@ the three emblems excepted (Decision 15); `public/ATTRIBUTION.md`
 remains the record of sources.
 Why: MIT was chosen as short and permissive, and because a public
 repo with no licence reads as all rights reserved.
+
+## Decision 17 — The shell, four tabs and Today (24 September 2026)
+
+Choice: On the four tab roots (Journey, Learn, Practice, Me) the tab's
+own name is the page's one `<h1>`, shown large and centred in the
+header band beside the CLUTCH wordmark, with no second title in the
+content below; inner pages (a sign page, a Highway Code section) keep
+today's band (back button plus CLUTCH) and add their own large heading
+underneath it, with real spacing above and below. The tab bar shows
+four tabs, evenly spaced — Journey, Learn, Practice, Me; My Car is
+hidden, and `/my-car` and any unrecognised path redirect to `/` rather
+than 404ing. Journey is now "Today": the streak and XP pills, a
+"Start here" card suggesting what to do next (Tap the sign while
+nothing is collected yet, else whichever game was least recently
+played), a Traffic signs card ("N of 195 collected"), and a muted line
+"Your journey map arrives in Phase 4" — with no separate heading of
+its own, since the band already carries the page's one title. Today
+and Me both render their whole layout from first paint but stay
+invisible until the progress store's numbers and the sign catalogue
+have both settled, so nothing flashes or moves on a cold open.
+Why: A single, consistent title per screen reads calmer than a
+repeated one; hiding My Car until Phase 5 keeps the tab bar honest
+about what is actually built; Today gives Journey a reason to open
+first without promising the map before Phase 4 draws it.
+Reference: handoffs/ux-foundations/decisions.md, Q1, Q16, Q17.
+
+## Decision 18 — Sign names, Memory tips and the Decoder (24 September 2026)
+
+Choice: A sign's trailing full stop is trimmed at display time only
+(`displayName()`); `signs.json` itself stays verbatim. In the games,
+STOP and GIVE WAY are named by the Highway Code's own wording —
+"Stop and give way" and "Give way to traffic on major road"
+(`gameName()`) — and when either is the answer, Tap the sign asks a
+two-sign question naming just those two look-alikes; the sign page
+keeps the KYTS name throughout. Decision 10 is reopened: a sign's
+"Memory tip" row resolves the sign's own hook first, then its rule's
+hook, then its family's hook, and shows nothing for the 19 C9
+direction signs, which have none of their own — 176 of 195 signs show
+a tip, on the sign page and the quiz sheet alike (the quiz sheet's own
+tip stays unlabelled; the sign page's row is labelled "Memory tip").
+Decision 22 (2B) is corrected: its DecoderB artboard DOES show how a
+learner chooses a shape or colour, via a swatch row — tap-to-cycle
+still stands underneath it, and two hint callouts
+("Tap the sign to change its shape", "Tap to change colour") show
+every time the Decoder is opened and disappear after that visit's
+first change, with no persisted flag. A shape/colour pair UK signs
+don't use (e.g. blue triangle) draws as a dashed, unfilled outline
+under the heading "<Colour> <shape>s aren't used" and the line
+"UK signs don't use this pair.", with its exceptions paragraph hidden.
+Why: The Highway Code's own wording for STOP and GIVE WAY avoids
+repeating KYTS's long instruction text as a game answer; resolving a
+tip own → rule → family, rather than showing none whenever a sign
+lacks its own, keeps almost every sign page useful for revision; the
+Decoder's per-visit hints teach the controls once without nagging a
+returning learner.
+Reference: handoffs/ux-foundations/decisions.md, Q2, Q4, Q5, Q6, Q7.
+
+## Decision 19 — How the games ask, end and leave (24 September 2026)
+
+Choice: In Tap the sign and Sign Sprint, a wrong-answer candidate list
+is built from every other sign whose name differs from the answer's
+and from each other's (not limited to the answer's family, since the
+tiers below apply the family preference themselves); it then prefers
+same-family look-alikes of the same shape and colours, then
+other-family look-alikes of the same shape and colours, then falls
+back to the rest of the answer's family — signs with no clear shape
+(`other`, 71 signs, including STOP and GIVE WAY) keep the plain
+family-only pick. Tap the sign and Match Pairs now end on the same
+shared `EndScreen` Sign Sprint always used: a score panel filled by
+the round's band (red, orange or green, from `src/engine/score-band.ts`'s
+`scoreBand()`/`sprintBandMax()` — 0.9 or higher of the maximum is
+green, 0.6 or higher is orange, else red; Sign Sprint's own maxima
+scale with its length at 10 a minute, and a No limit round is judged
+against what it actually answered), XP, a Best chip, the streak, a
+"Collected!" line, one lost-sign notice per a Decision 20 loss, an
+optional gentle zero line, and a list of signs to look at again. A
+game's ✕ and its end screen's Done return to the in-app screen the
+game was opened from — a sign page, Today, Practice, or another end
+screen's sign row — through `useExitGame()`, which asks
+`src/app/back.ts`'s own rule, else falling back to Practice; Sign
+Sprint's Done instead returns to its own start page. Opening a row's
+sign page from an end screen and going Back shows that same end
+screen again, because `src/engine/round-memory.ts` remembers each
+game's last finished round in memory. When a picture game opens,
+VoiceOver hears once:
+"This game is visual. The sign pages have every sign's name and meaning."
+Why: Distractors that really look like the answer, drawn from the
+whole catalogue rather than one family, make the games harder to
+guess and more useful for revision; one shared ending keeps every
+game's feedback consistent; returning a learner to where they started
+(not always Practice) keeps a game feeling like an aside rather than a
+detour.
+Reference: handoffs/ux-foundations/decisions.md, Q8, Q9, Q14, Q18, Q19.
+
+## Decision 20 — Collecting and losing a sign (24 September 2026)
+
+Choice: An uncollected sign's page counts down
+"Get it right 3 times to collect it",
+"Get it right 2 more times to collect it",
+"Get it right 1 more time to collect it", then shows COLLECTED at 3. A
+collected sign answered wrong 3 times in a row loses its collection
+(its correct count resets to 0, so re-collecting takes 3 right answers
+again): "wrong" means the sign was the question's answer and the
+learner picked another one, in Tap the sign or Sign Sprint only —
+Match Pairs' mismatches never count, since a bad pairing doesn't say
+which sign was misread; any right answer on the sign resets the count
+to 0 first; the loss is never interrupted mid-round — it is told on
+that round's own end screen, "You lost <sign> — 3 wrong in a row",
+with the sign's picture and a "Practise signs like this" button; the
+count itself lives on the sign's `signProgress` row as a new
+`wrongInARow` field, read as 0 on a row written before this block.
+Why: A countdown line is more encouraging than a fixed fraction; not
+showing the wrong-in-a-row counter keeps the games from feeling
+punitive turn to turn, while still making forgetting a sign cost
+something and giving a direct way back to practising it.
+Reference: handoffs/ux-foundations/decisions.md, Q3, Q12.
+
+## Decision 21 — Sign Sprint's start page, lengths and Finish (24 September 2026)
+
+Choice: Opening Sign Sprint shows a start page (`SprintStart.tsx`)
+before any question: one title, "Sign Sprint", centred in the top bar
+with ✕ on the left; a score card whose kicker reads "Best at
+<length>" for the length currently chosen below, over that length's
+best score (with a 60-second `Roundel` at the card's corner) and, when
+one exists, a "Last round" row with a coloured dot and its own length;
+a streak pill; a "Which signs" row of family chips (All, or one or
+more of the six families) with a live "<n> signs in this sprint"
+count; a Length control (30 sec / 1 min / 5 min / No limit, with
+"No limit: play until you stop." shown only while No limit is chosen);
+and a full-width yellow Start at the bottom. The page always reopens on
+the learner's last-used choices, and the end screen's Done returns
+here (not to Practice). During a No limit round, a Finish button
+stands in the top bar where the clock sits on timed rounds: tapping it
+after at least one answer shows the end screen; before any answer it
+returns to the start page instead. ✕ always leaves through
+`useExitGame()` with no ending shown, on a No limit round exactly as
+on a timed one. XP weighting and an in-round streak bonus are deferred
+to Phase 4, designed together with levels.
+Why: Putting the bests, the filter and the length together, defaulted
+to last time, gets a learner playing again in one tap; a dedicated
+Finish button (Lincoln's choice) makes ending an open-ended round a
+deliberate action rather than overloading ✕ with two meanings.
+Reference: handoffs/ux-foundations/decisions.md, Q10, Q11; plan.md P12.
+
+## Decision 22 — The Highway Code hub (24 September 2026)
+
+Choice: `/learn/code` is a hub: a "Search the Highway Code" box at the
+top (search left the Learn tab), and a three-tab `SegmentedControl` —
+"Rules | Signs & signals | Annexes" — kept in the URL (`?tab=`) so Back
+returns to the tab last chosen; the Introduction section sits with
+Rules; rule badges no longer wrap. A rule page's context line
+("Rule 126 · Braking") is built by `src/features/code/interlude.ts`'s
+`ruleContextHeading`, which replaces the plan's original "nearest
+interlude's last line" rule: among the section's interludes at or
+before the rule's own position, it takes the nearest one (ties toward
+the last), then that interlude's own last bare line of text
+(1–80 characters); for the 48 rules that come before their section's
+first interlude (e.g. rules 1–6, 103–106), it falls back to the
+section's own preamble's last bare line instead. Highway Code sections
+of kind `other` sit under the Annexes tab.
+Why: Splitting the page into tabs and moving search out of Learn puts
+each kind of content in one obvious place; falling back to the
+preamble keeps every rule's context line meaningful even before a
+section's first interlude.
+Reference: handoffs/ux-foundations/decisions.md, Q15; plan.md
+amendment E6.
+
+## Decision 23 — Small copy and rules chosen under the autonomy grant (24 September 2026)
+
+Choice: The strings below are as they exist in `src/` today (never the
+six the original brief misquoted, corrected in plan.md amendment
+E27 (b)): `Loading…`; "This didn't load." with a `Retry` button;
+"Get it right 1 more time to collect it"; Match Pairs' end screen
+splits its old combined sentence into the number of pairs matched
+right first time, the words "right first time", and the sub-line
+"<n> pairs matched"; Sign Sprint's zero line, shown only when the
+round scored 0 with at least one wrong answer, is
+"No signs named this time — have a look at the ones below."; the
+Sprint start page's own labels "Best at <length>", "Last round",
+"Which signs" and "<n> signs in this sprint"; the rule context line
+and the `other` sections under Annexes recorded in Decision 22; and a
+No limit Sign Sprint round ending with Finish, never ✕ (Decision 21).
+Why: Recording the strings as built, cited against `src/`, keeps this
+document from drifting the way the original brief did — six of its
+quoted strings had already been superseded by the time Step 12 ran.
+Reference: handoffs/ux-foundations/decisions.md § "Taken under the
+autonomy grant"; `facts-12-strings.out`.
+
+## Decision 24 — What Phase 2b leaves open (24 September 2026)
+
+Choice: Six items from the September UX review stay open, deferred to
+Phase 3, because fixing them now would have widened this block past
+its intended size: M01's branding half (the Add to Home Screen panel
+is rebuilt from the shared primitives but not yet given the app's own
+plate chrome); M08's `htmlToText` join fix (Step 4 shipped the
+word-boundary truncation; the join fix that collapses the space just
+inside a quote or bracket did not); M15's timestamp, file-path and
+test-date extras (not added to the rendered attribution); M42's
+All/Collected toggle halves (only the family chips were widened to a
+44px tap target; the toggle's own two halves are still 36px); M32's
+caption residue (101 of 195 sign captions are still clamped); and
+M34's sign-page picture box (still 124px tall, unlike the enlarged
+tile pictures the browser and the games got). Also recorded as open:
+M40's shell half — the app header and the tab bar are never made
+`inert` while a game's full-screen layer is mounted, only the question
+region inside a game goes `inert` while its own quiz sheet is open;
+M06, the 14 DVSA theory-test topic names and `content/uk/topics.json`,
+moved to Phase 3's own sourcing decision, because no Open Government
+Licence source names them (46 GOV.UK pages checked by script); and,
+from `suggestions.md`, U9 (Tap the sign and Match Pairs still run
+their end-of-round write unguarded, so a ✕ pressed while the last
+write is in flight can show a stale ending — only Sign Sprint was
+guarded, in Step 10) and U10 (Practice and Learn still flash a zero or
+placeholder value on a cold open; only Today and Me got the
+pending/settled gate).
+Why: Phase 2b was scoped at about Phase 0's size; writing these six
+down, rather than folding them in quietly, means Phase 3 picks them up
+by decision, not by accident.
+Reference: handoffs/ux-foundations/decisions.md; plan.md amendments
+E14 (g), E19 (f), P12; `suggestions.md` U9, U10.

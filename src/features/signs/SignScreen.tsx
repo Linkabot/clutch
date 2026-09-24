@@ -30,7 +30,7 @@
 // like ../../ui/ListRow), ../interactives/shared/SignImage,
 // ../interactives/shared/distractors (isShortCaption), ./families
 // (familyMeta), ./signs.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/sign-screen.test.tsx.
 
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';

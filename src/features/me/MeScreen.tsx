@@ -12,7 +12,7 @@
 // ../practice/practice.css, ../../ui/ListRow, ../../app/platform
 // (readPlatform), ../../app/AddToHomeScreen, ./OfflineReady, ./Attribution,
 // ./me.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/me-screen.test.tsx.
 
 import { useEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react';

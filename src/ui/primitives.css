@@ -7,7 +7,9 @@
    Depended on by: src/main.tsx; every component in src/ui/*.tsx via the
    class names below, including src/ui/ListRow.tsx's .list-row rules,
    src/ui/SegmentedControl.tsx's .segmented rules and src/ui/LoadFailed.tsx's
-   .load-failed rule. */
+   .load-failed rule; also src/features/interactives/shared/question.css,
+   whose .question-screen__failed rule only positions .load-failed inside a
+   game's full-screen layer rather than restyling it. */
 
 /* SignPanel: coloured outer frame holding a white inner border. */
 .sign-panel {

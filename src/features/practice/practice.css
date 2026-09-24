@@ -6,7 +6,8 @@
    literals here (plan.md § Rules "Tokens").
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/practice/PracticeScreen.tsx (imports this
-   file once). */
+   file once), src/features/journey/JourneyScreen.tsx,
+   src/features/me/MeScreen.tsx. */
 
 /* --- Progress header (ProgressHeader.tsx) --------------------------------- */
 

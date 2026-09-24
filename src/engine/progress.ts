@@ -4,8 +4,12 @@
 // without IndexedDB and safe to call from any clock/zone.
 // Depends on: nothing.
 // Depended on by: src/engine/progress-store.ts, src/engine/score-band.ts,
-// src/engine/round-memory.ts, src/features/signs/SignScreen.tsx,
+// src/engine/round-memory.ts, src/engine/start-here.ts,
+// src/features/journey/JourneyScreen.tsx, src/features/signs/SignScreen.tsx,
 // src/features/signs/SignsScreen.tsx, src/features/signs/filter.ts,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/interactives/sign-sprint/SprintStart.tsx,
+// src/features/interactives/sign-sprint/sprint.ts,
 // tests/unit/progress.test.ts, tests/unit/round-memory.test.ts.
 
 /** A saved day streak: how many consecutive days, and the local day key it last advanced on. */

@@ -5,8 +5,10 @@
 // Depends on: react (JSX only), react-router-dom (Link), lucide-react
 // (ChevronRight); class names are styled by src/ui/primitives.css (imported
 // once from src/main.tsx, after theme.css).
-// Depended on by: tests/unit/list-row.test.tsx (later steps add screen
-// consumers, e.g. the Highway Code sections list and the Learn tab).
+// Depended on by: tests/unit/list-row.test.tsx,
+// src/features/code/HighwayCodeSectionsScreen.tsx,
+// src/features/code/SearchScreen.tsx, src/features/code/SectionScreen.tsx,
+// src/features/interactives/shared/EndScreen.tsx, src/features/me/MeScreen.tsx.
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';

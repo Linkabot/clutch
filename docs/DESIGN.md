@@ -2,8 +2,10 @@
 
 The single reference for Clutch's visual language (Decision 13 — Signage
 base, `docs/DECISIONS.md`): the design tokens in `src/app/theme.css`, the
-type scale, and the five UI primitives in `src/ui/`. New screens should
-compose these rather than hand-rolling colours, spacing or fonts.
+type scale, and the eight UI primitives in `src/ui/` (`SignPanel`,
+`SignPlate`, `Roundel`, `Button`, `Chip`, `ListRow`, `SegmentedControl`,
+`LoadFailed`). New screens should compose these rather than hand-rolling
+colours, spacing or fonts.
 
 ## Tokens
 
@@ -24,19 +26,22 @@ shows "same" for those rows under Dark.
 | `--color-tab-bar`               | `#FFFFFF` | `#16181D` | tab bar background                                                                              |
 | `--color-tab-active`            | `#0A5DB0` | `#5AA8F2` | active tab; focus-visible outline on `Button`/`Roundel`                                         |
 | `--color-tab-inactive`          | `#6B6E75` | `#8D9098` | inactive tab                                                                                    |
+| `--color-link`                  | `#1D4ED8` | `#8AB4F8` | `a.text-link` (PS16): an inline link inside a paragraph of reading text                         |
+| `--color-press`                 | `#E6E8EC` | `#2A2D33` | the shared press-state fill (background only, M02) and `.segmented`'s track background          |
 | `--color-sign-blue`             | `#0A5DB0` | same      | `SignPanel` blue fill, `SignPlate` current tone, `Chip` advice ring                             |
 | `--color-sign-blue-shadow`      | `#073F78` | same      | reserved for future blue-panel shading                                                          |
 | `--color-sign-green`            | `#00703C` | same      | `SignPanel` green fill                                                                          |
-| `--color-sign-green-shadow`     | `#004F2A` | same      | reserved for future green-panel shading                                                         |
+| `--color-sign-green-shadow`     | `#004F2A` | same      | the correct/answer feedback border shadow in Tap the sign and Sign Sprint                       |
 | `--color-sign-red`              | `#D4202C` | same      | `Roundel` ring, `Chip` law ring                                                                 |
+| `--color-band-orange`           | `#B45309` | same      | the orange (middle) score-band panel fill under `--color-on-sign` text (Q9); light block only   |
 | `--color-sign-ink`              | `#15171C` | same      | `Button` primary text, `SignPlate` text/border, `Roundel` number — stays dark even in dark mode |
 | `--color-marking-yellow`        | `#FFCC00` | same      | `Button` primary fill, `Roundel` selected halo                                                  |
 | `--color-marking-yellow-shadow` | `#C49B00` | same      | `Button` primary press-down shadow                                                              |
-| `--color-map-grass`             | `#8ACB6A` | `#1C352E` | reserved for the Journey map (Phase 2+)                                                         |
-| `--color-map-trees-1`           | `#5FA544` | same      | reserved for the Journey map (Phase 2+)                                                         |
-| `--color-map-trees-2`           | `#79BF5A` | same      | reserved for the Journey map (Phase 2+)                                                         |
-| `--color-road`                  | `#3A3F4B` | `#2A2F3E` | reserved for the Journey map (Phase 2+)                                                         |
-| `--color-road-strip`            | `#2B2E35` | same      | reserved for the Journey map (Phase 2+)                                                         |
+| `--color-map-grass`             | `#8ACB6A` | `#1C352E` | Sign Sprint's and the Decoder's ground scenery (`.sprint__ground`, `.decoder__ground`)          |
+| `--color-map-trees-1`           | `#5FA544` | same      | Sign Sprint's and the Decoder's tree scenery                                                    |
+| `--color-map-trees-2`           | `#79BF5A` | same      | Sign Sprint's and the Decoder's tree scenery                                                    |
+| `--color-road`                  | `#3A3F4B` | `#2A2F3E` | reserved for the Journey map (Phase 4)                                                          |
+| `--color-road-strip`            | `#2B2E35` | same      | `.game-top-bar__track`'s background, the progress bar at the top of a question screen           |
 | `--color-on-sign`               | `#FFFFFF` | same      | text on a coloured sign; `SignPanel` inner border; `SignPlate`/`Roundel` white background       |
 
 Radii and one dimension token, also from `src/app/theme.css` (no light/dark
@@ -50,6 +55,19 @@ split — signage shapes do not change with colour scheme):
 | `--radius-button`      | `10px` | `Button` corners                        |
 | `--radius-card`        | `12px` | reserved for card-style surfaces        |
 | `--radius-plate`       | `4px`  | `SignPlate` corners                     |
+
+Type scale and page rhythm tokens (Step 3a, M03/M04), light `:root` only —
+signage shapes and page rhythm do not change with colour scheme:
+
+| Token              | Value  | Used for                                                                                  |
+| ------------------ | ------ | ----------------------------------------------------------------------------------------- |
+| `--font-size-h1`   | `28px` | tab-root and inner-page big headings (plain `h1`, `.app-header__title`), line-height 1.15 |
+| `--font-size-h2`   | `22px` | section headings (`h2`)                                                                   |
+| `--font-size-h3`   | `18px` | `h3`                                                                                      |
+| `--font-size-h4`   | `16px` | `h4`                                                                                      |
+| `--space-page-top` | `24px` | `.app-main`'s top padding under the header band                                           |
+| `--space-section`  | `24px` | vertical rhythm between page sections, e.g. `.load-failed`'s padding                      |
+| `--space-stack`    | `12px` | small vertical gaps, e.g. `.today`'s flex gap, `.segmented`'s margin                      |
 
 ## Type scale
 
@@ -65,19 +83,59 @@ split — signage shapes do not change with colour scheme):
 
 ## Primitives (`src/ui/`)
 
-All five are re-exported from `src/ui/index.ts` and styled from a single
+`src/ui/` holds eight primitive components. Five (`SignPanel`, `SignPlate`,
+`Roundel`, `Button`, `Chip`) are re-exported from `src/ui/index.ts`; the
+other three (`ListRow`, `SegmentedControl`, `LoadFailed`) are deliberately
+outside that barrel and are imported straight from their own files (each
+one's own header comment says so). All eight are styled from a single
 stylesheet, `src/ui/primitives.css` (imported once, from `src/main.tsx`,
 after `theme.css`) — tokens only, no hard-coded colours.
 
 ### SignPanel
 
 `src/ui/SignPanel.tsx` — props `colour: 'blue' | 'green'`,
-`size?: 'normal' | 'small'` (default `'normal'`), `children`. A coloured
-outer frame (`--radius-panel`, 5px padding; small: 8px radius, 3px
-padding) holding a 2.5px `--color-on-sign` inner border
-(`--radius-panel-inner`); content colour is `--color-on-sign`. Used for
-the header wordmark in `src/app/App.tsx` and other short blue/green
-sign-style callouts.
+`size?: 'normal' | 'small'` (default `'normal'`), `block?: boolean`
+(default `false`, M12), `children`. A coloured outer frame
+(`--radius-panel`, 5px padding; small: 8px radius, 3px padding) holding a
+2.5px `--color-on-sign` inner border (`--radius-panel-inner`); content
+colour is `--color-on-sign`. Used for the header wordmark in
+`src/app/App.tsx` and other short blue/green sign-style callouts.
+`block` (`.sign-panel--block`: `display: block; width: 100%;
+box-sizing: border-box;`) turns the panel into a full-width block instead
+of an inline element, for the Learn tab's cards, Today's Traffic signs
+card, and the rule-badge list rows in the Highway Code hub, search and
+section screens.
+
+### ListRow
+
+`src/ui/ListRow.tsx` (M05) — a full-width tappable row that navigates via
+`react-router-dom`'s `Link`: props `to: string`, `leading?: ReactNode`,
+`title: ReactNode`, `subtitle?: ReactNode`, `trailing?: ReactNode`,
+`state?: unknown`. At least 56px tall, a bottom hairline, a 16px title and
+an optional 14px muted subtitle; `trailing` defaults to a chevron when not
+given. Purely presentational, no state of its own; its press-state fill
+is the shared rule below, not a rule of its own. Used by the Highway Code
+hub, search and section screens, the shared `EndScreen`'s sign list, and
+the Me screen's rows.
+
+### SegmentedControl
+
+`src/ui/SegmentedControl.tsx` (Q15) — a `role="tablist"` of equal-width
+options in a light grey (`--color-press`) rounded track, the selected
+option a raised white pill with ink text: props `label: string`,
+`options: { id: string; label: string }[]`, `value: string`,
+`onChange: (id: string) => void`. Purely presentational — the caller owns
+`value` and reacts to `onChange`. Used by the Highway Code hub's
+Rules / Signs & signals / Annexes tabs and by Sign Sprint's start page for
+its Length picker.
+
+### LoadFailed
+
+`src/ui/LoadFailed.tsx` — a load-failure notice: prop `onRetry: () => void`.
+Renders `role="alert"` with the text "This didn't load." and a primary
+`Retry` button. Used directly by the sign page, and through the shared
+`QuestionScreen` by Tap the sign and Sign Sprint, and by Sign Sprint's
+start page.
 
 ### SignPlate
 
@@ -118,6 +176,72 @@ on `:active` (`transform: translateY(4px)`, no shadow,
 (neutral). Used on the rule page (`src/features/code/RuleScreen.tsx`),
 `SearchScreen.tsx` and `SectionScreen.tsx` to mark a Highway Code rule
 MUST/MUST NOT (law) or advisory.
+
+## Shell: the header band
+
+`src/app/App.tsx` renders `.app-shell` > a sticky `.app-header` (a 3-column
+grid, `1fr auto 1fr`, the third column always empty so the middle one
+stays centred): column 1 (`.app-header__start`) holds the CLUTCH
+`SignPanel` wordmark plus, on an inner (non-tab-root) page, a Back button;
+column 2 holds the tab's own name as a centred `<h1 className="app-header__title">`
+on a tab root, and nothing at all on an inner page. An inner page instead
+renders its own big `<h1>` (`--font-size-h1`, 28px) under the band, with
+`--space-page-top` above it — never a second title in the band itself. The
+four tabs (`src/app/tabs.ts`) are Journey, Learn, Practice and Me; My Car
+is hidden, and both `/my-car` and any unrecognised path redirect to `/`.
+
+## Press states (M02)
+
+One shared rule in `src/app/theme.css` fills every tap target that is not
+the yellow primary button with `--color-press` on `:active` — background
+only, never a transform or filter, so a real sign picture inside a pressed
+tile is never altered:
+`.button--secondary:active, .list-row:active, button.chip:active,
+.tap__tile:not(:disabled):active, .sprint__option:not(:disabled):active,
+.pairs__tile:not(:disabled):active, .signs-tile:active,
+.practice-card:active, .today__start:active,
+.attribution > summary:active { background-color: var(--color-press); }`.
+It deliberately targets `.button--secondary`, not `.button`, so it never
+outranks the primary button's own yellow fill by specificity.
+
+## The shared question screen, quiz sheet and end screen
+
+`src/features/interactives/shared/QuestionScreen.tsx` (M29) is the generic
+"pick one of four" layer Tap the sign and Sign Sprint both render through:
+a `GameTopBar`, then either a `LoadFailed` notice (on a rejected content
+load) or the options region (going `inert` while a sheet is open), then a
+`QuizSheet` last if one is given. `QuizSheet`'s props are now generic
+(`outcome`, `xpGained`, `inARow`, `answerLabel`, `explanation`, `tip`,
+`more?`, `onContinue`) rather than tied to one game; only Tap the sign
+passes a `sheet`, since Sign Sprint shows its feedback inline on its own
+tiles instead. `src/features/interactives/shared/EndScreen.tsx` is the
+ending every game shows — Tap the sign, Match Pairs and Sign Sprint alike:
+a 44px header (✕ and the game's title, no progress bar), the score band
+panel (kicker, big score, XP/Best/streak chips), a Collected! line, one
+lost-sign notice per a Q12 loss with its own Practise-signs-like-this
+button, an optional gentle zero line, and a list of signs to look at
+again, then Done and Play again.
+
+## Score bands (Q9)
+
+`src/engine/score-band.ts`'s `scoreBand(score, max)` returns `'red'`,
+`'orange'` or `'green'`: green at 90% of `max` or more, orange at 60% or
+more, else red (always red when `max` is zero or negative). Tap the sign
+judges against 10, Match Pairs against 5 pairs matched right first time;
+Sign Sprint's `sprintBandMax(length)` scales the maximum with the round's
+length at 10 a minute (30 sec → 5, 1 min → 10, 5 min → 50), and a No limit
+round is judged against what it actually answered instead of a fixed
+maximum.
+
+## The pending rule
+
+Today (`JourneyScreen.tsx`) and Me (`MeScreen.tsx`) each render their
+whole layout in full from the first paint, but hold it back with a
+`--pending` modifier class and `aria-busy` until the progress store's
+numbers and the sign catalogue have both settled — the class sets exactly
+`visibility: hidden;` (never `display: none`, never `opacity`), so the
+layout keeps its space and nothing flashes or moves once it appears.
+Practice and Learn do not yet have this gate (Decision 24).
 
 ## Motion policy
 
@@ -231,14 +355,14 @@ to the existing `--color-sign-red`, `--color-sign-blue`,
 `npm run check:contrast` (`scripts/check-contrast.mjs`) reads the literal
 hex tokens in `src/app/theme.css`, merges the dark overrides over the
 light values, and asserts every required foreground/background pair
-reaches WCAG AA (4.5:1) in **both** colour schemes: `ink/page`,
+reaches WCAG AA (4.5:1) in **both** colour schemes — 14 pairs: `ink/page`,
 `ink/surface`, `muted/page`, `muted/surface`, `tab-inactive/tab-bar`,
 `tab-active/tab-bar`, `on-sign/sign-blue`, `on-sign/sign-green`,
-`on-sign/sign-red`, `sign-ink/marking-yellow`, `sign-ink/on-sign`. It
-stops the build the moment any Decision 13 colour pairing becomes
-illegible in light or dark mode, without ever changing Lincoln's chosen
-palette itself — a failing pair is reported and the colours stay his
-decision.
+`on-sign/sign-red`, `on-sign/band-orange`, `sign-ink/marking-yellow`,
+`sign-ink/on-sign`, `link/page`, `link/surface`. It stops the build the
+moment any Decision 13 colour pairing becomes illegible in light or dark
+mode, without ever changing Lincoln's chosen palette itself — a failing
+pair is reported and the colours stay his decision.
 
 ## Built so far vs. Deferred
 
@@ -251,8 +375,8 @@ decision.
 - The shell restyle: the sign-panel header (with back button) and the icon
   tab bar, including the Learn tab's `alsoActiveFor: ['/code']`
   highlighting for the Rule deep link.
-- The five primitives above: `SignPanel`, `SignPlate`, `Roundel`, `Button`,
-  `Chip`.
+- Five of the eight primitives above: `SignPanel`, `SignPlate`, `Roundel`,
+  `Button`, `Chip`.
 - The Highway Code section list and section screen, the rule page
   (`/code/rule/:id`) with its law/advice `Chip`, and the static,
   colour-coded Rule 126 stopping-distance table.
@@ -270,6 +394,20 @@ decision.
   renders `<Roundel value={60} />`, non-interactive, in the Sign Sprint
   practice card, representing the 60-second clock.
 
+**Built in Phase 2b (UX foundations):**
+
+- The three new primitives above: `ListRow`, `SegmentedControl`,
+  `LoadFailed`, plus `SignPanel`'s `block` prop.
+- The header band shell (§ Shell, above), four tabs with My Car hidden,
+  and Today/Me's pending rule.
+- The shared `QuestionScreen`, the generalised `QuizSheet` and the shared
+  `EndScreen`, with the score bands in `src/engine/score-band.ts`.
+- The press-state rule (§ Press states, above), the link colour and the
+  orange score band, all contrast-checked (14 pairs).
+- `Roundel` gained a second consumer:
+  `src/features/interactives/sign-sprint/SprintStart.tsx` also renders
+  `<Roundel value={60} />`, beside the best-score card.
+
 **Still deferred** to Phases 3–4 (Decision 13 mockup references, not built
 yet):
 
@@ -277,3 +415,9 @@ yet):
 - The animated stopping-distance road — Rule 126 gets the static table
   above instead, because the official chart is an image with empty alt
   text (see `docs/CONTENT-GUIDE.md`, Known limitations).
+
+**Still deferred from Phase 2b** (Decision 24, `docs/DECISIONS.md`): M01's
+Add to Home Screen plate chrome, M08's `htmlToText` join fix, M15's
+attribution timestamp/file-path/test-date extras, M42's All/Collected
+toggle halves, M32's sign-caption residue, and M34's 124px sign-page
+picture box.

@@ -4,7 +4,8 @@
 // hand-built Sign[] fixtures (tests/unit/signs-filter.test.ts).
 // Depends on: ../../content/schemas (Sign, SignFamily types),
 // ../../engine/progress (isCollected).
-// Depended on by: src/features/signs/SignsScreen.tsx, tests/unit/signs-filter.test.ts.
+// Depended on by: src/features/signs/SignsScreen.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx, tests/unit/signs-filter.test.ts.
 
 import type { Sign, SignFamily } from '../../content/schemas';
 import { isCollected } from '../../engine/progress';

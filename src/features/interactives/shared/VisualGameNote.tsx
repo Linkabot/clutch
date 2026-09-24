@@ -12,7 +12,8 @@
 // src/app/theme.css.
 // Depended on by: src/features/practice/tap/TapTheSignScreen.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
-// tests/unit/visual-game-note.test.tsx (Step 10 adds Sign Sprint).
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// tests/unit/visual-game-note.test.tsx.
 
 import { useEffect, useState } from 'react';
 

@@ -5,7 +5,7 @@
 // (amendment P1, handoffs/phase-1-highway-code/plan.md), so it stays
 // legible on yellow in dark mode.
 // Depends on: react; styled by src/ui/primitives.css.
-// Depended on by: src/ui/index.ts; tests/unit/ui.test.ts.
+// Depended on by: src/ui/index.ts, src/ui/LoadFailed.tsx; tests/unit/ui.test.ts.
 import type { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

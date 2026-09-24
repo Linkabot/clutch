@@ -5,7 +5,9 @@
 // plain data, never a real window (the vitest environment is 'node').
 // Depends on: nothing beyond the DOM lib types.
 // Depended on by: src/app/App.tsx, src/app/AddToHomeScreen.tsx,
-// tests/unit/platform.test.ts.
+// src/features/me/MeScreen.tsx, tests/unit/platform.test.ts,
+// tests/unit/add-to-home-screen.test.tsx, tests/unit/me-screen.test.tsx,
+// tests/e2e/foundations.spec.ts.
 
 /** localStorage key used to remember that the user dismissed the panel. */
 export const DISMISSED_KEY = 'clutch.a2hs.dismissed';

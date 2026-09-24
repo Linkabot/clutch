@@ -5,7 +5,10 @@
 // reload but this module's state does not, so an id saved before a reload
 // must never match a round remembered after it.
 // Depends on: ./progress (GameId).
-// Depended on by: tests/unit/round-memory.test.ts.
+// Depended on by: src/features/interactives/match-pairs/MatchPairs.tsx,
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// src/features/practice/tap/TapTheSignScreen.tsx,
+// tests/unit/round-memory.test.ts.
 
 import type { GameId } from './progress';
 

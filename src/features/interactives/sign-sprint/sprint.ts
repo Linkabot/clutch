@@ -27,8 +27,8 @@
 // ../../../engine/progress (SprintLengthId), ../shared/random (Rng,
 // shuffle), ../shared/distractors (isShortCaption, pickDistractors).
 // Depended on by: ./SignSprint.tsx, ./SprintStart.tsx (eligibleSigns, for
-// the start page's count), tests/unit/sign-sprint.test.tsx,
-// tests/unit/sprint-start.test.tsx.
+// the start page's count), tests/unit/sign-sprint.test.tsx (the start
+// page's count is also exercised through SignSprint by tests/unit/sprint-start.test.tsx).
 
 import type { Sign } from '../../../content/schemas';
 import type { SprintLengthId } from '../../../engine/progress';

@@ -8,7 +8,8 @@
 // against TABS' own path and alsoActiveFor list — falling back to Journey's
 // '/' when no tab claims the path.
 // Depends on: ./tabs (TABS).
-// Depended on by: src/app/App.tsx, tests/unit/back.test.ts.
+// Depended on by: src/app/App.tsx, src/features/interactives/shared/exit.ts,
+// tests/unit/back.test.ts.
 import { TABS } from './tabs';
 
 /** True when `pathname` is `prefix` itself or a path nested under it. */

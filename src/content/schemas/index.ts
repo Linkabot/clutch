@@ -5,7 +5,8 @@
 // Depended on by: tests/content/*.test.ts, tests/unit/sign-*.test.ts,
 // src/content/loaders.ts, src/content/signs.ts, and several src/features/
 // screens and games that import types (e.g. Sign, SignFamily) through here
-// rather than from src/content/schemas/signs.ts directly.
+// rather than from src/content/schemas/signs.ts directly, including
+// src/features/code/interlude.ts (the Section type).
 export * from './pack';
 export * from './highwayCode';
 export * from './facts';

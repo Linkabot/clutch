@@ -23,7 +23,8 @@
 // export it), ./SignImage, ./useReducedMotion, ./end-screen.css.
 // Depended on by: src/features/practice/tap/TapTheSignScreen.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
-// tests/unit/end-screen.test.tsx (Step 10 adds Sign Sprint).
+// src/features/interactives/sign-sprint/SignSprint.tsx,
+// tests/unit/end-screen.test.tsx.
 
 import { ChevronRight } from 'lucide-react';
 import type { Sign } from '../../../content/schemas';

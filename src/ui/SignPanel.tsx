@@ -6,8 +6,11 @@
 // Depends on: react (JSX only); class names are styled by
 // src/ui/primitives.css (imported once from src/main.tsx, after theme.css).
 // Depended on by: src/ui/index.ts; tests/unit/ui.test.ts;
-// tests/unit/list-row.test.tsx (the `block` prop; later steps add screen
-// consumers of `block`).
+// tests/unit/list-row.test.tsx (the `block` prop); `block` consumers:
+// src/features/learn/LearnScreen.tsx, src/features/journey/JourneyScreen.tsx,
+// src/features/code/SectionScreen.tsx,
+// src/features/code/HighwayCodeSectionsScreen.tsx,
+// src/features/code/SearchScreen.tsx.
 import type { ReactNode } from 'react';
 
 interface SignPanelProps {

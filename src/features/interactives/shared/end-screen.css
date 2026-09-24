@@ -1,9 +1,11 @@
 /* The shared end screen's styles for
    src/features/interactives/shared/EndScreen.tsx (plan.md Step 9 and
-   amendment E16 (a), (g), (h); Q18's "end like Sign Sprint"). Rule for
-   rule this is Sign Sprint's own .sprint-end block with the score panel's
-   fill parameterised by the Q9 band -- red, the new --color-band-orange,
-   or green -- so one component draws all three games' endings: a 44px
+   amendment E16 (a), (g), (h); Step 10's own end-of-round; Q18's "end like
+   Sign Sprint"). One stylesheet draws all three games' endings (Tap the
+   sign, Match Pairs and Sign Sprint, which dropped its own separate
+   .sprint-end block in Step 10 in favour of this shared one), the score
+   panel's fill parameterised by the Q9 band -- red, the new
+   --color-band-orange, or green: a 44px
    header (the ✕ and the game's title, no progress bar), the band panel
    (5px padding, radius 14) wrapping a 2.5px --color-on-sign frame with an
    uppercase kicker, the 80px score beside its bold line and sub-line, and

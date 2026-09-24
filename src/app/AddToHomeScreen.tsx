@@ -12,7 +12,8 @@
 // list-style is none.
 // Depends on: react, lucide-react (Share, SquarePlus), ../ui (Button),
 // ./platform.
-// Depended on by: src/app/App.tsx, src/features/me/MeScreen.tsx.
+// Depended on by: src/app/App.tsx, src/features/me/MeScreen.tsx,
+// tests/unit/add-to-home-screen.test.tsx.
 import { Share, SquarePlus } from 'lucide-react';
 import { Button } from '../ui';
 import { DISMISSED_KEY } from './platform';

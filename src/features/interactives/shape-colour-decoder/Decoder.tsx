@@ -29,9 +29,9 @@
 // change count, so their CSS motion restarts on every tap. Under reduced
 // motion the root carries the static modifier and no ghost is drawn.
 // Depends on: react, react-router-dom (Link), ../../../content/signs
-// (getShapeRules, getHooks, loadSigns, displayName), ../../../content/
-// schemas (Sign type), ../../../ui (SignPlate), ../shared/SignImage,
-// ../shared/useReducedMotion, ./decoder, ./decoder.css.
+// (getShapeRules, getHooks, loadSigns, displayName),
+// ../../../content/schemas/index.ts (Sign type), ../../../ui (SignPlate),
+// ../shared/SignImage, ../shared/useReducedMotion, ./decoder, ./decoder.css.
 // Depended on by: ./index.tsx, tests/unit/decoder.test.tsx.
 
 import { useEffect, useState } from 'react';

@@ -9,7 +9,8 @@
 // E20, plan.md Step 21).
 // Depends on: react (JSX only), lucide-react (Flame); styled by
 // ./practice.css.
-// Depended on by: ./PracticeScreen.tsx, tests/unit/practice-header.test.tsx.
+// Depended on by: ./PracticeScreen.tsx, ../journey/JourneyScreen.tsx,
+// ../me/MeScreen.tsx, tests/unit/practice-header.test.tsx.
 
 import { Flame } from 'lucide-react';
 

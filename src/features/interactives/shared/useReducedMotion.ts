@@ -7,6 +7,7 @@
 // Depends on: react (useSyncExternalStore).
 // Depended on by: src/features/interactives/quiz-sheet/QuizSheet.tsx,
 // src/features/practice/tap/TapTheSignScreen.tsx,
+// src/features/interactives/shared/EndScreen.tsx,
 // src/features/interactives/sign-sprint/SignSprint.tsx,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
 // src/features/interactives/shape-colour-decoder/Decoder.tsx,
