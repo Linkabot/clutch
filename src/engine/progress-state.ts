@@ -34,7 +34,8 @@
 // src/features/interactives/match-pairs/MatchPairs.tsx,
 // tests/unit/journey-screen.test.tsx, tests/unit/match-pairs.test.tsx,
 // tests/unit/me-screen.test.tsx, tests/unit/sign-screen.test.tsx,
-// tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx.
+// tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx,
+// tests/unit/tap-the-sign.test.tsx.
 
 import { create } from 'zustand';
 import { db } from '../storage/db';

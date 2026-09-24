@@ -18,8 +18,12 @@
  * on its own and the retried lock writing nothing, the shared end screen
  * waiting for a pending recordRoundFinished (taps in that window change
  * nothing), then the round's XP (not the store's) in the Q9 band its score
- * earns, Play again, the end screen's hold after the fifth lock, Close, and
- * reduced motion (a stubbed matchMedia) turning every animated class off.
+ * earns, Play again, the end screen's hold after the fifth lock, Close
+ * (including one pressed while that first write is still pending, which
+ * stays on Practice once the write settles, U9/Decision 24: Match Pairs'
+ * rememberRound/navigate only run from an effect gated on showEnd, which
+ * cannot run after unmount), and reduced motion (a stubbed matchMedia)
+ * turning every animated class off.
  * Step 9 adds four: a failed load's notice and its Retry, the two
  * look-alike signs' name tiles reading as the Highway Code names them
  * (gameName, never signs.json's curly-quoted KYTS string), ✕ going BACK to
@@ -39,7 +43,7 @@
 
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { loadSigns, gameName, LOOK_ALIKE_PAIR } from '../../src/content/signs';
 import type { Sign } from '../../src/content/schemas';
 import { mulberry32 } from '../../src/features/interactives/shared/random';
@@ -302,6 +306,35 @@ function renderPairs() {
     </MemoryRouter>,
   );
   return view.container;
+}
+
+/** Writes the current history entry's pathname and state where a test can read them (M25's round id lives there). */
+function LocationProbe() {
+  const location = useLocation();
+  return (
+    <p data-testid="location-state">{`${location.pathname} ${JSON.stringify(location.state)}`}</p>
+  );
+}
+
+/**
+ * Same shape as renderPairs(), plus a location read-out (U9's close-while-
+ * pending guard test only, so no existing test's DOM changes).
+ */
+function renderPairsWithLocation() {
+  const view = render(
+    <MemoryRouter initialEntries={['/practice/pairs']}>
+      <LocationProbe />
+      <Routes>
+        <Route path="/practice/pairs" element={<MatchPairs />} />
+        <Route path="/practice" element={<p>Practice tab</p>} />
+      </Routes>
+    </MemoryRouter>,
+  );
+  return view.container;
+}
+
+function locationProbe(): string {
+  return screen.getByTestId('location-state').textContent ?? '';
 }
 
 function textOf(container: HTMLElement, selector: string): string | null {
@@ -567,6 +600,33 @@ describe('MatchPairs screen', () => {
     await waitFor(() => expect(screen.getByText('Practice tab')).toBeTruthy());
     expect(mocks.recordRoundFinished).not.toHaveBeenCalled();
   });
+
+  // Declared guard (U9, Decision 24): Match Pairs never had Tap the sign's
+  // bug. Its write continuation only sets state, and rememberRound/navigate
+  // run from an effect gated on showEnd, which cannot run after unmount --
+  // so this passes today, and pins that a future refactor does not reopen it.
+  it('pressing close while the round-finished write is pending leaves for good', async () => {
+    const container = renderPairsWithLocation();
+    const ids = await waitForBoard(container);
+    for (const id of ids) {
+      await matchFirstTry(container, id);
+    }
+    await waitFor(() => expect(mocks.recordRoundFinished).toHaveBeenCalledTimes(1));
+
+    // Do not resolve yet: close while the write is still pending.
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await screen.findByText('Practice tab');
+
+    // Now the write settles, past END_HOLD_MS, and its continuation gets
+    // every chance to run.
+    await act(async () => {
+      resolveFirstRoundFinished?.();
+      await sleep(1500);
+    });
+
+    expect(screen.getByText('Practice tab')).toBeTruthy();
+    expect(locationProbe()).toBe('/practice null');
+  }, 20000);
 
   it('a failed load shows the failure notice, and Retry builds a round', async () => {
     vi.mocked(loadSigns).mockRejectedValueOnce(new Error('the signs chunk did not load'));

@@ -354,3 +354,12 @@ down, rather than folding them in quietly, means Phase 3 picks them up
 by decision, not by accident.
 Reference: handoffs/ux-foundations/decisions.md; plan.md amendments
 E14 (g), E19 (f), P12; `suggestions.md` U9, U10.
+Update, 24 September 2026 (U9 closed): Tap the sign now has the same
+`mountedRef` guard as Sign Sprint. Its `finish` returns at once if
+the screen has unmounted, so a last write that settles after ✕ no
+longer navigates back to the game or remembers the round;
+`tests/unit/tap-the-sign.test.tsx` proves it and fails against the
+old screen. Match Pairs never had the gap: its write continuation
+only sets state, and its `rememberRound` and `navigate` run from an
+effect gated on `showEnd`, which cannot run after unmount. A guard
+test in `tests/unit/match-pairs.test.tsx` pins that.

@@ -50,7 +50,7 @@
 // (isShortCaption), ../../interactives/shared/random (mulberry32),
 // ../../interactives/shared/useReducedMotion, ./round (buildTapRound,
 // sheetContent, TapQuestion), ./tap.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/tap-the-sign.test.tsx.
 
 import { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -165,6 +165,18 @@ function TapTheSignScreen() {
   const collectedRef = useRef<Sign[]>(recalled?.collected ?? []);
   const lostRef = useRef<Sign[]>(recalled?.lost ?? []);
 
+  // The round's last write can settle after ✕ has closed the game; finish()
+  // must not then navigate back to the game or remember the round (U9, the
+  // same guard as Sign Sprint's, Decision 24). Setting true on every mount
+  // survives StrictMode's mount, unmount, mount.
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   useEffect(() => {
     // A recalled round is already on screen; only a Retry, a Play again or
     // a new ?family= (all of which bump startCount) builds another.
@@ -258,6 +270,7 @@ function TapTheSignScreen() {
   }
 
   function finish(): void {
+    if (!mountedRef.current) return;
     const endCollected = collectedRef.current;
     const endLost = lostRef.current;
     setCollected(endCollected);

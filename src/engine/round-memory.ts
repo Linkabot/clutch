@@ -8,7 +8,7 @@
 // Depended on by: src/features/interactives/match-pairs/MatchPairs.tsx,
 // src/features/interactives/sign-sprint/SignSprint.tsx,
 // src/features/practice/tap/TapTheSignScreen.tsx,
-// tests/unit/round-memory.test.ts.
+// tests/unit/round-memory.test.ts, tests/unit/tap-the-sign.test.tsx.
 
 import type { GameId } from './progress';
 
