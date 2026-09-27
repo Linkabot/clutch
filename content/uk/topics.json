@@ -23,7 +23,11 @@
       "order": 1,
       "areas": ["Vulnerable road users"],
       "schedule7": ["D"],
-      "hcSections": ["road-users-requiring-extra-care-204-to-225", "using-the-road-159-to-203"],
+      "hcSections": [
+        "introduction",
+        "road-users-requiring-extra-care-204-to-225",
+        "using-the-road-159-to-203"
+      ],
       "nsElements": ["1.1.3", "2.1.1", "2.1.4", "2.2.5", "3.1.3", "4.1.2", "4.2.1"]
     },
     {
@@ -32,7 +36,10 @@
       "order": 2,
       "areas": ["Alertness"],
       "schedule7": ["B"],
-      "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
+      "hcSections": [
+        "rules-for-drivers-and-motorcyclists-89-to-102",
+        "general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"
+      ],
       "nsElements": ["1.1.2", "5.1.1"]
     },
     {
@@ -41,7 +48,10 @@
       "order": 3,
       "areas": ["Attitude"],
       "schedule7": ["B"],
-      "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
+      "hcSections": [
+        "general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "annex-8-safety-code-for-new-drivers"
+      ],
       "nsElements": ["4.1.1", "5.2.1"]
     },
     {
@@ -50,7 +60,10 @@
       "order": 4,
       "areas": ["Safety and your vehicle"],
       "schedule7": ["F"],
-      "hcSections": ["annex-6-vehicle-maintenance-safety-and-security"],
+      "hcSections": [
+        "annex-6-vehicle-maintenance-safety-and-security",
+        "rules-for-drivers-and-motorcyclists-89-to-102"
+      ],
       "nsElements": ["1.2.1", "1.2.2", "1.2.3"]
     },
     {
@@ -58,8 +71,11 @@
       "name": "Safe distances and stopping in time",
       "order": 5,
       "areas": ["Safety margins"],
-      "schedule7": ["E"],
-      "hcSections": ["driving-in-adverse-weather-conditions-226-to-237"],
+      "schedule7": ["C"],
+      "hcSections": [
+        "general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "driving-in-adverse-weather-conditions-226-to-237"
+      ],
       "nsElements": ["2.1.3", "2.2.2"]
     },
     {
@@ -67,9 +83,9 @@
       "name": "Spotting hazards early",
       "order": 6,
       "areas": ["Hazard awareness"],
-      "schedule7": ["E"],
+      "schedule7": ["B", "C"],
       "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
-      "nsElements": ["2.2.1", "4.2.2"]
+      "nsElements": ["2.2.1", "4.2.1", "4.2.2"]
     },
     {
       "id": "sharing-road-with-other-vehicles",
@@ -77,15 +93,18 @@
       "order": 7,
       "areas": ["Other types of vehicle"],
       "schedule7": ["D"],
-      "hcSections": ["rules-for-motorcyclists-83-to-88"],
-      "nsElements": []
+      "hcSections": [
+        "road-users-requiring-extra-care-204-to-225",
+        "road-works-level-crossings-and-tramways-288-to-307"
+      ],
+      "nsElements": ["4.1.2"]
     },
     {
       "id": "vehicle-handling",
       "name": "Handling the vehicle in different conditions",
       "order": 8,
       "areas": ["Vehicle handling"],
-      "schedule7": ["F"],
+      "schedule7": ["C", "G"],
       "hcSections": ["driving-in-adverse-weather-conditions-226-to-237"],
       "nsElements": ["2.1.2", "2.2.3", "2.2.4", "4.2.3"]
     },
@@ -104,7 +123,12 @@
       "order": 10,
       "areas": ["Rules of the road"],
       "schedule7": ["A"],
-      "hcSections": ["using-the-road-159-to-203"],
+      "hcSections": [
+        "using-the-road-159-to-203",
+        "general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+        "waiting-and-parking-238-to-252",
+        "road-works-level-crossings-and-tramways-288-to-307"
+      ],
       "nsElements": ["3.1.1", "3.1.2"]
     },
     {
@@ -128,9 +152,13 @@
       "name": "Licences, insurance and essential paperwork",
       "order": 12,
       "areas": ["Essential documents"],
-      "schedule7": ["B"],
-      "hcSections": ["annex-3-motor-vehicle-documentation-and-learner-driver-requirements"],
-      "nsElements": ["1.1.1", "1.3.1"]
+      "schedule7": ["E"],
+      "hcSections": [
+        "annex-3-motor-vehicle-documentation-and-learner-driver-requirements",
+        "annex-5-penalties",
+        "annex-4-the-road-user-and-the-law"
+      ],
+      "nsElements": ["1.1.1", "1.2.3", "1.3.1"]
     },
     {
       "id": "incidents-and-emergencies",
@@ -138,7 +166,7 @@
       "order": 13,
       "areas": ["Incidents, accidents and emergencies"],
       "schedule7": ["E"],
-      "hcSections": ["breakdowns-and-incidents-274-to-287"],
+      "hcSections": ["breakdowns-and-incidents-274-to-287", "annex-7-first-aid-on-the-road"],
       "nsElements": ["4.3.1", "4.3.2"]
     },
     {
@@ -146,9 +174,12 @@
       "name": "Loading your vehicle safely",
       "order": 14,
       "areas": ["Vehicle loading"],
-      "schedule7": ["G"],
-      "hcSections": ["rules-about-animals-47-to-58"],
-      "nsElements": ["2.3.1"]
+      "schedule7": ["E", "F"],
+      "hcSections": [
+        "rules-for-drivers-and-motorcyclists-89-to-102",
+        "annex-6-vehicle-maintenance-safety-and-security"
+      ],
+      "nsElements": ["1.1.3", "2.3.1"]
     }
   ]
 }
