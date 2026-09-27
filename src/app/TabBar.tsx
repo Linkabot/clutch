@@ -5,11 +5,19 @@
 // declared in its alsoActiveFor list (e.g. the Highway Code deep link under
 // /code highlights Learn, from Step 16 onward); the active colour comes
 // from the aria-current="page" attribute this sets, read by the
-// .tab-bar__link[aria-current='page'] rule in theme.css.
-// Depends on: react-router-dom, ./tabs.
+// .tab-bar__link[aria-current='page'] rule in theme.css. While the current
+// route is one of ./layer's full-screen game layers, this nav takes the
+// inert attribute (setAttribute/removeAttribute, never the HTMLElement
+// property -- QuestionScreen.tsx 92-97's pattern) so it drops out of the
+// accessibility tree and tab order while the layer visually covers it
+// (M40); App.tsx does the same for the header band on its own ref, and
+// never looks this nav up in the DOM.
+// Depends on: react, react-router-dom, ./tabs, ./layer (isFullScreenLayer, M40).
 // Depended on by: src/app/App.tsx.
+import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { TABS } from './tabs';
+import { isFullScreenLayer } from './layer';
 
 function isTabActive(pathname: string, path: string, alsoActiveFor?: string[]): boolean {
   if (path === '/') {
@@ -25,9 +33,18 @@ function isTabActive(pathname: string, path: string, alsoActiveFor?: string[]): 
 
 function TabBar() {
   const { pathname } = useLocation();
+  const navRef = useRef<HTMLElement>(null);
+  const isLayer = isFullScreenLayer(pathname);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    if (isLayer) nav.setAttribute('inert', '');
+    else nav.removeAttribute('inert');
+  }, [isLayer]);
 
   return (
-    <nav aria-label="Main" className="tab-bar safe-bottom">
+    <nav ref={navRef} aria-label="Main" className="tab-bar safe-bottom">
       {TABS.map((tab) => {
         const active = isTabActive(pathname, tab.path, tab.alsoActiveFor);
         const Icon = tab.icon;
