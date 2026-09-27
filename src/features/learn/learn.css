@@ -6,11 +6,14 @@
    radius comes from a src/app/theme.css custom property -- no hex literals
    here (plan.md § Rules "Tokens"). The three original hand-drawn shapes on
    How signs work are the same triangle, circle and rounded rectangle as
-   before, redrawn on 40x40 viewBoxes (shown at 32x32, amendment E4) and
-   shared with the Traffic signs thumbnails through one .learn-card__icons
-   row class; SVG presentation
-   attributes cannot read a CSS custom property directly, so each shape's
-   fill/stroke lives in a class here instead of an inline style.
+   before, redrawn on 40x40 viewBoxes, shown at 32x32 with 6px gaps
+   (amendment E4) through the shared .learn-card__icons row class; the
+   Traffic signs card's three SignImages used that same base size until
+   Step 1 (U12) grew them to 44x44 with 8px gaps -- a comfortable tap
+   target for a real sign picture -- while How signs work's drawn shapes
+   stayed at the base 32x32/6px. SVG presentation attributes cannot read a
+   CSS custom property directly, so each shape's fill/stroke lives in a
+   class here instead of an inline style.
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/learn/LearnScreen.tsx,
    src/features/journey/JourneyScreen.tsx. */
@@ -49,10 +52,10 @@
   color: var(--color-muted);
 }
 
-/* Shared 32x32 icon row: the Traffic signs card's three SignImages, and the
-   How signs work card's three hand-drawn shapes. 32px with 6px gaps
-   (amendment E4, Lincoln's pick) keeps "Shape & Colour Decoder" on one
-   line at 390px, as in the chosen mockup; at 40px it wrapped. */
+/* Shared icon row base: How signs work's three hand-drawn shapes keep this
+   32px size with 6px gaps (amendment E4, Lincoln's pick), which keeps
+   "Shape & Colour Decoder" on one line at 390px, as in the chosen mockup;
+   at 40px it wrapped. */
 .learn-card__icons {
   display: flex;
   align-items: center;
@@ -70,6 +73,20 @@
 .learn-card__icons > img {
   object-fit: contain;
   display: block;
+}
+
+/* Step 1 (U12): the Traffic signs card's three sign pictures grow to
+   44x44 with 8px gaps, a comfortable tap target; :not(.learn-decoder-card)
+   keeps How signs work's hand-drawn shapes at the base rule's 32px/6px
+   above, since this selector's specificity (0,3,1) beats the base rule's
+   (0,1,1). */
+.learn-card:not(.learn-decoder-card) .learn-card__icons {
+  gap: 8px;
+}
+
+.learn-card:not(.learn-decoder-card) .learn-card__icons > img {
+  width: 44px;
+  height: 44px;
 }
 
 .learn-card__glyph-triangle,

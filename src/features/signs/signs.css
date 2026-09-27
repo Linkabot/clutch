@@ -7,9 +7,12 @@
    now that SignPanel's own `block` prop replaces the descendant-selector
    hack this file used to carry for it. Step 7 (M32, M34, M42) grew the
    tile's picture and caption and shrank its padding so a picture fills more
-   of the tile, and gave .signs-chip a 44px tap-target minimum. Every colour
-   and radius comes from a src/app/theme.css custom property -- no hex
-   literals here (plan.md § Rules "Tokens").
+   of the tile, and gave .signs-chip a 44px tap-target minimum. Phase 3
+   block 3a Step 1 (M42) grows .signs-toggle's outer height from 44px to
+   52px, keeping its 3px padding, border and box-sizing, so each
+   .signs-toggle__half clears a 44px tap target. Every colour and radius
+   comes from a src/app/theme.css custom property -- no hex literals here
+   (plan.md § Rules "Tokens").
    Depends on: the custom properties defined in src/app/theme.css.
    Depended on by: src/features/signs/SignsScreen.tsx,
    src/features/signs/SignScreen.tsx (each imports this file once). */
@@ -56,7 +59,7 @@
 /* Two-part All/Collected toggle. */
 .signs-toggle {
   margin-top: 10px;
-  height: 44px;
+  height: 52px;
   box-sizing: border-box;
   padding: 3px;
   border-radius: 10px;
