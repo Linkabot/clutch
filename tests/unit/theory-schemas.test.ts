@@ -185,9 +185,9 @@ describe('QuestionSchema: refinements', () => {
   });
 
   it('NEW S8: a choice2 question without two options fails', () => {
-    expect(QuestionSchema.safeParse({ ...clone(Q2), options: clone(Q.options) }).success).toBe(
-      false,
-    );
+    expect(
+      QuestionSchema.safeParse({ ...clone(Q2), options: Q2.options.slice(0, 1) }).success,
+    ).toBe(false);
   });
 
   it('NEW S8: options not in a, b, c, d order fail', () => {
