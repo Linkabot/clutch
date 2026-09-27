@@ -19,6 +19,7 @@ import {
   QuestionsFileSchema,
   LessonsFileSchema,
   VocabQueueFileSchema,
+  DistractorPoolSchema,
 } from '../../src/content/schemas';
 import type { Question, Lesson, Topic, VocabQueueEntry } from '../../src/content/schemas';
 import { loadCorpus } from '../../scripts/lib/theory-corpus';
@@ -110,9 +111,7 @@ describe('content/uk/theory/', () => {
       expect(() => QuestionsFileSchema.parse(readJson(`theory/questions/${name}`))).not.toThrow();
     }
     for (const name of poolFiles) {
-      expect(
-        readJson<{ topic: string; values: string[] }>(`theory/pools/${name}`).topic,
-      ).toBeTruthy();
+      expect(() => DistractorPoolSchema.parse(readJson(`theory/pools/${name}`))).not.toThrow();
     }
   });
 
@@ -124,6 +123,12 @@ describe('content/uk/theory/', () => {
     }
     for (const [name, file] of questionsFileByTopic) {
       expect(file.topic).toBe(name);
+      expect(topicsById.has(file.topic)).toBe(true);
+    }
+    for (const name of poolFiles) {
+      const base = name.replace(/\.json$/, '');
+      const file = readJson<{ topic: string; values: string[] }>(`theory/pools/${name}`);
+      expect(file.topic).toBe(base);
       expect(topicsById.has(file.topic)).toBe(true);
     }
   });
