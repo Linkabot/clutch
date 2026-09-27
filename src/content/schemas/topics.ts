@@ -5,7 +5,7 @@
 // cross-reference; plus the file's OGL licence block citing the Highway
 // Code, the National Standard and SI 1999/2864 Schedule 7. The 14 DVSA area
 // names themselves are not exported from here: they live only in
-// tests/content/topics.test.ts as DVSA_AREAS (plan.md Step 6).
+// tests/content/dvsa-areas.ts's DVSA_AREAS export (Phase 3 block 3a Step 9).
 // Depends on: zod.
 // Depended on by: src/content/schemas/index.ts, tests/content/topics.test.ts.
 import { z } from 'zod';

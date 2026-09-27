@@ -11,7 +11,8 @@
 // ...mustKnow]`, each list in file order; `govuk` -> `[htmlToText(part.html)]`.
 // Depends on: node:fs, node:path, ../../src/content/text (htmlToText),
 // ../../src/content/cite (parseCite).
-// Depended on by: tests/unit/cite.test.ts.
+// Depended on by: tests/unit/cite.test.ts, scripts/lib/theory-checks.ts,
+// tests/unit/theory-checks.test.ts, tests/content/theory.test.ts.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { htmlToText } from '../../src/content/text';

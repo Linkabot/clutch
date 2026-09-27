@@ -2,41 +2,21 @@
 // against TopicsFileSchema and proves the 14-area coverage test: 12-16
 // topics with unique ids and names and order running 1 to n in file order;
 // every topic's areas entry is one of the 14 official DVSA test areas
-// (DVSA_AREAS, copied from scout-d.md § 6 and held only here per plan.md
-// Step 6); all 14 areas are reached by at least one topic; no topic's own
-// name equals a DVSA area name; every hcSections slug and nsElements id
-// resolves against the committed Highway Code index and National Standard
-// syllabus; every one of the 31 National Standard elements is mapped; every
-// Schedule 7 letter A-G is used; exactly one topic covers "Vulnerable road
-// users"; and the licence block names the three sources by pack.json's
-// attribution names.
-// Depends on: vitest, src/content/schemas, tests/content/helpers.ts.
+// (DVSA_AREAS, from tests/content/dvsa-areas.ts); all 14 areas are reached
+// by at least one topic; no topic's own name equals a DVSA area name; every
+// hcSections slug and nsElements id resolves against the committed Highway
+// Code index and National Standard syllabus; every one of the 31 National
+// Standard elements is mapped; every Schedule 7 letter A-G is used; exactly
+// one topic covers "Vulnerable road users"; and the licence block names the
+// three sources by pack.json's attribution names.
+// Depends on: vitest, src/content/schemas, tests/content/helpers.ts,
+// tests/content/dvsa-areas.ts.
 // Depended on by: `npm run validate:content` / `npm test`.
 import { describe, it, expect } from 'vitest';
 import { TopicsFileSchema } from '../../src/content/schemas';
 import type { TopicsFile } from '../../src/content/schemas';
 import { readJson } from './helpers';
-
-// scout-d.md § 6 (Highway Code / National Standard / Schedule 7 topic-list
-// frames), corroborated by scout-a.md § 6: the 14 official DVSA test areas.
-// This list lives ONLY here, never in src/, scripts/ or another test file
-// (plan.md Step 6).
-const DVSA_AREAS = [
-  'Alertness',
-  'Attitude',
-  'Safety and your vehicle',
-  'Safety margins',
-  'Hazard awareness',
-  'Vulnerable road users',
-  'Other types of vehicle',
-  'Vehicle handling',
-  'Motorway rules',
-  'Rules of the road',
-  'Road and traffic signs',
-  'Essential documents',
-  'Incidents, accidents and emergencies',
-  'Vehicle loading',
-];
+import { DVSA_AREAS } from './dvsa-areas';
 
 interface HighwayCodeIndex {
   sections: { slug: string }[];
