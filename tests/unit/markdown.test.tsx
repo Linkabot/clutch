@@ -10,10 +10,11 @@
  * **strong**, `code` (with nothing inside it parsed further), and literal
  * text for constructs it does not support (`<b>x</b>`, four-or-more `#`) --
  * and, against the real committed public/ATTRIBUTION.md, the exact census
- * after Step 5's "### GOV.UK guidance pages" subsection (plan.md Step 5,
- * amend-05 A27): 11 headings (1 h3, 4 h4, 6 h5), 6 ul, 37 li, 6 p, 2 code
- * spans (lucide-react, LICENSE) and 0 a elements (ATTRIBUTION.md uses bare
- * URLs, never `[text](url)` links).
+ * after Step 6's "### The Motor Vehicles (Driving Licences) Regulations
+ * 1999, Schedule 7" subsection (plan.md Step 6, amend-06 A29): 12 headings
+ * (1 h3, 4 h4, 7 h5), 7 ul, 42 li, 6 p, 2 code spans (lucide-react, LICENSE)
+ * and 0 a elements (ATTRIBUTION.md uses bare URLs, never `[text](url)`
+ * links).
  * Depends on: vitest, @testing-library/react, node:fs, node:path, node:url,
  * jsdom (test environment), src/features/me/markdown (renderMarkdown).
  * Depended on by: `npm test` (Vitest run).
@@ -140,10 +141,10 @@ describe('renderMarkdown', () => {
     const h5s = container.querySelectorAll('h5');
     expect(h3s).toHaveLength(1);
     expect(h4s).toHaveLength(4);
-    expect(h5s).toHaveLength(6);
+    expect(h5s).toHaveLength(7);
 
-    expect(container.querySelectorAll('ul')).toHaveLength(6);
-    expect(container.querySelectorAll('li')).toHaveLength(37);
+    expect(container.querySelectorAll('ul')).toHaveLength(7);
+    expect(container.querySelectorAll('li')).toHaveLength(42);
     expect(container.querySelectorAll('p')).toHaveLength(6);
     expect(container.querySelectorAll('code')).toHaveLength(2);
     const codeTexts = Array.from(container.querySelectorAll('code')).map((el) => el.textContent);

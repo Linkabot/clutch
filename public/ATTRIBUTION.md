@@ -65,6 +65,14 @@ https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 - Driving lessons and learning to drive: https://www.gov.uk/driving-lessons-learning-to-drive — All content is available under the Open Government Licence v3.0, except where otherwise stated
 - Legal obligations of drivers and riders: https://www.gov.uk/legal-obligations-drivers-riders — All content is available under the Open Government Licence v3.0, except where otherwise stated
 
+### The Motor Vehicles (Driving Licences) Regulations 1999, Schedule 7
+
+- Source: https://www.legislation.gov.uk/uksi/1999/2864/schedule/7/made
+- © Crown and database right
+- Contains public sector information licensed under the Open Government Licence v3.0.
+- Licence: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+- All content is available under the Open Government Licence v3.0 except where otherwise stated
+
 ## Know Your Traffic Signs
 
 Sign pictures and sign wording: Know Your Traffic Signs, Department for Transport, © Crown copyright 2023. Licensed under the Open Government Licence v3.0: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3

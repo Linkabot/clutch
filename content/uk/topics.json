@@ -1,0 +1,154 @@
+{
+  "licence": {
+    "statement": "Contains public sector information licensed under the Open Government Licence v3.0.",
+    "sources": [
+      {
+        "name": "The Highway Code",
+        "url": "https://www.gov.uk/guidance/the-highway-code"
+      },
+      {
+        "name": "National standard for driving cars and light vans (category B)",
+        "url": "https://www.gov.uk/guidance/national-standard-for-driving-cars-and-light-vans-category-b"
+      },
+      {
+        "name": "The Motor Vehicles (Driving Licences) Regulations 1999, Schedule 7",
+        "url": "https://www.legislation.gov.uk/uksi/1999/2864/schedule/7/made"
+      }
+    ]
+  },
+  "topics": [
+    {
+      "id": "vulnerable-road-users",
+      "name": "Looking after vulnerable road users",
+      "order": 1,
+      "areas": ["Vulnerable road users"],
+      "schedule7": ["D"],
+      "hcSections": ["road-users-requiring-extra-care-204-to-225", "using-the-road-159-to-203"],
+      "nsElements": ["1.1.3", "2.1.1", "2.1.4", "2.2.5", "3.1.3", "4.1.2", "4.2.1"]
+    },
+    {
+      "id": "staying-alert",
+      "name": "Staying alert and ready to drive",
+      "order": 2,
+      "areas": ["Alertness"],
+      "schedule7": ["B"],
+      "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
+      "nsElements": ["1.1.2", "5.1.1"]
+    },
+    {
+      "id": "driving-attitude",
+      "name": "Attitude behind the wheel",
+      "order": 3,
+      "areas": ["Attitude"],
+      "schedule7": ["B"],
+      "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
+      "nsElements": ["4.1.1", "5.2.1"]
+    },
+    {
+      "id": "vehicle-safety-checks",
+      "name": "Keeping your vehicle safe to drive",
+      "order": 4,
+      "areas": ["Safety and your vehicle"],
+      "schedule7": ["F"],
+      "hcSections": ["annex-6-vehicle-maintenance-safety-and-security"],
+      "nsElements": ["1.2.1", "1.2.2", "1.2.3"]
+    },
+    {
+      "id": "safety-margins",
+      "name": "Safe distances and stopping in time",
+      "order": 5,
+      "areas": ["Safety margins"],
+      "schedule7": ["E"],
+      "hcSections": ["driving-in-adverse-weather-conditions-226-to-237"],
+      "nsElements": ["2.1.3", "2.2.2"]
+    },
+    {
+      "id": "hazard-awareness",
+      "name": "Spotting hazards early",
+      "order": 6,
+      "areas": ["Hazard awareness"],
+      "schedule7": ["E"],
+      "hcSections": ["general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158"],
+      "nsElements": ["2.2.1", "4.2.2"]
+    },
+    {
+      "id": "sharing-road-with-other-vehicles",
+      "name": "Driving safely around other types of vehicle",
+      "order": 7,
+      "areas": ["Other types of vehicle"],
+      "schedule7": ["D"],
+      "hcSections": ["rules-for-motorcyclists-83-to-88"],
+      "nsElements": []
+    },
+    {
+      "id": "vehicle-handling",
+      "name": "Handling the vehicle in different conditions",
+      "order": 8,
+      "areas": ["Vehicle handling"],
+      "schedule7": ["F"],
+      "hcSections": ["driving-in-adverse-weather-conditions-226-to-237"],
+      "nsElements": ["2.1.2", "2.2.3", "2.2.4", "4.2.3"]
+    },
+    {
+      "id": "motorway-rules",
+      "name": "Driving on motorways",
+      "order": 9,
+      "areas": ["Motorway rules"],
+      "schedule7": ["C"],
+      "hcSections": ["motorways-253-to-273"],
+      "nsElements": ["3.1.4"]
+    },
+    {
+      "id": "rules-of-the-road",
+      "name": "The rules of the road",
+      "order": 10,
+      "areas": ["Rules of the road"],
+      "schedule7": ["A"],
+      "hcSections": ["using-the-road-159-to-203"],
+      "nsElements": ["3.1.1", "3.1.2"]
+    },
+    {
+      "id": "signs-and-signals",
+      "name": "Reading signs, signals and road markings",
+      "order": 11,
+      "areas": ["Road and traffic signs"],
+      "schedule7": ["A"],
+      "hcSections": [
+        "traffic-signs",
+        "road-markings",
+        "light-signals-controlling-traffic",
+        "signals-to-other-road-users",
+        "signals-by-authorised-persons",
+        "vehicle-markings"
+      ],
+      "nsElements": ["3.2.1"]
+    },
+    {
+      "id": "essential-documents",
+      "name": "Licences, insurance and essential paperwork",
+      "order": 12,
+      "areas": ["Essential documents"],
+      "schedule7": ["B"],
+      "hcSections": ["annex-3-motor-vehicle-documentation-and-learner-driver-requirements"],
+      "nsElements": ["1.1.1", "1.3.1"]
+    },
+    {
+      "id": "incidents-and-emergencies",
+      "name": "Dealing with breakdowns and emergencies",
+      "order": 13,
+      "areas": ["Incidents, accidents and emergencies"],
+      "schedule7": ["E"],
+      "hcSections": ["breakdowns-and-incidents-274-to-287"],
+      "nsElements": ["4.3.1", "4.3.2"]
+    },
+    {
+      "id": "vehicle-loading",
+      "name": "Loading your vehicle safely",
+      "order": 14,
+      "areas": ["Vehicle loading"],
+      "schedule7": ["G"],
+      "hcSections": ["rules-about-animals-47-to-58"],
+      "nsElements": ["2.3.1"]
+    }
+  ]
+}
