@@ -1,13 +1,14 @@
 // Central re-export point for the Zod content schemas: pack, Highway Code,
-// facts, syllabus, signs, GOV.UK guidance pages and topics. Content tests
-// and loaders import from here rather than reaching into individual schema
-// files.
+// facts, syllabus, signs, GOV.UK guidance pages, topics and the lesson and
+// question schemas. Content tests and loaders import from here rather than
+// reaching into individual schema files.
 // Depends on: ./pack, ./highwayCode, ./facts, ./syllabus, ./signs, ./govuk,
-// ./topics.
+// ./topics, ./theory.
 // Depended on by: tests/content/*.test.ts, tests/unit/sign-*.test.ts,
-// src/content/loaders.ts, src/content/signs.ts, and several src/features/
-// screens and games that import types (e.g. Sign, SignFamily) through here
-// rather than from src/content/schemas/signs.ts directly, including
+// tests/unit/theory-schemas.test.ts, src/content/loaders.ts,
+// src/content/signs.ts, and several src/features/ screens and games that
+// import types (e.g. Sign, SignFamily) through here rather than from
+// src/content/schemas/signs.ts directly, including
 // src/features/code/interlude.ts (the Section type).
 export * from './pack';
 export * from './highwayCode';
@@ -16,3 +17,4 @@ export * from './syllabus';
 export * from './signs';
 export * from './govuk';
 export * from './topics';
+export * from './theory';
