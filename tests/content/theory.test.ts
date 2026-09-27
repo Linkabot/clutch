@@ -4,12 +4,14 @@
 // questions,pools}/ parses, its `topic` matches its file name and a
 // topics.json id, question ids are unique across files, lesson numbers run
 // 1..n per file; every question and lesson has no problems under
-// scripts/lib/theory-checks.ts; no two questions are near duplicates; and no
-// vocab-queue entry is stale. A missing folder is an empty file list, never
-// a throw (A47), so this file is green with no theory content yet.
+// scripts/lib/theory-checks.ts; no two questions are near duplicates; no
+// vocab-queue entry is stale; and (Step 10; amend-10 A53) every question and
+// rule card has its provenance under scripts/lib/theory-content.ts's shared
+// loader. A missing folder is an empty file list, never a throw (A47), so
+// this file is green with no theory content yet.
 // Depends on: vitest, node:fs, node:path, ../../src/content/schemas,
 // ../../scripts/lib/theory-corpus, ../../scripts/lib/theory-checks,
-// ./helpers.
+// ../../scripts/lib/theory-content, ./helpers.
 // Depended on by: `npm run validate:content` / `npm test`.
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -24,13 +26,14 @@ import {
 import type { Question, Lesson, Topic, VocabQueueEntry } from '../../src/content/schemas';
 import { loadCorpus } from '../../scripts/lib/theory-corpus';
 import {
-  corpusTextsOf,
   checkQuestion,
   checkNearDuplicates,
   checkLesson,
   checkVocabQueue,
+  checkProvenance,
 } from '../../scripts/lib/theory-checks';
 import type { TheoryCheckContext } from '../../scripts/lib/theory-checks';
+import { loadTheoryContent, checkContextFor } from '../../scripts/lib/theory-content';
 import { CONTENT_ROOT, readJson } from './helpers';
 
 const THEORY_ROOT = join(CONTENT_ROOT, 'theory');
@@ -66,35 +69,19 @@ for (const name of questionFiles) {
   const file = readJson<{ topic: string; questions: Question[] }>(`theory/questions/${name}`);
   questionsFileByTopic.set(name.replace(/\.json$/, ''), file);
 }
-const poolByTopic = new Map<string, string[]>();
-for (const name of poolFiles) {
-  const file = readJson<{ topic: string; values: string[] }>(`theory/pools/${name}`);
-  poolByTopic.set(name.replace(/\.json$/, ''), file.values);
-}
-
 const allQuestions: Question[] = [...questionsFileByTopic.values()].flatMap((f) => f.questions);
 const allLessons: Lesson[] = [...lessonsFileByTopic.values()].flatMap((f) => f.lessons);
 const questionsById = new Map(allQuestions.map((q) => [q.id, q]));
 
 const corpus = loadCorpus(REPO_ROOT);
-const corpusTexts = corpusTextsOf(corpus);
-const facts = readJson<{ facts: unknown[] }>('facts.json').facts as TheoryCheckContext['facts'];
 const synonymGroups = (synonymsFile as { groups: string[][] }).groups;
-const queuedIds = new Set(vocabQueueFile.entries.map((e) => e.id));
+
+// The shared loader (scripts/lib/theory-content.ts, A53) reads the same files this test already
+// reads above; ctxFor now delegates to it so accept and this test can never drift apart.
+const content = loadTheoryContent(REPO_ROOT);
 
 function ctxFor(fileTopic: string): TheoryCheckContext {
-  const topic = topicsById.get(fileTopic);
-  return {
-    corpus,
-    corpusTexts,
-    facts,
-    topic: topic
-      ? { id: topic.id, areas: topic.areas, nsElements: topic.nsElements }
-      : { id: fileTopic, areas: [], nsElements: [] },
-    pool: poolByTopic.get(fileTopic) ?? [],
-    synonyms: synonymGroups,
-    queuedIds,
-  };
+  return checkContextFor(content, fileTopic);
 }
 
 describe('content/uk/theory/', () => {
@@ -175,5 +162,32 @@ describe('content/uk/theory/', () => {
       synonyms: synonymGroups,
     });
     expect(problems, JSON.stringify(problems)).toEqual([]);
+  });
+
+  it('NEW S10: every question has its provenance', () => {
+    for (const [topic, file] of questionsFileByTopic) {
+      for (const question of file.questions) {
+        const problems = checkProvenance(
+          { id: question.id, topic, writtenFrom: question.writtenFrom },
+          content.prompts,
+        );
+        expect(problems, JSON.stringify(problems)).toEqual([]);
+      }
+    }
+  });
+
+  it('NEW S10: every rule card has its provenance', () => {
+    for (const [topic, file] of lessonsFileByTopic) {
+      for (const lesson of file.lessons) {
+        for (const card of lesson.cards) {
+          if (card.kind !== 'rule') continue;
+          const problems = checkProvenance(
+            { id: card.id, topic, writtenFrom: card.writtenFrom },
+            content.prompts,
+          );
+          expect(problems, JSON.stringify(problems)).toEqual([]);
+        }
+      }
+    }
   });
 });

@@ -27,6 +27,10 @@
     "compare:highway-code": "tsx scripts/compare-highway-code.ts",
     "ingest:govuk-pages": "tsx scripts/ingest-govuk-pages.ts",
     "verify:govuk-pages": "tsx scripts/verify-govuk-pages.ts",
+    "draft:prompt": "tsx scripts/draft-theory.ts prompt",
+    "draft:accept": "tsx scripts/draft-theory.ts accept",
+    "reads:sample": "tsx scripts/reads.ts sample",
+    "reads:check": "tsx scripts/reads.ts check",
     "e2e": "npm run build && playwright test"
   },
   "dependencies": {

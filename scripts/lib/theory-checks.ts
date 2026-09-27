@@ -1,19 +1,26 @@
 // The nine content checks for theory questions and lesson cards, plus the
 // coverage-shortfall report (Phase 3 block 3a Step 9; plan.md Step 9 and
-// amend-09 A41-A46). Pure: every input (the corpus, its flattened texts,
-// facts.json's facts, the item's topic record, its distractor pool, the
-// synonyms groups and the vocab queue's ids) is built by the caller; this
-// module does no I/O, reads no env, clock or randomness. `checkQuestion` and
-// `checkLesson` each return zero or more `TheoryProblem`s (a `ProblemCode`
-// plus the id of the thing at fault); `checkNearDuplicates` compares every
-// pair of questions; `checkVocabQueue` flags a queue entry whose item is
-// gone or now passes; `coverageShortfalls` reports which topics, DVSA areas
-// and National Standard elements fall short of their question-count minimum
-// (Decision 7: 50 per topic, 50 per area, 3 per element), scoped to
-// `'written'` topics only or to the `'full'` course.
+// amend-09 A41-A46), plus the provenance check (Step 10; amend-10 A52):
+// `checkProvenance` flags a question or rule card whose `writtenFrom` names
+// no unit listed on a `units:` line of one of its topic's prompts of the
+// same `promptVersion`, or whose `model` is blank. `parseUnitsLine` reads a
+// generated prompt's first line into its cited units. Pure: every input
+// (the corpus, its flattened texts, facts.json's facts, the item's topic
+// record, its distractor pool, the synonyms groups, the vocab queue's ids
+// and the prompt index) is built by the caller; this module does no I/O,
+// reads no env, clock or randomness. `checkQuestion` and `checkLesson` each
+// return zero or more `TheoryProblem`s (a `ProblemCode` plus the id of the
+// thing at fault); `checkNearDuplicates` compares every pair of questions;
+// `checkVocabQueue` flags a queue entry whose item is gone or now passes;
+// `coverageShortfalls` reports which topics, DVSA areas and National
+// Standard elements fall short of their question-count minimum (Decision 7:
+// 50 per topic, 50 per area, 3 per element), scoped to `'written'` topics
+// only or to the `'full'` course.
 // Depends on: ./theory-corpus, ../../src/content/schemas (types only).
 // Depended on by: tests/unit/theory-checks.test.ts, tests/content/theory.test.ts,
-// tests/content/coverage.test.ts.
+// tests/content/coverage.test.ts, scripts/lib/theory-content.ts,
+// tests/content/prompts.test.ts, tests/unit/theory-provenance.test.ts,
+// scripts/draft-theory.ts.
 import { unitTexts } from './theory-corpus';
 import type { TheoryCorpus } from './theory-corpus';
 import type {
@@ -23,6 +30,7 @@ import type {
   VocabQueueEntry,
   Topic,
   Fact,
+  WrittenFrom,
 } from '../../src/content/schemas';
 
 export const PROBLEM_CODES = [
@@ -46,7 +54,47 @@ export const PROBLEM_CODES = [
   'CHECK-OFF-RUN',
   'CHECK-REUSED',
   'QUEUE-STALE',
+  'PROVENANCE-MISSING',
 ] as const;
+
+/** The phrases a prompt (template or generated) must never contain (Step 10, A52/A54). */
+export const BANNED_PROMPT_PHRASES = [
+  'DVSA',
+  'official',
+  'past paper',
+  'theory test question',
+] as const;
+
+/** Every cite listed on a `units:` line of any prompt, keyed by `${promptVersion}/${topic}`. */
+export type PromptIndex = ReadonlyMap<string, ReadonlySet<string>>;
+
+/** The shape `checkProvenance` needs from a question or a rule card. */
+export interface ProvenanceItem {
+  id: string;
+  topic: string;
+  writtenFrom: WrittenFrom;
+}
+
+const UNITS_LINE = /^units: ([^\s,]+(?:, [^\s,]+)*)$/;
+
+/** Reads a generated prompt's first line into its cited units, or null when it is not a units line. */
+export function parseUnitsLine(line: string): string[] | null {
+  const match = UNITS_LINE.exec(line.replace(/\r$/, ''));
+  return match ? match[1].split(', ') : null;
+}
+
+/**
+ * PROVENANCE-MISSING when `item.writtenFrom.model` is blank, or when no prompt of the item's
+ * topic and `writtenFrom.promptVersion` lists `writtenFrom.unitId` on its `units:` line.
+ */
+export function checkProvenance(item: ProvenanceItem, prompts: PromptIndex): TheoryProblem[] {
+  const key = `${item.writtenFrom.promptVersion}/${item.topic}`;
+  const listed = prompts.get(key)?.has(item.writtenFrom.unitId) ?? false;
+  if (item.writtenFrom.model.trim() === '' || !listed) {
+    return [{ code: 'PROVENANCE-MISSING', id: item.id }];
+  }
+  return [];
+}
 
 export type ProblemCode = (typeof PROBLEM_CODES)[number];
 

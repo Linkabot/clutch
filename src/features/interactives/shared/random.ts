@@ -11,7 +11,8 @@
 // src/features/interactives/match-pairs/pairs.ts,
 // src/features/interactives/match-pairs/MatchPairs.tsx,
 // tests/unit/interactives-shared.test.ts, tests/unit/match-pairs.test.tsx,
-// tests/unit/sign-sprint.test.tsx, tests/unit/tap-round.test.ts.
+// tests/unit/sign-sprint.test.tsx, tests/unit/tap-round.test.ts,
+// scripts/reads.ts.
 
 /** Returns a float in [0, 1), like Math.random(). */
 export type Rng = () => number;
