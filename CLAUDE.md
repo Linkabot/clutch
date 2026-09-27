@@ -106,6 +106,8 @@ Tool shells in this session don't have node/npm/gh on `PATH`; every command need
 
 Every file under `src/`, `tests/`, `scripts/` starts with a header comment: what the module does, what it depends on, what depends on it. `npm run check:headers` checks those headers against the real import graph, and CI runs it. Commits are Conventional Commits style, ending with a `Co-Authored-By` trailer. Base path `/clutch/` is explicit everywhere (Vite `base`, router `basename`, manifest `scope`/`start_url`, Workbox `navigateFallback`) — see `docs/ARCHITECTURE.md`. Never `100vh` (use `100dvh`); form inputs stay at 16px+ font-size so iOS Safari doesn't zoom on focus.
 
+Who implements: the executor implements on Clutch (product project, D5, 27 Sep 2026).
+
 ## Content rules
 
 See `docs/CONTENT-GUIDE.md` for schemas, authoring rules, licensing and attribution.

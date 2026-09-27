@@ -7,3 +7,6 @@ test-results/
 .DS_Store
 build.log
 content/.cache/
+.claude/step-files
+.claude/fix-mode
+.claude/approve-protected
