@@ -13,28 +13,35 @@
 // limit), with the No limit explainer under it only while No limit is
 // chosen; and a full-width Start pinned to the bottom, within thumb reach.
 // Nothing here repeats the play screen's blue badge. The page reads the
-// learner's last choices through the progress store and opens on them,
-// and Start saves them before the round begins, so a reload comes back to
-// the same ones. It also calls load() on mount, because nothing else on
-// /practice/sprint loads the progress store and every best would otherwise
-// read 0 on a cold open (scan S12). Until the stored choices, the
-// catalogue and the store's scores have all arrived it shows its header
-// alone, so no control appears at a default and then jumps, and the score
-// card never draws at 0 and then grows a row (amendment E24 (a)); a store
-// that failed to load still gets the page. If the catalogue failed to load it shows
-// the header and the shared load-failure notice, whose Retry is the
+// learner's last choices through the progress store and opens on them --
+// a stored family id FAMILIES no longer recognises is dropped before it
+// ever reaches state, through knownFamilyIds (U8), so it cannot leave the
+// All chip pressed with an unfiltered id underneath -- and Start saves
+// them before the round begins, so a reload comes back to the same ones.
+// It also calls load() on mount, because nothing else on /practice/sprint
+// loads the progress store and every best would otherwise read 0 on a
+// cold open (scan S12). Until the stored choices, the catalogue and the
+// store's scores have all arrived it shows its header alone, so no
+// control appears at a default and then jumps, and the score card never
+// draws at 0 and then grows a row (amendment E24 (a)); a store that
+// failed to load still gets the page. If the catalogue failed to load it
+// shows the header and the shared load-failure notice, whose Retry is the
 // game's own (the failure belongs here now, because this is what is on
-// screen while the catalogue loads).
+// screen while the catalogue loads). Start is disabled whenever the
+// chosen families' pool (the same eligibleSigns count the page shows) is
+// empty, including an empty catalogue (U8), so the learner can never open
+// a dead round.
 // Depends on: react, ../../../content/schemas (Sign type),
 // ../../../engine/progress (SPRINT_LENGTHS, SprintLengthId),
 // ../../../engine/progress-store (SprintChoices type),
 // ../../../engine/progress-state (useProgressStore),
 // ../../../engine/score-band (scoreBand, sprintBandMax),
-// ../../signs/families (FAMILIES, ALL_CHIP_LABEL), ../../../ui (Button,
-// Roundel), ../../../ui/SegmentedControl and ../../../ui/LoadFailed (both
-// default exports imported straight from their files -- src/ui/index.ts
-// does not export either), ./sprint (eligibleSigns). Its styles are the
-// .sprint-start rules in ./sprint.css, which ./SignSprint.tsx imports.
+// ../../signs/families (FAMILIES, ALL_CHIP_LABEL, knownFamilyIds),
+// ../../../ui (Button, Roundel), ../../../ui/SegmentedControl and
+// ../../../ui/LoadFailed (both default exports imported straight from
+// their files -- src/ui/index.ts does not export either), ./sprint
+// (eligibleSigns). Its styles are the .sprint-start rules in
+// ./sprint.css, which ./SignSprint.tsx imports.
 // Depended on by: ./SignSprint.tsx (which renders it; it is reached that way by
 // tests/unit/sprint-start.test.tsx, which imports only SignSprint).
 
@@ -44,7 +51,7 @@ import { SPRINT_LENGTHS, type SprintLengthId } from '../../../engine/progress';
 import type { SprintChoices } from '../../../engine/progress-store';
 import { useProgressStore } from '../../../engine/progress-state';
 import { scoreBand, sprintBandMax, type ScoreBand } from '../../../engine/score-band';
-import { ALL_CHIP_LABEL, FAMILIES } from '../../signs/families';
+import { ALL_CHIP_LABEL, FAMILIES, knownFamilyIds } from '../../signs/families';
 import { Button, Roundel } from '../../../ui';
 import SegmentedControl from '../../../ui/SegmentedControl';
 import LoadFailed from '../../../ui/LoadFailed';
@@ -107,7 +114,10 @@ function SprintStart({ signs, loadState, onRetry, onStart, onClose }: SprintStar
       .then((stored) => {
         if (cancelled) return;
         setLength(stored.length);
-        setFamilies(stored.families);
+        // A stored id FAMILIES no longer recognises is dropped here, before
+        // it ever reaches state, so it cannot leave the All chip pressed
+        // with an unfiltered id underneath (U8).
+        setFamilies(knownFamilyIds(stored.families));
       })
       .catch((error: unknown) => {
         if (cancelled) return;
@@ -272,7 +282,7 @@ function SprintStart({ signs, loadState, onRetry, onStart, onClose }: SprintStar
       </div>
 
       <div className="sprint-start__actions">
-        <Button variant="primary" onClick={handleStart}>
+        <Button variant="primary" onClick={handleStart} disabled={count === 0}>
           Start
         </Button>
       </div>

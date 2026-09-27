@@ -5,12 +5,15 @@
 // signs") and `allLabel` (the Signs browser toggle's "All ..." text, e.g.
 // "All warning signs"). The pseudo-family "all" (every family at once) is
 // not a SignFamily value, so its own chip/label text is exported
-// separately as ALL_CHIP_LABEL and ALL_SIGNS_LABEL.
+// separately as ALL_CHIP_LABEL and ALL_SIGNS_LABEL. `knownFamilyIds` (U8)
+// keeps only the ids FAMILIES recognises, in FAMILIES order, so a stored
+// choice from a dropped or renamed family never reaches a screen's state --
+// an empty result means All.
 // Depends on: ../../content/schemas (SignFamily type only).
 // Depended on by: src/features/signs/SignsScreen.tsx, src/features/signs/SignScreen.tsx,
 // src/features/interactives/sign-sprint/SprintStart.tsx,
 // src/features/practice/tap/TapTheSignScreen.tsx,
-// tests/unit/signs-filter.test.ts.
+// tests/unit/signs-filter.test.ts, tests/unit/families.test.ts.
 
 import type { SignFamily } from '../../content/schemas';
 
@@ -58,4 +61,12 @@ export function familyMeta(id: SignFamily): FamilyMeta {
     throw new Error(`unknown sign family: ${id}`);
   }
   return meta;
+}
+
+/**
+ * Keeps the ids present in FAMILIES, in FAMILIES order, dropping every id
+ * FAMILIES does not recognise. An empty result means All (U8).
+ */
+export function knownFamilyIds(ids: readonly string[]): SignFamily[] {
+  return FAMILIES.filter((family) => ids.includes(family.id)).map((family) => family.id);
 }

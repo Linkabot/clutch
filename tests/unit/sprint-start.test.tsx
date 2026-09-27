@@ -16,7 +16,13 @@
  * S12), and the page holding back everything but its header until the
  * store's scores have landed, so the card never draws at 0 and then grows
  * (amendment E24 (a)); and Start saving the choices before the round it
- * starts is played with them.
+ * starts is played with them. Also (U8): a stored family id FAMILIES no
+ * longer recognises never reaches state -- the All chip opens pressed, the
+ * count and Start follow the real (filtered) choice, and Start still saves
+ * the filtered list -- turning off the last known family selects All even
+ * when an unknown id was stored alongside it, and Start is disabled
+ * whenever the chosen families' pool is empty, whether that is an empty
+ * catalogue or a family with too few short-caption signs to play.
  * The progress store is mocked by its path relative to this file, and
  * src/content/signs is mocked partially (importOriginal) so only loadSigns
  * is replaced -- the same shape tests/unit/sign-sprint.test.tsx uses, which
@@ -332,5 +338,71 @@ describe('Sign Sprint start page', () => {
       fireEvent.click(right);
       previous = answerId;
     }
+  });
+
+  it('NEW U8: a stored unknown family opens on the All chip', async () => {
+    mocks.getSprintChoices.mockResolvedValue({ length: '1m', families: ['bogus'] });
+    const container = renderSprint();
+    const startButton = await findStart();
+
+    expect(chip('All').getAttribute('aria-pressed')).toBe('true');
+    expect(textOf(container, '.sprint-start__count')).toBe('131 signs in this sprint');
+    expect((startButton as HTMLButtonElement).disabled).toBe(false);
+
+    fireEvent.click(startButton);
+    await waitFor(() =>
+      expect(mocks.setSprintChoices).toHaveBeenCalledWith({ length: '1m', families: [] }),
+    );
+  });
+
+  it('NEW U8: turning off the last known family selects All even when an unknown one was stored', async () => {
+    mocks.getSprintChoices.mockResolvedValue({ length: '1m', families: ['warning', 'bogus'] });
+    const container = renderSprint();
+    await findStart();
+
+    expect(chip('Warning').getAttribute('aria-pressed')).toBe('true');
+    expect(chip('All').getAttribute('aria-pressed')).toBe('false');
+    expect(textOf(container, '.sprint-start__count')).toBe('57 signs in this sprint');
+
+    fireEvent.click(chip('Warning'));
+    expect(chip('Warning').getAttribute('aria-pressed')).toBe('false');
+    expect(chip('All').getAttribute('aria-pressed')).toBe('true');
+    expect(textOf(container, '.sprint-start__count')).toBe('131 signs in this sprint');
+  });
+
+  it('NEW U8: Start is disabled when the catalogue is empty', async () => {
+    mocks.loadSigns.mockResolvedValue([]);
+    const container = renderSprint();
+    const startButton = await findStart();
+
+    expect(textOf(container, '.sprint-start__count')).toBe('0 signs in this sprint');
+    expect((startButton as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  // The catalogue still has signs, but the chosen family alone has too few
+  // short-caption signs to play (a mutant that used the whole catalogue,
+  // or just the family's raw signs, would miss this: 69, not 0 -- amend-02.md A12).
+  it('NEW U8: Start is disabled at 0 signs for the chosen families and enabled again on All', async () => {
+    const warningSigns = signs.filter((sign) => sign.family === 'warning');
+    const firstThreeOrders = signs
+      .filter((sign) => sign.family === 'orders' && sign.name.length <= 60)
+      .slice(0, 3);
+    mocks.loadSigns.mockResolvedValue([...warningSigns, ...firstThreeOrders]);
+    mocks.getSprintChoices.mockResolvedValue({ length: '1m', families: ['orders'] });
+    const container = renderSprint();
+    const startButton = await findStart();
+
+    expect(textOf(container, '.sprint-start__count')).toBe('0 signs in this sprint');
+    expect((startButton as HTMLButtonElement).disabled).toBe(true);
+
+    fireEvent.click(chip('All'));
+    expect(textOf(container, '.sprint-start__count')).toBe('57 signs in this sprint');
+    expect((startButton as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it('GUARD U8: Start is enabled with real signs and All', async () => {
+    renderSprint();
+    const startButton = await findStart();
+    expect((startButton as HTMLButtonElement).disabled).toBe(false);
   });
 });
