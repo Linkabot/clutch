@@ -9,7 +9,8 @@
 // src/features/interactives/sign-sprint/SignSprint.tsx,
 // src/features/interactives/sign-sprint/SprintStart.tsx,
 // tests/unit/progress-store.test.ts, tests/unit/progress-state.test.ts (types),
-// tests/unit/journey-screen.test.tsx, tests/unit/me-screen.test.tsx,
+// tests/unit/journey-screen.test.tsx, tests/unit/learn-screen.test.tsx (types),
+// tests/unit/me-screen.test.tsx, tests/unit/practice-screen.test.tsx (types),
 // tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx,
 // tests/unit/start-here.test.ts.
 

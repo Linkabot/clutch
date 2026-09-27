@@ -8,12 +8,18 @@
 // loadSigns (the same cancelled-flag pattern as SignsScreen.tsx); the Match
 // Pairs and Decoder tiles are original shape art the app draws itself,
 // never a rotated or recoloured real sign picture (plan.md D7, amendment
-// E18).
+// E18). U10 (plan.md Step 4, amend-04.md A18-A22): the whole screen renders
+// in full from the first paint but stays invisible (the practice--pending
+// class, practice.css, aria-busy="true") until the progress store's scores
+// AND the sign catalogue have both settled -- settled meaning
+// 'ready'/'error' for the store and 'loaded'/'failed' for the catalogue, so
+// a catalogue that never resolves successfully does not hide the screen
+// forever -- mirroring JourneyScreen.tsx's Today rule.
 // Depends on: react, react-router-dom, lucide-react (ChevronRight),
 // ../../engine/progress-state (useProgressStore), ../../content/signs
 // (loadSigns), ../../content/schemas (Sign type), ../../ui (Roundel),
 // ../interactives/shared/SignImage, ./ProgressHeader, ./practice.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/practice-screen.test.tsx.
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -36,8 +42,10 @@ const TAP_SIGN_IDS = [
 
 function PracticeScreen() {
   const summary = useProgressStore((s) => s.summary);
+  const status = useProgressStore((s) => s.status);
   const load = useProgressStore((s) => s.load);
   const [tapSigns, setTapSigns] = useState<Sign[]>([]);
+  const [signsStatus, setSignsStatus] = useState<'loading' | 'loaded' | 'failed'>('loading');
 
   useEffect(() => {
     load().catch(() => {});
@@ -52,15 +60,25 @@ function PracticeScreen() {
         setTapSigns(
           TAP_SIGN_IDS.map((id) => bySignId.get(id)).filter((sign): sign is Sign => Boolean(sign)),
         );
+        setSignsStatus('loaded');
       })
-      .catch(() => {});
+      .catch(() => {
+        // content/uk/signs/signs.json not ingested yet, or failed to load:
+        // the Tap card's pictures stay empty, but the catalogue still
+        // counts as settled (U10, amendment A20) so the screen is not
+        // left pending forever.
+        if (!cancelled) setSignsStatus('failed');
+      });
     return () => {
       cancelled = true;
     };
   }, []);
 
+  const scoresSettled = status === 'ready' || status === 'error';
+  const pending = !scoresSettled || signsStatus === 'loading';
+
   return (
-    <div>
+    <div className={pending ? 'practice--pending' : undefined} aria-busy={pending}>
       <ProgressHeader streak={summary.streak} xp={summary.xp} />
 
       <div className="practice-cards">

@@ -5,10 +5,16 @@
 // time -- no network call, no effect needed, since the index is bundled and
 // parsed eagerly. The Traffic signs card's counts come from loadSigns() (a
 // lazy chunk, loaded once in an effect) and useProgressStore's summary
-// (loaded once via load()). The card itself, its title and its link render
-// immediately; the "<n> of <total> collected" subtitle renders only once
-// loadSigns() has resolved (amendment E19) -- nothing in its place before,
-// no placeholder text. The Highway Code and Traffic signs cards each use
+// (loaded once via load()). U10 (plan.md Step 4, amend-04.md A18-A22): the
+// whole screen renders in full from the first paint but stays invisible
+// (the learn--pending class, learn.css, aria-busy="true") until the
+// progress store's scores AND the sign catalogue have both settled --
+// settled meaning 'ready'/'error' for the store and 'loaded'/'failed' for
+// the catalogue, so a catalogue that never resolves successfully does not
+// hide the screen forever -- mirroring JourneyScreen.tsx's Today rule. Once
+// shown, the "<n> of <total> collected" subtitle still only renders once
+// loadSigns() has resolved successfully (amendment E19); it stays out if
+// the catalogue failed. The Highway Code and Traffic signs cards each use
 // SignPanel's `block` prop to fill the width (M12); the How signs work card
 // below them (Step 26, amendment E33) keeps its own white-panel look
 // instead (amendment E3, Step 3b) -- a 2.5px ink inner border, styled
@@ -21,7 +27,7 @@
 // ../../content/loaders (getHighwayCodeIndex), ../../content/signs
 // (loadSigns), ../../content/schemas (Sign type), ../../engine/progress-state
 // (useProgressStore), ../interactives/shared/SignImage, ./learn.css.
-// Depended on by: src/app/routes.tsx.
+// Depended on by: src/app/routes.tsx, tests/unit/learn-screen.test.tsx.
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignPanel } from '../../ui';
@@ -46,8 +52,9 @@ function LearnScreen() {
   const ruleCount = countNumericRules();
   const [signCount, setSignCount] = useState(0);
   const [cardSigns, setCardSigns] = useState<Sign[]>([]);
-  const [signsLoaded, setSignsLoaded] = useState(false);
+  const [signsStatus, setSignsStatus] = useState<'loading' | 'loaded' | 'failed'>('loading');
   const summary = useProgressStore((state) => state.summary);
+  const status = useProgressStore((state) => state.status);
   const load = useProgressStore((state) => state.load);
 
   useEffect(() => {
@@ -65,19 +72,25 @@ function LearnScreen() {
             (sign): sign is Sign => sign !== undefined,
           ),
         );
-        setSignsLoaded(true);
+        setSignsStatus('loaded');
       })
       .catch(() => {
         // content/uk/signs/signs.json not ingested yet, or failed to load:
-        // the subtitle stays hidden and no thumbnails show.
+        // the subtitle stays hidden and no thumbnails show, but the
+        // catalogue still counts as settled (U10, amendment A20) so the
+        // screen is not left pending forever.
+        if (!cancelled) setSignsStatus('failed');
       });
     return () => {
       cancelled = true;
     };
   }, []);
 
+  const scoresSettled = status === 'ready' || status === 'error';
+  const pending = !scoresSettled || signsStatus === 'loading';
+
   return (
-    <div className="learn-cards">
+    <div className={pending ? 'learn-cards learn--pending' : 'learn-cards'} aria-busy={pending}>
       <Link to="/learn/code" className="learn-card">
         <SignPanel colour="blue" block>
           <span className="learn-card__title">The Highway Code</span>
@@ -90,7 +103,7 @@ function LearnScreen() {
           <div className="learn-card__row">
             <div className="learn-card__text">
               <div className="learn-card__title">Traffic signs</div>
-              {signsLoaded && (
+              {signsStatus === 'loaded' && (
                 <div>
                   {summary.collected} of {signCount} collected
                 </div>

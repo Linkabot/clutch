@@ -30,8 +30,9 @@
 // src/features/interactives/match-pairs/MatchPairs.tsx,
 // src/features/interactives/shape-colour-decoder/Decoder.tsx,
 // tests/unit/decoder.test.tsx, tests/unit/end-screen.test.tsx,
-// tests/unit/journey-screen.test.tsx, tests/unit/match-pairs.test.tsx,
-// tests/unit/me-screen.test.tsx, tests/unit/sign-hooks.test.ts,
+// tests/unit/journey-screen.test.tsx, tests/unit/learn-screen.test.tsx,
+// tests/unit/match-pairs.test.tsx, tests/unit/me-screen.test.tsx,
+// tests/unit/practice-screen.test.tsx, tests/unit/sign-hooks.test.ts,
 // tests/unit/sign-names.test.ts, tests/unit/sign-screen.test.tsx,
 // tests/unit/sign-sprint.test.tsx, tests/unit/sprint-start.test.tsx,
 // tests/unit/tap-round.test.ts.
