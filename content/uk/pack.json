@@ -40,6 +40,13 @@
       "licence": "Open Government Licence v3.0",
       "url": "https://www.gov.uk/government/publications/know-your-traffic-signs",
       "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
+    },
+    {
+      "id": "govuk-guidance",
+      "name": "GOV.UK guidance pages",
+      "licence": "Open Government Licence v3.0",
+      "url": "https://www.gov.uk/browse/driving",
+      "statement": "Contains public sector information licensed under the Open Government Licence v3.0."
     }
   ]
 }

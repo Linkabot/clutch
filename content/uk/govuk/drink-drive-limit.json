@@ -1,0 +1,16 @@
+{
+  "slug": "drink-drive-limit",
+  "title": "The drink drive limit",
+  "url": "https://www.gov.uk/drink-drive-limit",
+  "basePath": "/drink-drive-limit",
+  "publicUpdatedAt": "2014-12-05T00:01:01+00:00",
+  "fetchedAt": "2026-09-27T14:13:23.021Z",
+  "licenceLine": "All content is available under the Open Government Licence v3.0, except where otherwise stated",
+  "parts": [
+    {
+      "slug": "introduction",
+      "title": "Introduction",
+      "html": "<p>There are strict alcohol limits for drivers, but it’s impossible to say exactly how many drinks this equals - it’s different for each person.</p>\n\n<p>The limits in Scotland are different to the rest of the UK.</p>\n\n<table>\n  <thead>\n    <tr>\n      <th>Level of alcohol</th>\n      <th>England, Wales and Northern Ireland</th>\n      <th>Scotland</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>Micrograms per 100 millilitres of breath</th>\n      <td>35</td>\n      <td>22</td>\n    </tr>\n    <tr>\n      <th>Milligrammes per 100 millilitres of blood</th>\n      <td>80</td>\n      <td>50</td>\n    </tr>\n    <tr>\n      <th>Milligrammes per 100 millilitres of urine</th>\n      <td>107</td>\n      <td>67</td>\n    </tr>\n  </tbody>\n</table>\n\n<p>There are strict <a href=\"https://www.gov.uk/drink-driving-penalties\" rel=\"external noopener\" target=\"_blank\">drink driving penalties</a> if you are caught over the limit.</p>\n\n<div>\n  <p>You cannot drive anywhere in the UK if you’ve been banned by any UK court because of drink driving.</p>\n</div>\n\n<p>The way alcohol affects you depends on:</p>\n\n<ul>\n  <li>your weight, age, sex and metabolism (the rate your body uses energy)</li>\n  <li>the type and amount of alcohol you’re drinking</li>\n  <li>what you’ve eaten recently</li>\n  <li>your stress levels at the time</li>\n</ul>\n"
+    }
+  ]
+}

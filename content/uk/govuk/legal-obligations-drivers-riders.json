@@ -1,0 +1,46 @@
+{
+  "slug": "legal-obligations-drivers-riders",
+  "title": "Legal obligations of drivers and riders",
+  "url": "https://www.gov.uk/legal-obligations-drivers-riders",
+  "basePath": "/legal-obligations-drivers-riders",
+  "publicUpdatedAt": "2015-08-27T17:32:37+01:00",
+  "fetchedAt": "2026-09-27T14:13:23.046Z",
+  "licenceLine": "All content is available under the Open Government Licence v3.0, except where otherwise stated",
+  "parts": [
+    {
+      "slug": "introduction",
+      "title": "Introduction",
+      "html": "<p>You must do several things before you drive a car or ride a motorcycle. These include getting a driving licence, registering, insuring and taxing your vehicle, and getting an MOT.</p>\n\n<p>These are legal requirements and apply to everyone.</p>\n\n<p>You may hold personal views about the law, but these do not change your legal responsibilities.</p>\n\n<p>If you do not meet your obligations, you may be taken to court or have to pay a fine.</p>\n\n<div>\n  <p>This page is also available <a href=\"https://www.gov.uk/rhwymedigaethau-cyfreithiol-gyrwyr-beicwyr-modur\" rel=\"external noopener\" target=\"_blank\">in Welsh (Cymraeg)</a>.</p>\n</div>\n\n"
+    },
+    {
+      "slug": "before-you-drive-or-ride",
+      "title": "Before you drive or ride",
+      "html": "\n\n<p>You must:</p>\n\n<ul>\n  <li>have the correct driving licence</li>\n  <li>be the minimum driving or riding age</li>\n  <li>meet the <a href=\"https://www.gov.uk/driving-eyesight-rules\" rel=\"external noopener\" target=\"_blank\">minimum eyesight rules</a>\n</li>\n</ul>\n\n"
+    },
+    {
+      "slug": "learner-drivers",
+      "title": "Learner drivers",
+      "html": "\n\n<p>You must:</p>\n\n<ul>\n  <li>be supervised by a qualified driver (except if riding a motorcycle)</li>\n  <li>\n<a href=\"https://www.gov.uk/driving-lessons-learning-to-drive/using-l-and-p-plates\" rel=\"external noopener\" target=\"_blank\">display L plates</a> (L plates or D plates in Wales)</li>\n</ul>\n\n"
+    },
+    {
+      "slug": "vehicle-requirements",
+      "title": "Vehicle requirements",
+      "html": "\n\n<p>The vehicle must:</p>\n\n<ul>\n  <li>be <a href=\"https://www.gov.uk/vehicle-registration\" rel=\"external noopener\" target=\"_blank\">registered with <abbr title=\"Driver and Vehicle Licensing Agency\">DVLA</abbr></a>\n</li>\n  <li>have up to date <a href=\"https://www.gov.uk/vehicle-tax\" rel=\"external noopener\" target=\"_blank\">vehicle tax</a> (<a href=\"https://www.gov.uk/check-vehicle-tax\" rel=\"external noopener\" target=\"_blank\">check if your vehicle is taxed</a> online)</li>\n  <li>have a current MOT certificate (<a href=\"https://www.gov.uk/getting-an-mot\" rel=\"external noopener\" target=\"_blank\">if your vehicle needs one</a>)</li>\n  <li>be <a href=\"https://www.gov.uk/check-vehicle-safe\" rel=\"external noopener\" target=\"_blank\">roadworthy</a>\n</li>\n</ul>\n\n<p>You must also have a minimum of third party <a href=\"https://www.gov.uk/vehicle-insurance\" rel=\"external noopener\" target=\"_blank\">insurance</a> that covers your use of the vehicle.</p>\n\n"
+    },
+    {
+      "slug": "changes-to-personal-or-vehicle-details",
+      "title": "Changes to personal or vehicle details",
+      "html": "\n\n<p>You must tell <abbr title=\"Driver and Vehicle Licensing Agency\">DVLA</abbr> if you:</p>\n\n<ul>\n  <li><a href=\"https://www.gov.uk/change-name-driving-licence\" rel=\"external noopener\" target=\"_blank\">change your name or gender</a></li>\n  <li><a href=\"https://www.gov.uk/tell-dvla-changed-address\" rel=\"external noopener\" target=\"_blank\">change your address</a></li>\n  <li><a href=\"https://www.gov.uk/change-vehicle-details-registration-certificate\" rel=\"external noopener\" target=\"_blank\">make any alterations to your vehicle</a></li>\n  <li><a href=\"https://www.gov.uk/notifying-dvla-if-you-sell-your-vehicle\" rel=\"external noopener\" target=\"_blank\">sell your vehicle</a></li>\n  <li><a href=\"https://www.gov.uk/driving-medical-conditions\" rel=\"external noopener\" target=\"_blank\">have or develop a medical condition</a></li>\n</ul>\n\n<div>\n  <p>You’ll need to change your name on both your driving licence and your <a href=\"https://www.gov.uk/change-name-v5c\" rel=\"external noopener\" target=\"_blank\">vehicle log book (V5C)</a>.</p>\n</div>\n\n"
+    },
+    {
+      "slug": "driving-larger-vehicles-or-buses",
+      "title": "Driving larger vehicles or buses",
+      "html": "\n\n<p>There are higher medical and eyesight standards for driving larger vehicles.</p>\n\n<p>You must tell <abbr title=\"Driver and Vehicle Licensing Agency\">DVLA</abbr> if you have any driving convictions.</p>\n\n<p>If you’re applying for a passenger-carrying vehicle (<abbr title=\"Passenger Carrying Vehicle\">PCV</abbr>) licence then you must also tell <abbr title=\"Driver and Vehicle Licensing Agency\">DVLA</abbr> if you have any other convictions.</p>\n\n"
+    },
+    {
+      "slug": "showing-your-driving-documents",
+      "title": "Showing your driving documents",
+      "html": "\n\n<p>If a police officer asks you to, you must be able to show:</p>\n\n<ul>\n  <li>your driving licence</li>\n  <li>a valid insurance certificate</li>\n  <li>a valid MOT certificate (if your vehicle needs one)</li>\n</ul>\n\n<p>If you do not have the documents with you at the time, you may be asked to take them to a police station within 7 days.</p>\n\n"
+    }
+  ]
+}

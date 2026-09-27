@@ -17,6 +17,7 @@
 // Depended on by: scripts/ingest-national-standard.ts, scripts/ingest-signs.ts,
 // scripts/lib/highway-code-build.ts (the only path by which the Highway Code
 // ingest and comparison scripts reach gov.uk), scripts/verify-signs.ts,
+// scripts/ingest-govuk-pages.ts, scripts/verify-govuk-pages.ts,
 // tests/unit/govuk-offline.test.ts.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';

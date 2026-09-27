@@ -25,6 +25,8 @@
     "ingest:signs": "tsx scripts/ingest-signs.ts",
     "verify:signs": "tsx scripts/verify-signs.ts",
     "compare:highway-code": "tsx scripts/compare-highway-code.ts",
+    "ingest:govuk-pages": "tsx scripts/ingest-govuk-pages.ts",
+    "verify:govuk-pages": "tsx scripts/verify-govuk-pages.ts",
     "e2e": "npm run build && playwright test"
   },
   "dependencies": {

@@ -49,7 +49,13 @@
 // (normaliseWhitespace, htmlToText), ../../src/content/schemas/highwayCode.ts
 // (the Section/Rule/RuleImage/Interlude shapes this module must produce),
 // ./highway-code-build.ts (ParseOptions, type-only).
-// Depended on by: scripts/lib/highway-code-build.ts,
+// `sanitiseHtml` (Step 5, plan.md amend-05 A27) exposes the same node-by-node
+// sanitiser `parseSection` uses internally, for a caller that has no rule/
+// section structure to build — scripts/lib/govuk-pages.ts feeds each GOV.UK
+// part's raw HTML through it before it is ever committed. Reuses
+// `sanitiseNodes` unchanged: no behaviour of `parseSection`'s own output
+// changes.
+// Depended on by: scripts/lib/highway-code-build.ts, scripts/lib/govuk-pages.ts,
 // tests/unit/highway-code-parse.test.ts (which also loads
 // tests/fixtures/highway-code-section.html,
 // tests/fixtures/highway-code-figcaption.html,
@@ -818,4 +824,27 @@ export function parseSection(
     .filter((interlude): interlude is Interlude => interlude !== null);
 
   return { ...sectionWithoutInterludes, interludes };
+}
+
+/**
+ * Sanitises one arbitrary fragment of HTML through the same node-by-node
+ * sanitiser `parseSection` uses for a rule's or a preamble's nodes, for a
+ * caller with no rule/section structure of its own (Step 5,
+ * scripts/lib/govuk-pages.ts: each GOV.UK part's raw HTML). `options`
+ * defaults exactly as `parseSection` does. Reuses `sanitiseNodes` with a
+ * fresh `SanitiseContext`, so `parseSection`'s own output is unchanged.
+ */
+export function sanitiseHtml(html: string, options: ParseOptions = {}): string {
+  const repairHrefs = options.repairHrefs ?? true;
+  const figcaptionLinks = options.figcaptionLinks ?? true;
+  const root = parse(html, {
+    blockTextElements: { script: true, noscript: true, style: true },
+  });
+  const ctx: SanitiseContext = {
+    crossRefs: new Set<string>(),
+    images: [],
+    repairHrefs,
+    figcaptionLinks,
+  };
+  return sanitiseNodes(root.childNodes, ctx);
 }

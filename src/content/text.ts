@@ -7,11 +7,11 @@
 // Depends on: nothing.
 // Depended on by: scripts/lib/highway-code-parse.ts, scripts/lib/kyts-licence.ts,
 // scripts/lib/kyts-parse.ts, scripts/lib/national-standard-parse.ts,
-// scripts/ingest-signs.ts, scripts/verify-signs.ts, src/features/code/search.ts,
-// src/features/code/RuleScreen.tsx, src/features/code/SectionScreen.tsx,
-// src/features/code/rule-heading.ts, src/features/code/interlude.ts
-// (htmlToText), tests/content/facts.test.ts, tests/unit/text.test.ts,
-// tests/unit/code-text.test.ts (truncateAtWord).
+// scripts/lib/govuk-pages.ts, scripts/ingest-signs.ts, scripts/verify-signs.ts,
+// src/features/code/search.ts, src/features/code/RuleScreen.tsx,
+// src/features/code/SectionScreen.tsx, src/features/code/rule-heading.ts,
+// src/features/code/interlude.ts (htmlToText), tests/content/facts.test.ts,
+// tests/unit/text.test.ts, tests/unit/code-text.test.ts (truncateAtWord).
 
 const NAMED_ENTITIES: Record<string, string> = {
   '&amp;': '&',

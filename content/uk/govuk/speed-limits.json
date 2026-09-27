@@ -1,0 +1,41 @@
+{
+  "slug": "speed-limits",
+  "title": "Speed limits",
+  "url": "https://www.gov.uk/speed-limits",
+  "basePath": "/speed-limits",
+  "publicUpdatedAt": "2015-04-06T00:01:44+01:00",
+  "fetchedAt": "2026-09-27T14:13:23.026Z",
+  "licenceLine": "All content is available under the Open Government Licence v3.0, except where otherwise stated",
+  "parts": [
+    {
+      "slug": "introduction",
+      "title": "Introduction",
+      "html": "\n<div>\n  <p>You must not drive faster than the speed limit for the type of road and your type of vehicle. The speed limit is the absolute maximum - it does not mean it’s safe to drive at this speed in all conditions.</p>\n</div>\n\n"
+    },
+    {
+      "slug": "national-speed-limits",
+      "title": "National speed limits",
+      "html": "\n\n<p>The following speed limits apply to all single and dual carriageways with street lights, unless there are signs showing otherwise:</p>\n\n<ul>\n  <li>30 miles per hour (48km/h) in England, Scotland or Northern Ireland</li>\n  <li>20 miles per hour (32km/h) in Wales</li>\n</ul>\n\n"
+    },
+    {
+      "slug": "speed-limits-in-built-up-areas",
+      "title": "Speed limits in built-up areas",
+      "html": "\n\n<table>\n  <thead>\n    <tr>\n      <td></td>\n      <th>Built-up areas <abbr title=\"miles per hour\">mph</abbr>  (<abbr title=\"kilometres per hour\">km/h</abbr>) in England, Scotland and Northern Ireland</th>\n      <th>Built-up areas <abbr title=\"miles per hour\">mph</abbr>(<abbr title=\"kilometres per hour\">km/h</abbr>) in Wales</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>Cars, motorcycles, car-derived vans and dual-purpose vehicles</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Cars, motorcycles, car-derived vans and dual-purpose vehicles when towing caravans or trailers</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Motorhomes or motor caravans (not more than 3.05 tonnes maximum unladen weight)</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Motorhomes or motor caravans (more than 3.05 tonnes maximum unladen weight)</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Buses, coaches and minibuses (not more than 12 metres overall length)</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Buses, coaches and minibuses (more than 12 metres overall length)</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (not more than 7.5 tonnes maximum laden weight)</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (more than 7.5 tonnes maximum laden weight) in England and Wales</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (more than 7.5 tonnes maximum laden weight) in Scotland</th>\n      <td>30 (48)</td>\n      <td>20 (32)</td>\n    </tr>\n  </tbody>\n</table>\n\n"
+    },
+    {
+      "slug": "speed-limits-on-single-and-dual-carriageways-and-motorways",
+      "title": "Speed limits on single and dual carriageways and motorways",
+      "html": "\n\n<table>\n  <thead>\n    <tr>\n      <td></td>\n      <th>Single carriageways <abbr title=\"miles per hour\">mph</abbr>  (<abbr title=\"kilometres per hour\">km/h</abbr>)</th>\n      <th>Dual carriageways <abbr title=\"miles per hour\">mph</abbr>  (<abbr title=\"kilometres per hour\">km/h</abbr>)</th>\n      <th>Motorways <abbr title=\"miles per hour\">mph</abbr>   (<abbr title=\"kilometres per hour\">km/h</abbr>)</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>Cars, motorcycles, car-derived vans and dual-purpose vehicles</th>\n      <td>60 (96)</td>\n      <td>70 (112)</td>\n      <td>70 (112)</td>\n    </tr>\n    <tr>\n      <th>Cars, motorcycles, car-derived vans and dual-purpose vehicles when towing caravans or trailers</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>60 (96)</td>\n    </tr>\n    <tr>\n      <th>Motorhomes or motor caravans (not more than 3.05 tonnes maximum unladen weight)</th>\n      <td>60 (96)</td>\n      <td>70 (112)</td>\n      <td>70 (112)</td>\n    </tr>\n    <tr>\n      <th>Motorhomes or motor caravans (more than 3.05 tonnes maximum unladen weight)</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>70 (112)</td>\n    </tr>\n    <tr>\n      <th>Buses, coaches and minibuses (not more than 12 metres overall length)</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>70 (112)</td>\n    </tr>\n    <tr>\n      <th>Buses, coaches and minibuses (more than 12 metres overall length)</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>60 (96)</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (not more than 7.5 tonnes maximum laden weight)</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>70 (112) 60 (96) if articulated or towing a trailer</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (more than 7.5 tonnes maximum laden weight) in England and Wales</th>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n      <td>60 (96)</td>\n    </tr>\n    <tr>\n      <th>Goods vehicles (more than 7.5 tonnes maximum laden weight) in Scotland</th>\n      <td>40 (64)</td>\n      <td>50 (80)</td>\n      <td>60 (96)</td>\n    </tr>\n  </tbody>\n</table>\n\nVans, car-derived vans and dual-purpose vehicles\n\n<p>Most vans:</p>\n\n<ul>\n  <li>have a lower speed limit than cars</li>\n  <li>must follow the speed limits for goods vehicles of the same weight</li>\n</ul>\n\n<p>Vehicles weighing no more than 2 tonnes laden (loaded) may qualify as a ‘car-derived van’. Vehicles weighing no more than 2.04 tonnes unladen may qualify as a ‘dual-purpose vehicle’. These vehicles have the same speed limits as cars. Find out more about <a href=\"https://www.gov.uk/government/publications/car-derived-vans-and-dual-purpose-vehicles\" rel=\"external noopener\" target=\"_blank\">‘car-derived vans’ and ‘dual-purpose vehicles’</a>.</p>\n\nMotorhomes\n\n<p>Motorhomes or motor caravans are classed as goods vehicles if they:</p>\n\n<ul>\n  <li>carry goods for exhibition and sale</li>\n  <li>are used as a workshop</li>\n  <li>are used for storage</li>\n</ul>\n\n"
+    },
+    {
+      "slug": "locally-set-speed-limits",
+      "title": "Locally set speed limits",
+      "html": "\n\n<p>Local councils can set their own speed limits in certain areas, and these must be clearly signed.</p>\n\n<p>For example:</p>\n\n<ul>\n  <li>20mph zone in a built-up area near a school</li>\n  <li>50mph (rather than 60mph) limit on a stretch of road with sharp bends</li>\n</ul>\n\n"
+    },
+    {
+      "slug": "speed-limiters",
+      "title": "Speed limiters",
+      "html": "\n<p>A speed limiter must be fitted on:</p>\n\n<ul>\n  <li>vehicles with more than 8 passenger seats, for example, buses, minibuses, coaches, stretch limousines</li>\n  <li>goods vehicles with a maximum laden weight of more than 3.5 tonnes</li>\n</ul>\n\n<p>Speed limiters are designed to reduce collisions. They limit the maximum speed of a vehicle by restricting the fuel supply to the engine. Having a speed limiter may mean that your vehicle cannot reach the speed limit.</p>\n\n"
+    }
+  ]
+}

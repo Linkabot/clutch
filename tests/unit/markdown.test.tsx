@@ -10,8 +10,10 @@
  * **strong**, `code` (with nothing inside it parsed further), and literal
  * text for constructs it does not support (`<b>x</b>`, four-or-more `#`) --
  * and, against the real committed public/ATTRIBUTION.md, the exact census
- * step11-facts.md § F1 measured: 10 headings (1 h3, 4 h4, 5 h5), 5 ul, 22
- * li, 5 p, 2 code spans (lucide-react, LICENSE) and 0 a elements.
+ * after Step 5's "### GOV.UK guidance pages" subsection (plan.md Step 5,
+ * amend-05 A27): 11 headings (1 h3, 4 h4, 6 h5), 6 ul, 37 li, 6 p, 2 code
+ * spans (lucide-react, LICENSE) and 0 a elements (ATTRIBUTION.md uses bare
+ * URLs, never `[text](url)` links).
  * Depends on: vitest, @testing-library/react, node:fs, node:path, node:url,
  * jsdom (test environment), src/features/me/markdown (renderMarkdown).
  * Depended on by: `npm test` (Vitest run).
@@ -138,11 +140,11 @@ describe('renderMarkdown', () => {
     const h5s = container.querySelectorAll('h5');
     expect(h3s).toHaveLength(1);
     expect(h4s).toHaveLength(4);
-    expect(h5s).toHaveLength(5);
+    expect(h5s).toHaveLength(6);
 
-    expect(container.querySelectorAll('ul')).toHaveLength(5);
-    expect(container.querySelectorAll('li')).toHaveLength(22);
-    expect(container.querySelectorAll('p')).toHaveLength(5);
+    expect(container.querySelectorAll('ul')).toHaveLength(6);
+    expect(container.querySelectorAll('li')).toHaveLength(37);
+    expect(container.querySelectorAll('p')).toHaveLength(6);
     expect(container.querySelectorAll('code')).toHaveLength(2);
     const codeTexts = Array.from(container.querySelectorAll('code')).map((el) => el.textContent);
     expect(codeTexts).toEqual(['lucide-react', 'LICENSE']);
